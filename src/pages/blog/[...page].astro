@@ -2,7 +2,10 @@
 import DefaultLayout from '@layouts/DefaultLayout.astro'
 import PageHeader from '@components/PageHeader.astro'
 import { Card, Pagination } from 'accessible-astro-components'
-import type { PaginateFunction, Page } from 'astro'
+import { getCollection } from 'astro:content'
+import type { GetStaticPaths, Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+import { slugify } from '@/utils/slugify'
 
 // Import images directly for optimization
 import postImage1 from '@assets/images/posts/post-image-1.png'
@@ -12,54 +15,43 @@ import postImage4 from '@assets/images/posts/post-image-4.png'
 import postImage5 from '@assets/images/posts/post-image-5.png'
 import postImage6 from '../../assets/images/posts/post-image-6.png'
 
-interface Post {
-  id: number
-  userId: number
-  title: string
-  body: string
-  featuredImage: any
-  shortUrl: string
-}
-
-export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts')
-  const data = await response.json()
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getCollection('blog')
+  
+  // Sort posts by publish date, newest first
+  const sortedPosts = posts.sort((a, b) => {
+    return b.data.publishDate.getTime() - a.data.publishDate.getTime()
+  })
 
   const postImages = [postImage1, postImage2, postImage3, postImage4, postImage5, postImage6]
 
-  function truncateTitle(title: string) {
-    const words = title.split(' ')
-    const truncated = words.slice(0, 4).join(' ')
-    return truncated
-  }
-
-  const postsWithImages = data.slice(0, 30).map((post: any) => {
-    const truncatedTitle = truncateTitle(post.title)
+  const postsWithImages = sortedPosts.map((post, index) => {
     return {
       ...post,
-      featuredImage: postImages[post.id % postImages.length],
-      title: truncatedTitle,
-      shortUrl: truncatedTitle.replaceAll(' ', '-').toLowerCase(),
+      featuredImage: postImages[index % postImages.length],
+      slug: slugify(post.data.title),
     }
   })
 
-  return paginate(postsWithImages, { pageSize: 6 })
-}
+  return paginate(postsWithImages, {
+    pageSize: 6,
+  })
+}) satisfies GetStaticPaths
 
 interface Props {
-  page: Page<Post>
+  page: Page<CollectionEntry<'blog'> & { featuredImage: any; slug: string }>
 }
 
-const { page } = Astro.props as Props
+const { page } = Astro.props
 ---
 
 <DefaultLayout
   title="Blog"
-  description="An example of a blog with dynamic content fetched from JSONPlaceholder using the title, body and userId."
+  description="Blog posts from DUCA about cybersecurity, development, and our events."
 >
   <PageHeader
     title="Blog"
-    subtitle='An example of a blog with dynamic content fetched from <a href="https://jsonplaceholder.typicode.com/posts">JSONPlaceholder</a> using the title, body and userId. The Accessible Astro Card Component is used here to display al the posts.'
+    subtitle="Read our latest articles about cybersecurity, student success, and our events."
     bgType="bordered"
   />
 
@@ -72,13 +64,13 @@ const { page } = Astro.props as Props
             <li>
               <Card
                 imageComponent={post.featuredImage}
-                url={'/blog/' + post.shortUrl}
-                title={post.title}
+                url={'/blog/' + post.slug}
+                title={post.data.title}
                 headingLevel="h2"
-                footer={'userId:' + post.userId}
+                footer={'Author: ' + post.data.author}
                 fullHeight={true}
               >
-                {post.body}
+                {post.data.description}
               </Card>
             </li>
           ))
