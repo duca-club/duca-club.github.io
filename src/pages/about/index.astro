@@ -1,0 +1,112 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+import PageHeader from '@components/PageHeader.astro'
+import { Heading } from 'accessible-astro-components'
+import { Image } from 'astro:assets'
+import HeroImage from './images/Pink-and-Peach-Watercolour-Textured-Background-Motivational-Quote-Desktop-Wallpaper.webp'
+import Collaboration from './images/core_values/collaboration.png'
+import Development from './images/core_values/development.png'
+import Inclusivity from './images/core_values/inclusivity.png'
+import Innovation from './images/core_values/innovation.png'
+import Inspiration from './images/core_values/inspiration.png'
+import Leadership from './images/core_values/leadership.png'
+---
+
+<DefaultLayout title="Meet The Team">
+    <PageHeader
+        title="About Us"
+        subtitle="DUCA is your gateway to hands-on learning, professional connections, and a supportive cybersecurity community!"
+    />
+
+    <!-- Who we are -->
+    <section class="container mb-24">
+        <Heading level="h2" class="mb-7">Who We Are</Heading>
+
+        <Image src={HeroImage} alt="Pink and Peach Watercolour" width={580} height={326} class="mb-4 text-gray-200" />
+
+        <p class="mb-4 dark:text-gray-200">
+            The Deakin University Cybersecurity Association (DUCA) is a student-led community created by students, for
+            students, and united by a shared passion for cybersecurity. DUCA serves as a launchpad for aspiring
+            cybersecurity professionals, transforming curiosity into expertise through hands-on experiences, industry
+            connections, and collaborative learning.
+        </p>
+        <p class="mb-4 dark:text-gray-200">
+            Our mission is to empower students to grow into confident leaders in the digital world. We achieve this by
+            providing practical training, such as Capture the Flag challenges, career-focused workshops, and
+            opportunities for real-world application of classroom learning. Aligned with Deakin University and the
+            Deakin University Student Association (DUSA), DUCA strives to create a dynamic, supportive, and inclusive
+            environment where every member can learn, lead, and innovate.
+        </p>
+        <p class="mb-4 dark:text-gray-200">
+            At DUCA, we are built on core values that shape our vision and actions: Inspiration, Innovation,
+            Inclusivity, Collaboration, and Development. We believe in students inspiring students, empowering one
+            another to explore new ideas, push boundaries, and achieve shared goals. Innovation is at the heart of our
+            community as we strive to drive creative solutions for the challenges of tomorrow. Inclusivity ensures that
+            we provide a welcoming and diverse environment where everyone feels they belong. Collaboration is key to our
+            growth as we strengthen our community through teamwork, while professional and personal development is our
+            commitment to equipping members with the skills and confidence they need for career success.
+        </p>
+        <p class="mb-4 dark:text-gray-200">
+            Our focus on industry partnerships provides members with direct pathways to mentorship, internships, and
+            career opportunities, bridging the gap between education and professional readiness. Through high-quality
+            learning resources and events planned by students, for students, DUCA transforms passion into impact,
+            helping members transition seamlessly from enthusiastic learners to cybersecurity professionals.
+        </p>
+        <p class="mb-4 dark:text-gray-200">
+            We envision DUCA as more than just a club; it’s a thriving community and a launchpad for the next generation
+            of cybersecurity experts. Whether it’s tackling Capture the Flag competitions, hosting major cybersecurity
+            events, or building a hub of learning resources, we are committed to safeguarding the future of the digital
+            landscape together.
+        </p>
+        <p class="mb-4 dark:text-gray-200">
+            Join us in shaping the digital future at DUCA; every member contributes to a legacy of growth, learning, and
+            leadership in cybersecurity.
+        </p>
+    </section>
+    <section class="container mb-24">
+        <Heading level="h2" class="mb-7">DUCA Core Values</Heading>
+
+        <div class="grid grid-cols-1 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
+            <div class="flex flex-col items-center justify-start gap-0 text-center">
+                <Image src={Inspiration} alt="Inspiration" class="mb-4" width={80} height={80} />
+                <div class="text-2xl font-bold">Inspiration</div>
+                <div class="text-balance">Empowering members to explore and grow together.</div>
+            </div>
+
+            <div class="flex flex-col items-center justify-start gap-0 text-center">
+                <Image src={Innovation} alt="Innovation" class="mb-4" width={80} height={80} />
+                <div class="text-2xl font-bold">Innovation</div>
+                <div class="text-balance">Driving creative solutions for cybersecurity’s future.</div>
+            </div>
+
+            <div class="flex flex-col items-center justify-start gap-0 text-center">
+                <Image src={Inclusivity} alt="Inclusivity" class="mb-4" width={80} height={80} />
+                <div class="text-2xl font-bold">Inclusivity</div>
+                <div class="text-balance">Building a welcoming and diverse community.</div>
+            </div>
+
+            <div class="flex flex-col items-center justify-start gap-0 text-center">
+                <Image src={Collaboration} alt="Collaboration" class="mb-4" width={80} height={80} />
+                <div class="text-2xl font-bold">Collaboration</div>
+                <div class="text-balance">Strengthening teamwork to achieve shared goals.</div>
+            </div>
+
+            <div class="flex flex-col items-center justify-start text-center">
+                <Image src={Development} alt="Development" class="mb-4" width={80} height={80} />
+                <div class="text-2xl font-bold">Development</div>
+                <div class="text-balance">Preparing students for professional industry success.</div>
+            </div>
+
+            <div class="flex flex-col items-center justify-start text-center">
+                <Image src={Leadership} alt="Leadership" class="mb-4" width={80} height={80} />
+                <div class="text-2xl font-bold">Leadership</div>
+                <div class="text-balance">Inspiring tomorrow’s cybersecurity leaders and innovators.</div>
+            </div>
+        </div>
+    </section>
+    <section class="container mb-24">
+        <Heading level="h2" class="mb-7">DUCA Team</Heading>
+
+        <a href="/meet-the-team">Click here to meet the team</a>
+    </section>
+</DefaultLayout>
