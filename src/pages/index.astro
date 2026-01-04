@@ -8,6 +8,12 @@ import FeaturedEvents from '@components/FeaturedEvents.astro'
 import FeaturedPosts from '@components/FeaturedPosts.astro'
 import { Heading, Link } from 'accessible-astro-components'
 import { Icon } from 'astro-icon/components'
+
+const DISCORD_INVITE_CODE = "duca"
+const DISCORD_INVITE_API = `https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`;
+const DISCORD_INVITE_URL = `https://discord.gg/${DISCORD_INVITE_CODE}`;
+const DISCORD_MEMBER_COUNTER = Math.random().toString(36).slice(2, 10);
+
 ---
 
 <DefaultLayout title="Home">
@@ -50,7 +56,7 @@ import { Icon } from 'astro-icon/components'
       Our members gain access to exclusive workshops, networking opportunities with industry professionals, and hands-on experience with cutting-edge security tools and techniques. We believe in learning by doing, and our events reflect that philosophy.
     </p>
     <Link
-      href="https://discord.gg/duca"
+      href={DISCORD_INVITE_URL}
       isButton
       type="primary"
       animateOnHover
@@ -71,7 +77,7 @@ import { Icon } from 'astro-icon/components'
       From preparing for industry certifications to landing your first cybersecurity role, we provide the support and resources you need at every step of your journey. Join hundreds of Deakin students who are already building their future in cybersecurity.
     </p>
     <Link
-      href="https://discord.gg/duca"
+      href={DISCORD_INVITE_URL}
       isButton
       type="secondary"
       animateOnHover
@@ -92,14 +98,14 @@ import { Icon } from 'astro-icon/components'
   <!-- Join Our Discord -->
   <section class="my-64">
     <div class="container">
-      <div class="rounded-lg border-2 border-solid border-[var(--border-color-subtle)] bg-[var(--color-neutral-100)] p-12 text-center dark:bg-[var(--color-neutral-900)]">
+      <div class="rounded-lg border-2 border-solid border-(--border-color-subtle) bg-neutral-100 p-12 text-center dark:bg-neutral-900">
         <Heading level="h2" class="mb-6">Join our Discord community</Heading>
         <p class="text-xl mb-8 max-w-2xl mx-auto">
           The best way to stay connected with DUCA is through our Discord server. Get instant updates on events, ask questions, share resources, and connect with fellow cybersecurity enthusiasts. Our community is active, supportive, and always ready to help.
         </p>
         <div class="flex flex-col gap-4 items-center sm:flex-row sm:justify-center">
           <Link
-            href="https://discord.gg/duca"
+            href={DISCORD_INVITE_URL}
             isButton
             type="primary"
             animateOnHover
@@ -129,10 +135,19 @@ import { Icon } from 'astro-icon/components'
     <div class="container">
       <Heading level="h2" class="mb-16">DUCA by the numbers</Heading>
       <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4">
-        <Counter count="700+" title="Members" sub="Active community" />
+        <Counter count="750+" title="Members" sub="Active community" count_id={DISCORD_MEMBER_COUNTER} />
         <Counter count="50+" title="Events" sub="This year" />
         <Counter count="20+" title="Workshops" sub="Hands-on learning" />
         <Counter count="100%" title="Free" sub="Always welcome" />
+
+        <script define:vars={{COUNTER_ID: DISCORD_MEMBER_COUNTER, INVITE_API: DISCORD_INVITE_API}}>
+          const MEMBER_COUNTER = document.getElementById(COUNTER_ID);
+          fetch(INVITE_API).then((res) => {
+            if (res.status === 200) res.json().then((json) => {
+              MEMBER_COUNTER.innerText = json["approximate_member_count"]
+            })
+          });
+        </script>
       </div>
     </div>
   </section>
