@@ -5,34 +5,42 @@ import SocialShares from '@components/SocialShares.astro'
 import { Heading } from 'accessible-astro-components'
 import { getCollection, render } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
+import projectImage1 from '@assets/images/projects/project-image-1.png'
+import projectImageJingle from '@assets/images/projects/JingleShellCTF.jpg'
+import { slugify } from '@/utils/slugify'
+import acucysLogo from '@assets/images/logos/acucys_logo.jpg'
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects')
 
   const projectImages = [
-    { src: '/projects/project-image-1.png' },
-    { src: '/projects/project-image-2.png' },
-    { src: '/projects/project-image-3.png' },
-    { src: '/projects/project-image-4.png' },
-    { src: '/projects/project-image-5.png' },
-    { src: '/projects/project-image-6.png' },
+    projectImage1,
+    projectImageJingle,
   ]
 
   return projects.map((project, index) => {
     const projectWithImage = {
       ...project,
-      featuredImage: projectImages[index % projectImages.length].src,
+      featuredImage: projectImages[index % projectImages.length],
     }
 
+    const projectId = ((): string => {
+      if (typeof project.id === 'string') return project.id
+      if (project.id && typeof project.id === 'object' && (project.id.slug || project.id.value)) return project.id.slug ?? project.id.value
+      if ((project as any).slug) return (project as any).slug
+      if (project.data?.slug) return project.data.slug
+      return slugify(project.data?.title ?? '')
+    })()
+
     return {
-      params: { project: project.id },
+      params: { project: projectId },
       props: { project: projectWithImage },
     }
   })
 }
 
 interface Props {
-  project: CollectionEntry<'projects'> & { featuredImage: string }
+  project: CollectionEntry<'projects'> & { featuredImage: any }
 }
 
 const { project } = Astro.props
@@ -40,12 +48,12 @@ const { Content } = await render(project)
 
 const author = {
   name: project.data.author,
-  image: '/projects/project-image-1.png',
-  bio: 'Project Creator',
+  image: (acucysLogo && (acucysLogo.src ?? acucysLogo)) as any,
+  bio: 'The Australian Council of University Cyber Societies',
 }
 ---
 
-<DefaultLayout title={project.data.title} description={project.data.description} url={`/portfolio/${project.id}`}>
+<DefaultLayout title={project.data.title} description={project.data.description} url={`/project/${project.id}`}>
   <PageHeader
     title={project.data.title}
     subtitle={project.data.description}

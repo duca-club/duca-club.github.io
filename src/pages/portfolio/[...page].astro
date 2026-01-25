@@ -9,11 +9,8 @@ import { slugify } from '@/utils/slugify'
 
 // Import images directly for optimization
 import projectImage1 from '@assets/images/projects/project-image-1.png'
-import projectImage2 from '@assets/images/projects/project-image-2.png'
-import projectImage3 from '@assets/images/projects/project-image-3.png'
-import projectImage4 from '@assets/images/projects/project-image-4.png'
-import projectImage5 from '@assets/images/projects/project-image-5.png'
-import projectImage6 from '@assets/images/projects/project-image-6.png'
+import projectImage3 from '@assets/images/projects/project-image-JingleShellsCTF2.jpg'
+
 
 export const getStaticPaths = (async ({ paginate }) => {
   const projects = await getCollection('projects')
@@ -24,7 +21,7 @@ export const getStaticPaths = (async ({ paginate }) => {
     slug: slugify(label),
   }))
 
-  const projectImages = [projectImage1, projectImage2, projectImage3, projectImage4, projectImage5, projectImage6]
+  const projectImages = [projectImage1, projectImage3]
 
   const projectsWithImages = projects.map((project, index) => {
     return {
@@ -46,16 +43,18 @@ interface Props {
 
 const { page, uniqueTags } = Astro.props
 
+// Debug: print IDs and types to diagnose `[object Object]` route
+console.log('portfolio page.data ids:', page.data.map((p) => ({ id: p.id, type: typeof p.id })))
 console.log(page.lastPage)
 ---
 
 <DefaultLayout
   title="Portfolio"
-  description="A showcase of projects built with Astro Content Collections, demonstrating dynamic content management."
+  description="A showcase of projects built by DUCA."
 >
   <PageHeader
     title="Portfolio"
-    subtitle='A showcase of projects built with Astro Content Collections, demonstrating dynamic content management and organization. Learn more about <a href="https://docs.astro.build/en/guides/content-collections/">Astro Content Collections</a> in the official documentation.'
+    subtitle='A showcase of projects built by DUCA.'
     bgType="bordered"
   />
   <section class="my-12">
@@ -73,25 +72,35 @@ console.log(page.lastPage)
       </p>
       <ul class="mt-3 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {
-          page.data.map((project) => (
-            <li>
-              <Card
-                imageComponent={project.featuredImage}
-                url={'/portfolio/' + project.id}
-                title={project.data.title}
-                headingLevel="h2"
-                footer={'Author: ' + project.data.author}
-                fullHeight={true}
-              >
-                <span slot="meta">
-                  {project.data.tags.map((tag) => (
-                    <Badge>{tag}</Badge>
-                  ))}
-                </span>
-                {project.data.description}
-              </Card>
-            </li>
-          ))
+          page.data.map((project) => {
+            const projectId = ((): string => {
+              if (typeof project.id === 'string') return project.id
+              if (project.id && typeof project.id === 'object' && (project.id.slug || project.id.value)) return project.id.slug ?? project.id.value
+              if (project.slug) return project.slug
+              if (project.data?.slug) return project.data.slug
+              return slugify(project.data?.title ?? '')
+            })()
+
+            return (
+              <li>
+                <Card
+                  imageComponent={project.featuredImage}
+                  url={'/portfolio/' + projectId}
+                  title={project.data.title}
+                  headingLevel="h2"
+                  footer={'Author: ' + project.data.author}
+                  fullHeight={true}
+                >
+                  <span slot="meta">
+                    {project.data.tags.map((tag) => (
+                      <Badge>{tag}</Badge>
+                    ))}
+                  </span>
+                  {project.data.description}
+                </Card>
+              </li>
+            )
+          })
         }
       </ul>
       {
