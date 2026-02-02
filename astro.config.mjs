@@ -16,83 +16,84 @@ const isLinked = existsSync(componentsPath) && lstatSync(componentsPath).isSymbo
 // Check if this is actually a workspace setup (not just pnpm's internal symlink)
 // by verifying the workspace directory exists
 const componentsRealPath = resolve('../accessible-astro-components')
-const isWorkspace = isLinked && existsSync(componentsRealPath) && existsSync(resolve(componentsRealPath, 'src/components'))
+const isWorkspace =
+    isLinked && existsSync(componentsRealPath) && existsSync(resolve(componentsRealPath, 'src/components'))
 
 // Base Vite config
 const viteConfig = {
-  css: {
-    preprocessorOptions: {
-      scss: {
-        logger: {
-          warn: () => {},
+    css: {
+        preprocessorOptions: {
+            scss: {
+                logger: {
+                    warn: () => {},
+                },
+            },
         },
-      },
     },
-  },
-  plugins: [tailwindcss()],
-  resolve: {
-    alias: {
-      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
-      '@layouts': fileURLToPath(new URL('./src/layouts', import.meta.url)),
-      '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
-      '@content': fileURLToPath(new URL('./src/content', import.meta.url)),
-      '@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
-      '@public': fileURLToPath(new URL('./public', import.meta.url)),
-      '@post-images': fileURLToPath(new URL('./public/posts', import.meta.url)),
-      '@project-images': fileURLToPath(new URL('./public/projects', import.meta.url)),
+    plugins: [tailwindcss()],
+    resolve: {
+        alias: {
+            '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+            '@layouts': fileURLToPath(new URL('./src/layouts', import.meta.url)),
+            '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
+            '@content': fileURLToPath(new URL('./src/content', import.meta.url)),
+            '@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
+            '@public': fileURLToPath(new URL('./public', import.meta.url)),
+            '@post-images': fileURLToPath(new URL('./public/posts', import.meta.url)),
+            '@project-images': fileURLToPath(new URL('./public/projects', import.meta.url)),
+        },
     },
-  },
 }
 
 // Add workspace-specific config only when using actual workspace setup
 if (isWorkspace) {
-  console.log('Workspace detected - enabling auto-reload for locally linked components')
+    console.log('Workspace detected - enabling auto-reload for locally linked components')
 
-  // Essential config for symlinked packages
-  viteConfig.resolve.preserveSymlinks = true
-  viteConfig.server = {
-    fs: {
-      allow: ['..', '../..'],
-    },
-  }
-  viteConfig.optimizeDeps = {
-    exclude: ['accessible-astro-components'],
-  }
+    // Essential config for symlinked packages
+    viteConfig.resolve.preserveSymlinks = true
+    viteConfig.server = {
+        fs: {
+            allow: ['..', '../..'],
+        },
+    }
+    viteConfig.optimizeDeps = {
+        exclude: ['accessible-astro-components'],
+    }
 
-  // Custom watcher for linked components - triggers reload on changes
-  viteConfig.plugins.push({
-    name: 'reload-on-components-change',
-    configureServer(server) {
-      const componentsWatchPath = resolve(componentsRealPath, 'src/components')
+    // Custom watcher for linked components - triggers reload on changes
+    viteConfig.plugins.push({
+        name: 'reload-on-components-change',
+        configureServer(server) {
+            const componentsWatchPath = resolve(componentsRealPath, 'src/components')
 
-      const watcher = watch(componentsWatchPath, { recursive: true }, (eventType, filename) => {
-        if (filename?.endsWith('.astro')) {
-          console.log('Component changed:', filename, ' - reloading...')
+            const watcher = watch(componentsWatchPath, { recursive: true }, (eventType, filename) => {
+                if (filename?.endsWith('.astro')) {
+                    console.log('Component changed:', filename, ' - reloading...')
 
-          // Invalidate all modules from the components package
-          Array.from(server.moduleGraph.urlToModuleMap.keys()).forEach((url) => {
-            if (url.includes('accessible-astro-components')) {
-              const mod = server.moduleGraph.urlToModuleMap.get(url)
-              if (mod) server.moduleGraph.invalidateModule(mod)
-            }
-          })
+                    // Invalidate all modules from the components package
+                    Array.from(server.moduleGraph.urlToModuleMap.keys()).forEach((url) => {
+                        if (url.includes('accessible-astro-components')) {
+                            const mod = server.moduleGraph.urlToModuleMap.get(url)
+                            if (mod) server.moduleGraph.invalidateModule(mod)
+                        }
+                    })
 
-          // Trigger full page reload
-          server.ws.send({ type: 'full-reload', path: '*' })
-        }
-      })
+                    // Trigger full page reload
+                    server.ws.send({ type: 'full-reload', path: '*' })
+                }
+            })
 
-      server.httpServer?.on('close', () => watcher.close())
-    },
-  })
+            server.httpServer?.on('close', () => watcher.close())
+        },
+    })
 }
 
 // https://astro.build/config
 export default defineConfig({
-  compressHTML: true,
-  site: 'https://duca-club.github.io',
-  base: '/duca-site',
-  trailingSlash: 'always',
-  integrations: [compress(), icon(), mdx(), sitemap()],
-  vite: viteConfig,
+    compressHTML: true,
+    site: 'https://dev.duca.au',
+    base: '/',
+    trailingSlash: 'always',
+    integrations: [compress(), icon(), mdx(), sitemap()],
+    vite: viteConfig,
 })

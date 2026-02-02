@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "author": "DUCA",
   "type": "module",
-  "homepage": "https://duca.au/",
+  "homepage": "https://dev.duca.au/",
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
