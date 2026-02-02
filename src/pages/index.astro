@@ -18,6 +18,28 @@ const DISCORD_MEMBER_COUNTER = Math.random().toString(36).slice(2, 10);
 
 <DefaultLayout title="Home">
   <Hero />
+
+  <!-- Statistics -->
+  <section class="mt-64 mb-32">
+    <div class="container">
+      <Heading level="h2" class="mb-16">DUCA by the numbers</Heading>
+      <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4">
+        <Counter count="750+" title="Members" sub="Active community" count_id={DISCORD_MEMBER_COUNTER} />
+        <Counter count="50+" title="Events" sub="This year" />
+        <Counter count="20+" title="Workshops" sub="Hands-on learning" />
+        <Counter count="100%" title="Free" sub="Always welcome" />
+
+        <script define:vars={{COUNTER_ID: DISCORD_MEMBER_COUNTER, INVITE_API: DISCORD_INVITE_API}}>
+          const MEMBER_COUNTER = document.getElementById(COUNTER_ID);
+          fetch(INVITE_API).then((res) => {
+            if (res.status === 200) res.json().then((json) => {
+              MEMBER_COUNTER.innerText = json["approximate_member_count"]
+            })
+          });
+        </script>
+      </div>
+    </div>
+  </section>
   
   <!-- What we do -->
   <section class="my-64">
@@ -130,25 +152,4 @@ const DISCORD_MEMBER_COUNTER = Math.random().toString(36).slice(2, 10);
     </div>
   </section>
 
-  <!-- Statistics -->
-  <section class="mt-64 mb-32">
-    <div class="container">
-      <Heading level="h2" class="mb-16">DUCA by the numbers</Heading>
-      <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4">
-        <Counter count="750+" title="Members" sub="Active community" count_id={DISCORD_MEMBER_COUNTER} />
-        <Counter count="50+" title="Events" sub="This year" />
-        <Counter count="20+" title="Workshops" sub="Hands-on learning" />
-        <Counter count="100%" title="Free" sub="Always welcome" />
-
-        <script define:vars={{COUNTER_ID: DISCORD_MEMBER_COUNTER, INVITE_API: DISCORD_INVITE_API}}>
-          const MEMBER_COUNTER = document.getElementById(COUNTER_ID);
-          fetch(INVITE_API).then((res) => {
-            if (res.status === 200) res.json().then((json) => {
-              MEMBER_COUNTER.innerText = json["approximate_member_count"]
-            })
-          });
-        </script>
-      </div>
-    </div>
-  </section>
 </DefaultLayout>
