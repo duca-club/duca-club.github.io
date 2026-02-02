@@ -1,10 +1,10 @@
 {
-  "name": "duca-site",
+  "name": "duca-club.github.io",
   "description": "DUCA's website.",
   "version": "0.1.0",
   "author": "DUCA",
   "type": "module",
-  "homepage": "https://dev.duca.au/",
+  "homepage": "https://duca-club.github.io/",
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/duca-club/duca-site.git"
+    "url": "git+https://github.com/duca-club/duca-club.github.io.git"
   },
   "devDependencies": {
     "@astrojs/mdx": "^4.3.12",
