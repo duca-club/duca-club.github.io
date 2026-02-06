@@ -9,69 +9,67 @@ import { Image } from 'astro:assets'
  * @description A component that displays a hero section with a title, description, and image
  */
 interface Props {
-  /**
-   * The source URL for the image
-   */
-  src?: string
+    /**
+     * The source URL for the image
+     */
+    src?: string
 }
 
 const { src = '/DUCA-Header-Blob.png' }: Props = Astro.props
 ---
 
 <section class="hero my-24">
-  <div class="container">
-    <div class="grid grid-cols-1 items-center gap-24 lg:grid-cols-2">
-      <div class="flex flex-col items-center gap-8 md:items-start">
-        <h1 class="text-center text-6xl md:text-left lg:text-8xl">
-          <slot><span class="text-gradient">DUCA</span> &nbsp;
-          <h2 class="text-5xl lg:text-6xl md:text-left text-center">Deakin University Cybersecurity Association</h2>
-          </slot>
-        </h1>
-        <p class="text-center text-xl md:text-left">
-          Building a community of cybersecurity enthusiasts at Deakin University. Join us to learn, share, and grow together.
-        </p>
-        <div class="flex flex-col gap-3 min-[500px]:flex-row">
-          <Link
-            href="https://discord.gg/duca"
-            isButton
-            type="primary"
-            animateOnHover
-            animationType="boop"
-            isExternal
-          >
-            <Icon aria-hidden="true" name="lucide:message-circle" size="1.5rem" />
-            Join Our Discord
-          </Link>
-          <Link
-            href="#events"
-            isButton
-            type="secondary"
-            animateOnHover
-            animationType="boop"
-          >
-            <Icon aria-hidden="true" name="lucide:calendar" size="1.5rem" />
-            View Events
-          </Link>
+    <div class="container">
+        <div class="grid grid-cols-1 items-center gap-24 lg:grid-cols-2">
+            <div class="flex flex-col items-center gap-8 md:items-start">
+                <h1 class="text-center text-6xl md:text-left lg:text-8xl">
+                    <slot
+                        ><span class="text-gradient">DUCA</span> &nbsp;
+                        <h2 class="text-center text-5xl md:text-left lg:text-6xl">
+                            Deakin University Cybersecurity Association
+                        </h2>
+                    </slot>
+                </h1>
+                <p class="text-center text-xl md:text-left">
+                    Building a community of cybersecurity enthusiasts at Deakin University. Join us to learn, share, and
+                    grow together.
+                </p>
+                <div class="flex flex-col gap-3 min-[500px]:flex-row">
+                    <Link
+                        href="https://discord.gg/duca"
+                        isButton
+                        type="primary"
+                        animateOnHover
+                        animationType="boop"
+                        isExternal
+                    >
+                        <Icon aria-hidden="true" name="lucide:message-circle" size="1.5rem" />
+                        Join Our Discord
+                    </Link>
+                    <Link href="#events" isButton type="secondary" animateOnHover animationType="boop">
+                        <Icon aria-hidden="true" name="lucide:calendar" size="1.5rem" />
+                        View Events
+                    </Link>
+                </div>
+            </div>
+            <Image class="hidden lg:block" src={src} alt="" decoding="async" width={800} height={600} loading="eager" />
         </div>
-      </div>
-      <Image class="hidden lg:block" src={src} alt="" decoding="async" width={800} height={600} loading="eager" />
     </div>
-  </div>
 </section>
 
 <style lang="scss">
-  h1 {
-    text-wrap: unset;
-  }
+    h1 {
+        text-wrap: unset;
+    }
 
-  .text-gradient {
-    background: linear-gradient(
-      315deg,
-      light-dark(var(--color-primary-300), var(--color-secondary-100)) 25%,
-      light-dark(var(--color-secondary-300), var(--color-primary-200))
-    );
-    background-clip: border-box;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+    .text-gradient {
+        background: linear-gradient(
+            315deg,
+            light-dark(var(--color-primary-300), var(--color-secondary-100)) 25%,
+            light-dark(var(--color-secondary-300), var(--color-primary-200))
+        );
+        background-clip: border-box;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 </style>
