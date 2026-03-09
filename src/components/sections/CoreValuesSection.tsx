@@ -45,7 +45,7 @@ const coreValues = [
 export const CoreValuesSection = () => {
   return (
     <section className="section-themed data-stream-bg relative overflow-hidden py-24">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent via-purple-900/5 to-transparent" />
 
       <div className="relative z-10 container mx-auto px-4">
         <SectionHeading title="Our Core Values" subtitle="The principles that guide everything we do at DUCA" />

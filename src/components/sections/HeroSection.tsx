@@ -19,11 +19,11 @@ export const HeroSection = () => {
       style={{ background: "var(--theme-bg)" }}
     >
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-b from-purple-900/20 via-transparent to-transparent" />
       <SpotlightNew className="-top-40 left-0 md:-top-20 md:left-60" fill="#d648ff" />
 
       {/* Grid Pattern */}
-      <div className="bg-grid-white/[0.02] absolute inset-0 bg-[size:50px_50px]" />
+      <div className="bg-grid-white/[0.02] absolute inset-0 bg-size-[50px_50px]" />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-20">
@@ -37,7 +37,7 @@ export const HeroSection = () => {
           <h1 className="mb-4 text-7xl font-bold md:text-9xl">
             <EncryptedText
               text="DUCA"
-              className="bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent"
+              className="bg-linear-to-r from-purple-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent"
               speed={40}
               revealDelay={300}
             />

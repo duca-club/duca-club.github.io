@@ -1,7 +1,7 @@
 ---
 import DefaultLayout from "@layouts/DefaultLayout.astro";
 import { SectionHeading } from "@components/ui/section-heading";
-import { Tabs } from "@components/ui/tabs";
+// import { Tabs } from "@components/ui/tabs";
 import { SpotlightNew } from "@components/ui/spotlight";
 import { getCollection } from "astro:content";
 
@@ -43,13 +43,13 @@ const projects =
 <DefaultLayout title="Projects">
   <!-- Hero Section -->
   <section class="relative flex min-h-[50vh] items-center justify-center overflow-hidden bg-black">
-    <div class="absolute inset-0 bg-gradient-to-b from-emerald-900/20 via-black to-black"></div>
+    <div class="absolute inset-0 bg-linear-to-b from-emerald-900/20 via-black to-black"></div>
     <SpotlightNew className="-top-40 right-0 md:-top-20 md:right-60" fill="#10b981" client:load />
-    <div class="bg-grid-white/[0.02] absolute inset-0 bg-[size:50px_50px]"></div>
+    <div class="bg-grid-white/[0.02] absolute inset-0 bg-size-[50px_50px]"></div>
 
     <div class="relative z-10 container mx-auto px-4 py-20 text-center">
       <h1 class="mb-6 text-5xl font-bold text-white md:text-7xl">
-        <span class="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">Projects</span>
+        <span class="bg-linear-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">Projects</span>
       </h1>
       <p class="mx-auto mb-8 max-w-2xl text-xl text-gray-300">
         Explore the innovative projects built by our development team and community members.
@@ -67,7 +67,7 @@ const projects =
           projects.map((project) => (
             <a href={`/portfolio/${project.id}`} class="group">
               <div class="theme-card theme-border h-full rounded-2xl border p-6 transition-all duration-300 hover:border-emerald-500/50">
-                <div class="mb-6 flex h-40 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-900/30 to-emerald-950/50">
+                <div class="mb-6 flex h-40 items-center justify-center rounded-xl bg-linear-to-br from-emerald-900/30 to-emerald-950/50">
                   <span class="text-6xl opacity-50">🔐</span>
                 </div>
                 <h3 class="theme-text mb-2 text-xl font-bold transition-colors group-hover:text-emerald-400">

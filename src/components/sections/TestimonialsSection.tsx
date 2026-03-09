@@ -43,7 +43,7 @@ const testimonials = [
 export const TestimonialsSection = () => {
   return (
     <section className="section-themed relative overflow-hidden py-24">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent via-purple-900/5 to-transparent" />
 
       <div className="relative z-10 container mx-auto px-4">
         <SectionHeading title="Why join us?" subtitle="Hear from our members about their experiences with DUCA" />

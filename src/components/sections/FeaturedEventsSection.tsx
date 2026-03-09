@@ -51,14 +51,14 @@ export const FeaturedEventsSection = ({ events }: { events: Event[] }) => {
             >
               {/* Event Image/Gradient Background */}
               <div
-                className="h-48 bg-gradient-to-br from-purple-900/50 via-indigo-900/50 to-slate-900"
+                className="h-48 bg-linear-to-br from-purple-900/50 via-indigo-900/50 to-slate-900"
                 style={{
                   backgroundImage: event.featuredImage ? `url(${event.featuredImage})` : undefined,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 
                 {/* Date Badge */}
                 <div className="absolute top-4 left-4 rounded-lg bg-purple-600 px-3 py-1.5 text-sm font-semibold text-white">

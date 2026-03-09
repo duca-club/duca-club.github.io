@@ -27,7 +27,7 @@ export const BlogPreviewSection = ({ posts }: { posts: BlogPost[] }) => {
               href={post.href}
               header={
                 <div
-                  className="flex h-full min-h-[6rem] w-full flex-1 rounded-xl bg-gradient-to-br from-purple-900/50 to-slate-900"
+                  className="flex h-full min-h-24 w-full flex-1 rounded-xl bg-linear-to-br from-purple-900/50 to-slate-900"
                   style={{
                     backgroundImage: post.image ? `url(${post.image})` : undefined,
                     backgroundSize: "cover",

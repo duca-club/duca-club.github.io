@@ -47,7 +47,7 @@ const StatCard = ({ value, suffix, label, sublabel }: StatProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       onViewportEnter={() => setIsInView(true)}
-      className="rounded-2xl border border-slate-700/50 bg-gradient-to-b from-slate-800/50 to-slate-900/50 p-8 text-center transition-colors hover:border-purple-500/50"
+      className="rounded-2xl border border-slate-700/50 bg-linear-to-b from-slate-800/50 to-slate-900/50 p-8 text-center transition-colors hover:border-purple-500/50"
     >
       <div className="mb-2 text-5xl font-bold text-white md:text-6xl">
         {isInView ? <AnimatedCounter value={value} suffix={suffix} /> : `0${suffix}`}
@@ -61,7 +61,7 @@ const StatCard = ({ value, suffix, label, sublabel }: StatProps) => {
 export const StatsSection = ({ memberCount = 750 }: { memberCount?: number }) => {
   return (
     <section className="section-themed data-stream-bg relative overflow-hidden py-24">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-purple-900/10 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-purple-900/10 to-transparent" />
 
       <div className="relative z-10 container mx-auto px-4">
         <motion.h2
@@ -71,7 +71,7 @@ export const StatsSection = ({ memberCount = 750 }: { memberCount?: number }) =>
           className="mb-16 text-center text-3xl font-bold text-white md:text-4xl"
         >
           DUCA by the{" "}
-          <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">numbers</span>
+          <span className="bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">numbers</span>
         </motion.h2>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
