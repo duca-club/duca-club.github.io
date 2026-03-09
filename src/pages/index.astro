@@ -152,7 +152,7 @@ try {
             ctx.fillStyle = "#33ff33";
             ctx.font = fs + "px monospace";
             for (let i = 0; i < drops.length; i++) {
-              ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fs, drops[i] * fs);
+              ctx.fillText(chars[Math.floor(Math.random() * chars.length)]!, i * fs, drops[i] * fs);
               if (drops[i] * fs > cv.height && Math.random() > 0.975) drops[i] = 0;
               drops[i]++;
             }
