@@ -9,7 +9,7 @@ import { SkipLink } from "accessible-astro-components";
  */
 ---
 
-<header>
+<header class="fixed top-0 z-160 w-full">
   <SkipLink />
   <Navigation>
     <li class="menu-item">
@@ -44,12 +44,12 @@ import { SkipLink } from "accessible-astro-components";
 
 <style lang="scss" is:global>
   header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    // position: sticky;
+    // top: 0;
+    // z-index: 100;
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
 
     .type-icon {
       display: block;
