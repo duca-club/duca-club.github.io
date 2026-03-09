@@ -1,125 +1,204 @@
 ---
 import DefaultLayout from '@layouts/DefaultLayout.astro'
-import PageHeader from '@components/PageHeader.astro'
-import { Form, Input, Button, Textarea, Checkbox, Fieldset, Heading, Link, Radio } from 'accessible-astro-components'
-import { Icon } from 'astro-icon/components'
+import { SectionHeading } from '@components/ui/section-heading'
+import { AnimatedGradientBackground } from '@components/ui/animated-gradient'
+import { RetroContactForm } from '@components/ui/retro-contact-form'
+
+const contactMethods = [
+  {
+    title: "Discord",
+    description: "The fastest way to reach us. Join our server and message any executive.",
+    link: "https://discord.gg/duca",
+    linkText: "Join Discord",
+    icon: "💬",
+    color: "#5865f2",
+  },
+  {
+    title: "Email",
+    description: "For formal inquiries, partnerships, or sponsorship discussions.",
+    link: "mailto:duca@info.au",
+    linkText: "Send Email",
+    icon: "📧",
+    color: "#3b82f6",
+  },
+  {
+    title: "Instagram",
+    description: "Follow us for event updates, photos, and community highlights.",
+    link: "https://www.instagram.com/deakincyber/",
+    linkText: "@deakincyber",
+    icon: "📸",
+    color: "#e1306c",
+  },
+  {
+    title: "LinkedIn",
+    description: "Connect with us professionally and stay updated on opportunities.",
+    link: "https://linkedin.com/company/duca-deakin",
+    linkText: "Follow Us",
+    icon: "💼",
+    color: "#0a66c2",
+  },
+]
 ---
 
 <DefaultLayout title="Contact">
-  <PageHeader title="Contact" subtitle="Have a question? Get in touch with us!" bgType="gradient" />
-  <section class="my-16">
-    <div class="container">
-      <Heading level="h2">Let's talk</Heading>
+  <!-- Hero Section with Animated Gradient -->
+  <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
+    <AnimatedGradientBackground
+      containerClassName="absolute inset-0 !min-h-0"
+      gradientColors={["#3b82f6", "#06b6d4", "#6366f1", "#8b5cf6"]}
+      client:load
+    >
+      <div></div>
+    </AnimatedGradientBackground>
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="absolute inset-0 bg-grid-pattern opacity-20"></div>
+
+    <div class="relative z-10 container mx-auto px-4 py-20 text-center">
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
+        <span class="bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">Contact Us</span>
+      </h1>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+        Have questions? Want to partner with us? We'd love to hear from you!
+      </p>
     </div>
   </section>
-  <section class="container">
-    <div class="grid grid-cols-1 gap-32 md:grid-cols-2">
-      <div class="space-content">
-        <Form name="contact" action="/thank-you" method="post">
-          <!-- Input field with custom validation message -->
-          <Input
-            name="firstname"
-            label="First name"
-            required
-            data-validation="We need your first name to address you correctly"
-            autocomplete="given-name"
-          />
 
-          <Input name="email" label="Email address" type="email" required autocomplete="email" />
+  <!-- Contact Methods - Funky Boxes -->
+  <section class="py-24 section-themed relative overflow-hidden data-stream-bg">
+    <div class="container mx-auto px-4 relative z-10">
+      <SectionHeading
+        title="Get In Touch"
+        subtitle="Choose your preferred way to reach us"
+        client:visible
+      />
 
-          <!-- Custom validation with pattern -->
-          <Input name="phone" label="Phone number" type="tel" required data-validation-pattern="^[0-9]{10}$" />
-
-          <Textarea name="message" label="Message" required />
-
-          <!-- Checkbox group with validation -->
-          <Fieldset
-            name="interests"
-            legend="What are you interested in?"
-            required
-            data-validation="Please select at least one area of interest"
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+        {contactMethods.map((method, idx) => (
+          <a
+            href={method.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-funky-box group p-8 rounded-2xl theme-card border theme-border relative overflow-hidden transition-all duration-300 hover:-translate-y-1"
+            style={`--glow-color: ${method.color}; animation-delay: ${idx * 0.15}s;`}
           >
-            <Checkbox name="accessibility" value="a11y" label="Accessibility and inclusive design" />
-            <Checkbox name="wcag-compliance" value="wcag" label="WCAG compliance and testing" />
-            <Checkbox name="screen-reader" value="sr" label="Screen reader optimization" />
-            <Checkbox name="keyboard-nav" value="keyboard" label="Keyboard navigation" />
-          </Fieldset>
-
-          <!-- Radio group (shared names) -->
-          <Fieldset name="experience" legend="Your experience level" required>
-            <Radio name="experience" value="beginner" label="Beginner" />
-            <Radio name="experience" value="intermediate" label="Intermediate" />
-            <Radio name="experience" value="advanced" label="Advanced" />
-          </Fieldset>
-
-          <Button htmlType="submit" type="primary">Send Message</Button>
-        </Form>
+            <div class="relative z-10">
+              <div class="text-4xl mb-4 group-hover:scale-110 transition-transform inline-block">{method.icon}</div>
+              <h3 class="text-xl font-bold theme-text mb-2">{method.title}</h3>
+              <p class="theme-text-secondary mb-4">{method.description}</p>
+              <span class="inline-flex items-center font-medium transition-colors" style={`color: ${method.color};`}>
+                {method.linkText}
+                <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
       </div>
-      <div class="space-content">
-        <Heading level="h3">Contact us</Heading>
-        <p class="text-lg">
-          Experience the power of Accessible Astro Starter's Form components! This contact form showcases our
-          comprehensive form validation system with built-in accessibility features and WCAG 2.2 compliance.
+    </div>
+  </section>
+
+  <!-- Retro Contact Form -->
+  <section class="py-24 section-themed-alt border-t theme-border">
+    <div class="container mx-auto px-4">
+      <SectionHeading
+        title="Send Us a Message"
+        subtitle="Use our retro mail terminal to drop us a line"
+        client:visible
+      />
+
+      <div class="mt-12">
+        <RetroContactForm client:visible />
+      </div>
+    </div>
+  </section>
+
+  <!-- Discord CTA - Terminal Style -->
+  <section class="py-16 section-themed border-t theme-border">
+    <div class="container mx-auto px-4">
+      <div class="max-w-2xl mx-auto p-8 rounded-xl font-mono text-center" style="background: rgba(0,20,0,0.6); border: 1px solid rgba(51, 255, 51, 0.3); box-shadow: 0 0 30px rgba(51,255,51,0.08);">
+        <p class="text-sm mb-4" style="color: rgba(51,255,51,0.6);">{">"} DUCA_NET // COMMUNITY_LINK</p>
+        <p class="text-lg mb-6" style="color: #33ff33; text-shadow: 0 0 10px rgba(51,255,51,0.4);">
+          {">"} connect --server discord.gg/duca
+          <span class="animate-pulse ml-1">█</span>
         </p>
-        <p>
-          Our Form component includes automatic validation, proper error handling, semantic HTML structure, and screen
-          reader support. Test out the various input types, validation patterns, and interactive elements to see how
-          accessibility and usability work together seamlessly.
-        </p>
+        <a
+          href="https://discord.gg/duca"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-lg font-mono font-bold transition-all duration-200 hover:scale-105"
+          style="background-color: #33ff33; color: #000; box-shadow: 0 0 20px rgba(51,255,51,0.4); text-shadow: none;"
+        >
+          [ENTER] Join Server
+        </a>
+      </div>
+    </div>
+  </section>
 
-        <div class="gap-2xs flex items-center">
-          <Icon aria-hidden="true" name="lucide:phone" size={20} class="flex-shrink-0" />
-          <p>
-            <span class="font-bold">Phone:</span>
-            <Link href="tel:+12345678900">+1 (234) 567-8900</Link>
-          </p>
+  <!-- Location Info -->
+  <section class="py-24 section-themed border-t theme-border">
+    <div class="container mx-auto px-4">
+      <SectionHeading
+        title="Find Us"
+        subtitle="We're based at Deakin University campuses"
+        client:visible
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+        <div class="p-8 rounded-2xl theme-card border theme-border hover:border-blue-500/30 transition-colors hover:-translate-y-1 duration-300">
+          <h3 class="text-xl font-bold theme-text mb-4">Burwood Campus</h3>
+          <p class="theme-text-secondary mb-2">221 Burwood Hwy</p>
+          <p class="theme-text-secondary mb-2">Burwood VIC 3125</p>
+          <p class="theme-text-muted text-sm">Main meeting location for most events</p>
         </div>
-
-        <div class="gap-2xs flex items-center">
-          <Icon aria-hidden="true" name="lucide:mail" size={20} class="flex-shrink-0" />
-          <p>
-            <span class="font-bold">Email:</span>
-            <Link href="mailto:hello@accessibleastro.dev">hello@accessibleastro.dev</Link>
-          </p>
+        <div class="p-8 rounded-2xl theme-card border theme-border hover:border-blue-500/30 transition-colors hover:-translate-y-1 duration-300">
+          <h3 class="text-xl font-bold theme-text mb-4">Geelong Waurn Ponds Campus</h3>
+          <p class="theme-text-secondary mb-2">75 Pigdons Rd</p>
+          <p class="theme-text-secondary mb-2">Waurn Ponds VIC 3216</p>
+          <p class="theme-text-muted text-sm">Regular events for Geelong members</p>
         </div>
-
-        <div class="gap-2xs flex items-center">
-          <Icon aria-hidden="true" name="lucide:map-pin" size={20} class="flex-shrink-0" />
-          <p>
-            <span class="font-bold">Address:</span>
-            123 Accessibility Lane, Web Standards City
-          </p>
-        </div>
-
-        <div class="gap-2xs flex items-center">
-          <Icon aria-hidden="true" name="lucide:clock" size={20} class="flex-shrink-0" />
-          <p>
-            <span class="font-bold">Business Hours:</span>
-            Monday - Friday, 9:00 AM - 5:00 PM EST
-          </p>
-        </div>
-
-        <ul class="flex flex-wrap gap-2">
-          <li>
-            <Link href="/" isButton isExternal hideIcon animateOnHover animationType="boop">
-              <Icon aria-hidden="true" name="lucide:facebook" size={32} />
-              <span class="sr-only">Go to our Facebook page, opens in a new tab</span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/" isButton isExternal hideIcon animateOnHover animationType="boop">
-              <Icon aria-hidden="true" name="lucide:twitter" size={32} />
-              <span class="sr-only">Go to our Twitter page, opens in a new tab</span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/" isButton isExternal hideIcon animateOnHover animationType="boop">
-              <Icon aria-hidden="true" name="lucide:linkedin" size={32} />
-              <span class="sr-only">Go to our LinkedIn page, opens in a new tab</span>
-            </Link>
-          </li>
-        </ul>
       </div>
     </div>
   </section>
 </DefaultLayout>
+
+<style>
+  /* Funky box animated border */
+  .contact-funky-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      var(--angle, 0deg),
+      var(--glow-color) 0%,
+      transparent 40%,
+      transparent 60%,
+      var(--glow-color) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: rotate-border 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .contact-funky-box:hover::before {
+    opacity: 1;
+  }
+
+  .contact-funky-box:hover {
+    box-shadow: 0 0 30px color-mix(in srgb, var(--glow-color) 20%, transparent);
+  }
+
+  @keyframes rotate-border {
+    to { --angle: 360deg; }
+  }
+
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+</style>

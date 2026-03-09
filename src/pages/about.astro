@@ -1,0 +1,120 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+import AboutHeroSection from '@components/sections/AboutHeroSection'
+import { TerminalTyping } from '@components/ui/terminal-typing'
+import WhatWeDoStackingSection from '@components/sections/WhatWeDoStackingSection'
+import CoreValuesSection from '@components/sections/CoreValuesSection'
+import TeamSection from '@components/sections/TeamSection'
+import PartnersSection from '@components/sections/PartnersSection'
+
+// Sample executive team data - replace with real data
+const executives = [
+  {
+    name: "Sham Polavarapu",
+    role: "Club President",
+    image: "/team/placeholder.jpg",
+    linkedIn: "https://www.linkedin.com/in/p-shambhavi/",
+    bio: "Leading DUCA's mission to empower cybersecurity enthusiasts.",
+  },
+  {
+    name: "Aditya Kapoor",
+    role: "Vice President",
+    image: "/team/placeholder.jpg",
+    linkedIn: "https://www.linkedin.com/in/adityakapoor23/",
+    bio: "Supporting club operations and member initiatives.",
+  },
+  {
+    name: "Kat Ho",
+    role: "Treasurer",
+    image: "/team/placeholder.jpg",
+    linkedIn: "https://www.linkedin.com/in/kat-ho/",
+    bio: "Overseeing financial operations and budgeting.",
+  },
+    {
+    name: "Ryan 'Maple' Fox",
+    role: "Advisor",
+    image: "/team/placeholder.jpg",
+    linkedIn: "https://www.linkedin.com/in/maplefox/",
+    bio: "Overseeing financial operations and budgeting.",
+  },
+]
+---
+
+<DefaultLayout title="About Us">
+  <!-- Hero Section with Flip Words -->
+  <AboutHeroSection client:load />
+
+  <!-- Terminal Typing Element -->
+  <section class="py-16 section-themed">
+    <div class="container mx-auto px-4 max-w-3xl">
+      <TerminalTyping client:visible />
+    </div>
+  </section>
+
+  <!-- What We Do - Stacking Cards -->
+  <WhatWeDoStackingSection client:visible />
+
+  <!-- Core Values with Card Spotlight -->
+  <CoreValuesSection client:visible />
+
+  <!-- Meet the Executives -->
+  <TeamSection executives={executives} client:visible />
+
+  <!-- Partners -->
+  <PartnersSection client:visible />
+
+  <!-- CTA Section -->
+  <section class="py-24 section-themed relative overflow-hidden data-stream-bg">
+    <div class="container mx-auto px-4 text-center relative z-10">
+      <h2 class="text-3xl md:text-4xl font-bold theme-text mb-6">
+        Ready to join our community?
+      </h2>
+      <p class="theme-text-secondary max-w-2xl mx-auto mb-8">
+        Whether you're a beginner or an experienced practitioner, DUCA welcomes you.
+        Join us to learn, grow, and make a difference in cybersecurity.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors"
+        >
+          Join via DUSA
+        </a>
+        <a
+          href="/join"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-purple-500 theme-text font-semibold hover:bg-purple-500/10 transition-colors"
+        >
+          Learn More
+        </a>
+      </div>
+    </div>
+  </section>
+</DefaultLayout>
+
+<style is:global>
+  /* Easter egg sunglasses filter */
+  .team-shades img {
+    filter: brightness(0.7) contrast(1.3) hue-rotate(180deg) !important;
+    transition: filter 0.3s ease;
+  }
+</style>
+
+<script>
+  // Easter Egg: Click the DUCA title area 5 times → team photos get funky filter
+  document.addEventListener('astro:page-load', () => {
+    let clicks = 0;
+    const heroArea = document.getElementById('about-hero');
+    if (!heroArea) return;
+    heroArea.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest?.('a, button')) return;
+      clicks++;
+      if (clicks === 5) {
+        clicks = 0;
+        document.body.classList.add('team-shades');
+        setTimeout(() => document.body.classList.remove('team-shades'), 3000);
+      }
+    });
+  });
+</script>

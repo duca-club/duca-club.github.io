@@ -7,6 +7,7 @@ import icon from 'astro-icon'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
+import react from '@astrojs/react'
 import { watch } from 'fs'
 
 // Check if we're using a symlinked/workspace setup
@@ -41,6 +42,7 @@ const viteConfig = {
             '@public': fileURLToPath(new URL('./public', import.meta.url)),
             '@post-images': fileURLToPath(new URL('./public/posts', import.meta.url)),
             '@project-images': fileURLToPath(new URL('./public/projects', import.meta.url)),
+            '@ui': fileURLToPath(new URL('./src/components/ui', import.meta.url)),
         },
     },
 }
@@ -94,6 +96,6 @@ export default defineConfig({
     site: 'https://duca-club.github.io',
     base: '/',
     trailingSlash: 'ignore',
-    integrations: [compress(), icon(), mdx(), sitemap()],
+    integrations: [compress(), icon(), mdx(), sitemap(), react()],
     vite: viteConfig,
 })
