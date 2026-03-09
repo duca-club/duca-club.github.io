@@ -40,7 +40,7 @@ export function TerminalTyping({ className }: { className?: string }) {
     if (!started) return;
     if (currentLineIdx >= terminalLines.length) return;
 
-    const line = terminalLines[currentLineIdx];
+    const line = terminalLines[currentLineIdx]!;
     const fullText = line.text;
 
     if (fullText === "") {
@@ -69,10 +69,11 @@ export function TerminalTyping({ className }: { className?: string }) {
         () => {
           setDisplayedLines((prev) => {
             const updated = [...prev];
-            const last = updated[updated.length - 1];
+            const last = updated[updated.length - 1]!;
             updated[updated.length - 1] = {
-              ...last,
+              prompt: last.prompt,
               text: fullText.slice(0, currentCharIdx + 1),
+              isTyping: last.isTyping,
             };
             return updated;
           });
@@ -102,9 +103,9 @@ export function TerminalTyping({ className }: { className?: string }) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !started) {
+        if (entry!.isIntersecting && !started) {
           setStarted(true);
-          setDisplayedLines([{ prompt: terminalLines[0].prompt, text: "", isTyping: true }]);
+          setDisplayedLines([{ prompt: terminalLines[0]!.prompt, text: "", isTyping: true }]);
         }
       },
       { threshold: 0.3 },
@@ -175,7 +176,7 @@ export function TerminalTyping({ className }: { className?: string }) {
       </div>
 
       {/* Terminal Content */}
-      <div ref={containerRef} className="scrollbar-hide max-h-[400px] space-y-1 overflow-y-auto p-4">
+      <div ref={containerRef} className="scrollbar-hide max-h-100 space-y-1 overflow-y-auto p-4">
         {displayedLines.map((line, i) => (
           <div
             key={i}

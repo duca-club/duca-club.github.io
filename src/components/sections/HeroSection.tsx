@@ -76,7 +76,7 @@ export const HeroSection = () => {
         </motion.div>
 
         {/* Scroll Indicator */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.5 }}
@@ -93,7 +93,7 @@ export const HeroSection = () => {
               className="mt-2 h-3 w-1 rounded-full bg-white/50"
             />
           </motion.div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );
