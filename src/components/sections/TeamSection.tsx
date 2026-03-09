@@ -18,12 +18,9 @@ export const TeamSection = ({
   showFullTeam?: boolean;
 }) => {
   return (
-    <section id="team" className="py-24 section-themed relative">
+    <section id="team" className="section-themed relative py-24">
       <div className="container mx-auto px-4">
-        <SectionHeading
-          title="Meet the Team"
-          subtitle="The passionate people behind DUCA's mission"
-        />
+        <SectionHeading title="Meet the Team" subtitle="The passionate people behind DUCA's mission" />
 
         <TeamGrid members={executives} className="mt-12" />
 
@@ -32,7 +29,7 @@ export const TeamSection = ({
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mt-12"
+            className="mt-12 text-center"
           >
             <Button href="/meet-the-team" variant="outline">
               View Full Team & Divisions
@@ -44,25 +41,13 @@ export const TeamSection = ({
   );
 };
 
-export const DivisionSection = ({
-  division,
-}: {
-  division: Division;
-}) => {
+export const DivisionSection = ({ division }: { division: Division }) => {
   return (
-    <section className="py-16 section-themed">
+    <section className="section-themed py-16">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            {division.name}
-          </h2>
-          <p className="text-gray-400 italic mb-8 max-w-3xl">
-            {division.description}
-          </p>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+          <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">{division.name}</h2>
+          <p className="mb-8 max-w-3xl text-gray-400 italic">{division.description}</p>
         </motion.div>
 
         <TeamGrid members={division.members} />

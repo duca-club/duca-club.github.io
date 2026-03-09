@@ -1,14 +1,14 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import { BackgroundBeams } from '@components/ui/background-beams'
-import { EventTagFilter } from '@components/ui/event-tag-filter'
-import { getCollection } from 'astro:content'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import { BackgroundBeams } from "@components/ui/background-beams";
+import { EventTagFilter } from "@components/ui/event-tag-filter";
+import { getCollection } from "astro:content";
 
 // Fetch all events from the collection
-const allEvents = await getCollection('events')
+const allEvents = await getCollection("events");
 
 // Extract unique tags
-const allTags = [...new Set(allEvents.flatMap(e => e.data.tags || []))]
+const allTags = [...new Set(allEvents.flatMap((e) => e.data.tags || []))];
 
 // Serialize events for the React component
 const serializedEvents = allEvents.map((event) => ({
@@ -20,28 +20,28 @@ const serializedEvents = allEvents.map((event) => ({
   tags: event.data.tags,
   registrationUrl: event.data.registrationUrl,
   slug: event.data.slug,
-}))
+}));
 ---
 
 <DefaultLayout title="Events">
   <!-- Hero Section with Background Beams -->
-  <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden section-themed">
+  <section class="section-themed relative flex min-h-[50vh] items-center justify-center overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-b from-orange-900/20 via-transparent to-transparent"></div>
     <BackgroundBeams className="opacity-40" client:load />
-    <div class="absolute inset-0 bg-grid-pattern"></div>
+    <div class="bg-grid-pattern absolute inset-0"></div>
 
     <div class="relative z-10 container mx-auto px-4 py-20 text-center">
-      <h1 class="text-5xl md:text-7xl font-bold mb-6">
+      <h1 class="mb-6 text-5xl font-bold md:text-7xl">
         <span class="bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">Events</span>
       </h1>
-      <p class="text-xl theme-text-secondary max-w-2xl mx-auto mb-8">
+      <p class="theme-text-secondary mx-auto mb-8 max-w-2xl text-xl">
         Join us for workshops, competitions, networking events, and more. There's always something happening at DUCA!
       </p>
       <a
         href="https://humanitix.com"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-700 transition-colors"
+        class="inline-flex items-center justify-center rounded-full bg-orange-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-orange-700"
       >
         Register on Humanitix
       </a>
@@ -49,34 +49,34 @@ const serializedEvents = allEvents.map((event) => ({
   </section>
 
   <!-- Events with Tag Filtering -->
-  <section class="py-24 section-themed relative overflow-hidden data-stream-bg">
-    <div class="container mx-auto px-4 relative z-10">
+  <section class="section-themed data-stream-bg relative overflow-hidden py-24">
+    <div class="relative z-10 container mx-auto px-4">
       <EventTagFilter events={serializedEvents} tags={allTags} client:load />
     </div>
   </section>
 
   <!-- CTA - Glow Ring Discord -->
-  <section class="py-24 section-themed relative overflow-hidden data-stream-bg">
-    <div class="container mx-auto px-4 text-center relative z-10">
-      <div class="max-w-2xl mx-auto p-12 rounded-2xl border-2 border-purple-500/30 animate-pulse-glow bg-gradient-to-br from-purple-900/20 to-black">
-        <h2 class="text-3xl md:text-4xl font-bold theme-text mb-6">
-          Want to stay updated?
-        </h2>
-        <p class="theme-text-secondary max-w-2xl mx-auto mb-8">
+  <section class="section-themed data-stream-bg relative overflow-hidden py-24">
+    <div class="relative z-10 container mx-auto px-4 text-center">
+      <div
+        class="animate-pulse-glow mx-auto max-w-2xl rounded-2xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-900/20 to-black p-12"
+      >
+        <h2 class="theme-text mb-6 text-3xl font-bold md:text-4xl">Want to stay updated?</h2>
+        <p class="theme-text-secondary mx-auto mb-8 max-w-2xl">
           Join our Discord to get instant notifications about upcoming events and activities.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <div class="flex flex-col justify-center gap-4 sm:flex-row">
           <a
             href="https://discord.gg/duca"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors"
+            class="inline-flex items-center justify-center rounded-full bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700"
           >
             Join Discord
           </a>
           <a
             href="/calendar"
-            class="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-purple-500 theme-text font-semibold hover:bg-purple-500/10 transition-colors"
+            class="theme-text inline-flex items-center justify-center rounded-full border-2 border-purple-500 px-6 py-3 font-semibold transition-colors hover:bg-purple-500/10"
           >
             View Calendar
           </a>
@@ -89,41 +89,48 @@ const serializedEvents = allEvents.map((event) => ({
 <style is:global>
   /* Easter egg: ACCESS GRANTED flash */
   .access-granted-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9998;
     display: flex;
-    align-items: center;
+    position: fixed;
     justify-content: center;
+    align-items: center;
+    z-index: 9998;
+    inset: 0;
     background: rgba(0, 0, 0, 0.9);
     pointer-events: none;
   }
   .access-granted-overlay span {
-    font-family: monospace;
-    font-size: 4rem;
-    font-weight: bold;
-    color: #33ff33;
-    text-shadow: 0 0 30px rgba(51, 255, 51, 0.8);
     animation: ag-pulse 0.5s ease-in-out;
+    color: #33ff33;
+    font-weight: bold;
+    font-size: 4rem;
+    font-family: monospace;
+    text-shadow: 0 0 30px rgba(51, 255, 51, 0.8);
   }
   @keyframes ag-pulse {
-    0%, 100% { opacity: 0; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1); }
+    0%,
+    100% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 </style>
 
 <script>
   // Easter Egg: Type "sudo" → ACCESS GRANTED flash
-  document.addEventListener('astro:page-load', () => {
-    let buffer = '';
-    document.addEventListener('keydown', (e) => {
+  document.addEventListener("astro:page-load", () => {
+    let buffer = "";
+    document.addEventListener("keydown", (e) => {
       buffer += e.key.toLowerCase();
       if (buffer.length > 10) buffer = buffer.slice(-10);
-      if (buffer.includes('sudo')) {
-        buffer = '';
-        const overlay = document.createElement('div');
-        overlay.className = 'access-granted-overlay';
-        overlay.innerHTML = '<span>ACCESS GRANTED</span>';
+      if (buffer.includes("sudo")) {
+        buffer = "";
+        const overlay = document.createElement("div");
+        overlay.className = "access-granted-overlay";
+        overlay.innerHTML = "<span>ACCESS GRANTED</span>";
         document.body.appendChild(overlay);
         setTimeout(() => overlay.remove(), 2000);
       }

@@ -27,22 +27,18 @@ const partners = [
 
 export const PartnersSection = () => {
   return (
-    <section className="py-16 section-themed border-y border-slate-800">
+    <section className="section-themed border-y border-slate-800 py-16">
       <div className="container mx-auto px-4">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center text-gray-500 mb-8 text-sm uppercase tracking-wider"
+          className="mb-8 text-center text-sm tracking-wider text-gray-500 uppercase"
         >
           Proudly supported by
         </motion.p>
 
-        <InfiniteLogoCarousel
-          partners={partners}
-          direction="left"
-          speed="slow"
-        />
+        <InfiniteLogoCarousel partners={partners} direction="left" speed="slow" />
       </div>
     </section>
   );

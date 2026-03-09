@@ -74,12 +74,10 @@ export const WhatWeDoStackingSection = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <p className="theme-text-secondary text-lg mb-6">
-            Ready to start your cybersecurity journey?
-          </p>
+          <p className="theme-text-secondary mb-6 text-lg">Ready to start your cybersecurity journey?</p>
           <a
             href="/join"
-            className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors"
+            className="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"
           >
             Join DUCA Today
           </a>

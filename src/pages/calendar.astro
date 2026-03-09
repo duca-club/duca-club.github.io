@@ -1,12 +1,12 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import { SectionHeading } from '@components/ui/section-heading'
-import { SpotlightNew } from '@components/ui/spotlight'
-import { EventsCalendar } from '@components/ui/events-calendar'
-import { getCollection } from 'astro:content'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import { SectionHeading } from "@components/ui/section-heading";
+import { SpotlightNew } from "@components/ui/spotlight";
+import { EventsCalendar } from "@components/ui/events-calendar";
+import { getCollection } from "astro:content";
 
 // Fetch all events from the collection
-const allEvents = await getCollection('events')
+const allEvents = await getCollection("events");
 
 // Transform events for the calendar component
 const calendarEvents = allEvents.map((event) => ({
@@ -14,72 +14,63 @@ const calendarEvents = allEvents.map((event) => ({
   slug: event.data.slug,
   eventDate: event.data.eventDate.toISOString(),
   tags: event.data.tags,
-}))
+}));
 ---
 
 <DefaultLayout title="Calendar">
   <!-- Hero Section -->
-  <section class="relative min-h-[40vh] flex items-center justify-center overflow-hidden section-themed">
+  <section class="section-themed relative flex min-h-[40vh] items-center justify-center overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-b from-violet-900/20 via-transparent to-transparent"></div>
-    <SpotlightNew className="-top-40 left-0 md:left-60 md:-top-20" fill="#8b5cf6" client:load />
-    <div class="absolute inset-0 bg-grid-pattern"></div>
+    <SpotlightNew className="-top-40 left-0 md:-top-20 md:left-60" fill="#8b5cf6" client:load />
+    <div class="bg-grid-pattern absolute inset-0"></div>
 
     <div class="relative z-10 container mx-auto px-4 py-20 text-center">
-      <h1 class="text-5xl md:text-7xl font-bold mb-6">
+      <h1 class="mb-6 text-5xl font-bold md:text-7xl">
         <span class="bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">Calendar</span>
       </h1>
-      <p class="text-xl theme-text-secondary max-w-2xl mx-auto">
-        Stay up to date with all DUCA events and activities
-      </p>
+      <p class="theme-text-secondary mx-auto max-w-2xl text-xl">Stay up to date with all DUCA events and activities</p>
     </div>
   </section>
 
   <!-- Events Calendar -->
-  <section class="py-24 section-themed">
+  <section class="section-themed py-24">
     <div class="container mx-auto px-4">
       <EventsCalendar events={calendarEvents} client:load />
     </div>
   </section>
 
   <!-- Quick Links -->
-  <section class="py-24 section-themed-alt border-t theme-border">
+  <section class="section-themed-alt theme-border border-t py-24">
     <div class="container mx-auto px-4">
-      <SectionHeading
-        title="Quick Links"
-        subtitle="Other ways to stay updated"
-        client:visible
-      />
+      <SectionHeading title="Quick Links" subtitle="Other ways to stay updated" client:visible />
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-        <a
-          href="/events"
-          class="p-6 rounded-xl theme-card border hover:border-violet-500/30 transition-colors group"
-        >
-          <div class="text-3xl mb-4">📅</div>
-          <h3 class="text-lg font-bold theme-text group-hover:text-violet-400 transition-colors">Events Page</h3>
-          <p class="theme-text-secondary text-sm mt-2">Detailed information about upcoming events</p>
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <a href="/events" class="theme-card group rounded-xl border p-6 transition-colors hover:border-violet-500/30">
+          <div class="mb-4 text-3xl">📅</div>
+          <h3 class="theme-text text-lg font-bold transition-colors group-hover:text-violet-400">Events Page</h3>
+          <p class="theme-text-secondary mt-2 text-sm">Detailed information about upcoming events</p>
         </a>
 
         <a
           href="https://discord.gg/duca"
           target="_blank"
           rel="noopener noreferrer"
-          class="p-6 rounded-xl theme-card border hover:border-violet-500/30 transition-colors group"
+          class="theme-card group rounded-xl border p-6 transition-colors hover:border-violet-500/30"
         >
-          <div class="text-3xl mb-4">💬</div>
-          <h3 class="text-lg font-bold theme-text group-hover:text-violet-400 transition-colors">Discord</h3>
-          <p class="theme-text-secondary text-sm mt-2">Real-time updates and announcements</p>
+          <div class="mb-4 text-3xl">💬</div>
+          <h3 class="theme-text text-lg font-bold transition-colors group-hover:text-violet-400">Discord</h3>
+          <p class="theme-text-secondary mt-2 text-sm">Real-time updates and announcements</p>
         </a>
 
         <a
           href="https://www.instagram.com/deakincyber/"
           target="_blank"
           rel="noopener noreferrer"
-          class="p-6 rounded-xl theme-card border hover:border-violet-500/30 transition-colors group"
+          class="theme-card group rounded-xl border p-6 transition-colors hover:border-violet-500/30"
         >
-          <div class="text-3xl mb-4">📸</div>
-          <h3 class="text-lg font-bold theme-text group-hover:text-violet-400 transition-colors">Instagram</h3>
-          <p class="theme-text-secondary text-sm mt-2">Follow for event photos and updates</p>
+          <div class="mb-4 text-3xl">📸</div>
+          <h3 class="theme-text text-lg font-bold transition-colors group-hover:text-violet-400">Instagram</h3>
+          <p class="theme-text-secondary mt-2 text-sm">Follow for event photos and updates</p>
         </a>
       </div>
     </div>

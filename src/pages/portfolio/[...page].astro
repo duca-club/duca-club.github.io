@@ -1,69 +1,64 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import PageHeader from '@components/PageHeader.astro'
-import { Badge, Card, Heading, Link, Pagination } from 'accessible-astro-components'
-import { getCollection } from 'astro:content'
-import type { GetStaticPaths, Page } from 'astro'
-import type { CollectionEntry } from 'astro:content'
-import { slugify } from '@/utils/slugify'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import PageHeader from "@components/PageHeader.astro";
+import { Badge, Card, Heading, Link, Pagination } from "accessible-astro-components";
+import { getCollection } from "astro:content";
+import type { GetStaticPaths, Page } from "astro";
+import type { CollectionEntry } from "astro:content";
+import { slugify } from "@/utils/slugify";
 
 // Import images directly for optimization
-import projectImage1 from '@assets/images/projects/project-image-1.png'
-import projectImage3 from '@assets/images/projects/project-image-JingleShellsCTF2.jpg'
-
+import projectImage1 from "@assets/images/projects/project-image-1.png";
+import projectImage3 from "@assets/images/projects/project-image-JingleShellsCTF2.jpg";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const projects = await getCollection('projects')
-  const allTags = projects.map((project) => project.data.tags).flat()
-  const uniqueTagLabels = [...new Set(allTags)].sort((a, b) => a.localeCompare(b))
+  const projects = await getCollection("projects");
+  const allTags = projects.map((project) => project.data.tags).flat();
+  const uniqueTagLabels = [...new Set(allTags)].sort((a, b) => a.localeCompare(b));
   const uniqueTags = uniqueTagLabels.map((label) => ({
     label,
     slug: slugify(label),
-  }))
+  }));
 
-  const projectImages = [projectImage1, projectImage3]
+  const projectImages = [projectImage1, projectImage3];
 
   const projectsWithImages = projects.map((project, index) => {
     return {
       ...project,
       featuredImage: projectImages[index % projectImages.length],
-    }
-  })
+    };
+  });
 
   return paginate(projectsWithImages, {
     pageSize: 6,
     props: { uniqueTags },
-  })
-}) satisfies GetStaticPaths
+  });
+}) satisfies GetStaticPaths;
 
 interface Props {
-  page: Page<CollectionEntry<'projects'> & { featuredImage: any }>
-  uniqueTags: { label: string; slug: string }[]
+  page: Page<CollectionEntry<"projects"> & { featuredImage: any }>;
+  uniqueTags: { label: string; slug: string }[];
 }
 
-const { page, uniqueTags } = Astro.props
+const { page, uniqueTags } = Astro.props;
 
 // Debug: print IDs and types to diagnose `[object Object]` route
-console.log('portfolio page.data ids:', page.data.map((p) => ({ id: p.id, type: typeof p.id })))
-console.log(page.lastPage)
+console.log(
+  "portfolio page.data ids:",
+  page.data.map((p) => ({ id: p.id, type: typeof p.id })),
+);
+console.log(page.lastPage);
 ---
 
-<DefaultLayout
-  title="Portfolio"
-  description="A showcase of projects built by DUCA."
->
-  <PageHeader
-    title="Portfolio"
-    subtitle='A showcase of projects built by DUCA.'
-    bgType="bordered"
-  />
+<DefaultLayout title="Portfolio" description="A showcase of projects built by DUCA.">
+  <PageHeader title="Portfolio" subtitle="A showcase of projects built by DUCA." bgType="bordered" />
   <section class="my-12">
     <div class="container">
       <Heading level="h2" size="h5" class="mb-2">Tags</Heading>
       <div class="flex flex-wrap gap-4">
         {
           uniqueTags.map((tag: { label: string; slug: string }) => (
-            <Link href={'/portfolio/tag/' + tag.slug}>{tag.label}</Link>
+            <Link href={"/portfolio/tag/" + tag.slug}>{tag.label}</Link>
           ))
         }
       </div>
@@ -74,21 +69,22 @@ console.log(page.lastPage)
         {
           page.data.map((project) => {
             const projectId = ((): string => {
-              if (typeof project.id === 'string') return project.id
-              if (project.id && typeof project.id === 'object' && (project.id.slug || project.id.value)) return project.id.slug ?? project.id.value
-              if (project.slug) return project.slug
-              if (project.data?.slug) return project.data.slug
-              return slugify(project.data?.title ?? '')
-            })()
+              if (typeof project.id === "string") return project.id;
+              if (project.id && typeof project.id === "object" && (project.id.slug || project.id.value))
+                return project.id.slug ?? project.id.value;
+              if (project.slug) return project.slug;
+              if (project.data?.slug) return project.data.slug;
+              return slugify(project.data?.title ?? "");
+            })();
 
             return (
               <li>
                 <Card
                   imageComponent={project.featuredImage}
-                  url={'/portfolio/' + projectId}
+                  url={"/portfolio/" + projectId}
                   title={project.data.title}
                   headingLevel="h2"
-                  footer={'Author: ' + project.data.author}
+                  footer={"Author: " + project.data.author}
                   fullHeight={true}
                 >
                   <span slot="meta">
@@ -99,7 +95,7 @@ console.log(page.lastPage)
                   {project.data.description}
                 </Card>
               </li>
-            )
+            );
           })
         }
       </ul>
@@ -107,7 +103,7 @@ console.log(page.lastPage)
         page && page.lastPage > 1 && (
           <div class="mt-12 grid place-content-center">
             <Pagination
-              firstPage={page.url.prev ? '/portfolio' : null}
+              firstPage={page.url.prev ? "/portfolio" : null}
               previousPage={page.url.prev ? page.url.prev : null}
               nextPage={page.url.next ? page.url.next : null}
               lastPage={page.url.next ? `/portfolio/${page.lastPage}` : null}

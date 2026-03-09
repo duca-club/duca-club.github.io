@@ -1,66 +1,66 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import PageHeader from '@components/PageHeader.astro'
-import { Heading, Notification } from 'accessible-astro-components'
-import { getCollection } from 'astro:content'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import PageHeader from "@components/PageHeader.astro";
+import { Heading, Notification } from "accessible-astro-components";
+import { getCollection } from "astro:content";
 
 // Get all portfolio projects
-const projects = await getCollection('projects')
+const projects = await getCollection("projects");
 
 // Define static pages with their descriptions
 const staticPages = [
   {
-    title: 'Home',
-    url: '/',
-    description: 'Welcome to our accessible website featuring modern web development and inclusive design principles.',
+    title: "Home",
+    url: "/",
+    description: "Welcome to our accessible website featuring modern web development and inclusive design principles.",
   },
   {
-    title: 'Accessible components',
-    url: '/accessible-components',
-    description: 'A comprehensive showcase of accessible UI components and design patterns for modern web development.',
+    title: "Accessible components",
+    url: "/accessible-components",
+    description: "A comprehensive showcase of accessible UI components and design patterns for modern web development.",
   },
   {
-    title: 'Portfolio',
-    url: '/portfolio',
-    description: 'A collection of projects demonstrating accessible design and development practices.',
+    title: "Portfolio",
+    url: "/portfolio",
+    description: "A collection of projects demonstrating accessible design and development practices.",
   },
   {
-    title: 'Blog',
-    url: '/blog',
-    description: 'Articles and insights about web accessibility, development best practices, and inclusive design.',
+    title: "Blog",
+    url: "/blog",
+    description: "Articles and insights about web accessibility, development best practices, and inclusive design.",
   },
   {
-    title: 'Contact',
-    url: '/contact',
+    title: "Contact",
+    url: "/contact",
     description:
-      'Get in touch with us for accessibility consulting, development services, or collaboration opportunities.',
+      "Get in touch with us for accessibility consulting, development services, or collaboration opportunities.",
   },
   {
-    title: 'Color contrast checker',
-    url: '/color-contrast-checker',
-    description: 'An interactive tool to check color contrast ratios and ensure WCAG compliance for your designs.',
+    title: "Color contrast checker",
+    url: "/color-contrast-checker",
+    description: "An interactive tool to check color contrast ratios and ensure WCAG compliance for your designs.",
   },
   {
-    title: 'Accessibility statement',
-    url: '/accessibility-statement',
-    description: 'Our commitment to accessibility and information about the accessibility features of this website.',
+    title: "Accessibility statement",
+    url: "/accessibility-statement",
+    description: "Our commitment to accessibility and information about the accessibility features of this website.",
   },
   {
-    title: 'Markdown page example',
-    url: '/markdown-page',
-    description: 'A demonstration of Markdown content rendering with accessible formatting and typography.',
+    title: "Markdown page example",
+    url: "/markdown-page",
+    description: "A demonstration of Markdown content rendering with accessible formatting and typography.",
   },
   {
-    title: 'MDX page example',
-    url: '/mdx-page',
-    description: 'An example of MDX content combining Markdown with interactive React components.',
+    title: "MDX page example",
+    url: "/mdx-page",
+    description: "An example of MDX content combining Markdown with interactive React components.",
   },
   {
-    title: 'Thank you',
-    url: '/thank-you',
-    description: 'Confirmation page for successful form submissions and user interactions.',
+    title: "Thank you",
+    url: "/thank-you",
+    description: "Confirmation page for successful form submissions and user interactions.",
   },
-]
+];
 ---
 
 <DefaultLayout
@@ -87,7 +87,7 @@ const staticPages = [
                 </Heading>
                 <p class="mb-3">{page.description}</p>
                 <p class="text-xs">
-                  URL:{' '}
+                  URL:{" "}
                   <code class="rounded bg-neutral-100 px-1 py-0.5 text-xs text-neutral-500 dark:bg-neutral-800 dark:text-neutral-500">
                     {page.url}
                   </code>
@@ -118,7 +118,7 @@ const staticPages = [
                     By: <span class="font-medium">{project.data.author}</span>
                   </p>
                   <p>
-                    URL:{' '}
+                    URL:{" "}
                     <code class="rounded bg-neutral-100 px-1 py-0.5 text-xs text-neutral-500 dark:bg-neutral-800 dark:text-neutral-500">
                       /portfolio/{project.id}
                     </code>
