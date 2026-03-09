@@ -1,0 +1,120 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+import { SectionHeading } from '@components/ui/section-heading'
+import { Tabs } from '@components/ui/tabs'
+import { SpotlightNew } from '@components/ui/spotlight'
+import { getCollection } from 'astro:content'
+
+// Get projects from content collection
+const allProjects = await getCollection('projects')
+
+// Sample projects if none exist
+const projects = allProjects.length > 0 ? allProjects.map(p => ({
+  id: p.id,
+  title: p.data.title,
+  description: p.data.description,
+  tags: p.data.tags,
+})) : [
+  {
+    id: "duca-sentinel",
+    title: "DUCA Sentinel",
+    description: "An automated security monitoring and alerting system built by the DUCA dev team.",
+    tags: ["Python", "Security", "Automation"],
+  },
+  {
+    id: "acusys",
+    title: "ACUSyS",
+    description: "Australian Cybersecurity University System - A collaborative platform for university cyber clubs.",
+    tags: ["Web", "Collaboration", "Platform"],
+  },
+  {
+    id: "ctf-platform",
+    title: "DUCA CTF Platform",
+    description: "Custom Capture The Flag platform for hosting internal competitions.",
+    tags: ["CTF", "Web", "Security"],
+  },
+]
+---
+
+<DefaultLayout title="Projects">
+  <!-- Hero Section -->
+  <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden bg-black">
+    <div class="absolute inset-0 bg-gradient-to-b from-emerald-900/20 via-black to-black"></div>
+    <SpotlightNew className="-top-40 right-0 md:right-60 md:-top-20" fill="#10b981" client:load />
+    <div class="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]"></div>
+
+    <div class="relative z-10 container mx-auto px-4 py-20 text-center">
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
+        <span class="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">Projects</span>
+      </h1>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+        Explore the innovative projects built by our development team and community members.
+      </p>
+    </div>
+  </section>
+
+  <!-- Projects Grid -->
+  <section class="py-24 section-themed">
+    <div class="container mx-auto px-4">
+      <SectionHeading
+        title="Our Projects"
+        subtitle="Real-world applications built by DUCA members"
+        client:visible
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+        {projects.map((project) => (
+          <a href={`/portfolio/${project.id}`} class="group">
+            <div class="h-full p-6 rounded-2xl theme-card border theme-border hover:border-emerald-500/50 transition-all duration-300">
+              <div class="h-40 rounded-xl bg-gradient-to-br from-emerald-900/30 to-emerald-950/50 mb-6 flex items-center justify-center">
+                <span class="text-6xl opacity-50">🔐</span>
+              </div>
+              <h3 class="text-xl font-bold theme-text mb-2 group-hover:text-emerald-400 transition-colors">
+                {project.title}
+              </h3>
+              <p class="theme-text-secondary mb-4">{project.description}</p>
+              <div class="flex flex-wrap gap-2">
+                {project.tags.map((tag: string) => (
+                  <span class="text-xs px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contribute CTA -->
+  <section class="py-24 section-themed border-t theme-border">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold theme-text mb-6">
+        Want to contribute?
+      </h2>
+      <p class="theme-text-secondary max-w-2xl mx-auto mb-8">
+        Join the DUCA Development Division and work on exciting projects with a supportive team.
+        No experience required - just bring your curiosity!
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/join"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors"
+        >
+          Join the Team
+        </a>
+        <a
+          href="https://github.com/duca-club"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-slate-700 text-white font-semibold hover:bg-slate-800 transition-colors"
+        >
+          View GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+</DefaultLayout>
+
+<!-- Theme styling handled by DefaultLayout -->

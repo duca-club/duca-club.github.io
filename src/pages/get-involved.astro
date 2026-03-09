@@ -1,0 +1,135 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+import CallToAction from '@components/CallToAction.astro'
+import Feature from '@components/Feature.astro'
+import { Heading, Link } from 'accessible-astro-components'
+import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
+---
+
+<DefaultLayout title="Get Involved">
+    <!-- Hero -->
+    <section class="hero my-24">
+        <div class="container">
+            <div class="grid grid-cols-1 items-center gap-24 lg:grid-cols-2">
+                <div class="flex flex-col items-center gap-8 md:items-start">
+                    <h1 class="text-center text-6xl md:text-left lg:text-8xl">Get Involved</h1>
+                    <div class="flex flex-col gap-3 min-[500px]:flex-row">
+                        <Link href="" isButton type="primary" size="lg" animateOnHover animationType="boop">
+                            <Icon aria-hidden="true" name="lucide:sparkles" size="1.5rem" />
+                            Become a Volunteer
+                        </Link>
+                    </div>
+                </div>
+                <Image
+                    class="hidden lg:block"
+                    src="/astronaut-hero-img.webp"
+                    alt="DUCA social event"
+                    decoding="async"
+                    width={800}
+                    height={600}
+                    loading="eager"
+                />
+            </div>
+        </div>
+    </section>
+
+    <!-- General -->
+    <section class="container my-12">
+        <Heading level="h2" class="mb-4">Why join DUCA?</Heading>
+
+        <p class="mb-6 max-w-3xl">
+            DUCA is a student-run cybersecurity club where members learn by doing. Whether you want to build skills for
+            competitions, get hands-on development experience, help with outreach, or practice ethical hacking, DUCA
+            provides mentorship, a supportive community, and real-world projects to grow your portfolio.
+        </p>
+
+        <ul class="ml-6 grid list-disc gap-2 md:grid-cols-2">
+            <li>Practical, hands-on learning through projects and events</li>
+            <li>Opportunities to compete in CTF events and conferences</li>
+            <li>Mentorship from experienced students and alumni</li>
+            <li>Collaboration on dev and security projects for real impact</li>
+            <li>Networking and resume-building experiences</li>
+            <li>Flexible roles across technical and non-technical disciplines</li>
+        </ul>
+    </section>
+
+    <!-- Division-specific -->
+    <section class="container my-12">
+        <Heading level="h2" class="mb-6">Find a Division You Belong!</Heading>
+
+        <div class="grid grid-cols-1 gap-12 md:grid-cols-2">
+            <Feature icon="lucide:flag" title="Capture the Flag">
+                <p>
+                    Love puzzles? We do too! Join us to solve fun cybersecurity challenges together, learn new tricks,
+                    and compete as a team in a relaxed, friendly way.
+                </p>
+                <div class="mt-4">
+                    <Link href="" size="sm">Learn more</Link>
+                </div>
+            </Feature>
+
+            <Feature icon="lucide:code" title="Development">
+                <p>
+                    We build cool tools and projects for the club! Whether you’re new to coding or experienced, we’ll
+                    learn together and create awesome things as a team.
+                </p>
+                <div class="mt-4">
+                    <Link href="" size="sm">Learn more</Link>
+                </div>
+            </Feature>
+
+            <Feature icon="lucide:megaphone" title="Advertising">
+                <p>
+                    We make the club look amazing! From posters to social media, we share good vibes and help everyone
+                    feel welcome. Creativity is always encouraged here!
+                </p>
+                <div class="mt-4">
+                    <Link href="" size="sm">Learn more</Link>
+                </div>
+            </Feature>
+
+            <Feature icon="lucide:shield-check" title="Pentesting">
+                <p>
+                    Curious about ethical hacking? We explore it safely and step by step! Learn how attackers think and
+                    how to defend systems—all in a fun, friendly space.
+                </p>
+                <div class="mt-4">
+                    <Link href="" size="sm">Learn more</Link>
+                </div>
+            </Feature>
+
+            <Feature icon="lucide:book-check" title="Cyber Essentials">
+                <p>
+                    Start with the basics in a friendly, hands‑on way! We cover safe browsing, strong passwords, common
+                    threats, and simple defensive skills to build confidence.
+                </p>
+                <div class="mt-4">
+                    <Link href="" size="sm">Learn more</Link>
+                </div>
+            </Feature>
+
+            <Feature icon="lucide:network" title="Networking">
+                <p>
+                    Explore how the internet really works—packets, protocols, Wi‑Fi, and security. We learn by doing
+                    with approachable labs and lots of curious questions!
+                </p>
+                <div class="mt-4">
+                    <Link href="" size="sm">Learn more</Link>
+                </div>
+            </Feature>
+
+            <Feature icon="lucide:shield-check" title="Pentesting">
+                <p>
+                    Discover ethical hacking in safe, guided labs! We practice recon, testing vulnerabilities, and
+                    defense techniques—welcoming for beginners and fun for everyone.
+                </p>
+                <div class="mt-4">
+                    <Link href="" size="sm">Learn more</Link>
+                </div>
+            </Feature>
+        </div>
+    </section>
+
+    <CallToAction title="Ready to join DUCA?" link="" linkText="Join now" />
+</DefaultLayout>

@@ -1,0 +1,71 @@
+---
+import { Card, Heading, Link } from 'accessible-astro-components'
+import { Icon } from 'astro-icon/components'
+import { getCollection } from 'astro:content'
+
+// Import images directly for optimization
+import projectImage1 from '@assets/images/projects/project-image-1.png'
+import projectImage2 from '@assets/images/projects/project-image-2.png'
+import projectImage3 from '@assets/images/projects/project-image-3.png'
+
+/**
+ * FeaturedEvents Component
+ *
+ * @description A component that displays featured events from Astro Content Collections
+ */
+interface Props {
+  /**
+   * Additional classes to apply to the section
+   */
+  class?: string
+  /**
+   * The number of events to display
+   * @default 3
+   */
+  limit?: number
+  /**
+   * The title for the section
+   * @default "Upcoming events"
+   */
+  title?: string
+}
+
+const { class: className, limit = 3, title = 'Upcoming events' } = Astro.props
+
+// Get projects from content collection (reusing for events)
+const projects = await getCollection('projects')
+const eventImages = [projectImage1, projectImage2, projectImage3]
+
+// Limit events and add featured images
+const featuredEvents = projects.slice(0, limit).map((project, index) => ({
+  ...project,
+  featuredImage: eventImages[index % eventImages.length],
+}))
+---
+
+<section id="events" class:list={[className, 'my-64']}>
+  <div class="container">
+    <Heading level="h2" class="mb-6">{title}</Heading>
+    <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
+      {
+        featuredEvents.map((event) => (
+          <Card
+            imageComponent={event.featuredImage}
+            url={'/portfolio/' + event.id}
+            headingLevel="h2"
+            title={event.data.title}
+            footer={'Organised by: ' + event.data.author}
+          >
+            {event.data.description}
+          </Card>
+        ))
+      }
+    </div>
+    <div class="mt-12">
+      <Link href="https://discord.gg/duca" isButton animateOnHover animationType="nudge" isExternal>
+        Join Discord for more events
+        <Icon aria-hidden="true" name="lucide:arrow-right" size="1.5rem" />
+      </Link>
+    </div>
+  </div>
+</section>

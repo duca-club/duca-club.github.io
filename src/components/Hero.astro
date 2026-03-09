@@ -15,7 +15,7 @@ interface Props {
   src?: string
 }
 
-const { src = '/astronaut-hero-img.webp' }: Props = Astro.props
+const { src = '/DUCA-Header-Blob.png' }: Props = Astro.props
 ---
 
 <section class="hero my-24">
@@ -23,28 +23,34 @@ const { src = '/astronaut-hero-img.webp' }: Props = Astro.props
     <div class="grid grid-cols-1 items-center gap-24 lg:grid-cols-2">
       <div class="flex flex-col items-center gap-8 md:items-start">
         <h1 class="text-center text-6xl md:text-left lg:text-8xl">
-          <slot><span class="text-gradient">Accessible</span> Starter for Astro</slot>
+          <slot><span class="text-gradient">DUCA</span> &nbsp;
+          <h2 class="text-5xl lg:text-6xl md:text-left text-center">Deakin University Cybersecurity Association</h2>
+          </slot>
         </h1>
+        <p class="text-center text-xl md:text-left">
+          Building a community of cybersecurity enthusiasts at Deakin University. Join us to learn, share, and grow together.
+        </p>
         <div class="flex flex-col gap-3 min-[500px]:flex-row">
           <Link
-            href="https://github.com/incluud/accessible-astro-starter"
+            href="https://discord.gg/duca"
             isButton
             type="primary"
             animateOnHover
             animationType="boop"
+            isExternal
           >
-            <Icon aria-hidden="true" name="lucide:star" size="1.5rem" />
-            Star on GitHub
+            <Icon aria-hidden="true" name="lucide:message-circle" size="1.5rem" />
+            Join Our Discord
           </Link>
           <Link
-            href="https://accessible-astro.incluud.dev/"
+            href="#events"
             isButton
             type="secondary"
             animateOnHover
             animationType="boop"
           >
-            <Icon aria-hidden="true" name="lucide:bookmark" size="1.5rem" />
-            Read the docs
+            <Icon aria-hidden="true" name="lucide:calendar" size="1.5rem" />
+            View Events
           </Link>
         </div>
       </div>
@@ -61,8 +67,8 @@ const { src = '/astronaut-hero-img.webp' }: Props = Astro.props
   .text-gradient {
     background: linear-gradient(
       315deg,
-      light-dark(var(--color-primary-300), var(--color-secondary-100)) 25%,
-      light-dark(var(--color-secondary-300), var(--color-primary-200))
+      var(--color-secondary-100) 25%,
+      var(--color-primary-200)
     );
     background-clip: border-box;
     -webkit-background-clip: text;

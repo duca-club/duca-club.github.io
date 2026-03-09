@@ -1,0 +1,173 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+import { getCollection, render } from 'astro:content'
+
+export async function getStaticPaths() {
+  const events = await getCollection('events')
+  return events.map((event) => ({
+    params: { event: event.data.slug },
+    props: { event },
+  }))
+}
+
+const { event } = Astro.props
+const { Content } = await render(event)
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString("en-AU", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
+
+const formatTime = (date: Date) => {
+  return date.toLocaleTimeString("en-AU", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
+const isUpcoming = new Date(event.data.eventDate) >= new Date();
+---
+
+<DefaultLayout title={event.data.title}>
+  <article class="section-themed">
+    <!-- Hero -->
+    <header class="relative py-20 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-orange-900/20 via-transparent to-transparent"></div>
+      <div class="absolute inset-0 bg-grid-pattern"></div>
+
+      <div class="relative z-10 container mx-auto px-4">
+        <a
+          href="/events"
+          class="inline-flex items-center gap-2 theme-text-secondary hover:text-orange-400 transition-colors mb-6"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Events
+        </a>
+
+        <div class="flex flex-wrap gap-2 mb-4">
+          {event.data.tags?.map((tag) => (
+            <span class="text-xs font-semibold text-orange-400 uppercase tracking-wider px-3 py-1 bg-orange-500/10 rounded-full">
+              {tag}
+            </span>
+          ))}
+          {!isUpcoming && (
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 py-1 bg-gray-500/10 rounded-full">
+              Past Event
+            </span>
+          )}
+        </div>
+
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold theme-text mb-6">
+          {event.data.title}
+        </h1>
+
+        <p class="text-xl theme-text-secondary max-w-3xl mb-8">
+          {event.data.description}
+        </p>
+
+        <!-- Event Details Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="p-4 rounded-xl theme-card border">
+            <div class="text-sm theme-text-muted mb-1">Date</div>
+            <div class="theme-text font-medium">{formatDate(event.data.eventDate)}</div>
+          </div>
+          <div class="p-4 rounded-xl theme-card border">
+            <div class="text-sm theme-text-muted mb-1">Time</div>
+            <div class="theme-text font-medium">
+              {formatTime(event.data.eventDate)}
+              {event.data.endDate && ` - ${formatTime(event.data.endDate)}`}
+            </div>
+          </div>
+          <div class="p-4 rounded-xl theme-card border">
+            <div class="text-sm theme-text-muted mb-1">Location</div>
+            <div class="theme-text font-medium">{event.data.location}</div>
+          </div>
+          {event.data.registrationUrl && isUpcoming && (
+            <div class="p-4 rounded-xl bg-orange-600 text-white">
+              <div class="text-sm text-orange-200 mb-1">Registration</div>
+              <a
+                href={event.data.registrationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-medium hover:underline"
+              >
+                Register Now →
+              </a>
+            </div>
+          )}
+        </div>
+
+        {event.data.locationUrl && (
+          <a
+            href={event.data.locationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-orange-400 hover:text-orange-300 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            View on Google Maps
+          </a>
+        )}
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="container mx-auto px-4 py-16">
+      <div class="prose prose-lg dark:prose-invert max-w-3xl mx-auto">
+        <Content />
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    {isUpcoming && event.data.registrationUrl && (
+      <div class="container mx-auto px-4 pb-16">
+        <div class="max-w-3xl mx-auto p-8 rounded-2xl theme-card border text-center">
+          <h2 class="text-2xl font-bold theme-text mb-4">Ready to join us?</h2>
+          <p class="theme-text-secondary mb-6">
+            Secure your spot for this event. Registration helps us plan and ensures you get all the updates.
+          </p>
+          <a
+            href={event.data.registrationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-700 transition-colors"
+          >
+            Register on Humanitix
+          </a>
+        </div>
+      </div>
+    )}
+  </article>
+</DefaultLayout>
+
+<style is:global>
+  .prose h2 {
+    color: var(--theme-text);
+  }
+  .prose h3 {
+    color: var(--theme-text);
+  }
+  .prose p {
+    color: var(--theme-text-secondary);
+  }
+  .prose li {
+    color: var(--theme-text-secondary);
+  }
+  .prose strong {
+    color: var(--theme-text);
+  }
+  .prose blockquote {
+    color: var(--theme-text-secondary);
+    border-left-color: #f97316;
+  }
+</style>
