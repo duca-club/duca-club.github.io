@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 import { WobbleCard } from "@ui/wobble-card";
 import { Button } from "@ui/button";
 
@@ -51,7 +50,7 @@ export const DiscordCTASection = () => {
             </p>
             <div className="mt-6">
               <Button
-                href="https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"
+                href="https://dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"
                 variant="secondary"
                 className="bg-white text-cyan-900 hover:bg-gray-100"
               >
