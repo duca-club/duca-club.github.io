@@ -1,7 +1,7 @@
 ---
-import { Link } from 'accessible-astro-components'
-import { Image } from 'astro:assets'
-import logo from '../assets/img/logo.svg'
+import { Link } from "accessible-astro-components";
+import { Image } from "astro:assets";
+import logo from "../assets/img/logo.svg";
 
 /**
  * Logo Component
@@ -13,10 +13,10 @@ interface Props {
    * Whether to load the image eagerly or lazily
    * @default 'eager'
    */
-  loading?: 'eager' | 'lazy'
+  loading?: "eager" | "lazy";
 }
 
-const { loading = 'eager' }: Props = Astro.props
+const { loading = "eager" }: Props = Astro.props;
 ---
 
 <Link href="/" class="flex items-center gap-2">

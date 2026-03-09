@@ -1,5 +1,5 @@
 ---
-import { Media } from 'accessible-astro-components'
+import { Media } from "accessible-astro-components";
 
 /**
  * ContentMedia Component
@@ -10,36 +10,43 @@ interface Props {
   /**
    * The source URL for the image
    */
-  imgSrc: string
+  imgSrc: string;
   /**
    * Whether to display the image on the right side instead of the left
    * @default false
    */
-  reverseImg?: boolean
+  reverseImg?: boolean;
 }
 
-const { imgSrc, reverseImg = false }: Props = Astro.props
+const { imgSrc, reverseImg = false }: Props = Astro.props;
 ---
 
 <section class="my-64">
   <div class="container">
     <div class="grid grid-cols-1 gap-24 md:grid-cols-2">
-      {!reverseImg ? (
-        <div class="flex items-center">
-          <Media class="rounded-lg" src={imgSrc} />
-        </div>
-      ) : ''}
+      {
+        !reverseImg ? (
+          <div class="flex items-center">
+            <Media class="rounded-lg" src={imgSrc} />
+          </div>
+        ) : (
+          ""
+        )
+      }
 
       <div class="space-content flex flex-col justify-center">
         <slot />
       </div>
 
-      {reverseImg ? (
-        <div class="flex items-center">
-          <Media class="rounded-lg" src={imgSrc} />
-        </div>
-      ) : ''}
+      {
+        reverseImg ? (
+          <div class="flex items-center">
+            <Media class="rounded-lg" src={imgSrc} />
+          </div>
+        ) : (
+          ""
+        )
+      }
     </div>
   </div>
 </section>
-

@@ -1,48 +1,48 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import HeroSection from '@components/sections/HeroSection'
-import StatsSection from '@components/sections/StatsSection'
-import WhatWeDoSection from '@components/sections/WhatWeDoSection'
-import TestimonialsSection from '@components/sections/TestimonialsSection'
-import PartnersSection from '@components/sections/PartnersSection'
-import DiscordCTASection from '@components/sections/DiscordCTASection'
-import BlogPreviewSection from '@components/sections/BlogPreviewSection'
-import FeaturedEventsSection from '@components/sections/FeaturedEventsSection'
-import { getCollection } from 'astro:content'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import HeroSection from "@components/sections/HeroSection";
+import StatsSection from "@components/sections/StatsSection";
+import WhatWeDoSection from "@components/sections/WhatWeDoSection";
+import TestimonialsSection from "@components/sections/TestimonialsSection";
+import PartnersSection from "@components/sections/PartnersSection";
+import DiscordCTASection from "@components/sections/DiscordCTASection";
+import BlogPreviewSection from "@components/sections/BlogPreviewSection";
+import FeaturedEventsSection from "@components/sections/FeaturedEventsSection";
+import { getCollection } from "astro:content";
 
 // Pre-import all blog images using glob pattern
-const blogImages = import.meta.glob('../content/blog/**/*.{png,jpg,jpeg,webp}', { eager: true, import: 'default' })
+const blogImages = import.meta.glob("../content/blog/**/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" });
 
 // Fetch latest blog posts
-const allPosts = await getCollection('blog')
+const allPosts = await getCollection("blog");
 const sortedPosts = allPosts
   .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
-  .slice(0, 5)
+  .slice(0, 5);
 
 const blogPosts = sortedPosts.map((post) => {
-  let image: string | undefined
+  let image: string | undefined;
   if (post.data.featuredImage) {
-    const imageFileName = post.data.featuredImage.replace(/^\.\//, '')
-    const imageKey = `../content/blog/${post.data.slug}/${imageFileName}`
-    const resolved = blogImages[imageKey] as any
-    image = typeof resolved === 'string' ? resolved : resolved?.src
+    const imageFileName = post.data.featuredImage.replace(/^\.\//, "");
+    const imageKey = `../content/blog/${post.data.slug}/${imageFileName}`;
+    const resolved = blogImages[imageKey] as any;
+    image = typeof resolved === "string" ? resolved : resolved?.src;
   }
   return {
     title: post.data.title,
     description: post.data.description,
     href: `/blog/${post.data.slug || post.id}`,
     image,
-    category: post.data.tags?.[0] || 'Blog',
-  }
-})
+    category: post.data.tags?.[0] || "Blog",
+  };
+});
 
 // Fetch upcoming events (featured ones for homepage)
-const allEvents = await getCollection('events')
-const now = new Date()
+const allEvents = await getCollection("events");
+const now = new Date();
 const upcomingEvents = allEvents
   .filter((event) => new Date(event.data.eventDate) >= now)
   .sort((a, b) => new Date(a.data.eventDate).getTime() - new Date(b.data.eventDate).getTime())
-  .slice(0, 3)
+  .slice(0, 3);
 
 const featuredEvents = upcomingEvents.map((event) => ({
   title: event.data.title,
@@ -53,18 +53,18 @@ const featuredEvents = upcomingEvents.map((event) => ({
   slug: event.data.slug,
   tags: event.data.tags,
   featuredImage: event.data.featuredImage,
-}))
+}));
 
 // Discord API for member count
-const DISCORD_INVITE_CODE = "duca"
-const DISCORD_INVITE_API = `https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`
+const DISCORD_INVITE_CODE = "duca";
+const DISCORD_INVITE_API = `https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`;
 
-let memberCount = 750
+let memberCount = 750;
 try {
-  const response = await fetch(DISCORD_INVITE_API)
+  const response = await fetch(DISCORD_INVITE_API);
   if (response.ok) {
-    const data = await response.json()
-    memberCount = data.approximate_member_count || 750
+    const data = await response.json();
+    memberCount = data.approximate_member_count || 750;
   }
 } catch {
   // Use default
@@ -105,50 +105,66 @@ try {
   /* Matrix rain easter egg overlay */
   .matrix-rain {
     position: fixed;
-    inset: 0;
     z-index: 9998;
-    pointer-events: none;
+    inset: 0;
     overflow: hidden;
+    pointer-events: none;
   }
 </style>
 
 <script>
   // Easter Egg: Konami Code → Matrix rain
-  document.addEventListener('astro:page-load', () => {
-    const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  document.addEventListener("astro:page-load", () => {
+    const konamiCode = [
+      "ArrowUp",
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowLeft",
+      "ArrowRight",
+      "b",
+      "a",
+    ];
     let ki = 0;
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener("keydown", (e) => {
       if (e.key === konamiCode[ki]) {
         ki++;
         if (ki === konamiCode.length) {
           ki = 0;
-          const c = document.createElement('div');
-          c.className = 'matrix-rain';
-          const cv = document.createElement('canvas');
+          const c = document.createElement("div");
+          c.className = "matrix-rain";
+          const cv = document.createElement("canvas");
           c.appendChild(cv);
           document.body.appendChild(c);
-          const ctx = cv.getContext('2d');
+          const ctx = cv.getContext("2d");
           if (!ctx) return;
           cv.width = window.innerWidth;
           cv.height = window.innerHeight;
-          const chars = 'DUCACYBER01アイウエオ';
+          const chars = "DUCACYBER01アイウエオ";
           const fs = 14;
           const cols = Math.floor(cv.width / fs);
           const drops = Array(cols).fill(1);
           const iv = setInterval(() => {
-            ctx.fillStyle = 'rgba(0,0,0,0.05)';
+            ctx.fillStyle = "rgba(0,0,0,0.05)";
             ctx.fillRect(0, 0, cv.width, cv.height);
-            ctx.fillStyle = '#33ff33';
-            ctx.font = fs + 'px monospace';
+            ctx.fillStyle = "#33ff33";
+            ctx.font = fs + "px monospace";
             for (let i = 0; i < drops.length; i++) {
-              ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fs, drops[i] * fs);
+              ctx.fillText(chars[Math.floor(Math.random() * chars.length)]!, i * fs, drops[i] * fs);
               if (drops[i] * fs > cv.height && Math.random() > 0.975) drops[i] = 0;
               drops[i]++;
             }
           }, 33);
-          setTimeout(() => { clearInterval(iv); c.remove(); }, 5000);
+          setTimeout(() => {
+            clearInterval(iv);
+            c.remove();
+          }, 5000);
         }
-      } else { ki = 0; }
+      } else {
+        ki = 0;
+      }
     });
   });
 </script>

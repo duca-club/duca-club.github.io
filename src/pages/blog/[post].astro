@@ -1,47 +1,47 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import PageHeader from '@components/PageHeader.astro'
-import SocialShares from '@components/SocialShares.astro'
-import { Heading } from 'accessible-astro-components'
-import { getCollection, render } from 'astro:content'
-import authorsJson from './_authors.json'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import PageHeader from "@components/PageHeader.astro";
+import SocialShares from "@components/SocialShares.astro";
+import { Heading } from "accessible-astro-components";
+import { getCollection, render } from "astro:content";
+import authorsJson from "./_authors.json";
 
 // Pre-import all blog images using glob pattern
-const blogImages = import.meta.glob('../../content/blog/**/*.{png,jpg,jpeg,webp}', { eager: true, import: 'default' })
+const blogImages = import.meta.glob("../../content/blog/**/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" });
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog')
+  const posts = await getCollection("blog");
 
   return posts.map((post) => {
-    const slug = post.data.slug
+    const slug = post.data.slug;
     return {
       params: { post: slug },
       props: { post: { ...post, slug } },
-    }
-  })
+    };
+  });
 }
 
-const { post } = Astro.props
-const { Content } = await render(post)
+const { post } = Astro.props;
+const { Content } = await render(post);
 
 // ----- Author -----
 type Author = {
-  name: string
-  image: string
-  bio: string
-}
+  name: string;
+  image: string;
+  bio: string;
+};
 
-const authors = authorsJson as Record<string, Author>
-const author = authors[post.data.author]
+const authors = authorsJson as Record<string, Author>;
+const author = authors[post.data.author];
 
 // ----- Hero Image -----
-let featuredImage: string | undefined = undefined
+let featuredImage: string | undefined = undefined;
 if (post.data.featuredImage) {
   // this path is mentioned relative to this file inside /src/pages/blog/
   // Remove leading ./ from featuredImage path if present
-  const imageFileName = post.data.featuredImage.replace(/^\.\//, '')
-  const imageKey = `../../content/blog/${post.data.slug}/${imageFileName}`
-  featuredImage = blogImages[imageKey] as string | undefined
+  const imageFileName = post.data.featuredImage.replace(/^\.\//, "");
+  const imageKey = `../../content/blog/${post.data.slug}/${imageFileName}`;
+  featuredImage = blogImages[imageKey] as string | undefined;
 }
 ---
 

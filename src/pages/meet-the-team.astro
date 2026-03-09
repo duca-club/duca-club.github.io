@@ -1,8 +1,8 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import { SectionHeading } from '@components/ui/section-heading'
-import { TeamGrid } from '@components/ui/team-card'
-import { AuroraBackground } from '@components/ui/aurora-background'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import { SectionHeading } from "@components/ui/section-heading";
+import { TeamGrid } from "@components/ui/team-card";
+import { AuroraBackground } from "@components/ui/aurora-background";
 
 const executives = [
   { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#", bio: "" },
@@ -10,12 +10,13 @@ const executives = [
   { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#", bio: "" },
   { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#", bio: "" },
   { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#", bio: "" },
-]
+];
 
 const divisions = [
   {
     name: "Development Division",
-    description: "We make cool software for the club! Whether you're new to coding or already building things, we'll work together, learn together, and create useful tools for everyone.",
+    description:
+      "We make cool software for the club! Whether you're new to coding or already building things, we'll work together, learn together, and create useful tools for everyone.",
     members: [
       { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
       { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
@@ -26,7 +27,8 @@ const divisions = [
   },
   {
     name: "Penetration Testing Division",
-    description: "We explore ethical hacking in a safe, friendly space! Together, we learn how attackers think — and how to stop them — through fun, guided activities.",
+    description:
+      "We explore ethical hacking in a safe, friendly space! Together, we learn how attackers think — and how to stop them — through fun, guided activities.",
     members: [
       { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
       { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
@@ -37,7 +39,8 @@ const divisions = [
   },
   {
     name: "Networking Division",
-    description: "We dig into how the internet actually works! Through fun, hands-on activities, we learn how devices connect, talk, and stay secure — together!",
+    description:
+      "We dig into how the internet actually works! Through fun, hands-on activities, we learn how devices connect, talk, and stay secure — together!",
     members: [
       { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
       { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
@@ -48,7 +51,8 @@ const divisions = [
   },
   {
     name: "Cyber Essentials Division",
-    description: "We introduce everyone to the basics of cybersecurity in a super friendly, beginner-friendly way — perfect for easing into the tech world without feeling overwhelmed!",
+    description:
+      "We introduce everyone to the basics of cybersecurity in a super friendly, beginner-friendly way — perfect for easing into the tech world without feeling overwhelmed!",
     members: [
       { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
       { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
@@ -59,7 +63,8 @@ const divisions = [
   },
   {
     name: "Capture The Flag Division",
-    description: "We're all about solving fun cybersecurity puzzles together! We learn heaps, celebrate progress, and help each other crack challenges in a relaxed, supportive environment.",
+    description:
+      "We're all about solving fun cybersecurity puzzles together! We learn heaps, celebrate progress, and help each other crack challenges in a relaxed, supportive environment.",
     members: [
       { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
       { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
@@ -70,7 +75,8 @@ const divisions = [
   },
   {
     name: "Remote Events Division",
-    description: "We make sure everyone can join in the fun from anywhere! We host online workshops, games, streams, and events so no one ever feels left out.",
+    description:
+      "We make sure everyone can join in the fun from anywhere! We host online workshops, games, streams, and events so no one ever feels left out.",
     members: [
       { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
       { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
@@ -81,7 +87,8 @@ const divisions = [
   },
   {
     name: "Advertising Division",
-    description: "We're the team that makes everything look fun and exciting! We spread the word about our events, projects, and wins so everyone feels welcome and included.",
+    description:
+      "We're the team that makes everything look fun and exciting! We spread the word about our events, projects, and wins so everyone feels welcome and included.",
     members: [
       { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
       { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
@@ -90,75 +97,71 @@ const divisions = [
       { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
     ],
   },
-]
+];
 ---
 
 <DefaultLayout title="Meet The Team">
   <!-- Hero Section -->
-  <section class="relative min-h-[40vh] flex items-center justify-center overflow-hidden">
-    <AuroraBackground className="absolute inset-0 !h-full" showRadialGradient={false} client:load>
+  <section class="relative flex min-h-[40vh] items-center justify-center overflow-hidden">
+    <AuroraBackground className="absolute inset-0 h-full!" showRadialGradient={false} client:load>
       <div></div>
     </AuroraBackground>
     <div class="absolute inset-0 z-10 flex items-center justify-center px-4 py-20">
       <div class="text-center">
-        <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-          <span class="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Meet The Team</span>
+        <h1 class="mb-6 text-5xl font-bold text-white md:text-7xl">
+          <span class="bg-linear-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Meet The Team</span>
         </h1>
-        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-          We're a bunch of curious, passionate people building a welcoming space for everyone — come see what we get up to!
+        <p class="mx-auto max-w-3xl text-xl text-gray-300 md:text-2xl">
+          We're a bunch of curious, passionate people building a welcoming space for everyone — come see what we get up
+          to!
         </p>
       </div>
     </div>
   </section>
 
   <!-- Executives -->
-  <section class="py-24 section-themed">
+  <section class="section-themed py-24">
     <div class="container mx-auto px-4">
-      <SectionHeading
-        title="Executives"
-        subtitle="The leadership team driving DUCA forward"
-        client:visible
-      />
+      <SectionHeading title="Executives" subtitle="The leadership team driving DUCA forward" client:visible />
       <TeamGrid members={executives} className="mt-12" client:visible />
     </div>
   </section>
 
   <!-- Divisions -->
-  {divisions.map((division, divIdx) => (
-    <section class={`py-20 section-themed ${divIdx % 2 === 0 ? 'border-t border-purple-500/10' : 'border-t border-slate-700/30'}`}>
-      <div class="container mx-auto px-4">
-        <SectionHeading
-          title={division.name}
-          subtitle={division.description}
-          client:visible
-        />
+  {
+    divisions.map((division, divIdx) => (
+      <section
+        class={`section-themed py-20 ${divIdx % 2 === 0 ? "border-t border-purple-500/10" : "border-t border-slate-700/30"}`}
+      >
+        <div class="container mx-auto px-4">
+          <SectionHeading title={division.name} subtitle={division.description} client:visible />
 
-        <TeamGrid members={division.members} className="mt-8" client:visible />
-      </div>
-    </section>
-  ))}
+          <TeamGrid members={division.members} className="mt-8" client:visible />
+        </div>
+      </section>
+    ))
+  }
 
   <!-- CTA -->
-  <section class="py-24 section-themed relative overflow-hidden data-stream-bg border-t border-purple-500/10">
-    <div class="container mx-auto px-4 text-center relative z-10">
-      <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-        Want to join the team?
-      </h2>
-      <p class="text-gray-400 max-w-2xl mx-auto mb-8">
-        We're always looking for passionate people to help grow DUCA. Whether you want to lead, build, hack, or create — there's a place for you.
+  <section class="section-themed data-stream-bg relative overflow-hidden border-t border-purple-500/10 py-24">
+    <div class="relative z-10 container mx-auto px-4 text-center">
+      <h2 class="mb-6 text-3xl font-bold text-white md:text-4xl">Want to join the team?</h2>
+      <p class="mx-auto mb-8 max-w-2xl text-gray-400">
+        We're always looking for passionate people to help grow DUCA. Whether you want to lead, build, hack, or create —
+        there's a place for you.
       </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <div class="flex flex-col justify-center gap-4 sm:flex-row">
         <a
           href="https://dusa.org.au/clubs/duca"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors"
+          class="inline-flex items-center justify-center rounded-full bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700"
         >
           Join via DUSA
         </a>
         <a
           href="/contact"
-          class="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-purple-500 text-white font-semibold hover:bg-purple-500/10 transition-colors"
+          class="inline-flex items-center justify-center rounded-full border-2 border-purple-500 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-500/10"
         >
           Get in Touch
         </a>

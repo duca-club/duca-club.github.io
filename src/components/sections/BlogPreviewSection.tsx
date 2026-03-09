@@ -12,18 +12,11 @@ interface BlogPost {
   category?: string;
 }
 
-export const BlogPreviewSection = ({
-  posts,
-}: {
-  posts: BlogPost[];
-}) => {
+export const BlogPreviewSection = ({ posts }: { posts: BlogPost[] }) => {
   return (
-    <section className="py-24 relative section-themed">
+    <section className="section-themed relative py-24">
       <div className="container mx-auto px-4">
-        <SectionHeading
-          title="Latest from our Blog"
-          subtitle="Insights, tutorials, and news from the DUCA community"
-        />
+        <SectionHeading title="Latest from our Blog" subtitle="Insights, tutorials, and news from the DUCA community" />
 
         <BentoGrid className="mt-12">
           {posts.slice(0, 5).map((post, i) => (
@@ -34,7 +27,7 @@ export const BlogPreviewSection = ({
               href={post.href}
               header={
                 <div
-                  className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-purple-900/50 to-slate-900"
+                  className="flex h-full min-h-24 w-full flex-1 rounded-xl bg-linear-to-br from-purple-900/50 to-slate-900"
                   style={{
                     backgroundImage: post.image ? `url(${post.image})` : undefined,
                     backgroundSize: "cover",
@@ -44,9 +37,7 @@ export const BlogPreviewSection = ({
               }
               icon={
                 post.category && (
-                  <span className="text-xs text-purple-400 font-medium uppercase tracking-wider">
-                    {post.category}
-                  </span>
+                  <span className="text-xs font-medium tracking-wider text-purple-400 uppercase">{post.category}</span>
                 )
               }
               className={i === 0 || i === 3 ? "md:col-span-2" : ""}
@@ -58,7 +49,7 @@ export const BlogPreviewSection = ({
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="mt-12 text-center"
         >
           <Button href="/blog" variant="outline">
             View All Posts

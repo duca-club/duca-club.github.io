@@ -1,6 +1,6 @@
 ---
-import Navigation from '../components/Navigation.astro'
-import { Link, SkipLink } from 'accessible-astro-components'
+import Navigation from "../components/Navigation.astro";
+import { SkipLink } from "accessible-astro-components";
 
 /**
  * Header Component
@@ -10,70 +10,70 @@ import { Link, SkipLink } from 'accessible-astro-components'
 ---
 
 <header>
-    <SkipLink />
-    <Navigation>
-        <li class="menu-item">
-            <a href="/" data-astro-prefetch="hover">Home</a>
-        </li>
-        <li class="menu-item">
-            <a href="/about/" data-astro-prefetch="hover">About</a>
-        </li>
-        <li class="menu-item">
-            <a href="/events/" data-astro-prefetch="hover">Events</a>
-        </li>
-        <li class="menu-item">
-            <a href="/projects/" data-astro-prefetch="hover">Projects</a>
-        </li>
-        <li class="menu-item">
-            <a href="/blog/" data-astro-prefetch="hover">Blog</a>
-        </li>
-        <li class="menu-item">
-            <a href="/partners/" data-astro-prefetch="hover">Partners</a>
-        </li>
-        <li class="menu-item">
-            <a href="/contact/" data-astro-prefetch="hover">Contact</a>
-        </li>
-        <li class="menu-item">
-            <a href="/calendar/" data-astro-prefetch="hover">Calendar</a>
-        </li>
-        <li class="menu-item highlight">
-            <a href="/join/" data-astro-prefetch="hover">Join Us</a>
-        </li>
-    </Navigation>
+  <SkipLink />
+  <Navigation>
+    <li class="menu-item">
+      <a href="/" data-astro-prefetch="hover">Home</a>
+    </li>
+    <li class="menu-item">
+      <a href="/about/" data-astro-prefetch="hover">About</a>
+    </li>
+    <li class="menu-item">
+      <a href="/events/" data-astro-prefetch="hover">Events</a>
+    </li>
+    <li class="menu-item">
+      <a href="/projects/" data-astro-prefetch="hover">Projects</a>
+    </li>
+    <li class="menu-item">
+      <a href="/blog/" data-astro-prefetch="hover">Blog</a>
+    </li>
+    <li class="menu-item">
+      <a href="/partners/" data-astro-prefetch="hover">Partners</a>
+    </li>
+    <li class="menu-item">
+      <a href="/contact/" data-astro-prefetch="hover">Contact</a>
+    </li>
+    <li class="menu-item">
+      <a href="/calendar/" data-astro-prefetch="hover">Calendar</a>
+    </li>
+    <li class="menu-item highlight">
+      <a href="/join/" data-astro-prefetch="hover">Join Us</a>
+    </li>
+  </Navigation>
 </header>
 
 <style lang="scss" is:global>
-    header {
-        background-color: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        position: sticky;
-        top: 0;
-        z-index: 100;
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.8);
 
-        .type-icon {
-            display: block;
-            margin-inline: -7px;
+    .type-icon {
+      display: block;
+      margin-inline: -7px;
 
-            svg {
-                inline-size: 30px;
-                block-size: 30px;
-            }
-        }
-
-        // Highlight style for Join Us button
-        .highlight a {
-            background: linear-gradient(135deg, #d648ff 0%, #7c3aed 100%);
-            padding: 0.5rem 1rem !important;
-            border-radius: 9999px;
-            color: white !important;
-            font-weight: 600;
-            transition: all 0.2s ease;
-
-            &:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 20px rgba(214, 72, 255, 0.4);
-            }
-        }
+      svg {
+        inline-size: 30px;
+        block-size: 30px;
+      }
     }
+
+    // Highlight style for Join Us button
+    .highlight a {
+      transition: all 0.2s ease;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #d648ff 0%, #7c3aed 100%);
+      padding: 0.5rem 1rem !important;
+      color: white !important;
+      font-weight: 600;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(214, 72, 255, 0.4);
+      }
+    }
+  }
 </style>

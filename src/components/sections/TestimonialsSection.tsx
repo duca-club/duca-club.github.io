@@ -42,22 +42,14 @@ const testimonials = [
 
 export const TestimonialsSection = () => {
   return (
-    <section className="py-24 section-themed relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent pointer-events-none" />
+    <section className="section-themed relative overflow-hidden py-24">
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent via-purple-900/5 to-transparent" />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <SectionHeading
-          title="Why join us?"
-          subtitle="Hear from our members about their experiences with DUCA"
-        />
+      <div className="relative z-10 container mx-auto px-4">
+        <SectionHeading title="Why join us?" subtitle="Hear from our members about their experiences with DUCA" />
 
         <div className="mt-12">
-          <InfiniteMovingCards
-            items={testimonials}
-            direction="left"
-            speed="slow"
-            pauseOnHover={true}
-          />
+          <InfiniteMovingCards items={testimonials} direction="left" speed="slow" pauseOnHover={true} />
         </div>
       </div>
     </section>

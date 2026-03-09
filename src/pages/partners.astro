@@ -1,11 +1,11 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import { TextGenerateEffect } from '@components/ui/text-generate-effect'
-import { SectionHeading } from '@components/ui/section-heading'
-import { CardSpotlight } from '@components/ui/card-spotlight'
-import { WobbleCard } from '@components/ui/wobble-card'
-import { InfiniteLogoCarousel } from '@components/ui/logo-carousel'
-import { AuroraBackground } from '@components/ui/aurora-background'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import { TextGenerateEffect } from "@components/ui/text-generate-effect";
+import { SectionHeading } from "@components/ui/section-heading";
+import { CardSpotlight } from "@components/ui/card-spotlight";
+import { WobbleCard } from "@components/ui/wobble-card";
+import { InfiniteLogoCarousel } from "@components/ui/logo-carousel";
+import { AuroraBackground } from "@components/ui/aurora-background";
 
 const partners = [
   {
@@ -32,13 +32,13 @@ const partners = [
     description: "Deakin's cybersecurity research center supporting student learning and research opportunities.",
     type: "Research Partner",
   },
-]
+];
 
-const partnerLogos = partners.map(p => ({
+const partnerLogos = partners.map((p) => ({
   name: p.name,
   logo: p.logo,
   href: "#partners",
-}))
+}));
 
 const sponsorBenefits = [
   {
@@ -61,21 +61,22 @@ const sponsorBenefits = [
     description: "Help shape the next generation of cybersecurity professionals and give back to the community.",
     icon: "💫",
   },
-]
+];
 ---
 
 <DefaultLayout title="Partners & Sponsors">
   <!-- Hero Section with Aurora Background -->
-  <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
-    <AuroraBackground className="absolute inset-0 !h-full" showRadialGradient={false} client:load>
+  <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
+    <AuroraBackground className="absolute inset-0 h-full!" showRadialGradient={false} client:load>
       <div></div>
     </AuroraBackground>
 
     <div class="absolute inset-0 z-10 flex items-center justify-center px-4 py-20">
       <div class="flex items-center gap-8 md:gap-12">
         <!-- ASCII Art - Left Side -->
-        <div class="hidden md:block ascii-art-container select-none shrink-0" aria-hidden="true">
-          <pre class="font-mono text-sm leading-tight ascii-glow text-left"><span class="text-amber-400/70">┌──────────────┐
+        <div class="ascii-art-container hidden shrink-0 select-none md:block" aria-hidden="true">
+          <pre
+            class="ascii-glow text-left font-mono text-sm leading-tight"><span class="text-amber-400/70">┌──────────────┐
 │ ╔═══════════╗│
 │ ║  DUCA.sec ║│
 │ ╚═══════════╝│
@@ -89,20 +90,23 @@ const sponsorBenefits = [
 │ └────────────┘│
 │  [====]  ◉◉◉  │
 └───────────────┘</span></pre>
-          <pre class="font-mono text-xs leading-tight mt-3 ascii-pulse text-left"><span class="text-amber-500/40">STATUS: SEEKING
+          <pre
+            class="ascii-pulse mt-3 text-left font-mono text-xs leading-tight"><span class="text-amber-500/40">STATUS: SEEKING
 ALLIES ███████░░
 LINK: ACTIVE ●</span></pre>
         </div>
 
         <!-- Title + Description -->
         <div class="text-center md:text-left">
-          <h1 class="text-5xl md:text-7xl font-bold text-white mb-8">
-            <span class="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">Partners & Sponsors</span>
+          <h1 class="mb-8 text-5xl font-bold text-white md:text-7xl">
+            <span class="bg-linear-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent"
+              >Partners & Sponsors</span
+            >
           </h1>
           <div class="max-w-3xl">
             <TextGenerateEffect
               words="Partner with DUCA to connect with Australia's next generation of cybersecurity talent. Together, we're building a safer digital future."
-              className="text-xl md:text-2xl text-gray-300"
+              className="text-xl text-gray-300 md:text-2xl"
               client:visible
             />
           </div>
@@ -112,19 +116,14 @@ LINK: ACTIVE ●</span></pre>
   </section>
 
   <!-- Scrolling Logo Carousel -->
-  <section class="py-8 section-themed border-y border-amber-500/10">
+  <section class="section-themed border-y border-amber-500/10 py-8">
     <div class="container mx-auto px-4">
-      <InfiniteLogoCarousel
-        partners={partnerLogos}
-        direction="left"
-        speed="slow"
-        client:visible
-      />
+      <InfiniteLogoCarousel partners={partnerLogos} direction="left" speed="slow" client:visible />
     </div>
   </section>
 
   <!-- Why Sponsor -->
-  <section class="py-24 section-themed relative overflow-hidden data-stream-bg">
+  <section class="section-themed data-stream-bg relative overflow-hidden py-24">
     <div class="container mx-auto px-4">
       <SectionHeading
         title="Why Partner With Us?"
@@ -132,98 +131,84 @@ LINK: ACTIVE ●</span></pre>
         client:visible
       />
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
-        {sponsorBenefits.map((benefit, idx) => (
-          <div class="animate-float" style={`animation-delay: ${idx * 0.5}s;`}>
-            <CardSpotlight
-              radius={300}
-              color="#f59e0b"
-              className="h-full"
-              client:visible
-            >
-              <div class="relative z-10">
-                <div class="text-4xl mb-4">{benefit.icon}</div>
-                <h3 class="text-xl font-bold theme-text mb-2">{benefit.title}</h3>
-                <p class="theme-text-secondary">{benefit.description}</p>
-              </div>
-            </CardSpotlight>
-          </div>
-        ))}
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        {
+          sponsorBenefits.map((benefit, idx) => (
+            <div class="animate-float" style={`animation-delay: ${idx * 0.5}s;`}>
+              <CardSpotlight radius={300} color="#f59e0b" className="h-full" client:visible>
+                <div class="relative z-10">
+                  <div class="mb-4 text-4xl">{benefit.icon}</div>
+                  <h3 class="theme-text mb-2 text-xl font-bold">{benefit.title}</h3>
+                  <p class="theme-text-secondary">{benefit.description}</p>
+                </div>
+              </CardSpotlight>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
 
   <!-- Current Partners -->
-  <section id="partners" class="py-24 section-themed border-t theme-border relative overflow-hidden">
+  <section id="partners" class="section-themed theme-border relative overflow-hidden border-t py-24">
     <!-- Animated background dots -->
-    <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+    <div class="bg-grid-pattern absolute inset-0 opacity-30"></div>
 
-    <div class="container mx-auto px-4 relative z-10">
-      <SectionHeading
-        title="Our Partners"
-        subtitle="Organizations supporting our mission"
-        client:visible
-      />
+    <div class="relative z-10 container mx-auto px-4">
+      <SectionHeading title="Our Partners" subtitle="Organizations supporting our mission" client:visible />
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-        {partners.map((partner, idx) => (
-          <div
-            class="partner-card p-8 rounded-2xl theme-card border theme-border hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5 hover:-translate-y-1"
-            style={`animation-delay: ${idx * 0.2}s;`}
-          >
-            <div class="flex items-start gap-6">
-              <div class="w-20 h-20 rounded-xl theme-bg-secondary flex items-center justify-center flex-shrink-0 partner-logo-wrap">
-                <img
-                  src={partner.logo}
-                  alt={partner.name}
-                  class="w-16 h-16 object-contain logo-hover-bounce"
-                  onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
-                />
-              </div>
-              <div>
-                <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">
-                  {partner.type}
-                </span>
-                <h3 class="text-xl font-bold theme-text mt-1 mb-2">{partner.name}</h3>
-                <p class="theme-text-secondary">{partner.description}</p>
+      <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+        {
+          partners.map((partner, idx) => (
+            <div
+              class="partner-card theme-card theme-border rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5"
+              style={`animation-delay: ${idx * 0.2}s;`}
+            >
+              <div class="flex items-start gap-6">
+                <div class="theme-bg-secondary partner-logo-wrap flex h-20 w-20 shrink-0 items-center justify-center rounded-xl">
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    class="logo-hover-bounce h-16 w-16 object-contain"
+                    onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
+                  />
+                </div>
+                <div>
+                  <span class="text-xs font-semibold tracking-wider text-amber-400 uppercase">{partner.type}</span>
+                  <h3 class="theme-text mt-1 mb-2 text-xl font-bold">{partner.name}</h3>
+                  <p class="theme-text-secondary">{partner.description}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </div>
   </section>
 
   <!-- Second Logo Carousel (reverse direction) -->
-  <section class="py-8 section-themed border-y border-amber-500/10">
+  <section class="section-themed border-y border-amber-500/10 py-8">
     <div class="container mx-auto px-4">
-      <InfiniteLogoCarousel
-        partners={partnerLogos}
-        direction="right"
-        speed="normal"
-        client:visible
-      />
+      <InfiniteLogoCarousel partners={partnerLogos} direction="right" speed="normal" client:visible />
     </div>
   </section>
 
   <!-- Become a Partner CTA - WobbleCard -->
-  <section class="py-24 section-themed">
+  <section class="section-themed py-24">
     <div class="container mx-auto px-4">
       <WobbleCard
         containerClassName="bg-gradient-to-br from-amber-900/80 to-orange-900/60 min-h-[300px]"
         client:visible
       >
         <div class="max-w-xl">
-          <h2 class="text-2xl md:text-4xl font-bold text-white mb-4">
-            Become a Partner
-          </h2>
-          <p class="text-amber-100/80 mb-6 text-lg">
-            Interested in partnering with DUCA? We'd love to discuss how we can work together
-            to support cybersecurity education and career development.
+          <h2 class="mb-4 text-2xl font-bold text-white md:text-4xl">Become a Partner</h2>
+          <p class="mb-6 text-lg text-amber-100/80">
+            Interested in partnering with DUCA? We'd love to discuss how we can work together to support cybersecurity
+            education and career development.
           </p>
           <a
             href="/contact"
-            class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-amber-500 text-black font-semibold hover:bg-amber-400 transition-colors text-lg"
+            class="inline-flex items-center justify-center rounded-full bg-amber-500 px-8 py-4 text-lg font-semibold text-black transition-colors hover:bg-amber-400"
           >
             Get in Touch
           </a>
@@ -233,16 +218,20 @@ LINK: ACTIVE ●</span></pre>
   </section>
 
   <!-- Discord CTA - Amber variant -->
-  <section class="py-16 section-themed border-t theme-border">
+  <section class="section-themed theme-border border-t py-16">
     <div class="container mx-auto px-4 text-center">
-      <div class="max-w-2xl mx-auto p-10 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-900/10 to-black animate-border-glow">
-        <h3 class="text-2xl font-bold text-white mb-4">Join Our Community</h3>
-        <p class="text-gray-400 mb-6">Connect with fellow cybersecurity enthusiasts and stay updated on partnership opportunities.</p>
+      <div
+        class="animate-border-glow mx-auto max-w-2xl rounded-2xl border border-amber-500/20 bg-linear-to-br from-amber-900/10 to-black p-10"
+      >
+        <h3 class="mb-4 text-2xl font-bold text-white">Join Our Community</h3>
+        <p class="mb-6 text-gray-400">
+          Connect with fellow cybersecurity enthusiasts and stay updated on partnership opportunities.
+        </p>
         <a
           href="https://discord.gg/duca"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-amber-600 text-white font-semibold hover:bg-amber-500 transition-colors"
+          class="inline-flex items-center justify-center rounded-full bg-amber-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-amber-500"
         >
           Join Discord Server
         </a>
@@ -270,21 +259,37 @@ LINK: ACTIVE ●</span></pre>
     min-width: 200px;
   }
   .ascii-glow {
-    text-shadow: 0 0 8px rgba(245, 158, 11, 0.3), 0 0 20px rgba(245, 158, 11, 0.1);
     animation: ascii-flicker 4s ease-in-out infinite;
+    text-shadow:
+      0 0 8px rgba(245, 158, 11, 0.3),
+      0 0 20px rgba(245, 158, 11, 0.1);
   }
   .ascii-pulse {
     animation: ascii-blink 2s ease-in-out infinite;
   }
   @keyframes ascii-flicker {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 1; }
-    73% { opacity: 0.75; }
-    74% { opacity: 0.95; }
+    0%,
+    100% {
+      opacity: 0.8;
+    }
+    50% {
+      opacity: 1;
+    }
+    73% {
+      opacity: 0.75;
+    }
+    74% {
+      opacity: 0.95;
+    }
   }
   @keyframes ascii-blink {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.7; }
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.7;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
