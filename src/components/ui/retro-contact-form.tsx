@@ -282,7 +282,7 @@ export function RetroContactForm() {
                 </label>
                 <input
                   type="text"
-                  value="duca@info.au"
+                  value="info@duca.au"
                   readOnly
                   className="flex-1 bg-transparent border-b border-green-900/50 py-2 px-1 font-mono text-sm outline-none"
                   style={{ color: "#33ff33", opacity: 0.6 }}
