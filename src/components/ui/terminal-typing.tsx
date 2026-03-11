@@ -1,58 +1,100 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
+import { DEFAULT_DISCORD_MEMBER_COUNT, formatMemberCount } from "@/utils/discordMembers";
 
-const terminalLines = [
-  { prompt: "$ ", text: "whoami", delay: 80 },
-  { prompt: "", text: "DUCA - Deakin University Cybersecurity Association", delay: 30 },
-  { prompt: "", text: "", delay: 500 },
-  { prompt: "$ ", text: "cat mission.txt", delay: 80 },
-  { prompt: "", text: "Building a community of cybersecurity enthusiasts", delay: 30 },
-  { prompt: "", text: "at Deakin University. Learn, share, and grow together.", delay: 30 },
-  { prompt: "", text: "", delay: 500 },
-  { prompt: "$ ", text: "ls divisions/", delay: 80 },
-  { prompt: "", text: "penetration-testing/  networking/  cyber-essentials/", delay: 30 },
-  { prompt: "", text: "ctf/  development/  advertising/", delay: 30 },
-  { prompt: "", text: "", delay: 500 },
-  { prompt: "$ ", text: "echo $MEMBERS", delay: 80 },
-  { prompt: "", text: "750+ and growing...", delay: 30 },
-  { prompt: "", text: "", delay: 500 },
+const JOIN_URL = "https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca";
+
+const buildTerminalLines = (memberCount: number) => [
+  { id: "whoami-cmd", prompt: "$ ", text: "whoami", delay: 80 },
+  { id: "whoami-out", prompt: "", text: "DUCA - Deakin University Cybersecurity Association", delay: 30 },
+  { id: "spacer-1", prompt: "", text: "", delay: 500 },
+  { id: "mission-cmd", prompt: "$ ", text: "cat mission.txt", delay: 80 },
+  { id: "mission-out-1", prompt: "", text: "Building a community of cybersecurity enthusiasts", delay: 30 },
+  { id: "mission-out-2", prompt: "", text: "at Deakin University. Learn, share, and grow together.", delay: 30 },
+  { id: "spacer-2", prompt: "", text: "", delay: 500 },
+  { id: "divisions-cmd", prompt: "$ ", text: "ls divisions/", delay: 80 },
+  { id: "divisions-out-1", prompt: "", text: "penetration-testing/  networking/  cyber-essentials/", delay: 30 },
+  { id: "divisions-out-2", prompt: "", text: "ctf/  development/  advertising/", delay: 30 },
+  { id: "spacer-3", prompt: "", text: "", delay: 500 },
+  { id: "members-cmd", prompt: "$ ", text: "echo $members", delay: 80 },
+  { id: "members-out", prompt: "", text: `${formatMemberCount(memberCount)}+ and growing...`, delay: 30 },
+  { id: "spacer-4", prompt: "", text: "", delay: 500 },
   {
+    id: "join-cmd",
     prompt: "$ ",
-    text: 'echo "Join us → dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"',
+    text: "cat join.txt",
     delay: 80,
   },
   {
+    id: "join-out",
     prompt: "",
-    text: "Join us → dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca",
+    text: `Register -> ${JOIN_URL}`,
     delay: 30,
   },
 ];
 
-export function TerminalTyping({ className }: { className?: string }) {
-  const [displayedLines, setDisplayedLines] = useState<{ prompt: string; text: string; isTyping: boolean }[]>([]);
+function renderTerminalText(text: string) {
+  const linkStart = text.indexOf(JOIN_URL);
+  if (linkStart === -1) return text;
+
+  const before = text.slice(0, linkStart);
+  const after = text.slice(linkStart + JOIN_URL.length);
+
+  return (
+    <>
+      {before}
+      <a
+        href={JOIN_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline decoration-green-400/60 underline-offset-2 hover:text-green-300"
+        style={{ color: "#5dff5d" }}
+      >
+        {JOIN_URL}
+      </a>
+      {after}
+    </>
+  );
+}
+
+export function TerminalTyping({
+  className,
+  memberCount = DEFAULT_DISCORD_MEMBER_COUNT,
+}: {
+  className?: string;
+  memberCount?: number;
+}) {
+  const terminalLines = useMemo(() => buildTerminalLines(memberCount), [memberCount]);
+  const [displayedLines, setDisplayedLines] = useState<
+    { id: string; prompt: string; text: string; isTyping: boolean }[]
+  >([]);
   const [currentLineIdx, setCurrentLineIdx] = useState(0);
   const [currentCharIdx, setCurrentCharIdx] = useState(0);
   const [started, setStarted] = useState(false);
+  const [isRewinding, setIsRewinding] = useState(false);
+  const previousMemberCountRef = useRef(memberCount);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (isRewinding) return;
     if (!started) return;
     if (currentLineIdx >= terminalLines.length) return;
 
-    const line = terminalLines[currentLineIdx]!;
+    const line = terminalLines[currentLineIdx];
+    if (!line) return;
     const fullText = line.text;
 
     if (fullText === "") {
       // Empty line - just add it and move on
       setDisplayedLines((prev) => [
-        ...prev.slice(0, -1).map((l) => ({ ...l, isTyping: false })),
-        { prompt: "", text: "", isTyping: false },
+        ...prev.map((l) => ({ ...l, isTyping: false })),
+        { id: line.id, prompt: "", text: "", isTyping: false },
       ]);
       const timer = setTimeout(() => {
         setCurrentLineIdx((i) => i + 1);
         setCurrentCharIdx(0);
-      }, 300);
+      }, line.delay);
       return () => clearTimeout(timer);
     }
 
@@ -60,27 +102,25 @@ export function TerminalTyping({ className }: { className?: string }) {
       // Start new line
       setDisplayedLines((prev) => [
         ...prev.map((l) => ({ ...l, isTyping: false })),
-        { prompt: line.prompt, text: "", isTyping: true },
+        { id: line.id, prompt: line.prompt, text: "", isTyping: true },
       ]);
     }
 
     if (currentCharIdx < fullText.length) {
-      const timer = setTimeout(
-        () => {
-          setDisplayedLines((prev) => {
-            const updated = [...prev];
-            const last = updated[updated.length - 1]!;
-            updated[updated.length - 1] = {
-              prompt: last.prompt,
-              text: fullText.slice(0, currentCharIdx + 1),
-              isTyping: last.isTyping,
-            };
-            return updated;
-          });
-          setCurrentCharIdx((c) => c + 1);
-        },
-        line.prompt ? line.delay : line.delay,
-      );
+      const timer = setTimeout(() => {
+        setDisplayedLines((prev) => {
+          const updated = [...prev];
+          const last = updated[updated.length - 1];
+          if (!last) return prev;
+          updated[updated.length - 1] = {
+            prompt: last.prompt,
+            text: fullText.slice(0, currentCharIdx + 1),
+            isTyping: last.isTyping,
+          };
+          return updated;
+        });
+        setCurrentCharIdx((c) => c + 1);
+      }, line.delay);
       return () => clearTimeout(timer);
     } else {
       // Line complete, move to next
@@ -90,7 +130,56 @@ export function TerminalTyping({ className }: { className?: string }) {
       }, 400);
       return () => clearTimeout(timer);
     }
-  }, [started, currentLineIdx, currentCharIdx]);
+  }, [started, currentLineIdx, currentCharIdx, terminalLines, isRewinding]);
+
+  useEffect(() => {
+    if (!started) {
+      previousMemberCountRef.current = memberCount;
+      return;
+    }
+
+    if (memberCount === previousMemberCountRef.current) return;
+    previousMemberCountRef.current = memberCount;
+    setIsRewinding(true);
+  }, [memberCount, started]);
+
+  useEffect(() => {
+    if (!isRewinding) return;
+
+    if (displayedLines.length === 0) {
+      setCurrentLineIdx(0);
+      setCurrentCharIdx(0);
+      setIsRewinding(false);
+      return;
+    }
+
+    const lastLine = displayedLines[displayedLines.length - 1];
+    if (!lastLine) return;
+    const timer = setTimeout(
+      () => {
+        setDisplayedLines((prev) => {
+          if (prev.length === 0) return prev;
+          const updated = [...prev];
+          const last = updated[updated.length - 1];
+          if (!last) return prev;
+
+          if (last.text.length > 0) {
+            updated[updated.length - 1] = {
+              ...last,
+              text: last.text.slice(0, -1),
+              isTyping: true,
+            };
+            return updated;
+          }
+
+          return updated.slice(0, -1);
+        });
+      },
+      lastLine.text.length > 0 ? 18 : 80,
+    );
+
+    return () => clearTimeout(timer);
+  }, [isRewinding, displayedLines]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -103,9 +192,9 @@ export function TerminalTyping({ className }: { className?: string }) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry!.isIntersecting && !started) {
+        if (!entry) return;
+        if (entry.isIntersecting && !started) {
           setStarted(true);
-          setDisplayedLines([{ prompt: terminalLines[0]!.prompt, text: "", isTyping: true }]);
         }
       },
       { threshold: 0.3 },
@@ -140,10 +229,10 @@ export function TerminalTyping({ className }: { className?: string }) {
           </span>
         </div>
         <div className="space-y-1 p-4">
-          {terminalLines.map((line, i) => (
-            <div key={i} style={{ color: line.prompt ? "#33ff33" : "rgba(51,255,51,0.7)" }}>
+          {terminalLines.map((line) => (
+            <div key={line.id} style={{ color: line.prompt ? "#33ff33" : "rgba(51,255,51,0.7)" }}>
               <span style={{ color: "rgba(51,255,51,0.5)" }}>{line.prompt}</span>
-              {line.text}
+              {renderTerminalText(line.text)}
             </div>
           ))}
         </div>
@@ -179,13 +268,13 @@ export function TerminalTyping({ className }: { className?: string }) {
       <div ref={containerRef} className="scrollbar-hide max-h-100 space-y-1 overflow-y-auto p-4">
         {displayedLines.map((line, i) => (
           <div
-            key={i}
+            key={line.id}
             style={{
               color: line.prompt ? "#33ff33" : "rgba(51,255,51,0.7)",
             }}
           >
             <span style={{ color: "rgba(51,255,51,0.5)" }}>{line.prompt}</span>
-            {line.text}
+            {renderTerminalText(line.text)}
             {line.isTyping && i === displayedLines.length - 1 && <span className="ml-0.5 animate-pulse">█</span>}
           </div>
         ))}

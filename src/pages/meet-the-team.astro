@@ -3,101 +3,7 @@ import DefaultLayout from "@layouts/DefaultLayout.astro";
 import { SectionHeading } from "@components/ui/section-heading";
 import { TeamGrid } from "@components/ui/team-card";
 import { AuroraBackground } from "@components/ui/aurora-background";
-
-const executives = [
-  { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#", bio: "" },
-  { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#", bio: "" },
-  { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#", bio: "" },
-  { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#", bio: "" },
-  { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#", bio: "" },
-];
-
-const divisions = [
-  {
-    name: "Development Division",
-    description:
-      "We make cool software for the club! Whether you're new to coding or already building things, we'll work together, learn together, and create useful tools for everyone.",
-    members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
-    ],
-  },
-  {
-    name: "Penetration Testing Division",
-    description:
-      "We explore ethical hacking in a safe, friendly space! Together, we learn how attackers think — and how to stop them — through fun, guided activities.",
-    members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
-    ],
-  },
-  {
-    name: "Networking Division",
-    description:
-      "We dig into how the internet actually works! Through fun, hands-on activities, we learn how devices connect, talk, and stay secure — together!",
-    members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
-    ],
-  },
-  {
-    name: "Cyber Essentials Division",
-    description:
-      "We introduce everyone to the basics of cybersecurity in a super friendly, beginner-friendly way — perfect for easing into the tech world without feeling overwhelmed!",
-    members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
-    ],
-  },
-  {
-    name: "Capture The Flag Division",
-    description:
-      "We're all about solving fun cybersecurity puzzles together! We learn heaps, celebrate progress, and help each other crack challenges in a relaxed, supportive environment.",
-    members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
-    ],
-  },
-  {
-    name: "Remote Events Division",
-    description:
-      "We make sure everyone can join in the fun from anywhere! We host online workshops, games, streams, and events so no one ever feels left out.",
-    members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
-    ],
-  },
-  {
-    name: "Advertising Division",
-    description:
-      "We're the team that makes everything look fun and exciting! We spread the word about our events, projects, and wins so everyone feels welcome and included.",
-    members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
-    ],
-  },
-];
+import { executives, divisions } from "@/data/team";
 ---
 
 <DefaultLayout title="Meet The Team">
@@ -112,7 +18,7 @@ const divisions = [
           <span class="bg-linear-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Meet The Team</span>
         </h1>
         <p class="mx-auto max-w-3xl text-xl text-gray-300 md:text-2xl">
-          We're a bunch of curious, passionate people building a welcoming space for everyone — come see what we get up
+          We're a bunch of curious, passionate people building a welcoming space for everyone - come see what we get up
           to!
         </p>
       </div>
@@ -147,17 +53,17 @@ const divisions = [
     <div class="relative z-10 container mx-auto px-4 text-center">
       <h2 class="mb-6 text-3xl font-bold text-white md:text-4xl">Want to join the team?</h2>
       <p class="mx-auto mb-8 max-w-2xl text-gray-400">
-        We're always looking for passionate people to help grow DUCA. Whether you want to lead, build, hack, or create —
+        We're always looking for passionate people to help grow DUCA. Whether you want to lead, build, hack, or create -
         there's a place for you.
       </p>
       <div class="flex flex-col justify-center gap-4 sm:flex-row">
         <a
-          href="https://dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"
+          href="https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center justify-center rounded-full bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700"
         >
-          Join via DUSA
+          Regsiter
         </a>
         <a
           href="/contact"

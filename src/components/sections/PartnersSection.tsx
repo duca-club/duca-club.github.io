@@ -11,7 +11,7 @@ const partners = [
   {
     name: "DUSA",
     logo: "/partners/dusa.png",
-    href: "https://dusa.org.au/",
+    href: "https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca",
   },
   {
     name: "ACUCyS",

@@ -51,9 +51,7 @@ export const HeroSection = () => {
             transition={{ delay: 2, duration: 0.5 }}
             className="mt-10 flex flex-col justify-center gap-4 sm:flex-row"
           >
-            <GlowingButton href="https://dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca">
-              Join Now
-            </GlowingButton>
+            <GlowingButton href="/join">Join Us</GlowingButton>
             <Button variant="outline" href="#what-we-do">
               Learn More
             </Button>

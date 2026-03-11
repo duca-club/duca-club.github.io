@@ -1,6 +1,7 @@
 "use client";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect, useState } from "react";
+import { DEFAULT_DISCORD_MEMBER_COUNT } from "@/utils/discordMembers";
 
 interface StatProps {
   value: number;
@@ -58,7 +59,7 @@ const StatCard = ({ value, suffix, label, sublabel }: StatProps) => {
   );
 };
 
-export const StatsSection = ({ memberCount = 750 }: { memberCount?: number }) => {
+export const StatsSection = ({ memberCount = DEFAULT_DISCORD_MEMBER_COUNT }: { memberCount?: number }) => {
   return (
     <section className="section-themed data-stream-bg relative overflow-hidden py-24">
       <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-purple-900/10 to-transparent" />
