@@ -16,15 +16,24 @@ export async function getDiscordMemberCount() {
 
   memberCountPromise = (async () => {
     let memberCount = DEFAULT_DISCORD_MEMBER_COUNT;
+    const fetchCount = async () => {
+      const response = await fetch(DISCORD_INVITE_API);
+      if (!response.ok) {
+        throw new Error(`Discord invite API request failed with status ${response.status}`);
+      }
+      const data = await response.json();
+      return data.approximate_member_count || DEFAULT_DISCORD_MEMBER_COUNT;
+    };
 
     try {
-      const response = await fetch(DISCORD_INVITE_API);
-      if (response.ok) {
-        const data = await response.json();
-        memberCount = data.approximate_member_count || DEFAULT_DISCORD_MEMBER_COUNT;
-      }
+      memberCount = await fetchCount();
     } catch {
-      // Fall back to default member count.
+      // Retry once before falling back to default.
+      try {
+        memberCount = await fetchCount();
+      } catch {
+        // Fall back to default member count.
+      }
     }
 
     cachedMemberCount = memberCount;
