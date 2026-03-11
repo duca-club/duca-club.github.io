@@ -51,7 +51,7 @@ export const FloatingNav = ({
         }}
         transition={{ duration: 0.2 }}
         className={cn(
-          "flex fixed top-4 inset-x-0 mx-auto max-w-fit items-center justify-center space-x-4 px-8 py-4 rounded-full border border-white/[0.2] bg-black/80 backdrop-blur-md shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] z-[5000]",
+          "flex fixed top-4 inset-x-0 mx-auto max-w-fit items-center justify-center space-x-4 px-8 py-4 rounded-full border border-white/20 bg-black/80 backdrop-blur-md shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] z-5000",
           className
         )}
       >
@@ -70,7 +70,7 @@ export const FloatingNav = ({
         ))}
         <a
           href="/join"
-          className="border text-sm font-medium relative border-white/[0.2] text-white px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700 transition-colors"
+          className="border text-sm font-medium relative border-white/20 text-white px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700 transition-colors"
         >
           <span>Join Us</span>
         </a>

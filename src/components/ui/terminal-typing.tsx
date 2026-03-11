@@ -269,7 +269,7 @@ export function TerminalTyping({
       {/* Terminal Content */}
       <div
         ref={containerRef}
-        className="p-4 space-y-1 max-h-[400px] overflow-y-auto scrollbar-hide"
+        className="p-4 space-y-1 max-h-100 overflow-y-auto scrollbar-hide"
       >
         {displayedLines.map((line, i) => (
           <div
