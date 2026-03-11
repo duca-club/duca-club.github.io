@@ -47,7 +47,7 @@ export const AboutHeroSection = () => {
             className="flex flex-col justify-center gap-4 sm:flex-row"
           >
             <Button href="https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca" variant="primary">
-              Join DUCA via DUSA
+              Regsiter
             </Button>
             <Button href="#team" variant="outline">
               Meet the Team

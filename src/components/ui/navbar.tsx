@@ -69,9 +69,7 @@ export const FloatingNav = ({
           </a>
         ))}
         <a
-          href="https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/join"
           className="border text-sm font-medium relative border-white/[0.2] text-white px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700 transition-colors"
         >
           <span>Join Us</span>
