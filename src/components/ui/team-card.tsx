@@ -76,7 +76,7 @@ export const TeamGrid = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-fr",
+        "flex flex-wrap justify-center gap-6",
         className
       )}
     >
@@ -87,7 +87,7 @@ export const TeamGrid = ({
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: idx * 0.1 }}
           viewport={{ once: true }}
-          className="h-full"
+          className="h-full basis-full sm:basis-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-3rem)/3)] xl:basis-[calc((100%-4.5rem)/4)]"
         >
           <TeamCard member={member} />
         </motion.div>
