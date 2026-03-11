@@ -116,11 +116,11 @@ export const divisions: TeamDivision[] = [
     description:
       "We introduce everyone to the basics of cybersecurity in a super friendly, beginner-friendly way - perfect for easing into the tech world without feeling overwhelmed!",
     members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
+      { name: "Aarnav Singh", role: "Team Lead", image: "https://ui-avatars.com/api/?name=Aarnav+Singh", linkedIn: "#" },
+      { name: "Anika G.", role: "Team Member", image: "/team/anika-g.png", linkedIn: "https://www.linkedin.com/in/anastasiyaagguenov/" },
+      { name: "Corina Pascoe", role: "Team Member", image: "https://ui-avatars.com/api/?name=Cornia+Pascoe", linkedIn: "https://www.linkedin.com/in/corina-p-940b11338/" },
+      { name: "Meetkumar Patel", role: "Team Member", image: "https://ui-avatars.com/api/?name=Meetkumar+Patel", linkedIn: "#" },
+      { name: "Shweta", role: "Team Member", image: "/team/shweta.png", linkedIn: "https://www.linkedin.com/in/shweta-a1ba1036a/" },
     ],
   },
   {
@@ -128,11 +128,10 @@ export const divisions: TeamDivision[] = [
     description:
       "We're all about solving fun cybersecurity puzzles together! We learn heaps, celebrate progress, and help each other crack challenges in a relaxed, supportive environment.",
     members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
+      { name: "Long Do", role: "Team Lead", image: "/team/long-do.png", linkedIn: "https://www.linkedin.com/in/r1ce0mellete/" },
+      { name: "Azelma Aghakishiyeva", role: "Team Member", image: "/team/azelma-aghakishiyeva.png", linkedIn: "https://www.linkedin.com/in/azelma-aghakishiyeva-081053278/" },
+      { name: "Marco", role: "Team Member", image: "https://ui-avatars.com/api/?name=Marco", linkedIn: "#" },
+      { name: "Jasmin Smallu", role: "Team Member", image: "/team/jasmin-smallu.png", linkedIn: "https://www.linkedin.com/in/jasmin-smallu-5b0852268/" },
     ],
   },
   {
@@ -140,11 +139,8 @@ export const divisions: TeamDivision[] = [
     description:
       "We make sure everyone can join in the fun from anywhere! We host online workshops, games, streams, and events so no one ever feels left out.",
     members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
+      { name: "George Ferres", role: "Team Lead", image: "/team/george-ferres.png", linkedIn: "https://www.linkedin.com/in/georgeferres/" },
+      { name: "Bang Mach", role: "Team Member", image: "/team/bang-mach.png", linkedIn: "https://www.linkedin.com/in/bang-mach-dieu/" },
     ],
   },
   {
@@ -152,11 +148,9 @@ export const divisions: TeamDivision[] = [
     description:
       "We're the team that makes everything look fun and exciting! We spread the word about our events, projects, and wins so everyone feels welcome and included.",
     members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
+      { name: "Ashley Mathew", role: "Team Lead", image: "/team/ashley-mathew.png", linkedIn: "https://www.linkedin.com/in/ashleyymathew/" },
+      { name: "Rebecca Joseph", role: "Team Member", image: "/team/rebecca-joseph.png", linkedIn: "https://www.linkedin.com/in/rebecca-deepak-joseph/" },
+      { name: "Mauro Sunda", role: "Team Member", image: "/team/mauro-sunda.png", linkedIn: "https://www.linkedin.com/in/mauro-sunda-29aa02263/" },
     ],
   },
 ];
