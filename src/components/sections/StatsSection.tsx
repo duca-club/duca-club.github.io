@@ -53,7 +53,7 @@ const StatCard = ({ value, suffix, label, sublabel }: StatProps) => {
         {isInView ? <AnimatedCounter value={value} suffix={suffix} /> : `0${suffix}`}
       </div>
       <div className="text-xl font-medium text-purple-400">{label}</div>
-      <div className="mt-1 text-sm text-gray-500">{sublabel}</div>
+      <div className="mt-1 text-sm text-gray-300">{sublabel}</div>
     </motion.div>
   );
 };
