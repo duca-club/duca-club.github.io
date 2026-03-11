@@ -78,11 +78,15 @@ export const divisions: TeamDivision[] = [
     description:
       "We make cool software for the club! Whether you're new to coding or already building things, we'll work together, learn together, and create useful tools for everyone.",
     members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
+      { name: "George Ferres", role: "Team Lead", image: "/team/george-ferres.png", linkedIn: "https://www.linkedin.com/in/georgeferres/" },
+      { name: "Hirusha Adikari", role: "Team Lead", image: "/team/hirusha-adikari.png", linkedIn: "https://www.linkedin.com/in/hirusha-adi/" },
+      { name: "Pasindu Peramuna", role: "Team Lead", image: "/team/pasindu-peramuna.png", linkedIn: "https://www.linkedin.com/in/pasinduperamuna/" },
+      { name: "Lia McCracken", role: "Team Member", image: "/team/lia-mccracken.png", linkedIn: "https://www.linkedin.com/in/lia-mccracken-8b19053b2/" },
+      { name: "Ryan Lee", role: "Team Member", image: "/team/ryan-lee.png", linkedIn: "https://www.linkedin.com/in/ryan-lee-cs/" },
+      { name: "Lily Ha", role: "Team Member", image: "/team/lily-ha.png", linkedIn: "https://www.linkedin.com/in/lilyquynhha/" },
+      { name: "Alex Wu", role: "Team Member", image: "/team/alex-wu.png", linkedIn: "https://www.linkedin.com/in/alex-wu-21b06a20a/" },
+      { name: "Raaid Rushdy", role: "Team Member", image: "/team/raaid-rushdy.png", linkedIn: "https://www.linkedin.com/in/raaidrushdy/" },
+      { name: "Shounak Bhalerao", role: "Team Member", image: "/team/shounak-bhalerao.png", linkedIn: "https://www.linkedin.com/in/shounak-bhalerao/" },
     ],
   },
   {
