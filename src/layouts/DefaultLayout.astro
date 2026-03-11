@@ -8,11 +8,11 @@ import AmbientBackground from "@components/AmbientBackground.astro";
 import { ClientRouter } from "astro:transitions";
 
 const {
-  title = "Accessible Astro",
-  description = "A starter project with accessibility features using Astro static site builder. Contains accessible landmarks, skip links, a dark mode color scheme, better focus outline and keyboard menu navigation.",
+  title = "Cybersecurity Club - DUCA",
+  description = "Deakin University Cybersecurity Association (DUCA) - workshops, CTFs, networking events, and resources for all students interested in cybersecurity in an inclusive, LGBTQIA+, disability, and neurodivergent-friendly community.",
   url = Astro.site,
   image = "social-preview-image.png",
-  author = "Incluud",
+  author = "DUCA Team",
 } = Astro.props;
 ---
 
@@ -76,6 +76,67 @@ const {
           particle.addEventListener("animationend", () => particle.remove());
         }
       });
+    </script>
+    <script>
+      // Cursor follower dot with continuous tracking and subtle offset
+      (() => {
+        const initCursorFollower = () => {
+          if (window.__cursorFollowerInitialized) return;
+          window.__cursorFollowerInitialized = true;
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+          let dot = document.querySelector(".cursor-follower-dot");
+          if (!dot) {
+            dot = document.createElement("div");
+            dot.className = "cursor-follower-dot";
+            document.body.appendChild(dot);
+          }
+          
+          // position of the dot (from the cursor)
+          // (-1, -1) is the top left corner
+          const cursorOffsetX = -1; 
+          const cursorOffsetY = -1;
+
+          let targetX = window.innerWidth / 2;
+          let targetY = window.innerHeight / 2;
+          let renderX = targetX;
+          let renderY = targetY;
+
+          const handleMove = (event) => {
+            targetX = event.clientX + cursorOffsetX;
+            targetY = event.clientY + cursorOffsetY;
+            dot.style.opacity = "1";
+          };
+
+          const render = () => {
+            
+            // increase this value (0.18) to increase the motion lag
+            renderX += (targetX - renderX) * 0.18;
+            renderY += (targetY - renderY) * 0.18;
+
+            dot.style.left = `${renderX}px`;
+            dot.style.top = `${renderY}px`;
+            window.requestAnimationFrame(render);
+          };
+
+          const hideDot = () => {
+            dot.style.opacity = "0";
+          };
+
+          window.addEventListener("pointermove", handleMove, { passive: true });
+          window.addEventListener("mousemove", handleMove, { passive: true });
+          window.addEventListener("pointerleave", hideDot);
+          window.addEventListener("blur", hideDot);
+          window.requestAnimationFrame(render);
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initCursorFollower, { once: true });
+        } else {
+          initCursorFollower();
+        }
+        document.addEventListener("astro:page-load", initCursorFollower);
+      })();
     </script>
     <style lang="scss" is:global>
       @use "../assets/scss/base/mixins" as *;
