@@ -84,6 +84,7 @@ export const divisions: TeamDivision[] = [
       { name: "Lia McCracken", role: "Team Member", image: "/team/lia-mccracken.png", linkedIn: "https://www.linkedin.com/in/lia-mccracken-8b19053b2/" },
       { name: "Ryan Lee", role: "Team Member", image: "/team/ryan-lee.png", linkedIn: "https://www.linkedin.com/in/ryan-lee-cs/" },
       { name: "Lily Ha", role: "Team Member", image: "/team/lily-ha.png", linkedIn: "https://www.linkedin.com/in/lilyquynhha/" },
+      { name: "Bang Mach", role: "Team Member", image: "/team/bang-mach.png", linkedIn: "https://www.linkedin.com/in/bang-mach-dieu/" },
       { name: "Alex Wu", role: "Team Member", image: "/team/alex-wu.png", linkedIn: "https://www.linkedin.com/in/alex-wu-21b06a20a/" },
       { name: "Raaid Rushdy", role: "Team Member", image: "/team/raaid-rushdy.png", linkedIn: "https://www.linkedin.com/in/raaidrushdy/" },
       { name: "Shounak Bhalerao", role: "Team Member", image: "/team/shounak-bhalerao.png", linkedIn: "https://www.linkedin.com/in/shounak-bhalerao/" },
@@ -94,11 +95,9 @@ export const divisions: TeamDivision[] = [
     description:
       "We explore ethical hacking in a safe, friendly space! Together, we learn how attackers think - and how to stop them - through fun, guided activities.",
     members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
+      { name: "Kat Ho", role: "Team Lead", image: "/team/kat-ho.png", linkedIn: "https://www.linkedin.com/in/kat-ho/" },
+      { name: "Sagar Nayar", role: "Team Member", image: "/team/sagar-nayar.png", linkedIn: "https://www.linkedin.com/in/sagar-nayar-399b62249/" },
+      { name: "Dipen Thaker", role: "Team Member", image: "/team/dipen-thaker.png", linkedIn: "https://www.linkedin.com/in/dipenthaker/" },
     ],
   },
   {
@@ -106,11 +105,10 @@ export const divisions: TeamDivision[] = [
     description:
       "We dig into how the internet actually works! Through fun, hands-on activities, we learn how devices connect, talk, and stay secure - together!",
     members: [
-      { name: "Bojack Horseman", role: "Team Lead", image: "", linkedIn: "#" },
-      { name: "Diane Nguyen", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Lisa Simpson", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Dr. Heinz Doofenshmirtz", role: "Team Member", image: "", linkedIn: "#" },
-      { name: "Courage the Cowardly Dog", role: "Team Member", image: "", linkedIn: "#" },
+      { name: "Paige Haines", role: "Team Lead", image: "/team/paige-haines.png", linkedIn: "https://www.linkedin.com/in/paigehai/" },
+      { name: "Nokutendaishe Masuku", role: "Team Member", image: "/team/nokutendaishe-masuku.png", linkedIn: "https://www.linkedin.com/in/nokutendaishe-masuku-1228b429a/" },
+      { name: "Pratigya Pal", role: "Team Member", image: "/team/pratigya-pal.png", linkedIn: "https://www.linkedin.com/in/pratigya-pal/" },
+      { name: "Navya Midha", role: "Team Member", image: "/team/navya-midha.png", linkedIn: "https://www.linkedin.com/in/navya-midha-8711a11b5/" },
     ],
   },
   {
