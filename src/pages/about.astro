@@ -7,38 +7,7 @@ import CoreValuesSection from "@components/sections/CoreValuesSection";
 import TeamSection from "@components/sections/TeamSection";
 import PartnersSection from "@components/sections/PartnersSection";
 import { getDiscordMemberCount } from "@/utils/discordMembers";
-
-// Sample executive team data - replace with real data
-const executives = [
-  {
-    name: "Sham Polavarapu",
-    role: "Club President",
-    image: "/team/placeholder.jpg",
-    linkedIn: "https://www.linkedin.com/in/p-shambhavi/",
-    bio: "Leading DUCA's mission to empower cybersecurity enthusiasts.",
-  },
-  {
-    name: "Aditya Kapoor",
-    role: "Vice President",
-    image: "/team/placeholder.jpg",
-    linkedIn: "https://www.linkedin.com/in/adityakapoor23/",
-    bio: "Supporting club operations and member initiatives.",
-  },
-  {
-    name: "Kat Ho",
-    role: "Treasurer",
-    image: "/team/placeholder.jpg",
-    linkedIn: "https://www.linkedin.com/in/kat-ho/",
-    bio: "Overseeing financial operations and budgeting.",
-  },
-  {
-    name: "Maple 'Ryan' Fox",
-    role: "Advisor",
-    image: "/team/placeholder.jpg",
-    linkedIn: "https://www.linkedin.com/in/maplefox/",
-    bio: "Overseeing financial operations and budgeting.",
-  },
-];
+import { executives } from "@/data/team";
 
 const memberCount = await getDiscordMemberCount();
 ---
