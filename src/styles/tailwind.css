@@ -481,3 +481,22 @@
   pointer-events: none;
   content: "";
 }
+
+/* Cursor follower dot */
+.cursor-follower-dot {
+  position: fixed;
+  z-index: 2147483647;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, #fff, #00d1b7 65%, #d648ff);
+  box-shadow:
+    0 0 10px rgba(0, 209, 183, 0.6),
+    0 0 18px rgba(214, 72, 255, 0.45);
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out;
+  transform: translate(-50%, -50%);
+}
+
+
