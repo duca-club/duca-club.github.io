@@ -77,6 +77,61 @@ const {
         }
       });
     </script>
+    <script>
+      // Cursor follower dot with continuous tracking and subtle offset
+      (() => {
+        const initCursorFollower = () => {
+          if (window.__cursorFollowerInitialized) return;
+          window.__cursorFollowerInitialized = true;
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+          let dot = document.querySelector(".cursor-follower-dot");
+          if (!dot) {
+            dot = document.createElement("div");
+            dot.className = "cursor-follower-dot";
+            document.body.appendChild(dot);
+          }
+
+          const cursorOffsetX = -1;
+          const cursorOffsetY = -1;
+          let targetX = window.innerWidth / 2;
+          let targetY = window.innerHeight / 2;
+          let renderX = targetX;
+          let renderY = targetY;
+
+          const handleMove = (event) => {
+            targetX = event.clientX + cursorOffsetX;
+            targetY = event.clientY + cursorOffsetY;
+            dot.style.opacity = "1";
+          };
+
+          const render = () => {
+            renderX += (targetX - renderX) * 0.35;
+            renderY += (targetY - renderY) * 0.35;
+            dot.style.left = `${renderX}px`;
+            dot.style.top = `${renderY}px`;
+            window.requestAnimationFrame(render);
+          };
+
+          const hideDot = () => {
+            dot.style.opacity = "0";
+          };
+
+          window.addEventListener("pointermove", handleMove, { passive: true });
+          window.addEventListener("mousemove", handleMove, { passive: true });
+          window.addEventListener("pointerleave", hideDot);
+          window.addEventListener("blur", hideDot);
+          window.requestAnimationFrame(render);
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initCursorFollower, { once: true });
+        } else {
+          initCursorFollower();
+        }
+        document.addEventListener("astro:page-load", initCursorFollower);
+      })();
+    </script>
     <style lang="scss" is:global>
       @use "../assets/scss/base/mixins" as *;
 
