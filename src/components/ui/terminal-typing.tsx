@@ -3,6 +3,9 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { DEFAULT_DISCORD_MEMBER_COUNT, formatMemberCount } from "@/utils/discordMembers";
 
+const JOIN_URL =
+  "https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca";
+
 const buildTerminalLines = (memberCount: number) => [
   { id: "whoami-cmd", prompt: "$ ", text: "whoami", delay: 80 },
   { id: "whoami-out", prompt: "", text: "DUCA - Deakin University Cybersecurity Association", delay: 30 },
@@ -21,16 +24,40 @@ const buildTerminalLines = (memberCount: number) => [
   {
     id: "join-cmd",
     prompt: "$ ",
-    text: 'echo "Regsiter → www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"',
+    text: "cat join.txt",
     delay: 80,
   },
   {
     id: "join-out",
     prompt: "",
-    text: "Regsiter → www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca",
+    text: `Register -> ${JOIN_URL}`,
     delay: 30,
   },
 ];
+
+function renderTerminalText(text: string) {
+  const linkStart = text.indexOf(JOIN_URL);
+  if (linkStart === -1) return text;
+
+  const before = text.slice(0, linkStart);
+  const after = text.slice(linkStart + JOIN_URL.length);
+
+  return (
+    <>
+      {before}
+      <a
+        href={JOIN_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline decoration-green-400/60 underline-offset-2 hover:text-green-300"
+        style={{ color: "#5dff5d" }}
+      >
+        {JOIN_URL}
+      </a>
+      {after}
+    </>
+  );
+}
 
 export function TerminalTyping({
   className,
@@ -207,7 +234,7 @@ export function TerminalTyping({
           {terminalLines.map((line) => (
             <div key={line.id} style={{ color: line.prompt ? "#33ff33" : "rgba(51,255,51,0.7)" }}>
               <span style={{ color: "rgba(51,255,51,0.5)" }}>{line.prompt}</span>
-              {line.text}
+              {renderTerminalText(line.text)}
             </div>
           ))}
         </div>
@@ -252,7 +279,7 @@ export function TerminalTyping({
             }}
           >
             <span style={{ color: "rgba(51,255,51,0.5)" }}>{line.prompt}</span>
-            {line.text}
+            {renderTerminalText(line.text)}
             {line.isTyping && i === displayedLines.length - 1 && (
               <span className="animate-pulse ml-0.5">█</span>
             )}
