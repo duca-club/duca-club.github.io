@@ -91,9 +91,12 @@ const {
             dot.className = "cursor-follower-dot";
             document.body.appendChild(dot);
           }
-
-          const cursorOffsetX = -1;
+          
+          // position of the dot (from the cursor)
+          // (-1, -1) is the top left corner
+          const cursorOffsetX = -1; 
           const cursorOffsetY = -1;
+
           let targetX = window.innerWidth / 2;
           let targetY = window.innerHeight / 2;
           let renderX = targetX;
@@ -106,8 +109,11 @@ const {
           };
 
           const render = () => {
-            renderX += (targetX - renderX) * 0.35;
-            renderY += (targetY - renderY) * 0.35;
+            
+            // increase this value (0.18) to increase the motion lag
+            renderX += (targetX - renderX) * 0.18;
+            renderY += (targetY - renderY) * 0.18;
+
             dot.style.left = `${renderX}px`;
             dot.style.top = `${renderY}px`;
             window.requestAnimationFrame(render);
