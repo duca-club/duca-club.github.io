@@ -17,33 +17,37 @@ export const TeamCard = ({
   member: TeamMember;
   className?: string;
 }) => {
+  const hasBio = Boolean(member.bio?.trim());
+
   return (
     <motion.div
       whileHover={{ y: -5 }}
       className={cn(
-        "group relative overflow-hidden rounded-2xl bg-gradient-to-b from-slate-800/50 to-slate-900/80 border border-slate-700/50 p-6",
+        "group relative flex h-[20rem] flex-col overflow-hidden rounded-2xl border border-slate-700/50 bg-gradient-to-b from-slate-800/50 to-slate-900/80 p-6",
         className
       )}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-      <div className="relative z-10">
-        <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-500 transition-all">
-          <img
-            src={member.image}
-            alt={member.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
+      <div className="relative z-10 flex h-full flex-col">
+        <div className={cn("flex flex-col", !hasBio && "flex-1 justify-center")}>
+          <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-500 transition-all">
+            <img
+              src={member.image}
+              alt={member.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
 
-        <div className="text-center">
-          <h3 className="text-lg font-semibold text-white group-hover:text-purple-400 transition-colors">
-            {member.name}
-          </h3>
-          <p className="text-sm text-purple-400 mt-1">{member.role}</p>
-          {member.bio && (
-            <p className="text-sm text-gray-400 mt-3 line-clamp-3">{member.bio}</p>
-          )}
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-white group-hover:text-purple-400 transition-colors">
+              {member.name}
+            </h3>
+            <p className="text-sm text-purple-400 mt-1">{member.role}</p>
+            {hasBio && (
+              <p className="text-sm text-gray-400 mt-3 line-clamp-3">{member.bio}</p>
+            )}
+          </div>
         </div>
 
         {member.linkedIn && (
@@ -51,7 +55,7 @@ export const TeamCard = ({
             href={member.linkedIn}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-400 hover:text-purple-400 transition-colors"
+            className="mt-auto pt-2 flex items-center justify-center gap-2 text-sm text-gray-400 hover:text-purple-400 transition-colors"
           >
             <LinkedInIcon className="w-5 h-5" />
             <span>Connect</span>
@@ -72,7 +76,7 @@ export const TeamGrid = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
+        "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-fr",
         className
       )}
     >
@@ -83,6 +87,7 @@ export const TeamGrid = ({
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: idx * 0.1 }}
           viewport={{ once: true }}
+          className="h-full"
         >
           <TeamCard member={member} />
         </motion.div>
