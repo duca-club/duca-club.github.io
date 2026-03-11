@@ -46,7 +46,7 @@ export const AboutHeroSection = () => {
             transition={{ delay: 1, duration: 0.5 }}
             className="flex flex-col justify-center gap-4 sm:flex-row"
           >
-            <Button href="https://dusa.org.au/clubs/duca" variant="primary">
+            <Button href="https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca" variant="primary">
               Join DUCA via DUSA
             </Button>
             <Button href="#team" variant="outline">
