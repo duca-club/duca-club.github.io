@@ -18,8 +18,18 @@ const buildTerminalLines = (memberCount: number) => [
   { id: "members-cmd", prompt: "$ ", text: "echo $members", delay: 80 },
   { id: "members-out", prompt: "", text: `${formatMemberCount(memberCount)}+ and growing...`, delay: 30 },
   { id: "spacer-4", prompt: "", text: "", delay: 500 },
-  { id: "join-cmd", prompt: "$ ", text: 'echo "Join us → dusa.org.au/clubs/duca"', delay: 80 },
-  { id: "join-out", prompt: "", text: "Join us → dusa.org.au/clubs/duca", delay: 30 },
+  {
+    id: "join-cmd",
+    prompt: "$ ",
+    text: 'echo "Regsiter → www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"',
+    delay: 80,
+  },
+  {
+    id: "join-out",
+    prompt: "",
+    text: "Regsiter → www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca",
+    delay: 30,
+  },
 ];
 
 export function TerminalTyping({
