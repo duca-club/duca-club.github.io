@@ -9,6 +9,7 @@ import DiscordCTASection from "@components/sections/DiscordCTASection";
 import BlogPreviewSection from "@components/sections/BlogPreviewSection";
 import FeaturedEventsSection from "@components/sections/FeaturedEventsSection";
 import { getCollection } from "astro:content";
+import { getDiscordMemberCount } from "@/utils/discordMembers";
 
 // Pre-import all blog images using glob pattern
 const blogImages = import.meta.glob("../content/blog/**/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" });
@@ -55,20 +56,7 @@ const featuredEvents = upcomingEvents.map((event) => ({
   featuredImage: event.data.featuredImage,
 }));
 
-// Discord API for member count
-const DISCORD_INVITE_CODE = "duca";
-const DISCORD_INVITE_API = `https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`;
-
-let memberCount = 750;
-try {
-  const response = await fetch(DISCORD_INVITE_API);
-  if (response.ok) {
-    const data = await response.json();
-    memberCount = data.approximate_member_count || 750;
-  }
-} catch {
-  // Use default
-}
+const memberCount = await getDiscordMemberCount();
 ---
 
 <DefaultLayout title="Home">

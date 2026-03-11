@@ -1,8 +1,9 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { DEFAULT_DISCORD_MEMBER_COUNT, formatMemberCount } from "@/utils/discordMembers";
 
-const terminalLines = [
+const buildTerminalLines = (memberCount: number) => [
   { prompt: "$ ", text: "whoami", delay: 80 },
   { prompt: "", text: "DUCA - Deakin University Cybersecurity Association", delay: 30 },
   { prompt: "", text: "", delay: 500 },
@@ -15,13 +16,20 @@ const terminalLines = [
   { prompt: "", text: "ctf/  development/  advertising/", delay: 30 },
   { prompt: "", text: "", delay: 500 },
   { prompt: "$ ", text: "echo $MEMBERS", delay: 80 },
-  { prompt: "", text: "750+ and growing...", delay: 30 },
+  { prompt: "", text: `${formatMemberCount(memberCount)}+ and growing...`, delay: 30 },
   { prompt: "", text: "", delay: 500 },
   { prompt: "$ ", text: "echo \"Join us → dusa.org.au/clubs/duca\"", delay: 80 },
   { prompt: "", text: "Join us → dusa.org.au/clubs/duca", delay: 30 },
 ];
 
-export function TerminalTyping({ className }: { className?: string }) {
+export function TerminalTyping({
+  className,
+  memberCount = DEFAULT_DISCORD_MEMBER_COUNT,
+}: {
+  className?: string;
+  memberCount?: number;
+}) {
+  const terminalLines = buildTerminalLines(memberCount);
   const [displayedLines, setDisplayedLines] = useState<
     { prompt: string; text: string; isTyping: boolean }[]
   >([]);

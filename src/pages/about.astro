@@ -6,6 +6,7 @@ import WhatWeDoStackingSection from "@components/sections/WhatWeDoStackingSectio
 import CoreValuesSection from "@components/sections/CoreValuesSection";
 import TeamSection from "@components/sections/TeamSection";
 import PartnersSection from "@components/sections/PartnersSection";
+import { getDiscordMemberCount } from "@/utils/discordMembers";
 
 // Sample executive team data - replace with real data
 const executives = [
@@ -38,6 +39,8 @@ const executives = [
     bio: "Overseeing financial operations and budgeting.",
   },
 ];
+
+const memberCount = await getDiscordMemberCount();
 ---
 
 <DefaultLayout title="About Us">
@@ -47,7 +50,7 @@ const executives = [
   <!-- Terminal Typing Element -->
   <section class="section-themed py-16">
     <div class="container mx-auto max-w-3xl px-4">
-      <TerminalTyping client:visible />
+      <TerminalTyping memberCount={memberCount} client:visible />
     </div>
   </section>
 
