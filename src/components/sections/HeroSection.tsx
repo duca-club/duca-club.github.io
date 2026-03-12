@@ -7,7 +7,7 @@ import { Button, GlowingButton } from "@ui/button";
 export const HeroSection = () => {
   return (
     <section
-      className="relative flex min-h-screen items-center justify-center overflow-hidden pt-20"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden pt-40"
       style={{ background: "var(--theme-bg)" }}
     >
       {/* Background Effects */}
@@ -28,11 +28,6 @@ export const HeroSection = () => {
           <h1 className="mb-4 text-7xl font-bold md:text-9xl">DUCA</h1>
 
           <h2 className="mb-4 text-3xl font-bold md:text-4xl">Deakin University Cybersecurity Association</h2>
-
-          {/* Typewriter Subtitle */}
-          {/* <div className="mb-8 flex justify-center">
-            <TypewriterEffectSmooth words={words} />
-          </div> */}
 
           <div className="w-full text-balance xl:w-4/5">
             <EncryptedText

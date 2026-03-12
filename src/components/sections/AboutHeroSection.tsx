@@ -10,7 +10,7 @@ export const AboutHeroSection = () => {
   return (
     <section
       id="about-hero"
-      className="relative flex min-h-[70vh] items-center justify-center overflow-hidden"
+      className="relative flex min-h-[70vh] items-center justify-center overflow-hidden pt-40"
       style={{ background: "var(--theme-bg)" }}
     >
       {/* Background */}

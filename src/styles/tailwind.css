@@ -6,7 +6,7 @@
 /* Dark Mode CSS Variables */
 :root {
   /* Dark-ish mode colors (not pure black) */
-  --theme-bg: #0a0f1a;
+  --theme-bg: #00051a;
   --theme-bg-secondary: #111827;
   --theme-bg-tertiary: #1e293b;
   --theme-text: #f8fafc;
@@ -485,18 +485,16 @@
 /* Cursor follower dot */
 .cursor-follower-dot {
   position: fixed;
+  transform: translate(-50%, -50%);
+  opacity: 0;
   z-index: 2147483647;
-  border-radius: 9999px;
-  background: radial-gradient(circle at 30% 30%, #fff, #00d1b7 65%, #d648ff);
+  transition: opacity 0.15s ease-out;
   box-shadow:
     0 0 10px rgba(0, 209, 183, 0.6),
     0 0 18px rgba(214, 72, 255, 0.45);
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, #fff, #00d1b7 65%, #d648ff);
   width: 10px;
   height: 10px;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 0.15s ease-out;
-  transform: translate(-50%, -50%);
 }
-
-
