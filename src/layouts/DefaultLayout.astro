@@ -23,7 +23,7 @@ const {
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <!-- favicon -->
-    <link rel="icon" type="image/webp" href="/public/global/duca-logo.webp" />
+    <link rel="icon" type="image/webp" href="/global/duca-logo.webp" />
 
     <SiteMeta title={title} description={description.substring(0, 100)} url={url} image={image} author={author} />
 
@@ -91,10 +91,10 @@ const {
             dot.className = "cursor-follower-dot";
             document.body.appendChild(dot);
           }
-          
+
           // position of the dot (from the cursor)
           // (-1, -1) is the top left corner
-          const cursorOffsetX = -1; 
+          const cursorOffsetX = -1;
           const cursorOffsetY = -1;
 
           let targetX = window.innerWidth / 2;
@@ -109,7 +109,6 @@ const {
           };
 
           const render = () => {
-            
             // increase this value (0.18) to increase the motion lag
             renderX += (targetX - renderX) * 0.18;
             renderY += (targetY - renderY) * 0.18;

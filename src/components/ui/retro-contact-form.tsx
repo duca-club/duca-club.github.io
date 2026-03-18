@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 
 type FormState = "idle" | "sending" | "sent" | "error";
 
@@ -19,7 +20,9 @@ function MatrixRain({ width, height }: { width: number; height: number }) {
     const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
     const fontSize = 14;
     const columns = Math.floor(width / fontSize);
-    const drops: number[] = Array(columns).fill(0).map(() => Math.random() * -20);
+    const drops: number[] = Array(columns)
+      .fill(0)
+      .map(() => Math.random() * -20);
 
     let frameId: number;
     const draw = () => {
@@ -31,12 +34,12 @@ function MatrixRain({ width, height }: { width: number; height: number }) {
       for (let i = 0; i < drops.length; i++) {
         const text = chars[Math.floor(Math.random() * chars.length)];
         ctx.globalAlpha = 0.4 + Math.random() * 0.6;
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        ctx.fillText(text!, i * fontSize, drops[i]! * fontSize);
 
-        if (drops[i] * fontSize > height && Math.random() > 0.96) {
+        if (drops[i]! * fontSize > height && Math.random() > 0.96) {
           drops[i] = 0;
         }
-        drops[i] += 0.5 + Math.random() * 0.5;
+        drops[i]! += 0.5 + Math.random() * 0.5;
       }
       ctx.globalAlpha = 1;
       frameId = requestAnimationFrame(draw);
@@ -46,13 +49,7 @@ function MatrixRain({ width, height }: { width: number; height: number }) {
     return () => cancelAnimationFrame(frameId);
   }, [width, height]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 z-0"
-      style={{ width, height }}
-    />
-  );
+  return <canvas ref={canvasRef} className="absolute inset-0 z-0" style={{ width, height }} />;
 }
 
 export function RetroContactForm() {
@@ -78,6 +75,7 @@ export function RetroContactForm() {
       const timer = setTimeout(() => setPongVisible(false), 2000);
       return () => clearTimeout(timer);
     }
+    return;
   }, [message]);
 
   // Measure container for matrix rain canvas
@@ -101,7 +99,11 @@ export function RetroContactForm() {
       setSubject("");
       setMessage("");
     }, 5500);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, [formState]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -145,15 +147,14 @@ export function RetroContactForm() {
     }
   };
 
-  const reducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative max-w-2xl mx-auto rounded-xl overflow-hidden"
+      className="relative mx-auto max-w-2xl overflow-hidden rounded-xl"
       style={{
         background: "#0c1220",
         border: "1px solid rgba(51, 255, 51, 0.25)",
@@ -163,7 +164,7 @@ export function RetroContactForm() {
       {/* CRT Scan Lines Overlay */}
       {!reducedMotion && (
         <div
-          className="absolute inset-0 pointer-events-none z-10"
+          className="pointer-events-none absolute inset-0 z-10"
           style={{
             background:
               "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)",
@@ -173,7 +174,7 @@ export function RetroContactForm() {
 
       {/* Glow effect that follows mouse */}
       <div
-        className="absolute inset-0 pointer-events-none z-0 transition-opacity duration-300"
+        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
         style={{
           background: `radial-gradient(circle at ${glowPos.x}% ${glowPos.y}%, rgba(51,255,51,0.08), transparent 50%)`,
         }}
@@ -181,18 +182,14 @@ export function RetroContactForm() {
 
       <div className="relative z-20 p-8">
         {/* Terminal Header */}
-        <div className="flex items-center gap-2 mb-6 pb-4 border-b border-green-900/50">
+        <div className="mb-6 flex items-center gap-2 border-b border-green-900/50 pb-4">
           <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-            <div className="w-3 h-3 rounded-full bg-green-500/80" />
+            <div className="h-3 w-3 rounded-full bg-red-500/80" />
+            <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
+            <div className="h-3 w-3 rounded-full bg-green-500/80" />
           </div>
-          <span
-            className="ml-4 font-mono text-sm"
-            style={{ color: "#33ff33" }}
-          >
-            {">"} DUCA_MAIL_CLIENT v2.0{" "}
-            <span className="animate-pulse">█</span>
+          <span className="ml-4 font-mono text-sm" style={{ color: "#33ff33" }}>
+            {">"} DUCA_MAIL_CLIENT v2.0 <span className="animate-pulse">█</span>
           </span>
         </div>
 
@@ -207,9 +204,7 @@ export function RetroContactForm() {
               style={{ minHeight: "300px" }}
             >
               {/* Matrix Rain Canvas */}
-              {!reducedMotion && (
-                <MatrixRain width={containerSize.w} height={400} />
-              )}
+              {!reducedMotion && <MatrixRain width={containerSize.w} height={400} />}
 
               {/* Flash overlay */}
               {sentPhase === "flash" && (
@@ -223,7 +218,7 @@ export function RetroContactForm() {
               )}
 
               {/* ACCESS GRANTED message */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center">
                 {(sentPhase === "flash" || sentPhase === "message") && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -235,7 +230,7 @@ export function RetroContactForm() {
                     }}
                   >
                     <p
-                      className="font-mono text-3xl md:text-4xl font-bold tracking-widest mb-2"
+                      className="mb-2 font-mono text-3xl font-bold tracking-widest md:text-4xl"
                       style={{ color: "#33ff33" }}
                     >
                       ACCESS GRANTED
@@ -253,7 +248,7 @@ export function RetroContactForm() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.8 }}
-                      className="font-mono text-sm mt-4"
+                      className="mt-4 font-mono text-sm"
                       style={{ color: "rgba(51,255,51,0.5)" }}
                     >
                       {">"} Thank you for contacting DUCA. We'll be in touch.
@@ -277,80 +272,82 @@ export function RetroContactForm() {
             >
               {/* TO field (readonly) */}
               <div className="flex items-center gap-2 font-mono text-sm">
-                <label style={{ color: "#33ff33" }} className="w-24 shrink-0 text-right">
+                <label htmlFor="contact-to" className="w-24 shrink-0 text-right text-[#33ff33]">
                   TO:
                 </label>
                 <input
+                  id="contact-to"
                   type="text"
                   value="info@duca.au"
                   readOnly
-                  className="flex-1 bg-transparent border-b border-green-900/50 py-2 px-1 font-mono text-sm outline-none"
+                  className="flex-1 border-b border-green-900/50 bg-transparent px-1 py-2 font-mono text-sm outline-none"
                   style={{ color: "#33ff33", opacity: 0.6 }}
                 />
               </div>
 
               {/* FROM field */}
               <div className="flex items-center gap-2 font-mono text-sm">
-                <label style={{ color: "#33ff33" }} className="w-24 shrink-0 text-right">
+                <label htmlFor="contact-name" style={{ color: "#33ff33" }} className="w-24 shrink-0 text-right">
                   FROM:
                 </label>
                 <input
+                  id="contact-name"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
                   required
-                  className="flex-1 bg-transparent border-b border-green-900/50 py-2 px-1 font-mono text-sm outline-none focus:border-green-500/50 placeholder:text-green-900/60"
+                  className="flex-1 border-b border-green-900/50 bg-transparent px-1 py-2 font-mono text-sm outline-none placeholder:text-green-900/60 focus:border-green-500/50"
                   style={{ color: "#33ff33" }}
                 />
               </div>
 
               {/* REPLY-TO field */}
               <div className="flex items-center gap-2 font-mono text-sm">
-                <label style={{ color: "#33ff33" }} className="w-24 shrink-0 text-right">
+                <label htmlFor="contact-email" style={{ color: "#33ff33" }} className="w-24 shrink-0 text-right">
                   REPLY-TO:
                 </label>
                 <input
+                  id="contact-email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   required
-                  className="flex-1 bg-transparent border-b border-green-900/50 py-2 px-1 font-mono text-sm outline-none focus:border-green-500/50 placeholder:text-green-900/60"
+                  className="flex-1 border-b border-green-900/50 bg-transparent px-1 py-2 font-mono text-sm outline-none placeholder:text-green-900/60 focus:border-green-500/50"
                   style={{ color: "#33ff33" }}
                 />
               </div>
 
               {/* SUBJECT field */}
               <div className="flex items-center gap-2 font-mono text-sm">
-                <label style={{ color: "#33ff33" }} className="w-24 shrink-0 text-right">
+                <label htmlFor="contact-subject" style={{ color: "#33ff33" }} className="w-24 shrink-0 text-right">
                   SUBJECT:
                 </label>
                 <input
+                  id="contact-subject"
                   type="text"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="What's this about?"
-                  className="flex-1 bg-transparent border-b border-green-900/50 py-2 px-1 font-mono text-sm outline-none focus:border-green-500/50 placeholder:text-green-900/60"
+                  className="flex-1 border-b border-green-900/50 bg-transparent px-1 py-2 font-mono text-sm outline-none placeholder:text-green-900/60 focus:border-green-500/50"
                   style={{ color: "#33ff33" }}
                 />
               </div>
 
               {/* MESSAGE field */}
               <div className="flex gap-2 font-mono text-sm">
-                <label
-                  style={{ color: "#33ff33" }}
-                  className="w-24 shrink-0 text-right pt-2"
-                >
+                <label htmlFor="contact-message" style={{ color: "#33ff33" }} className="w-24 shrink-0 pt-2 text-right">
                   MESSAGE:
                 </label>
                 <textarea
+                  id="contact-message"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Type your message here..."
                   required
                   rows={6}
-                  className="flex-1 bg-transparent border border-green-900/30 rounded py-2 px-3 font-mono text-sm outline-none focus:border-green-500/50 resize-none placeholder:text-green-900/60"
+                  className="flex-1 resize-none rounded border border-green-900/30 bg-transparent px-3 py-2 font-mono text-sm outline-none placeholder:text-green-900/60 focus:border-green-500/50"
                   style={{ color: "#33ff33" }}
                 />
               </div>
@@ -362,7 +359,7 @@ export function RetroContactForm() {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="font-mono text-center py-2"
+                    className="py-2 text-center font-mono"
                     style={{
                       color: "#33ff33",
                       textShadow: "0 0 10px rgba(51,255,51,0.8)",
@@ -375,10 +372,7 @@ export function RetroContactForm() {
 
               {/* Error message */}
               {formState === "error" && (
-                <div
-                  className="font-mono text-sm text-center py-2"
-                  style={{ color: "#ff3333" }}
-                >
+                <div className="py-2 text-center font-mono text-sm" style={{ color: "#ff3333" }}>
                   {">"} ERROR: Transmission failed. Please try again.
                 </div>
               )}
@@ -389,14 +383,20 @@ export function RetroContactForm() {
                   ref={buttonRef}
                   type="submit"
                   disabled={formState === "sending"}
-                  className="relative flex items-center gap-3 px-6 py-3 rounded-lg font-mono text-sm font-bold transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+                  className="relative flex items-center gap-3 rounded-lg px-6 py-3 font-mono text-sm font-bold transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
                   style={{
                     color: "#0a0a0a",
                     backgroundColor: "#33ff33",
                     boxShadow: "0 0 15px rgba(51,255,51,0.3)",
                   }}
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ opacity: formState === "sending" ? 0 : 1 }}>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    style={{ opacity: formState === "sending" ? 0 : 1 }}
+                  >
                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                   </svg>
                   <span>TRANSMIT</span>

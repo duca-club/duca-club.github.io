@@ -10,7 +10,7 @@ export const AboutHeroSection = () => {
   return (
     <section
       id="about-hero"
-      className="relative flex min-h-[70vh] items-center justify-center overflow-hidden"
+      className="relative flex min-h-[70vh] items-center justify-center overflow-hidden pt-40"
       style={{ background: "var(--theme-bg)" }}
     >
       {/* Background */}
@@ -46,8 +46,11 @@ export const AboutHeroSection = () => {
             transition={{ delay: 1, duration: 0.5 }}
             className="flex flex-col justify-center gap-4 sm:flex-row"
           >
-            <Button href="https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca" variant="primary">
-              Regsiter
+            <Button
+              href="https://dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"
+              variant="primary"
+            >
+              Join DUCA via DUSA
             </Button>
             <Button href="#team" variant="outline">
               Meet the Team

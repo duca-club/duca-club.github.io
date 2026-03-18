@@ -3,8 +3,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { DEFAULT_DISCORD_MEMBER_COUNT, formatMemberCount } from "@/utils/discordMembers";
 
-const JOIN_URL =
-  "https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca";
+const JOIN_URL = "https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca";
 
 const buildTerminalLines = (memberCount: number) => [
   { id: "whoami-cmd", prompt: "$ ", text: "whoami", delay: 80 },
@@ -108,22 +107,20 @@ export function TerminalTyping({
     }
 
     if (currentCharIdx < fullText.length) {
-      const timer = setTimeout(
-        () => {
-          setDisplayedLines((prev) => {
-            const updated = [...prev];
-            const last = updated[updated.length - 1];
-            if (!last) return prev;
-            updated[updated.length - 1] = {
-              ...last,
-              text: fullText.slice(0, currentCharIdx + 1),
-            };
-            return updated;
-          });
-          setCurrentCharIdx((c) => c + 1);
-        },
-        line.delay
-      );
+      const timer = setTimeout(() => {
+        setDisplayedLines((prev) => {
+          const updated = [...prev];
+          const last = updated[updated.length - 1];
+          if (!last) return prev;
+          updated[updated.length - 1] = {
+            prompt: last.prompt,
+            text: fullText.slice(0, currentCharIdx + 1),
+            isTyping: last.isTyping,
+          };
+          return updated;
+        });
+        setCurrentCharIdx((c) => c + 1);
+      }, line.delay);
       return () => clearTimeout(timer);
     } else {
       // Line complete, move to next
@@ -158,25 +155,28 @@ export function TerminalTyping({
 
     const lastLine = displayedLines[displayedLines.length - 1];
     if (!lastLine) return;
-    const timer = setTimeout(() => {
-      setDisplayedLines((prev) => {
-        if (prev.length === 0) return prev;
-        const updated = [...prev];
-        const last = updated[updated.length - 1];
-        if (!last) return prev;
+    const timer = setTimeout(
+      () => {
+        setDisplayedLines((prev) => {
+          if (prev.length === 0) return prev;
+          const updated = [...prev];
+          const last = updated[updated.length - 1];
+          if (!last) return prev;
 
-        if (last.text.length > 0) {
-          updated[updated.length - 1] = {
-            ...last,
-            text: last.text.slice(0, -1),
-            isTyping: true,
-          };
-          return updated;
-        }
+          if (last.text.length > 0) {
+            updated[updated.length - 1] = {
+              ...last,
+              text: last.text.slice(0, -1),
+              isTyping: true,
+            };
+            return updated;
+          }
 
-        return updated.slice(0, -1);
-      });
-    }, lastLine.text.length > 0 ? 18 : 80);
+          return updated.slice(0, -1);
+        });
+      },
+      lastLine.text.length > 0 ? 18 : 80,
+    );
 
     return () => clearTimeout(timer);
   }, [isRewinding, displayedLines]);
@@ -197,7 +197,7 @@ export function TerminalTyping({
           setStarted(true);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
     if (containerRef.current) {
@@ -207,30 +207,28 @@ export function TerminalTyping({
     return () => observer.disconnect();
   }, [started]);
 
-  const reducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (reducedMotion) {
     return (
       <div
-        className={`rounded-xl overflow-hidden font-mono text-sm ${className ?? ""}`}
+        className={`overflow-hidden rounded-xl font-mono text-sm ${className ?? ""}`}
         style={{
           background: "#0c1220",
           border: "1px solid rgba(51, 255, 51, 0.2)",
         }}
       >
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-green-900/30">
+        <div className="flex items-center gap-2 border-b border-green-900/30 px-4 py-3">
           <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-            <div className="w-3 h-3 rounded-full bg-green-500/80" />
+            <div className="h-3 w-3 rounded-full bg-red-500/80" />
+            <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
+            <div className="h-3 w-3 rounded-full bg-green-500/80" />
           </div>
           <span className="ml-3 text-xs" style={{ color: "rgba(51,255,51,0.5)" }}>
             duca@terminal ~ $
           </span>
         </div>
-        <div className="p-4 space-y-1">
+        <div className="space-y-1 p-4">
           {terminalLines.map((line) => (
             <div key={line.id} style={{ color: line.prompt ? "#33ff33" : "rgba(51,255,51,0.7)" }}>
               <span style={{ color: "rgba(51,255,51,0.5)" }}>{line.prompt}</span>
@@ -247,7 +245,7 @@ export function TerminalTyping({
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`rounded-xl overflow-hidden font-mono text-sm ${className ?? ""}`}
+      className={`overflow-hidden rounded-xl font-mono text-sm ${className ?? ""}`}
       style={{
         background: "#0c1220",
         border: "1px solid rgba(51, 255, 51, 0.2)",
@@ -255,11 +253,11 @@ export function TerminalTyping({
       }}
     >
       {/* Terminal Header */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-green-900/30">
+      <div className="flex items-center gap-2 border-b border-green-900/30 px-4 py-3">
         <div className="flex gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-500/80" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-          <div className="w-3 h-3 rounded-full bg-green-500/80" />
+          <div className="h-3 w-3 rounded-full bg-red-500/80" />
+          <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
+          <div className="h-3 w-3 rounded-full bg-green-500/80" />
         </div>
         <span className="ml-3 text-xs" style={{ color: "rgba(51,255,51,0.5)" }}>
           duca@terminal ~ $
@@ -267,10 +265,7 @@ export function TerminalTyping({
       </div>
 
       {/* Terminal Content */}
-      <div
-        ref={containerRef}
-        className="p-4 space-y-1 max-h-100 overflow-y-auto scrollbar-hide"
-      >
+      <div ref={containerRef} className="scrollbar-hide max-h-100 space-y-1 overflow-y-auto p-4">
         {displayedLines.map((line, i) => (
           <div
             key={line.id}
@@ -280,9 +275,7 @@ export function TerminalTyping({
           >
             <span style={{ color: "rgba(51,255,51,0.5)" }}>{line.prompt}</span>
             {renderTerminalText(line.text)}
-            {line.isTyping && i === displayedLines.length - 1 && (
-              <span className="animate-pulse ml-0.5">█</span>
-            )}
+            {line.isTyping && i === displayedLines.length - 1 && <span className="ml-0.5 animate-pulse">█</span>}
           </div>
         ))}
         {currentLineIdx >= terminalLines.length && (

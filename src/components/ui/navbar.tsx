@@ -51,8 +51,8 @@ export const FloatingNav = ({
         }}
         transition={{ duration: 0.2 }}
         className={cn(
-          "flex fixed top-4 inset-x-0 mx-auto max-w-fit items-center justify-center space-x-4 px-8 py-4 rounded-full border border-white/20 bg-black/80 backdrop-blur-md shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] z-5000",
-          className
+          "fixed inset-x-0 top-4 z-5000 mx-auto flex max-w-fit items-center justify-center space-x-4 rounded-full border border-white/20 bg-black/80 px-8 py-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] backdrop-blur-md",
+          className,
         )}
       >
         {logo && <div className="mr-4">{logo}</div>}
@@ -61,7 +61,7 @@ export const FloatingNav = ({
             key={navItem.link}
             href={navItem.link}
             className={cn(
-              "relative flex items-center space-x-1 text-neutral-50 hover:text-neutral-300 transition-colors text-sm"
+              "relative flex items-center space-x-1 text-sm text-neutral-50 transition-colors hover:text-neutral-300",
             )}
           >
             <span className="hidden sm:block">{navItem.icon}</span>
@@ -70,7 +70,7 @@ export const FloatingNav = ({
         ))}
         <a
           href="/join"
-          className="border text-sm font-medium relative border-white/20 text-white px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700 transition-colors"
+          className="relative rounded-full border border-white/20 bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700"
         >
           <span>Join Us</span>
         </a>
@@ -79,13 +79,7 @@ export const FloatingNav = ({
   );
 };
 
-export const ResizableNavbar = ({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) => {
+export const ResizableNavbar = ({ children, className }: { children: ReactNode; className?: string }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -105,14 +99,9 @@ export const ResizableNavbar = ({
         backgroundColor: isScrolled ? "rgba(0, 0, 0, 0.9)" : "rgba(0, 0, 0, 0.7)",
       }}
       transition={{ duration: 0.2 }}
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-white/10",
-        className
-      )}
+      className={cn("fixed top-0 right-0 left-0 z-50 border-b border-white/10 backdrop-blur-md", className)}
     >
-      <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
-        {children}
-      </div>
+      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4">{children}</div>
     </motion.header>
   );
 };
