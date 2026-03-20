@@ -46,7 +46,14 @@ export const HeroSection = () => {
             transition={{ delay: 2, duration: 0.5 }}
             className="mt-10 flex flex-col justify-center gap-4 sm:flex-row"
           >
-            <GlowingButton href="/join">Join Us</GlowingButton>
+           {/*<GlowingButton href="/join">Join Us</GlowingButton>*/}
+            <Button
+              href="/join"
+              variant="primary"
+            >
+            Join Us
+            </Button>
+
             <Button variant="outline" href="#what-we-do">
               Learn More
             </Button>
