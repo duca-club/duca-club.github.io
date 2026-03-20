@@ -489,12 +489,42 @@
   opacity: 0;
   z-index: 2147483647;
   transition: opacity 0.15s ease-out;
+  --cursor-glow-h: 180;
+  --cursor-glow-s: 85%;
+  --cursor-glow-l: 60%;
   box-shadow:
-    0 0 10px rgba(0, 209, 183, 0.6),
-    0 0 18px rgba(214, 72, 255, 0.45);
+    0 0 10px hsl(var(--cursor-glow-h) var(--cursor-glow-s) 55% / 0.42),
+    0 0 18px hsl(calc(var(--cursor-glow-h) + 25) var(--cursor-glow-s) 60% / 0.24);
   border-radius: 9999px;
-  background: radial-gradient(circle at 30% 30%, #fff, #00d1b7 65%, #d648ff);
+  background: radial-gradient(
+    circle at 30% 30%,
+    #fff,
+    hsl(var(--cursor-glow-h) var(--cursor-glow-s) 55% / 0.92) 65%,
+    hsl(calc(var(--cursor-glow-h) + 20) var(--cursor-glow-s) 65% / 0.85)
+  );
   width: 10px;
   height: 10px;
   pointer-events: none;
+}
+
+/* Cursor follower glow (subtle colour-reactive halo) */
+.cursor-follower-glow {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: 2147483646;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out;
+  width: 160px;
+  height: 160px;
+  filter: blur(8px);
+  --cursor-glow-h: 180;
+  --cursor-glow-s: 85%;
+  --cursor-glow-l: 60%;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      hsl(var(--cursor-glow-h) var(--cursor-glow-s) 70% / 0.16) 0%,
+      transparent 62%
+    );
 }
