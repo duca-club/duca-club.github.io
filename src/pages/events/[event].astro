@@ -37,13 +37,13 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
   <article class="section-themed">
     <!-- Hero -->
     <header class="relative overflow-hidden pt-40 pb-20">
-      <div class="absolute inset-0 bg-linear-to-b from-orange-900/20 via-transparent to-transparent"></div>
+      <div class="absolute inset-0 bg-linear-to-b from-purple-900/20 via-transparent to-transparent"></div>
       <div class="bg-grid-pattern absolute inset-0"></div>
 
       <div class="relative z-10 container mx-auto px-4">
         <a
           href="/events"
-          class="theme-text-secondary mb-6 inline-flex items-center gap-2 transition-colors hover:text-orange-400"
+          class="theme-text-secondary mb-6 inline-flex items-center gap-2 transition-colors hover:text-purple-400"
         >
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -54,7 +54,7 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
         <div class="mb-4 flex flex-wrap gap-2">
           {
             event.data.tags?.map((tag) => (
-              <span class="rounded-full bg-orange-500/10 px-3 py-1 text-xs font-semibold tracking-wider text-orange-400 uppercase">
+              <span class="rounded-full bg-purple-500/10 px-3 py-1 text-xs font-semibold tracking-wider text-purple-400 uppercase">
                 {tag}
               </span>
             ))
@@ -95,8 +95,8 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
           </div>
           {
             event.data.registrationUrl && isUpcoming && (
-              <div class="rounded-xl bg-orange-600 p-4 text-white">
-                <div class="mb-1 text-sm text-orange-200">Registration</div>
+              <div class="rounded-xl bg-purple-600 p-4 text-white">
+                <div class="mb-1 text-sm text-purple-200">Registration</div>
                 <a
                   href={event.data.registrationUrl}
                   target="_blank"
@@ -116,7 +116,7 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
               href={event.data.locationUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-orange-400 transition-colors hover:text-orange-300"
+              class="inline-flex items-center gap-2 text-purple-400 transition-colors hover:text-purple-300"
             >
               <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
@@ -159,7 +159,7 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
               href={event.data.registrationUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center justify-center rounded-full bg-orange-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-orange-700"
+              class="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"
             >
               Register on Humanitix
             </a>
@@ -187,7 +187,7 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
     color: var(--theme-text);
   }
   .prose blockquote {
-    border-left-color: #f97316;
+    border-left-color: #a855f7;
     color: var(--theme-text-secondary);
   }
 </style>

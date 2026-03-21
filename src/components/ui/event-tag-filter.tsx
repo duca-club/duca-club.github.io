@@ -105,7 +105,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search events..."
-            className="w-full pl-12 pr-4 py-3 rounded-xl bg-gray-900/60 border border-gray-700/50 text-white placeholder:text-gray-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/30 transition-all font-mono text-sm"
+            className="w-full pl-12 pr-4 py-3 rounded-xl bg-gray-900/60 border border-gray-700/50 text-white placeholder:text-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all font-mono text-sm"
           />
           {searchQuery && (
             <button
@@ -126,8 +126,8 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
           onClick={clearTags}
           className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
             selectedTags.length === 0 && !searchQuery
-              ? "bg-orange-600 text-white shadow-lg shadow-orange-600/30"
-              : "bg-orange-500/10 text-orange-400 border border-orange-500/30 hover:bg-orange-500/20"
+              ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
+              : "bg-purple-500/10 text-purple-400 border border-purple-500/30 hover:bg-purple-500/20"
           }`}
         >
           All
@@ -138,8 +138,8 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
             onClick={() => toggleTag(tag)}
             className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
               selectedTags.includes(tag)
-                ? "bg-orange-600 text-white shadow-lg shadow-orange-600/30"
-                : "bg-orange-500/10 text-orange-400 border border-orange-500/30 hover:bg-orange-500/20"
+                ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
+                : "bg-purple-500/10 text-purple-400 border border-purple-500/30 hover:bg-purple-500/20"
             }`}
           >
             {tag}
@@ -166,14 +166,14 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  className="relative p-6 rounded-xl border border-gray-700/50 bg-gradient-to-br from-gray-900/80 to-gray-800/40 hover:border-orange-500/30 transition-colors group"
+                  className="relative p-6 rounded-xl border border-gray-700/50 bg-gradient-to-br from-gray-900/80 to-gray-800/40 hover:border-purple-500/30 transition-colors group"
                 >
                   <div className="flex flex-col h-full">
                     <div className="flex items-center gap-2 mb-2">
                       {event.tags?.slice(0, 2).map((tag) => (
                         <span
                           key={tag}
-                          className="text-xs font-semibold text-orange-400 uppercase tracking-wider px-2 py-1 bg-orange-500/10 rounded"
+                          className="text-xs font-semibold text-purple-400 uppercase tracking-wider px-2 py-1 bg-purple-500/10 rounded"
                         >
                           {tag}
                         </span>
@@ -196,7 +196,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                     <div className="flex gap-3">
                       <a
                         href={`/events/${event.slug}`}
-                        className="inline-flex items-center justify-center px-4 py-2 rounded-full border border-orange-500/30 text-orange-400 text-sm font-semibold hover:bg-orange-500/10 transition-colors"
+                        className="inline-flex items-center justify-center px-4 py-2 rounded-full border border-purple-500/30 text-purple-400 text-sm font-semibold hover:bg-purple-500/10 transition-colors"
                       >
                         Learn More
                       </a>
@@ -205,7 +205,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                           href={event.registrationUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-orange-600 text-white text-sm font-semibold hover:bg-orange-700 transition-colors"
+                          className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-purple-600 text-white text-sm font-semibold hover:bg-purple-700 transition-colors"
                         >
                           Register Now
                         </a>
@@ -249,7 +249,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  className="block p-6 rounded-xl bg-gray-900/60 border border-gray-700/50 hover:border-orange-500/30 transition-colors group"
+                  className="block p-6 rounded-xl bg-gray-900/60 border border-gray-700/50 hover:border-purple-500/30 transition-colors group"
                 >
                   <div className="flex items-center gap-2 mb-2">
                     {event.tags?.slice(0, 1).map((tag) => (
@@ -261,7 +261,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                       </span>
                     ))}
                   </div>
-                  <h3 className="text-lg font-bold text-gray-200 mt-2 mb-1 group-hover:text-orange-400 transition-colors">
+                  <h3 className="text-lg font-bold text-gray-200 mt-2 mb-1 group-hover:text-purple-400 transition-colors">
                     {event.title}
                   </h3>
                   <p className="text-gray-500 text-sm mb-2">

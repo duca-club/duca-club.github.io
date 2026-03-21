@@ -26,30 +26,22 @@ const serializedEvents = allEvents.map((event) => ({
 <DefaultLayout title="Events">
   <!-- Hero Section with Background Beams -->
   <section class="section-themed relative flex min-h-[50vh] items-center justify-center overflow-hidden pt-40">
-    <div class="absolute inset-0 bg-linear-to-b from-orange-900/20 via-transparent to-transparent"></div>
+    <div class="absolute inset-0 bg-linear-to-b from-purple-900/20 via-transparent to-transparent"></div>
     <BackgroundBeams className="opacity-40" client:load />
     <div class="bg-grid-pattern absolute inset-0"></div>
 
     <div class="relative z-10 container mx-auto px-4 py-20 text-center">
       <h1 class="mb-6 text-5xl font-bold md:text-7xl">
-        <span class="bg-linear-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">Events</span>
+        <span class="bg-linear-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">Events</span>
       </h1>
       <p class="theme-text-secondary mx-auto mb-8 max-w-2xl text-xl">
         Join us for workshops, competitions, networking events, and more. There's always something happening at DUCA!
       </p>
-      <a
-        href="https://humanitix.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center justify-center rounded-full bg-orange-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-orange-700"
-      >
-        Register on Humanitix
-      </a>
     </div>
   </section>
 
   <!-- Events with Tag Filtering -->
-  <section class="section-themed data-stream-bg relative overflow-hidden py-24">
+  <section class="section-themed data-stream-bg relative -mt-14 overflow-hidden pb-24">
     <div class="relative z-10 container mx-auto px-4">
       <EventTagFilter events={serializedEvents} tags={allTags} client:load />
     </div>
