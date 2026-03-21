@@ -78,27 +78,41 @@ const {
       });
     </script>
     <script>
-      // Cursor follower dot with continuous tracking and subtle offset
+      // Cursor follower dot with continuous tracking and subtle offset.
+      // dot and glow are hoisted so closures from the one-time setup (render,
+      // handleMove, etc.) always reference the current DOM elements, even after
+      // Astro View Transitions swap the body and remove the old ones.
       (() => {
-        const initCursorFollower = () => {
-          const w = window as unknown as { __cursorFollowerInitialized?: boolean };
-          if (w.__cursorFollowerInitialized) return;
-          w.__cursorFollowerInitialized = true;
-          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        let dot: HTMLDivElement | null = null;
+        let glow: HTMLDivElement | null = null;
 
-          let dot = document.querySelector(".cursor-follower-dot") as HTMLDivElement | null;
+        const ensureElements = () => {
+          dot = document.querySelector(".cursor-follower-dot") as HTMLDivElement | null;
           if (!dot) {
             dot = document.createElement("div");
             dot.className = "cursor-follower-dot";
             document.body.appendChild(dot);
           }
 
-          let glow = document.querySelector(".cursor-follower-glow") as HTMLDivElement | null;
+          glow = document.querySelector(".cursor-follower-glow") as HTMLDivElement | null;
           if (!glow) {
             glow = document.createElement("div");
             glow.className = "cursor-follower-glow";
             document.body.appendChild(glow);
           }
+        };
+
+        const initCursorFollower = () => {
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+          // Always recreate elements — they may have been removed by a page swap.
+          ensureElements();
+
+          // Event listeners and the animation loop only need to be set up once;
+          // they persist across navigations and read the outer dot/glow refs.
+          const w = window as unknown as { __cursorFollowerInitialized?: boolean };
+          if (w.__cursorFollowerInitialized) return;
+          w.__cursorFollowerInitialized = true;
 
           // position of the dot (from the cursor)
           // (-1, -1) is the top left corner
@@ -264,13 +278,13 @@ const {
             cursorGlowSat = cursorGlowSat + (target.s - cursorGlowSat) * smoothing;
             cursorGlowLum = cursorGlowLum + (target.l - cursorGlowLum) * smoothing;
 
-            dot.style.setProperty("--cursor-glow-h", cursorGlowHue.toFixed(0));
-            dot.style.setProperty("--cursor-glow-s", `${cursorGlowSat.toFixed(0)}%`);
-            dot.style.setProperty("--cursor-glow-l", `${cursorGlowLum.toFixed(0)}%`);
+            dot!.style.setProperty("--cursor-glow-h", cursorGlowHue.toFixed(0));
+            dot!.style.setProperty("--cursor-glow-s", `${cursorGlowSat.toFixed(0)}%`);
+            dot!.style.setProperty("--cursor-glow-l", `${cursorGlowLum.toFixed(0)}%`);
 
-            glow.style.setProperty("--cursor-glow-h", cursorGlowHue.toFixed(0));
-            glow.style.setProperty("--cursor-glow-s", `${cursorGlowSat.toFixed(0)}%`);
-            glow.style.setProperty("--cursor-glow-l", `${cursorGlowLum.toFixed(0)}%`);
+            glow!.style.setProperty("--cursor-glow-h", cursorGlowHue.toFixed(0));
+            glow!.style.setProperty("--cursor-glow-s", `${cursorGlowSat.toFixed(0)}%`);
+            glow!.style.setProperty("--cursor-glow-l", `${cursorGlowLum.toFixed(0)}%`);
           };
 
           const handleMove = (event: PointerEvent | MouseEvent) => {
@@ -279,8 +293,8 @@ const {
             pointerX = event.clientX;
             pointerY = event.clientY;
             isPointerInside = true;
-            dot.style.opacity = "1";
-            glow.style.opacity = "1";
+            dot!.style.opacity = "1";
+            glow!.style.opacity = "1";
           };
 
           const render = () => {
@@ -291,10 +305,10 @@ const {
             velocityX = 0;
             velocityY = 0;
 
-            dot.style.left = `${renderX}px`;
-            dot.style.top = `${renderY}px`;
-            glow.style.left = `${renderX}px`;
-            glow.style.top = `${renderY}px`;
+            dot!.style.left = `${renderX}px`;
+            dot!.style.top = `${renderY}px`;
+            glow!.style.left = `${renderX}px`;
+            glow!.style.top = `${renderY}px`;
 
             const glowNow = performance.now();
             if (isPointerInside && glowNow - lastGlowUpdate >= glowUpdateIntervalMs) {
@@ -305,8 +319,8 @@ const {
           };
 
           const hideDot = () => {
-            dot.style.opacity = "0";
-            glow.style.opacity = "0";
+            dot!.style.opacity = "0";
+            glow!.style.opacity = "0";
             isPointerInside = false;
           };
 
