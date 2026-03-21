@@ -1,29 +1,7 @@
 "use client";
 import { InfiniteLogoCarousel } from "@ui/logo-carousel";
 import { motion } from "framer-motion";
-
-const partners = [
-  {
-    name: "Deakin University",
-    logo: "/partners/deakin.png",
-    href: "https://www.deakin.edu.au/",
-  },
-  {
-    name: "DUSA",
-    logo: "/partners/dusa.png",
-    href: "https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca",
-  },
-  {
-    name: "ACUCyS",
-    logo: "/partners/acucys.png",
-    href: "https://acucys.com.au/",
-  },
-  {
-    name: "Deakin Cyber Research",
-    logo: "/partners/deakin-cyber.png",
-    href: "https://www.deakin.edu.au/information-technology/cyber-security-research",
-  },
-];
+import { allPartnerLogos } from "@/data/partners";
 
 export const PartnersSection = () => {
   return (
@@ -38,7 +16,7 @@ export const PartnersSection = () => {
           Proudly supported by
         </motion.p>
 
-        <InfiniteLogoCarousel partners={partners} direction="left" speed="slow" />
+        <InfiniteLogoCarousel partners={allPartnerLogos} direction="left" speed="slow" />
       </div>
     </section>
   );

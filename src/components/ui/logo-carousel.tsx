@@ -142,7 +142,7 @@ export const InfiniteLogoCarousel = ({
             <img
               src={partner.logo}
               alt={partner.name}
-              className="h-16 w-auto object-contain transition-all duration-300 brightness-0 invert hover:brightness-125"
+              className="h-16 w-auto object-contain transition-all duration-300 brightness-0 invert hover:brightness-100 hover:invert-0"
             />
           </a>
         ))}
