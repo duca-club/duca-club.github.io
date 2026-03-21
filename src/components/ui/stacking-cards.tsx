@@ -1,141 +1,122 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+
+import { useRef, useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
-interface StackingCard {
-  title: string;
-  description: string;
-  icon: string;
-  color: string;
-  bgColor: string;
+interface StackingCardsProps {
+  children: ReactNode;
+  className?: string;
 }
 
-export const StackingCards = ({
-  cards,
+export function StackingCardItem({
+  children,
   className,
+  index = 0,
+  progress = 0,
 }: {
-  cards: StackingCard[];
+  children: ReactNode;
   className?: string;
-}) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [containerHeight, setContainerHeight] = useState(0);
-
-  useEffect(() => {
-    const height = cards.length * 30 + 25;
-    setContainerHeight(height);
-  }, [cards.length]);
+  index?: number;
+  progress?: number;
+}) {
+  const scale = 1 - progress * 0.04;
+  const brightness = 1 - progress * 0.3;
 
   return (
     <div
-      ref={containerRef}
-      className={cn("relative", className)}
-      style={{ height: `${containerHeight}vh` }}
+      className={cn("sticky mx-auto w-full max-w-5xl px-4 md:px-8", className)}
+      style={{
+        top: `calc(4rem + ${index * 18}px)`,
+        zIndex: index + 1,
+        transform: `scale(${scale})`,
+        filter: `brightness(${brightness})`,
+        transformOrigin: "top center",
+        transition: "transform 0.12s ease-out, filter 0.12s ease-out",
+        willChange: "transform, filter",
+        marginBottom: 24,
+      }}
     >
-      <div className="sticky top-24 h-[70vh] flex items-center justify-center">
-        <div className="relative w-full max-w-4xl mx-auto px-4 h-[400px]">
-          {cards.map((card, index) => (
-            <StackingCardItem
-              key={card.title}
-              card={card}
-              index={index}
-              totalCards={cards.length}
-              containerRef={containerRef}
-            />
-          ))}
-        </div>
-      </div>
+      {children}
     </div>
   );
-};
+}
 
-const StackingCardItem = ({
-  card,
-  index,
-  totalCards,
-  containerRef,
-}: {
-  card: StackingCard;
-  index: number;
-  totalCards: number;
-  containerRef: React.RefObject<HTMLDivElement | null>;
-}) => {
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+export function StackingCards({ children, className }: StackingCardsProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [progresses, setProgresses] = useState<number[]>([]);
 
-  const cardRange = 1 / totalCards;
-  const cardStart = index * cardRange;
-  const cardPeak = cardStart + cardRange * 0.5;
-  const cardEnd = cardStart + cardRange;
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-  // Card starts below, rises up, then moves up and shrinks as next card comes
-  const y = useTransform(
-    scrollYProgress,
-    [
-      Math.max(0, cardStart - cardRange * 0.3),
-      cardStart,
-      cardPeak,
-      Math.min(1, cardEnd + cardRange * 0.5),
-    ],
-    [100, 0, 0, -30 - index * 15]
-  );
+    let rafId: number | null = null;
 
-  const scale = useTransform(
-    scrollYProgress,
-    [cardStart, cardPeak, cardEnd],
-    [0.95, 1, 0.92 - index * 0.02]
-  );
+    const update = () => {
+      const cards = container.querySelectorAll<HTMLElement>("[data-stack-card]");
+      const newProgresses: number[] = [];
 
-  // Only visible during its range
-  const opacity = useTransform(
-    scrollYProgress,
-    [
-      Math.max(0, cardStart - cardRange * 0.2),
-      cardStart,
-      cardEnd,
-      Math.min(1, cardEnd + cardRange * 0.3),
-    ],
-    [0, 1, 1, index === totalCards - 1 ? 1 : 0]
-  );
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        const stickyTop = parseFloat(card.style.top) || 64;
+        // How far the card has been pushed past its sticky point by the next card.
+        const offset = stickyTop - rect.top;
+        const progress = Math.max(0, Math.min(1, offset / 300));
+        newProgresses.push(progress);
+      });
+
+      setProgresses(newProgresses);
+    };
+
+    const onScroll = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  // Clone children to inject index + progress props
+  const items = Array.isArray(children) ? children : [children];
 
   return (
-    <motion.div
-      style={{
-        scale,
-        y,
-        opacity,
-        zIndex: totalCards - index + 10,
-      }}
-      className="absolute inset-x-0 top-0"
-    >
-      <div
-        className="w-full rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10"
-        style={{ backgroundColor: card.bgColor }}
-      >
-        <div className="flex flex-col md:flex-row items-start gap-6">
+    <div ref={containerRef} className={cn("relative", className)}>
+      {items.map((child, i) => {
+        if (!child) return null;
+
+        const progress = progresses[i] ?? 0;
+        const scale = 1 - progress * 0.04;
+        const brightness = 1 - progress * 0.3;
+
+        return (
           <div
-            className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center text-4xl md:text-5xl"
-            style={{ backgroundColor: `${card.color}30` }}
+            key={i}
+            data-stack-card
+            className="sticky mx-auto w-full max-w-5xl px-4 md:px-8"
+            style={{
+              top: `calc(4rem + ${i * 18}px)`,
+              zIndex: i + 1,
+              transform: `scale(${scale})`,
+              filter: `brightness(${brightness})`,
+              transformOrigin: "top center",
+              transition: "transform 0.12s ease-out, filter 0.12s ease-out",
+              willChange: "transform, filter",
+              marginBottom: 24,
+            }}
           >
-            {card.icon}
+            {child}
           </div>
-          <div className="flex-1">
-            <h3
-              className="text-2xl md:text-3xl font-bold mb-4"
-              style={{ color: card.color }}
-            >
-              {card.title}
-            </h3>
-            <p className="text-white/90 text-lg leading-relaxed">
-              {card.description}
-            </p>
-          </div>
-        </div>
-      </div>
-    </motion.div>
+        );
+      })}
+      {/* Spacer so the last card has room to fully enter */}
+      <div style={{ height: "30vh" }} />
+    </div>
   );
-};
+}
 
 export default StackingCards;
