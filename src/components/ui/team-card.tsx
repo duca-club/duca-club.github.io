@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
+import { useMouseGlow } from "@/utils/useMouseGlow";
 
 export interface TeamMember {
   name: string;
@@ -18,6 +19,10 @@ export const TeamCard = ({
   className?: string;
 }) => {
   const hasBio = Boolean(member.bio?.trim());
+  const { background, handlers } = useMouseGlow(
+    300,
+    "rgba(168, 85, 247, 0.12)",
+  );
 
   return (
     <motion.div
@@ -26,8 +31,13 @@ export const TeamCard = ({
         "group relative flex h-[20rem] flex-col overflow-hidden rounded-2xl border border-slate-700/50 bg-gradient-to-b from-slate-800/50 to-slate-900/80 p-6",
         className
       )}
+      {...handlers}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* Mouse-tracked glow replaces the old static gradient overlay */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{ background }}
+      />
 
       <div className="relative z-10 flex h-full flex-col">
         <div className={cn("flex flex-col", !hasBio && "flex-1 justify-center")}>

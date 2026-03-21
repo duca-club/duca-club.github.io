@@ -1,20 +1,32 @@
 "use client";
 import { motion } from "framer-motion";
 import { EncryptedText } from "@ui/encrypted-text";
-// import { SpotlightNew } from "@ui/spotlight";
-import { Button, GlowingButton } from "@ui/button";
+import { Button } from "@ui/button";
+import { useMouseGlow } from "@/utils/useMouseGlow";
 
 export const HeroSection = () => {
+  const { background, isHovering, handlers } = useMouseGlow(
+    600,
+    "rgba(139, 92, 246, 0.12)",
+  );
+
   return (
     <section
       className="relative flex min-h-screen items-center justify-center overflow-hidden pt-40"
       style={{ background: "var(--theme-bg)" }}
+      {...handlers}
     >
       {/* Background Effects */}
       <div className="absolute inset-0 bg-linear-to-b from-purple-900/20 via-transparent to-transparent" />
 
       {/* Grid Pattern */}
       <div className="bg-grid-white/[0.02] absolute inset-0 bg-size-[50px_50px]" />
+
+      {/* Mouse-reactive torch glow — illuminates the grid as the cursor moves */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-[1] transition-opacity duration-500"
+        style={{ background, opacity: isHovering ? 1 : 0 }}
+      />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-20">

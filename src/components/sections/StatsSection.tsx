@@ -2,6 +2,7 @@
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect, useState } from "react";
 import { DEFAULT_DISCORD_MEMBER_COUNT } from "@/utils/discordMembers";
+import { useMouseGlow } from "@/utils/useMouseGlow";
 
 interface StatProps {
   value: number;
@@ -41,6 +42,10 @@ const AnimatedCounter = ({ value, suffix = "" }: { value: number; suffix?: strin
 
 const StatCard = ({ value, suffix, label, sublabel }: StatProps) => {
   const [isInView, setIsInView] = useState(false);
+  const { background, handlers } = useMouseGlow(
+    250,
+    "rgba(168, 85, 247, 0.12)",
+  );
 
   return (
     <motion.div
@@ -48,13 +53,19 @@ const StatCard = ({ value, suffix, label, sublabel }: StatProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       onViewportEnter={() => setIsInView(true)}
-      className="rounded-2xl border border-slate-700/50 bg-linear-to-b from-slate-800/50 to-slate-900/50 p-8 text-center transition-colors hover:border-purple-500/50"
+      className="group/stat relative overflow-hidden rounded-2xl border border-slate-700/50 bg-linear-to-b from-slate-800/50 to-slate-900/50 p-8 text-center transition-colors hover:border-purple-500/50"
+      {...handlers}
     >
-      <div className="mb-2 text-5xl font-bold text-white md:text-6xl">
+      {/* Mouse-tracked radial glow */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover/stat:opacity-100"
+        style={{ background }}
+      />
+      <div className="relative z-[1] mb-2 text-5xl font-bold text-white md:text-6xl">
         {isInView ? <AnimatedCounter value={value} suffix={suffix} /> : `0${suffix}`}
       </div>
-      <div className="text-xl font-medium text-purple-400">{label}</div>
-      <div className="mt-1 text-sm text-gray-300">{sublabel}</div>
+      <div className="relative z-[1] text-xl font-medium text-purple-400">{label}</div>
+      <div className="relative z-[1] mt-1 text-sm text-gray-300">{sublabel}</div>
     </motion.div>
   );
 };
