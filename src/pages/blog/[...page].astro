@@ -1,82 +1,96 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import PageHeader from '@components/PageHeader.astro'
-import { Card, Pagination } from 'accessible-astro-components'
-import { getCollection } from 'astro:content'
-import type { GetStaticPaths } from 'astro'
-import authorsJson from './_authors.json'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import { Card, Pagination } from "accessible-astro-components";
+import { getCollection } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import authorsJson from "./_authors.json";
 
 export const getStaticPaths = (async ({ paginate }) => {
   // Pre-import all blog images using glob pattern
-  const blogImages = import.meta.glob('../../content/blog/**/*.{png,jpg,jpeg,webp}', { eager: true, import: 'default' })
-  
-  const posts = await getCollection('blog')
-  
-  
+  const blogImages = import.meta.glob("../../content/blog/**/*.{png,jpg,jpeg,webp}", {
+    eager: true,
+    import: "default",
+  });
+
+  const posts = await getCollection("blog");
+
   // Sort posts by publish date, newest first
   const sortedPosts = posts.sort((a, b) => {
-    return b.data.publishDate.getTime() - a.data.publishDate.getTime()
-  })
+    return b.data.publishDate.getTime() - a.data.publishDate.getTime();
+  });
 
   const postsWithImages = sortedPosts.map((post) => {
-    let featuredImage: string | undefined
+    let featuredImage: string | undefined;
 
     if (post.data.featuredImage) {
       // Remove leading ./ from featuredImage path if present
-      const imageFileName = post.data.featuredImage.replace(/^\.\//, '')
-      const imageKey = `../../content/blog/${post.data.slug}/${imageFileName}`
-      featuredImage = blogImages[imageKey] as string | undefined
+      const imageFileName = post.data.featuredImage.replace(/^\.\//, "");
+      const imageKey = `../../content/blog/${post.data.slug}/${imageFileName}`;
+      featuredImage = blogImages[imageKey] as string | undefined;
     }
 
     return {
       ...post,
       featuredImage,
       slug: post.data.slug,
-    }
-  })
+    };
+  });
 
   return paginate(postsWithImages, {
     pageSize: 6,
-  })
-}) satisfies GetStaticPaths
+  });
+}) satisfies GetStaticPaths;
 
-
-const { page } = Astro.props
+const { page } = Astro.props;
 
 // ----- Author Lookup -----
 type Author = {
-  name: string
-  image: string
-  bio: string
-}
+  name: string;
+  image: string;
+  bio: string;
+};
 
-const authors = authorsJson as Record<string, Author>
+const authors = authorsJson as Record<string, Author>;
 ---
 
-<DefaultLayout
-  title="Blog"
-  description="Blog posts from DUCA about cybersecurity, development, and our events."
->
-  <PageHeader
-    title="Blog"
-    subtitle="Read our latest articles about cybersecurity, student success, and our events."
-    bgType="bordered"
-  />
+<DefaultLayout title="Blog" description="Blog posts from DUCA about cybersecurity, development, and our events.">
+  <!-- Custom Blog Hero with Animated Gradient -->
+  <section class="blog-hero relative flex min-h-[40vh] items-center justify-center overflow-hidden pt-40 pb-20">
+    <!-- Grid pattern overlay -->
+    <div
+      class="pointer-events-none absolute inset-0 opacity-10"
+      style="background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 40px 40px;"
+    >
+    </div>
+    <!-- Animated gradient background -->
+    <div class="blog-hero-gradient absolute inset-0"></div>
+    <!-- Content -->
+    <div class="relative z-10 px-4 text-center">
+      <h1
+        class="mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-5xl font-bold text-transparent md:text-6xl"
+      >
+        Blog
+      </h1>
+      <p class="mx-auto max-w-2xl text-lg text-gray-300">
+        Read our latest articles about cybersecurity, student success, and our events.
+      </p>
+    </div>
+  </section>
 
-  <section class="my-12">
-    <div class="container">
+  <section class="data-stream-bg relative my-12 overflow-hidden">
+    <div class="relative z-10 container">
       <p class="text-sm"><em>Post {page.start + 1} through {page.end + 1} of {page.total} total posts</em></p>
       <ul class="my-3 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {
           page.data.map((post) => {
-            const author = authors[post.data.author]
-            const authorName = author ? author.name : post.data.author
+            const author = authors[post.data.author];
+            const authorName = author ? author.name : post.data.author;
 
             return (
               <li>
                 <Card
                   imageComponent={post.featuredImage}
-                  url={'/blog/' + post.data.slug}
+                  url={"/blog/" + post.data.slug}
                   title={post.data.title}
                   headingLevel="h2"
                   footer={`Author: ${authorName}`}
@@ -85,7 +99,7 @@ const authors = authorsJson as Record<string, Author>
                   {post.data.description}
                 </Card>
               </li>
-            )
+            );
           })
         }
       </ul>
@@ -93,7 +107,7 @@ const authors = authorsJson as Record<string, Author>
         page && page.lastPage > 1 && (
           <div class="mt-12 grid place-content-center">
             <Pagination
-              firstPage={page.url.prev ? '/blog' : null}
+              firstPage={page.url.prev ? "/blog" : null}
               previousPage={page.url.prev ? page.url.prev : null}
               nextPage={page.url.next ? page.url.next : null}
               lastPage={page.url.next ? `/blog/${page.lastPage}` : null}
@@ -107,3 +121,83 @@ const authors = authorsJson as Record<string, Author>
     </div>
   </section>
 </DefaultLayout>
+
+<style>
+  .blog-hero {
+    animation: gradient-shift 8s ease infinite;
+    background: linear-gradient(135deg, rgba(88, 28, 135, 0.3), rgba(49, 46, 129, 0.2), #000);
+    background-size: 200% 200%;
+  }
+
+  .blog-hero-gradient {
+    animation: gradient-shift 8s ease infinite;
+    background: linear-gradient(135deg, rgba(88, 28, 135, 0.3), rgba(49, 46, 129, 0.2), rgba(0, 0, 0, 0.8));
+    background-size: 200% 200%;
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+</style>
+
+<style is:global>
+  /* Override accessible-astro-components Card for dark theme */
+  .card {
+    transition: border-color 0.2s ease;
+    border-color: var(--theme-border) !important;
+    background-color: var(--theme-card-bg) !important;
+    color: var(--theme-text) !important;
+  }
+  .card:hover {
+    border-color: rgba(214, 72, 255, 0.3) !important;
+  }
+  .card a,
+  .card .card__content,
+  .card .card__content p {
+    color: var(--theme-text-secondary) !important;
+  }
+  .card .card__footer {
+    border-top-color: var(--theme-border) !important;
+    color: var(--theme-text-muted) !important;
+  }
+  .card h2 a,
+  .card .card__content h2 a {
+    color: var(--theme-text) !important;
+  }
+  .card img {
+    border-bottom-color: var(--theme-border) !important;
+  }
+  /* Easter egg: retro mode */
+  body.retro-mode {
+    filter: sepia(0.8) !important;
+    font-family: "Courier New", monospace !important;
+  }
+  body.retro-mode * {
+    font-family: "Courier New", monospace !important;
+  }
+</style>
+
+<script>
+  // Easter Egg: Click "Blog" heading 3 times → toggle retro mode (persistent)
+  document.addEventListener("astro:page-load", () => {
+    let clicks = 0;
+    const heading = document.querySelector(".blog-hero h1");
+    if (!heading) return;
+    heading.style.cursor = "default";
+    heading.addEventListener("click", () => {
+      clicks++;
+      if (clicks >= 3) {
+        clicks = 0;
+        document.body.classList.toggle("retro-mode");
+      }
+    });
+  });
+</script>

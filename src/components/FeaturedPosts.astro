@@ -1,8 +1,8 @@
 ---
-import { Card, Heading, Link } from 'accessible-astro-components'
-import { Icon } from 'astro-icon/components'
-import { getCollection } from 'astro:content'
-import authorsJson from '../pages/blog/_authors.json'
+import { Card, Heading, Link } from "accessible-astro-components";
+import { Icon } from "astro-icon/components";
+import { getCollection } from "astro:content";
+import authorsJson from "../pages/blog/_authors.json";
 
 /**
  * FeaturedPosts Component
@@ -13,64 +13,64 @@ interface Props {
   /**
    * Additional classes to apply to the section
    */
-  class?: string
+  class?: string;
   /**
    * The number of posts to display
    * @default 3
    */
-  limit?: number
+  limit?: number;
   /**
    * The title for the section
    * @default "Latest posts"
    */
-  title?: string
+  title?: string;
 }
 
-const { class: className, limit = 3, title = 'Latest blog posts' } = Astro.props
+const { class: className, limit = 3, title = "Latest blog posts" } = Astro.props;
 
 type Author = {
-  name: string
-  image: string
-  bio: string
-}
-const authors = authorsJson as Record<string, Author>
+  name: string;
+  image: string;
+  bio: string;
+};
+const authors = authorsJson as Record<string, Author>;
 
 // Pre-import all blog images using glob pattern
-const blogImages = import.meta.glob('../content/blog/**/*.{png,jpg,jpeg,webp}', { eager: true, import: 'default' })
+const blogImages = import.meta.glob("../content/blog/**/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" });
 
 // Get posts from content collection
-const allPosts = await getCollection('blog')
+const allPosts = await getCollection("blog");
 
 // Sort posts by publish date, newest first
 const sortedPosts = allPosts.sort((a, b) => {
-  return b.data.publishDate.getTime() - a.data.publishDate.getTime()
-})
+  return b.data.publishDate.getTime() - a.data.publishDate.getTime();
+});
 
 // Process and limit posts for featured section
 const featuredPosts = sortedPosts.slice(0, limit).map((post) => {
-  let featuredImage: string | undefined = undefined
+  let featuredImage: string | undefined = undefined;
 
   if (post.data.featuredImage) {
     // Resolve the image path relative to the content directory
     // Remove leading ./ from featuredImage path if present
-    const imageFileName = post.data.featuredImage.replace(/^\.\//, '')
-    const imageKey = `../content/blog/${post.data.slug}/${imageFileName}`
-    featuredImage = blogImages[imageKey] as string | undefined
+    const imageFileName = post.data.featuredImage.replace(/^\.\//, "");
+    const imageKey = `../content/blog/${post.data.slug}/${imageFileName}`;
+    featuredImage = blogImages[imageKey] as string | undefined;
   }
 
-  const author = authors[post.data.author]
-  const authorName = author ? author.name : post.data.author
+  const author = authors[post.data.author];
+  const authorName = author ? author.name : post.data.author;
 
   return {
     ...post,
     featuredImage,
     slug: post.data.slug,
     authorName,
-  }
-})
+  };
+});
 ---
 
-<section class:list={[className, 'my-64']}>
+<section class:list={[className, "my-64"]}>
   <div class="container">
     <Heading level="h2" class="mb-6">{title}</Heading>
     <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
@@ -78,7 +78,7 @@ const featuredPosts = sortedPosts.slice(0, limit).map((post) => {
         featuredPosts.map((post) => (
           <Card
             imageComponent={post.featuredImage}
-            url={'/blog/' + post.data.slug}
+            url={"/blog/" + post.data.slug}
             headingLevel="h2"
             title={post.data.title}
             footer={`Author: ${post.authorName}`}

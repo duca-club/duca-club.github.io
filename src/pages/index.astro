@@ -1,155 +1,158 @@
 ---
-import DefaultLayout from '@layouts/DefaultLayout.astro'
-import Hero from '@components/Hero.astro'
-import Feature from '@components/Feature.astro'
-import Counter from '@components/Counter.astro'
-import ContentMedia from '@components/ContentMedia.astro'
-import FeaturedEvents from '@components/FeaturedEvents.astro'
-import FeaturedPosts from '@components/FeaturedPosts.astro'
-import { Heading, Link } from 'accessible-astro-components'
-import { Icon } from 'astro-icon/components'
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import HeroSection from "@components/sections/HeroSection";
+import StatsSection from "@components/sections/StatsSection";
+import WhatWeDoSection from "@components/sections/WhatWeDoSection";
+import TestimonialsSection from "@components/sections/TestimonialsSection";
+import PartnersSection from "@components/sections/PartnersSection";
+import DiscordCTASection from "@components/sections/DiscordCTASection";
+import BlogPreviewSection from "@components/sections/BlogPreviewSection";
+import FeaturedEventsSection from "@components/sections/FeaturedEventsSection";
+import { getCollection } from "astro:content";
+import { getDiscordMemberCount } from "@/utils/discordMembers";
 
-const DISCORD_INVITE_CODE = "duca"
-const DISCORD_INVITE_API = `https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`;
-const DISCORD_INVITE_URL = `https://discord.gg/${DISCORD_INVITE_CODE}`;
-const DISCORD_MEMBER_COUNTER = Math.random().toString(36).slice(2, 10);
+// Pre-import all blog images using glob pattern
+const blogImages = import.meta.glob("../content/blog/**/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" });
 
+// Fetch latest blog posts
+const allPosts = await getCollection("blog");
+const sortedPosts = allPosts
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .slice(0, 5);
+
+const blogPosts = sortedPosts.map((post) => {
+  let image: string | undefined;
+  if (post.data.featuredImage) {
+    const imageFileName = post.data.featuredImage.replace(/^\.\//, "");
+    const imageKey = `../content/blog/${post.data.slug}/${imageFileName}`;
+    const resolved = blogImages[imageKey] as any;
+    image = typeof resolved === "string" ? resolved : resolved?.src;
+  }
+  return {
+    title: post.data.title,
+    description: post.data.description,
+    href: `/blog/${post.data.slug || post.id}`,
+    image,
+    category: post.data.tags?.[0] || "Blog",
+  };
+});
+
+// Fetch upcoming events (featured ones for homepage)
+const allEvents = await getCollection("events");
+const now = new Date();
+const upcomingEvents = allEvents
+  .filter((event) => new Date(event.data.eventDate) >= now)
+  .sort((a, b) => new Date(a.data.eventDate).getTime() - new Date(b.data.eventDate).getTime())
+  .slice(0, 3);
+
+const featuredEvents = upcomingEvents.map((event) => ({
+  title: event.data.title,
+  description: event.data.description,
+  eventDate: event.data.eventDate.toISOString(),
+  location: event.data.location,
+  registrationUrl: event.data.registrationUrl,
+  slug: event.data.slug,
+  tags: event.data.tags,
+  featuredImage: event.data.featuredImage,
+}));
+
+const memberCount = await getDiscordMemberCount();
 ---
 
 <DefaultLayout title="Home">
-  <Hero />
+  <!-- Dynamic Hero Section -->
+  <HeroSection client:load />
 
-  <!-- Statistics -->
-  <section class="mt-64 mb-32">
-    <div class="container">
-      <Heading level="h2" class="mb-16">DUCA by the numbers</Heading>
-      <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4">
-        <Counter count="750+" title="Members" sub="Active community" count_id={DISCORD_MEMBER_COUNTER} />
-        <Counter count="50+" title="Events" sub="This year" />
-        <Counter count="20+" title="Workshops" sub="Hands-on learning" />
-        <Counter count="100%" title="Free" sub="Always welcome" />
+  <!-- Statistics Section -->
+  <StatsSection memberCount={memberCount} client:visible />
 
-        <script define:vars={{COUNTER_ID: DISCORD_MEMBER_COUNTER, INVITE_API: DISCORD_INVITE_API}}>
-          const MEMBER_COUNTER = document.getElementById(COUNTER_ID);
-          fetch(INVITE_API).then((res) => {
-            if (res.status === 200) res.json().then((json) => {
-              MEMBER_COUNTER.innerText = json["approximate_member_count"]
-            })
-          });
-        </script>
-      </div>
-    </div>
-  </section>
-  
-  <!-- What we do -->
-  <section class="my-64">
-    <div class="container">
-      <Heading level="h2" class="mb-8">What we do</Heading>
-      <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-        <Feature icon="lucide:shield" title="Cybersecurity workshops">
-          Learn practical cybersecurity skills through hands-on workshops covering topics like ethical hacking, network security, and digital forensics.
-        </Feature>
-        <Feature icon="lucide:users" title="Community building">
-          Connect with like-minded students passionate about cybersecurity. Share knowledge, collaborate on projects, and build your professional network.
-        </Feature>
-        <Feature icon="lucide:code" title="CTF competitions">
-          Participate in Capture The Flag events to test your skills, solve real-world security challenges, and compete with teams from across Australia.
-        </Feature>
-        <Feature icon="lucide:graduation-cap" title="Industry connections">
-          Meet professionals from leading cybersecurity companies, attend guest lectures, and discover internship and career opportunities.
-        </Feature>
-        <Feature icon="lucide:book-open" title="Learning resources">
-          Access curated learning materials, study guides, and resources to help you excel in your cybersecurity studies and career.
-        </Feature>
-        <Feature icon="lucide:calendar" title="Regular events">
-          Join us for weekly meetups, monthly workshops, and special events throughout the semester. There's always something happening at DUCA.
-        </Feature>
-      </div>
-    </div>
-  </section>
+  <!-- Partners Logo Carousel -->
+  <PartnersSection client:visible />
 
-  <!-- Why Join Us? -->
-  <ContentMedia imgSrc="/DUCA-Crew-Index.jpeg">
-    <Heading level="h2">Why join us?</Heading>
-    <p class="text-2xl mb-6">
-      DUCA is more than just a student club—we're a community dedicated to advancing cybersecurity knowledge and skills. Whether you're a complete beginner or an experienced practitioner, you'll find a welcoming space to learn, grow, and contribute.
-    </p>
-    <p class="text-xl mb-6">
-      Our members gain access to exclusive workshops, networking opportunities with industry professionals, and hands-on experience with cutting-edge security tools and techniques. We believe in learning by doing, and our events reflect that philosophy.
-    </p>
-    <Link
-      href={DISCORD_INVITE_URL}
-      isButton
-      type="primary"
-      animateOnHover
-      animationType="boop"
-      isExternal
-    >
-      <Icon aria-hidden="true" name="lucide:message-circle" size="1.5rem" />
-      Join our Discord community
-    </Link>
-  </ContentMedia>
+  <!-- Featured Events Section -->
+  <FeaturedEventsSection events={featuredEvents} client:visible />
 
-  <ContentMedia imgSrc="/DUCA-Career.jpeg" reverseImg={true}>
-    <Heading level="h2">Build your cybersecurity career</Heading>
-    <p class="text-2xl mb-6">
-      At DUCA, we're committed to helping our members build successful careers in cybersecurity. Through our events, workshops, and community connections, you'll develop the skills and network needed to excel in this rapidly growing field.
-    </p>
-    <p class="text-xl mb-6">
-      From preparing for industry certifications to landing your first cybersecurity role, we provide the support and resources you need at every step of your journey. Join hundreds of Deakin students who are already building their future in cybersecurity.
-    </p>
-    <Link
-      href={DISCORD_INVITE_URL}
-      isButton
-      type="secondary"
-      animateOnHover
-      animationType="boop"
-      isExternal
-    >
-      <Icon aria-hidden="true" name="lucide:arrow-right" size="1.5rem" />
-      Get started today
-    </Link>
-  </ContentMedia>
+  <!-- What We Do Section -->
+  <WhatWeDoSection client:visible />
 
-  <!-- Events -->
-  <FeaturedEvents />
+  <!-- Testimonials / Why Join Us -->
+  <TestimonialsSection client:visible />
 
-  <!-- Blogs -->
-  <FeaturedPosts />
+  <!-- Featured Blog Posts -->
+  <BlogPreviewSection posts={blogPosts} client:visible />
 
-  <!-- Join Our Discord -->
-  <section class="my-64">
-    <div class="container">
-      <div class="rounded-lg border-2 border-solid border-(--border-color-subtle) bg-neutral-100 p-12 text-center dark:bg-neutral-900">
-        <Heading level="h2" class="mb-6">Join our Discord community</Heading>
-        <p class="text-xl mb-8 max-w-2xl mx-auto">
-          The best way to stay connected with DUCA is through our Discord server. Get instant updates on events, ask questions, share resources, and connect with fellow cybersecurity enthusiasts. Our community is active, supportive, and always ready to help.
-        </p>
-        <div class="flex flex-col gap-4 items-center sm:flex-row sm:justify-center">
-          <Link
-            href={DISCORD_INVITE_URL}
-            isButton
-            type="primary"
-            animateOnHover
-            animationType="boop"
-            isExternal
-          >
-            <Icon aria-hidden="true" name="lucide:message-circle" size="1.5rem" />
-            Join Discord Server
-          </Link>
-          <Link
-            href="#events"
-            isButton
-            type="secondary"
-            animateOnHover
-            animationType="boop"
-          >
-            <Icon aria-hidden="true" name="lucide:calendar" size="1.5rem" />
-            View upcoming events
-          </Link>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <!-- Discord & Join CTA -->
+  <DiscordCTASection client:visible />
 </DefaultLayout>
+
+<style is:global>
+  /* Ensure smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  /* Matrix rain easter egg overlay */
+  .matrix-rain {
+    position: fixed;
+    z-index: 9998;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  // Easter Egg: Konami Code → Matrix rain
+  document.addEventListener("astro:page-load", () => {
+    const konamiCode = [
+      "ArrowUp",
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowLeft",
+      "ArrowRight",
+      "b",
+      "a",
+    ];
+    let ki = 0;
+    document.addEventListener("keydown", (e) => {
+      if (e.key === konamiCode[ki]) {
+        ki++;
+        if (ki === konamiCode.length) {
+          ki = 0;
+          const c = document.createElement("div");
+          c.className = "matrix-rain";
+          const cv = document.createElement("canvas");
+          c.appendChild(cv);
+          document.body.appendChild(c);
+          const ctx = cv.getContext("2d");
+          if (!ctx) return;
+          cv.width = window.innerWidth;
+          cv.height = window.innerHeight;
+          const chars = "DUCACYBER01アイウエオ";
+          const fs = 14;
+          const cols = Math.floor(cv.width / fs);
+          const drops = Array(cols).fill(1);
+          const iv = setInterval(() => {
+            ctx.fillStyle = "rgba(0,0,0,0.05)";
+            ctx.fillRect(0, 0, cv.width, cv.height);
+            ctx.fillStyle = "#33ff33";
+            ctx.font = fs + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+              ctx.fillText(chars[Math.floor(Math.random() * chars.length)]!, i * fs, drops[i] * fs);
+              if (drops[i] * fs > cv.height && Math.random() > 0.975) drops[i] = 0;
+              drops[i]++;
+            }
+          }, 33);
+          setTimeout(() => {
+            clearInterval(iv);
+            c.remove();
+          }, 5000);
+        }
+      } else {
+        ki = 0;
+      }
+    });
+  });
+</script>

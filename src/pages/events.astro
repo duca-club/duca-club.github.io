@@ -1,0 +1,131 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import { BackgroundBeams } from "@components/ui/background-beams";
+import { EventTagFilter } from "@components/ui/event-tag-filter";
+import { getCollection } from "astro:content";
+
+// Fetch all events from the collection
+const allEvents = await getCollection("events");
+
+// Extract unique tags
+const allTags = [...new Set(allEvents.flatMap((e) => e.data.tags || []))];
+
+// Serialize events for the React component
+const serializedEvents = allEvents.map((event) => ({
+  title: event.data.title,
+  description: event.data.description,
+  eventDate: event.data.eventDate.toISOString(),
+  endDate: event.data.endDate?.toISOString(),
+  location: event.data.location,
+  tags: event.data.tags,
+  registrationUrl: event.data.registrationUrl,
+  slug: event.data.slug,
+}));
+---
+
+<DefaultLayout title="Events">
+  <!-- Hero Section with Background Beams -->
+  <section class="section-themed relative flex min-h-[50vh] items-center justify-center overflow-hidden pt-40">
+    <div class="absolute inset-0 bg-linear-to-b from-purple-900/20 via-transparent to-transparent"></div>
+    <BackgroundBeams className="opacity-40" client:load />
+    <div class="bg-grid-pattern absolute inset-0"></div>
+
+    <div class="relative z-10 container mx-auto px-4 py-20 text-center">
+      <h1 class="mb-6 text-5xl font-bold md:text-7xl">
+        <span class="bg-linear-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">Events</span>
+      </h1>
+      <p class="theme-text-secondary mx-auto mb-8 max-w-2xl text-xl">
+        Join us for workshops, competitions, networking events, and more. There's always something happening at DUCA!
+      </p>
+    </div>
+  </section>
+
+  <!-- Events with Tag Filtering -->
+  <section class="section-themed data-stream-bg relative -mt-14 overflow-hidden pb-24">
+    <div class="relative z-10 container mx-auto px-4">
+      <EventTagFilter events={serializedEvents} tags={allTags} client:load />
+    </div>
+  </section>
+
+  <!-- CTA - Glow Ring Discord -->
+  <section class="section-themed data-stream-bg relative overflow-hidden py-24">
+    <div class="relative z-10 container mx-auto px-4 text-center">
+      <div
+        class="animate-pulse-glow mx-auto max-w-2xl rounded-2xl border-2 border-purple-500/30 bg-linear-to-br from-purple-900/20 to-black p-12"
+      >
+        <h2 class="theme-text mb-6 text-3xl font-bold md:text-4xl">Want to stay updated?</h2>
+        <p class="theme-text-secondary mx-auto mb-8 max-w-2xl">
+          Join our Discord to get instant notifications about upcoming events and activities.
+        </p>
+        <div class="flex flex-col justify-center gap-4 sm:flex-row">
+          <a
+            href="https://discord.com/invite/duca"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-full bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700"
+          >
+            Discord
+          </a>
+          <a
+            href="/calendar"
+            class="theme-text inline-flex items-center justify-center rounded-full border-2 border-purple-500 px-6 py-3 font-semibold transition-colors hover:bg-purple-500/10"
+          >
+            View Calendar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</DefaultLayout>
+
+<style is:global>
+  /* Easter egg: ACCESS GRANTED flash */
+  .access-granted-overlay {
+    display: flex;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 9998;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    pointer-events: none;
+  }
+  .access-granted-overlay span {
+    animation: ag-pulse 0.5s ease-in-out;
+    color: #33ff33;
+    font-weight: bold;
+    font-size: 4rem;
+    font-family: monospace;
+    text-shadow: 0 0 30px rgba(51, 255, 51, 0.8);
+  }
+  @keyframes ag-pulse {
+    0%,
+    100% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  // Easter Egg: Type "sudo" → ACCESS GRANTED flash
+  document.addEventListener("astro:page-load", () => {
+    let buffer = "";
+    document.addEventListener("keydown", (e) => {
+      buffer += e.key.toLowerCase();
+      if (buffer.length > 10) buffer = buffer.slice(-10);
+      if (buffer.includes("sudo")) {
+        buffer = "";
+        const overlay = document.createElement("div");
+        overlay.className = "access-granted-overlay";
+        overlay.innerHTML = "<span>ACCESS GRANTED</span>";
+        document.body.appendChild(overlay);
+        setTimeout(() => overlay.remove(), 2000);
+      }
+    });
+  });
+</script>

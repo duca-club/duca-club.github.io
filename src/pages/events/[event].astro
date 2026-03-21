@@ -1,0 +1,193 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const events = await getCollection("events");
+  return events.map((event) => ({
+    params: { event: event.data.slug },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+const { Content } = await render(event);
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString("en-AU", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
+
+const formatTime = (date: Date) => {
+  return date.toLocaleTimeString("en-AU", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
+const isUpcoming = new Date(event.data.eventDate) >= new Date();
+---
+
+<DefaultLayout title={event.data.title}>
+  <article class="section-themed">
+    <!-- Hero -->
+    <header class="relative overflow-hidden pt-40 pb-20">
+      <div class="absolute inset-0 bg-linear-to-b from-purple-900/20 via-transparent to-transparent"></div>
+      <div class="bg-grid-pattern absolute inset-0"></div>
+
+      <div class="relative z-10 container mx-auto px-4">
+        <a
+          href="/events"
+          class="theme-text-secondary mb-6 inline-flex items-center gap-2 transition-colors hover:text-purple-400"
+        >
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back to Events
+        </a>
+
+        <div class="mb-4 flex flex-wrap gap-2">
+          {
+            event.data.tags?.map((tag) => (
+              <span class="rounded-full bg-purple-500/10 px-3 py-1 text-xs font-semibold tracking-wider text-purple-400 uppercase">
+                {tag}
+              </span>
+            ))
+          }
+          {
+            !isUpcoming && (
+              <span class="rounded-full bg-gray-500/10 px-3 py-1 text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                Past Event
+              </span>
+            )
+          }
+        </div>
+
+        <h1 class="theme-text mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
+          {event.data.title}
+        </h1>
+
+        <p class="theme-text-secondary mb-8 max-w-3xl text-xl">
+          {event.data.description}
+        </p>
+
+        <!-- Event Details Grid -->
+        <div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div class="theme-card rounded-xl border p-4">
+            <div class="theme-text-muted mb-1 text-sm">Date</div>
+            <div class="theme-text font-medium">{formatDate(event.data.eventDate)}</div>
+          </div>
+          <div class="theme-card rounded-xl border p-4">
+            <div class="theme-text-muted mb-1 text-sm">Time</div>
+            <div class="theme-text font-medium">
+              {formatTime(event.data.eventDate)}
+              {event.data.endDate && ` - ${formatTime(event.data.endDate)}`}
+            </div>
+          </div>
+          <div class="theme-card rounded-xl border p-4">
+            <div class="theme-text-muted mb-1 text-sm">Location</div>
+            <div class="theme-text font-medium">{event.data.location}</div>
+          </div>
+          {
+            event.data.registrationUrl && isUpcoming && (
+              <div class="rounded-xl bg-purple-600 p-4 text-white">
+                <div class="mb-1 text-sm text-purple-200">Registration</div>
+                <a
+                  href={event.data.registrationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-medium hover:underline"
+                >
+                  Register Now →
+                </a>
+              </div>
+            )
+          }
+        </div>
+
+        {
+          event.data.locationUrl && (
+            <a
+              href={event.data.locationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-purple-400 transition-colors hover:text-purple-300"
+            >
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              View on Google Maps
+            </a>
+          )
+        }
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="container mx-auto px-4 py-16">
+      <div class="prose prose-lg dark:prose-invert mx-auto max-w-3xl">
+        <Content />
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    {
+      isUpcoming && event.data.registrationUrl && (
+        <div class="container mx-auto px-4 pb-16">
+          <div class="theme-card mx-auto max-w-3xl rounded-2xl border p-8 text-center">
+            <h2 class="theme-text mb-4 text-2xl font-bold">Ready to join us?</h2>
+            <p class="theme-text-secondary mb-6">
+              Secure your spot for this event. Registration helps us plan and ensures you get all the updates.
+            </p>
+            <a
+              href={event.data.registrationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"
+            >
+              Register on Humanitix
+            </a>
+          </div>
+        </div>
+      )
+    }
+  </article>
+</DefaultLayout>
+
+<style is:global>
+  .prose h2 {
+    color: var(--theme-text);
+  }
+  .prose h3 {
+    color: var(--theme-text);
+  }
+  .prose p {
+    color: var(--theme-text-secondary);
+  }
+  .prose li {
+    color: var(--theme-text-secondary);
+  }
+  .prose strong {
+    color: var(--theme-text);
+  }
+  .prose blockquote {
+    border-left-color: #a855f7;
+    color: var(--theme-text-secondary);
+  }
+</style>

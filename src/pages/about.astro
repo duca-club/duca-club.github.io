@@ -1,0 +1,90 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import AboutHeroSection from "@components/sections/AboutHeroSection";
+import { TerminalTyping } from "@components/ui/terminal-typing";
+import WhatWeDoStackingSection from "@components/sections/WhatWeDoStackingSection";
+import CoreValuesSection from "@components/sections/CoreValuesSection";
+import TeamSection from "@components/sections/TeamSection";
+import PartnersSection from "@components/sections/PartnersSection";
+import { getDiscordMemberCount } from "@/utils/discordMembers";
+import { executives } from "@/data/team";
+
+const memberCount = await getDiscordMemberCount();
+---
+
+<DefaultLayout title="About Us">
+  <!-- Hero Section with Flip Words -->
+  <AboutHeroSection client:load />
+
+  <!-- Terminal Typing Element -->
+  <section class="section-themed py-16">
+    <div class="container mx-auto max-w-3xl px-4">
+      <TerminalTyping memberCount={memberCount} client:visible />
+    </div>
+  </section>
+
+  <!-- What We Do - Stacking Cards -->
+  <WhatWeDoStackingSection client:visible />
+
+  <!-- Core Values with Card Spotlight -->
+  <CoreValuesSection client:visible />
+
+  <!-- Meet the Executives -->
+  <TeamSection executives={executives} client:visible />
+
+  <!-- Partners -->
+  <PartnersSection client:visible />
+
+  <!-- CTA Section -->
+  <section class="section-themed data-stream-bg relative overflow-hidden py-24">
+    <div class="relative z-10 container mx-auto px-4 text-center">
+      <h2 class="theme-text mb-6 text-3xl font-bold md:text-4xl">Ready to join our community?</h2>
+      <p class="theme-text-secondary mx-auto mb-8 max-w-2xl">
+        Whether you're a beginner or an experienced practitioner, DUCA welcomes you. Join us to learn, grow, and make a
+        difference in cybersecurity.
+      </p>
+      <div class="flex flex-col justify-center gap-4 sm:flex-row">
+        <a
+          href="/join"
+          class="inline-flex items-center justify-center rounded-full bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700"
+        >
+          Join Us
+        </a>
+        <a
+          href="https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="theme-text inline-flex items-center justify-center rounded-full border-2 border-purple-500 px-6 py-3 font-semibold transition-colors hover:bg-purple-500/10"
+        >
+          Regsiter
+        </a>
+      </div>
+    </div>
+  </section>
+</DefaultLayout>
+
+<style is:global>
+  /* Easter egg sunglasses filter */
+  .team-shades img {
+    filter: brightness(0.7) contrast(1.3) hue-rotate(180deg) !important;
+    transition: filter 0.3s ease;
+  }
+</style>
+
+<script>
+  // Easter Egg: Click the DUCA title area 5 times → team photos get funky filter
+  document.addEventListener("astro:page-load", () => {
+    let clicks = 0;
+    const heroArea = document.getElementById("about-hero");
+    if (!heroArea) return;
+    heroArea.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).closest?.("a, button")) return;
+      clicks++;
+      if (clicks === 5) {
+        clicks = 0;
+        document.body.classList.add("team-shades");
+        setTimeout(() => document.body.classList.remove("team-shades"), 3000);
+      }
+    });
+  });
+</script>

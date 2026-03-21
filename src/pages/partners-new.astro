@@ -1,0 +1,508 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import { TextGenerateEffect } from "@components/ui/text-generate-effect";
+import { SectionHeading } from "@components/ui/section-heading";
+import { CardSpotlight } from "@components/ui/card-spotlight";
+import { WobbleCard } from "@components/ui/wobble-card";
+import { InfiniteLogoCarousel } from "@components/ui/logo-carousel";
+import { AuroraBackground } from "@components/ui/aurora-background";
+import {
+  goldSponsors,
+  silverSponsors,
+  bronzeSponsors,
+  partners,
+  collaborators,
+  allPartnerLogos,
+} from "@/data/partners";
+
+const sponsorBenefits = [
+  {
+    title: "Talent Pipeline",
+    description: "Direct access to motivated, skilled cybersecurity students for recruitment and internships.",
+    icon: "🎯",
+  },
+  {
+    title: "Brand Visibility",
+    description: "Prominent logo placement at events, on our website, and across social media channels.",
+    icon: "📣",
+  },
+  {
+    title: "Event Opportunities",
+    description: "Host workshops, sponsor competitions, or deliver guest lectures to our engaged community.",
+    icon: "🎤",
+  },
+  {
+    title: "Industry Impact",
+    description: "Help shape the next generation of cybersecurity professionals and give back to the community.",
+    icon: "💫",
+  },
+];
+---
+
+<DefaultLayout title="Partners & Sponsors">
+  <!-- Hero Section with Aurora Background -->
+  <section class="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
+    <AuroraBackground className="absolute inset-0 h-full!" showRadialGradient={false} client:load>
+      <div></div>
+    </AuroraBackground>
+
+    <div class="absolute inset-0 z-10 flex items-center justify-center px-4 pt-40 pb-20">
+      <div class="flex items-center gap-8 md:gap-12">
+        <!-- ASCII Art - Left Side -->
+        <div class="ascii-art-container hidden shrink-0 select-none md:block" aria-hidden="true">
+          <pre
+            class="ascii-glow text-left font-mono text-sm leading-tight"><span class="text-amber-400/70">┌──────────────┐
+│ ╔═══════════╗│
+│ ║  DUCA.sec ║│
+│ ╚═══════════╝│
+│  ┌─┐  ┌───┐  │
+│  │&gt;│  │ $ │  │
+│  └─┘  └───┘  │
+│ ┌────────────┐│
+│ │ &gt; partner  ││
+│ │ &gt; connect  ││
+│ │ &gt; build_   ││
+│ └────────────┘│
+│  [====]  ◉◉◉  │
+└───────────────┘</span></pre>
+          <pre
+            class="ascii-pulse mt-3 text-left font-mono text-xs leading-tight"><span class="text-amber-500/40">STATUS: SEEKING
+ALLIES ███████░░
+LINK: ACTIVE ●</span></pre>
+        </div>
+
+        <!-- Title + Description -->
+        <div class="text-center md:text-left">
+          <h1 class="mb-8 text-5xl font-bold text-white md:text-7xl">
+            <span class="bg-linear-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent"
+              >Partners & Sponsors</span
+            >
+          </h1>
+          <div class="max-w-3xl">
+            <TextGenerateEffect
+              words="Partner with DUCA to connect with Australia's next generation of cybersecurity talent. Together, we're building a safer digital future."
+              className="text-xl text-gray-300 md:text-2xl"
+              client:visible
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scrolling Logo Carousel -->
+  <section class="section-themed border-y border-amber-500/10 py-8">
+    <div class="container mx-auto px-4">
+      <InfiniteLogoCarousel partners={allPartnerLogos} direction="left" speed="slow" client:visible />
+    </div>
+  </section>
+
+  <!-- Why Sponsor -->
+  <section class="section-themed data-stream-bg relative overflow-hidden py-24">
+    <div class="container mx-auto px-4">
+      <SectionHeading
+        title="Why Partner With Us?"
+        subtitle="Join us in developing tomorrow's cybersecurity leaders"
+        client:visible
+      />
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        {
+          sponsorBenefits.map((benefit, idx) => (
+            <div class="animate-float" style={`animation-delay: ${idx * 0.5}s;`}>
+              <CardSpotlight radius={300} color="#f59e0b" className="h-full" client:visible>
+                <div class="relative z-10">
+                  <div class="mb-4 text-4xl">{benefit.icon}</div>
+                  <h3 class="theme-text mb-2 text-xl font-bold">{benefit.title}</h3>
+                  <p class="theme-text-secondary">{benefit.description}</p>
+                </div>
+              </CardSpotlight>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ GOLD TIER ═══════════════ -->
+  <section id="gold-sponsors" class="section-themed theme-border relative overflow-hidden border-t py-24">
+    <div class="bg-grid-pattern absolute inset-0 opacity-30"></div>
+
+    <div class="relative z-10 container mx-auto px-4">
+      <div class="mb-12 text-center">
+        <span class="tier-badge tier-badge--gold mb-4 inline-block rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest">
+          Gold Sponsors
+        </span>
+        <p class="mx-auto mt-2 max-w-xl text-gray-400">Our premier supporters</p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-8">
+        {
+          goldSponsors.map((sponsor, idx) => (
+            <a
+              href={sponsor.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="gold-card theme-card rounded-2xl border border-yellow-500/30 p-10 transition-all duration-300 hover:-translate-y-1 hover:border-yellow-400/60"
+              style={`animation-delay: ${idx * 0.2}s;`}
+            >
+              <div class="flex flex-col items-center gap-6 md:flex-row">
+                <div class="flex h-32 w-32 shrink-0 items-center justify-center rounded-2xl border border-yellow-500/20 bg-yellow-950/20">
+                  <img
+                    src={sponsor.logo}
+                    alt={sponsor.name}
+                    class="h-28 w-28 object-contain"
+                    onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
+                  />
+                </div>
+                <div class="text-center md:text-left">
+                  <h3 class="theme-text mb-3 text-2xl font-bold">{sponsor.name}</h3>
+                  <p class="theme-text-secondary text-lg leading-relaxed">{sponsor.description}</p>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SILVER TIER ═══════════════ -->
+  <section id="silver-sponsors" class="section-themed theme-border relative overflow-hidden border-t py-24">
+    <div class="relative z-10 container mx-auto px-4">
+      <div class="mb-12 text-center">
+        <span class="tier-badge tier-badge--silver mb-4 inline-block rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest">
+          Silver Sponsors
+        </span>
+        <p class="mx-auto mt-2 max-w-xl text-gray-400">Valued supporters of our mission</p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+        {
+          silverSponsors.map((sponsor, idx) => (
+            <a
+              href={sponsor.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="silver-card theme-card rounded-2xl border border-gray-400/20 p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gray-300/40"
+              style={`animation-delay: ${idx * 0.2}s;`}
+            >
+              <div class="flex items-start gap-6">
+                <div class="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl border border-gray-400/10 bg-gray-800/30">
+                  <img
+                    src={sponsor.logo}
+                    alt={sponsor.name}
+                    class="h-20 w-20 object-contain"
+                    onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
+                  />
+                </div>
+                <div>
+                  <h3 class="theme-text mt-1 mb-2 text-xl font-bold">{sponsor.name}</h3>
+                  <p class="theme-text-secondary leading-relaxed">{sponsor.description}</p>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ BRONZE TIER ═══════════════ -->
+  <section id="bronze-sponsors" class="section-themed theme-border relative overflow-hidden border-t py-24">
+    <div class="relative z-10 container mx-auto px-4">
+      <div class="mb-12 text-center">
+        <span class="tier-badge tier-badge--bronze mb-4 inline-block rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest">
+          Bronze Sponsors
+        </span>
+        <p class="mx-auto mt-2 max-w-xl text-gray-400">Community champions</p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+        {
+          bronzeSponsors.map((sponsor, idx) => (
+            <a
+              href={sponsor.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bronze-card theme-card rounded-2xl border border-amber-700/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-amber-600/40"
+              style={`animation-delay: ${idx * 0.15}s;`}
+            >
+              <div class="flex flex-col items-center gap-4 text-center">
+                <div class="flex h-16 w-16 items-center justify-center rounded-lg border border-amber-700/10 bg-amber-950/20">
+                  <img
+                    src={sponsor.logo}
+                    alt={sponsor.name}
+                    class="h-12 w-12 object-contain"
+                    onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
+                  />
+                </div>
+                <div>
+                  <h3 class="theme-text mb-1 text-base font-bold">{sponsor.name}</h3>
+                  <p class="theme-text-secondary text-sm leading-relaxed">{sponsor.description}</p>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners — organisations we work with and that support us -->
+  <section id="partners" class="section-themed theme-border relative overflow-hidden border-t py-24">
+    <div class="relative z-10 container mx-auto px-4">
+      <SectionHeading
+        title="Our Partners"
+        subtitle="Organisations we work alongside — providing resources, mentorship, and opportunities that power everything we do"
+        client:visible
+      />
+
+      <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+        {
+          partners.map((partner, idx) => (
+            <a
+              href={partner.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class:list={[
+                "partner-card theme-card theme-border rounded-2xl border p-10 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5",
+                idx === 0 && "md:col-span-2",
+              ]}
+              style={`animation-delay: ${idx * 0.2}s;`}
+            >
+              <div class="flex items-start gap-6">
+                <div class="theme-bg-secondary partner-logo-wrap flex h-24 w-24 shrink-0 items-center justify-center rounded-xl">
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    class="h-20 w-20 object-contain"
+                    onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
+                  />
+                </div>
+                <div>
+                  <span class="text-xs font-semibold tracking-wider text-amber-400/70 uppercase">Partner</span>
+                  <h3 class="theme-text mt-1 mb-3 text-xl font-bold">{partner.name}</h3>
+                  <p class="theme-text-secondary leading-relaxed">{partner.description}</p>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Collaborators — organisations we've worked with -->
+  <section id="collaborators" class="section-themed theme-border relative overflow-hidden border-t py-24">
+    <div class="relative z-10 container mx-auto px-4">
+      <SectionHeading
+        title="Past Collaborators"
+        subtitle="Organisations we've teamed up with on events and projects"
+        client:visible
+      />
+
+      <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+        {
+          collaborators.map((collab, idx) => (
+            <a
+              href={collab.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="collaborator-card theme-card theme-border rounded-2xl border p-10 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5"
+              style={`animation-delay: ${idx * 0.2}s;`}
+            >
+              <div class="flex items-start gap-6">
+                <div class="theme-bg-secondary flex h-24 w-24 shrink-0 items-center justify-center rounded-xl">
+                  <img
+                    src={collab.logo}
+                    alt={collab.name}
+                    class="h-20 w-20 object-contain"
+                    onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
+                  />
+                </div>
+                <div>
+                  <span class="text-xs font-semibold tracking-wider text-amber-400/70 uppercase">Collaborator</span>
+                  <h3 class="theme-text mt-1 mb-3 text-xl font-bold">{collab.name}</h3>
+                  <p class="theme-text-secondary leading-relaxed">{collab.description}</p>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Second Logo Carousel (reverse direction) -->
+  <section class="section-themed border-y border-amber-500/10 py-8">
+    <div class="container mx-auto px-4">
+      <InfiniteLogoCarousel partners={allPartnerLogos} direction="right" speed="normal" client:visible />
+    </div>
+  </section>
+
+  <!-- Become a Partner CTA - WobbleCard -->
+  <section class="section-themed py-24">
+    <div class="container mx-auto px-4">
+      <WobbleCard
+        containerClassName="bg-gradient-to-br from-amber-900/80 to-orange-900/60 min-h-[300px]"
+        client:visible
+      >
+        <div class="max-w-xl">
+          <h2 class="mb-4 text-2xl font-bold text-white md:text-4xl">Become a Sponsor</h2>
+          <p class="mb-6 text-lg text-amber-100/80">
+            Interested in sponsoring DUCA? We offer Gold, Silver, and Bronze tiers with benefits tailored to your goals.
+            Get in touch to find the right fit.
+          </p>
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center rounded-full bg-amber-500 px-8 py-4 text-lg font-semibold text-black transition-colors hover:bg-amber-400"
+          >
+            Get in Touch
+          </a>
+        </div>
+      </WobbleCard>
+    </div>
+  </section>
+
+  <!-- Discord CTA - Amber variant -->
+  <section class="section-themed theme-border border-t py-16">
+    <div class="container mx-auto px-4 text-center">
+      <div
+        class="animate-border-glow mx-auto max-w-2xl rounded-2xl border border-amber-500/20 bg-linear-to-br from-amber-900/10 to-black p-10"
+      >
+        <h3 class="mb-4 text-2xl font-bold text-white">Join Our Community</h3>
+        <p class="mb-6 text-gray-400">
+          Connect with fellow cybersecurity enthusiasts and stay updated on partnership opportunities.
+        </p>
+        <a
+          href="https://discord.com/invite/duca"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-full bg-amber-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-amber-500"
+        >
+          Discord
+        </a>
+      </div>
+    </div>
+  </section>
+</DefaultLayout>
+
+<style>
+  /* Tier badges */
+  .tier-badge {
+    letter-spacing: 0.15em;
+  }
+  .tier-badge--gold {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(161, 98, 7, 0.2));
+    border: 1px solid rgba(234, 179, 8, 0.4);
+    color: #facc15;
+  }
+  .tier-badge--silver {
+    background: linear-gradient(135deg, rgba(156, 163, 175, 0.2), rgba(107, 114, 128, 0.2));
+    border: 1px solid rgba(156, 163, 175, 0.4);
+    color: #d1d5db;
+  }
+  .tier-badge--bronze {
+    background: linear-gradient(135deg, rgba(180, 83, 9, 0.2), rgba(146, 64, 14, 0.2));
+    border: 1px solid rgba(180, 83, 9, 0.4);
+    color: #d97706;
+  }
+
+  /* Gold card — prominent glow */
+  .gold-card {
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .gold-card:hover {
+    box-shadow:
+      0 0 30px rgba(234, 179, 8, 0.1),
+      0 8px 40px rgba(234, 179, 8, 0.08);
+  }
+
+  /* Silver card */
+  .silver-card {
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .silver-card:hover {
+    box-shadow:
+      0 0 20px rgba(156, 163, 175, 0.08),
+      0 8px 32px rgba(156, 163, 175, 0.06);
+  }
+
+  /* Bronze card */
+  .bronze-card {
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .bronze-card:hover {
+    box-shadow:
+      0 0 16px rgba(180, 83, 9, 0.08),
+      0 8px 24px rgba(180, 83, 9, 0.05);
+  }
+
+  /* Partner card hover effect */
+  .partner-card {
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  /* Partner logo long-hover bounce easter egg */
+  .partner-logo-wrap img {
+    transition: transform 0.5s ease;
+  }
+  .partner-logo-wrap:hover img {
+    animation: logo-bounce 0.5s ease;
+  }
+
+  /* Collaborator card */
+  .collaborator-card {
+    text-decoration: none;
+  }
+
+  /* ASCII art glow and animations */
+  .ascii-art-container {
+    min-width: 200px;
+  }
+  .ascii-glow {
+    animation: ascii-flicker 4s ease-in-out infinite;
+    text-shadow:
+      0 0 8px rgba(245, 158, 11, 0.3),
+      0 0 20px rgba(245, 158, 11, 0.1);
+  }
+  .ascii-pulse {
+    animation: ascii-blink 2s ease-in-out infinite;
+  }
+  @keyframes ascii-flicker {
+    0%,
+    100% {
+      opacity: 0.8;
+    }
+    50% {
+      opacity: 1;
+    }
+    73% {
+      opacity: 0.75;
+    }
+    74% {
+      opacity: 0.95;
+    }
+  }
+  @keyframes ascii-blink {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ascii-glow,
+    .ascii-pulse {
+      animation: none;
+    }
+  }
+</style>

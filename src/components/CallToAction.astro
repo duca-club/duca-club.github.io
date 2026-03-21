@@ -1,6 +1,6 @@
 ---
-import { Heading, Link } from 'accessible-astro-components'
-import { Icon } from 'astro-icon/components'
+import { Heading, Link } from "accessible-astro-components";
+import { Icon } from "astro-icon/components";
 
 /**
  * CallToAction Component
@@ -12,24 +12,24 @@ interface Props {
    * The title text to display
    * @default "Get this theme on GitHub"
    */
-  title?: string
+  title?: string;
   /**
    * The URL the button should link to
    * @default "https://github.com/incluud/accessible-astro-starter"
    */
-  link?: string
+  link?: string;
   /**
    * The text to display on the button
    * @default "Get Started"
    */
-  linkText?: string
+  linkText?: string;
 }
 
 const {
-  title = 'Get this theme on GitHub',
-  link = 'https://github.com/incluud/accessible-astro-starter',
-  linkText = 'Use this theme',
-} = Astro.props
+  title = "Get this theme on GitHub",
+  link = "https://github.com/incluud/accessible-astro-starter",
+  linkText = "Use this theme",
+} = Astro.props;
 ---
 
 <div class="container">
@@ -43,15 +43,11 @@ const {
 </div>
 
 <style lang="scss">
-  @use '../assets/scss/base/mixins' as *;
+  @use "../assets/scss/base/mixins" as *;
 
   .call-to-action {
     position: relative;
-    background-image: linear-gradient(
-      315deg,
-      light-dark(var(--color-primary-100), var(--color-secondary-100)) 25%,
-      light-dark(var(--color-secondary-100), var(--color-primary-200))
-    );
-    color: var(--color-neutral-900);
+    background-image: linear-gradient(315deg, var(--color-secondary-100) 25%, var(--color-primary-200));
+    color: var(--color-neutral-100);
   }
 </style>

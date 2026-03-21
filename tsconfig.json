@@ -17,6 +17,12 @@
       ],
       "@/utils/*": [
         "src/utils/*"
+      ],
+      "@/data/*": [
+        "src/data/*"
+      ],
+      "@ui/*": [
+        "src/components/ui/*"
       ]
     }
   }

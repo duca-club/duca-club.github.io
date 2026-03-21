@@ -1,18 +1,19 @@
 ---
-import '../styles/tailwind.css'
-import '../assets/scss/index.scss'
-import SiteMeta from '@components/SiteMeta.astro'
-import Header from '@components/Header.astro'
-import Footer from '@components/Footer.astro'
-import { ClientRouter } from 'astro:transitions'
+import "../styles/tailwind.css";
+import "../assets/scss/index.scss";
+import SiteMeta from "@components/SiteMeta.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import AmbientBackground from "@components/AmbientBackground.astro";
+import { ClientRouter } from "astro:transitions";
 
 const {
-  title = 'Accessible Astro',
-  description = 'A starter project with accessibility features using Astro static site builder. Contains accessible landmarks, skip links, a dark mode color scheme, better focus outline and keyboard menu navigation.',
+  title = "Cybersecurity Club - DUCA",
+  description = "Deakin University Cybersecurity Association (DUCA) - workshops, CTFs, networking events, and resources for all students interested in cybersecurity in an inclusive, LGBTQIA+, disability, and neurodivergent-friendly community.",
   url = Astro.site,
-  image = 'social-preview-image.png',
-  author = 'Incluud',
-} = Astro.props
+  image = "social-preview-image.png",
+  author = "DUCA Team",
+} = Astro.props;
 ---
 
 <html lang="en" dir="ltr">
@@ -22,7 +23,7 @@ const {
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <!-- favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/webp" href="/global/duca-logo.webp" />
 
     <SiteMeta title={title} description={description.substring(0, 100)} url={url} image={image} author={author} />
 
@@ -30,13 +31,321 @@ const {
     <ClientRouter />
   </head>
   <body>
+    <AmbientBackground />
     <Header />
     <main id="main-content" transition:animate="fade">
       <slot />
     </main>
     <Footer />
+    <script>
+      // Smooth momentum scroll - creates a buttery scroll feel
+      document.addEventListener("astro:page-load", () => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        // Apply scroll-driven reveal animations to sections
+        const sections = document.querySelectorAll('section, [class*="section-themed"]');
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("section-visible");
+              }
+            });
+          },
+          { threshold: 0.05, rootMargin: "0px 0px -50px 0px" },
+        );
+        sections.forEach((s) => observer.observe(s));
+      });
+    </script>
+    <script>
+      // Click particle explosion effect
+      document.addEventListener("click", (e) => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const count = 12;
+        for (let i = 0; i < count; i++) {
+          const particle = document.createElement("div");
+          particle.className = "click-particle";
+          const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
+          const distance = 30 + Math.random() * 50;
+          const duration = 400 + Math.random() * 300;
+          particle.style.left = e.clientX + "px";
+          particle.style.top = e.clientY + "px";
+          particle.style.setProperty("--dx", Math.cos(angle) * distance + "px");
+          particle.style.setProperty("--dy", Math.sin(angle) * distance + "px");
+          particle.style.animationDuration = duration + "ms";
+          document.body.appendChild(particle);
+          particle.addEventListener("animationend", () => particle.remove());
+        }
+      });
+    </script>
+    <script>
+      // Cursor follower dot with continuous tracking and subtle offset.
+      // dot and glow are hoisted so closures from the one-time setup (render,
+      // handleMove, etc.) always reference the current DOM elements, even after
+      // Astro View Transitions swap the body and remove the old ones.
+      (() => {
+        let dot: HTMLDivElement | null = null;
+        let glow: HTMLDivElement | null = null;
+
+        const ensureElements = () => {
+          dot = document.querySelector(".cursor-follower-dot") as HTMLDivElement | null;
+          if (!dot) {
+            dot = document.createElement("div");
+            dot.className = "cursor-follower-dot";
+            document.body.appendChild(dot);
+          }
+
+          glow = document.querySelector(".cursor-follower-glow") as HTMLDivElement | null;
+          if (!glow) {
+            glow = document.createElement("div");
+            glow.className = "cursor-follower-glow";
+            document.body.appendChild(glow);
+          }
+        };
+
+        const initCursorFollower = () => {
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+          // Always recreate elements — they may have been removed by a page swap.
+          ensureElements();
+
+          // Event listeners and the animation loop only need to be set up once;
+          // they persist across navigations and read the outer dot/glow refs.
+          const w = window as unknown as { __cursorFollowerInitialized?: boolean };
+          if (w.__cursorFollowerInitialized) return;
+          w.__cursorFollowerInitialized = true;
+
+          // position of the dot (from the cursor)
+          // (-1, -1) is the top left corner
+          const cursorOffsetX = -1;
+          const cursorOffsetY = -1;
+
+          let targetX = window.innerWidth / 2;
+          let targetY = window.innerHeight / 2;
+          let renderX = targetX;
+          let renderY = targetY;
+          let velocityX = 0;
+          let velocityY = 0;
+          let lastFrameTime = performance.now();
+
+          let pointerX = window.innerWidth / 2;
+          let pointerY = window.innerHeight / 2;
+          let isPointerInside = false;
+
+          let cursorGlowHue = 180;
+          let cursorGlowSat = 85;
+          let cursorGlowLum = 60;
+
+          const glowUpdateIntervalMs = 80;
+          let lastGlowUpdate = 0;
+
+          const parseCssColor = (color: string | null) => {
+            if (!color) return null;
+            const c = String(color).trim().toLowerCase();
+            if (c === "transparent") return { r: 0, g: 0, b: 0, a: 0 };
+
+            // rgb(r,g,b) / rgba(r,g,b,a)
+            const rgbMatch = c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([0-9.]+))?\)$/i);
+            if (rgbMatch) {
+              const r = Number(rgbMatch[1]);
+              const g = Number(rgbMatch[2]);
+              const b = Number(rgbMatch[3]);
+              const a = rgbMatch[4] === undefined ? 1 : Number(rgbMatch[4]);
+              return { r, g, b, a };
+            }
+
+            // #rgb / #rrggbb
+            const hexMatch = c.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+            if (hexMatch) {
+              const hexValue = hexMatch[1];
+              if (!hexValue) return null;
+              let hex = hexValue;
+              if (hex.length === 3) {
+                hex = hex
+                  .split("")
+                  .map((ch) => ch + ch)
+                  .join("");
+              }
+              const r = parseInt(hex.slice(0, 2), 16);
+              const g = parseInt(hex.slice(2, 4), 16);
+              const b = parseInt(hex.slice(4, 6), 16);
+              return { r, g, b, a: 1 };
+            }
+
+            return null;
+          };
+
+          const rgbToHsl = (r: number, g: number, b: number) => {
+            const rn = r / 255;
+            const gn = g / 255;
+            const bn = b / 255;
+            const max = Math.max(rn, gn, bn);
+            const min = Math.min(rn, gn, bn);
+            const d = max - min;
+
+            const l = (max + min) / 2;
+            let h = 0;
+            let s = 0;
+
+            if (d !== 0) {
+              s = d / (1 - Math.abs(2 * l - 1));
+
+              switch (max) {
+                case rn:
+                  h = ((gn - bn) / d) % 6;
+                  break;
+                case gn:
+                  h = (bn - rn) / d + 2;
+                  break;
+                default:
+                  h = (rn - gn) / d + 4;
+                  break;
+              }
+
+              h *= 60;
+              if (h < 0) h += 360;
+            }
+
+            return { h, s: s * 100, l: l * 100 };
+          };
+
+          const sampleRgbAtPoint = (x: number, y: number) => {
+            const candidates = document.elementsFromPoint
+              ? document.elementsFromPoint(x, y)
+              : [document.elementFromPoint(x, y)];
+
+            for (const el of candidates) {
+              if (!(el instanceof Element)) continue;
+              if (el === dot || el === glow) continue;
+
+              // Avoid sampling our own cursor elements even if they overlap slightly.
+              if (el.closest?.(".cursor-follower-dot, .cursor-follower-glow")) continue;
+
+              const style = window.getComputedStyle(el);
+
+              const bg = parseCssColor(style.backgroundColor);
+              if (bg && bg.a > 0.05) return bg;
+
+              const fg = parseCssColor(style.color);
+              if (fg && fg.a > 0.05) return fg;
+            }
+
+            return null;
+          };
+
+          const updateGlowColourFromPoint = (x: number, y: number) => {
+            const offsets: Array<[number, number]> = [
+              [0, 0],
+              [8, 0],
+              [-8, 0],
+              [0, 8],
+              [0, -8],
+            ];
+
+            let sumR = 0;
+            let sumG = 0;
+            let sumB = 0;
+            let sumA = 0;
+
+            for (const [dx, dy] of offsets) {
+              const cx = Math.max(0, Math.min(window.innerWidth - 1, x + dx));
+              const cy = Math.max(0, Math.min(window.innerHeight - 1, y + dy));
+              const sample = sampleRgbAtPoint(cx, cy);
+              if (!sample) continue;
+
+              const a = sample.a <= 0 ? 0 : sample.a;
+              if (a <= 0.01) continue;
+
+              sumR += sample.r * a;
+              sumG += sample.g * a;
+              sumB += sample.b * a;
+              sumA += a;
+            }
+
+            if (sumA <= 0.001) return;
+
+            const rAvg = sumR / sumA;
+            const gAvg = sumG / sumA;
+            const bAvg = sumB / sumA;
+
+            const target = rgbToHsl(rAvg, gAvg, bAvg);
+            if (!Number.isFinite(target.h)) return;
+
+            // Smooth hue changes across the 0/360 boundary.
+            const hueDelta = ((target.h - cursorGlowHue + 540) % 360) - 180;
+            const smoothing = 0.18;
+
+            cursorGlowHue = (cursorGlowHue + hueDelta * smoothing + 360) % 360;
+            cursorGlowSat = cursorGlowSat + (target.s - cursorGlowSat) * smoothing;
+            cursorGlowLum = cursorGlowLum + (target.l - cursorGlowLum) * smoothing;
+
+            dot!.style.setProperty("--cursor-glow-h", cursorGlowHue.toFixed(0));
+            dot!.style.setProperty("--cursor-glow-s", `${cursorGlowSat.toFixed(0)}%`);
+            dot!.style.setProperty("--cursor-glow-l", `${cursorGlowLum.toFixed(0)}%`);
+
+            glow!.style.setProperty("--cursor-glow-h", cursorGlowHue.toFixed(0));
+            glow!.style.setProperty("--cursor-glow-s", `${cursorGlowSat.toFixed(0)}%`);
+            glow!.style.setProperty("--cursor-glow-l", `${cursorGlowLum.toFixed(0)}%`);
+          };
+
+          const handleMove = (event: PointerEvent | MouseEvent) => {
+            targetX = event.clientX + cursorOffsetX;
+            targetY = event.clientY + cursorOffsetY;
+            pointerX = event.clientX;
+            pointerY = event.clientY;
+            isPointerInside = true;
+            dot!.style.opacity = "1";
+            glow!.style.opacity = "1";
+          };
+
+          const render = () => {
+            // Place the follower directly on the target position.
+            // This removes the intentional trailing delay from the spring model.
+            renderX = targetX;
+            renderY = targetY;
+            velocityX = 0;
+            velocityY = 0;
+
+            dot!.style.left = `${renderX}px`;
+            dot!.style.top = `${renderY}px`;
+            glow!.style.left = `${renderX}px`;
+            glow!.style.top = `${renderY}px`;
+
+            const glowNow = performance.now();
+            if (isPointerInside && glowNow - lastGlowUpdate >= glowUpdateIntervalMs) {
+              lastGlowUpdate = glowNow;
+              updateGlowColourFromPoint(pointerX, pointerY);
+            }
+            window.requestAnimationFrame(render);
+          };
+
+          const hideDot = () => {
+            dot!.style.opacity = "0";
+            glow!.style.opacity = "0";
+            isPointerInside = false;
+          };
+
+          window.addEventListener("pointermove", handleMove, { passive: true });
+          window.addEventListener("mousemove", handleMove, { passive: true });
+          window.addEventListener("pointerleave", hideDot);
+          window.addEventListener("blur", hideDot);
+          window.requestAnimationFrame(render);
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initCursorFollower, { once: true });
+        } else {
+          initCursorFollower();
+        }
+        document.addEventListener("astro:page-load", initCursorFollower);
+      })();
+    </script>
     <style lang="scss" is:global>
-      @use '../assets/scss/base/mixins' as *;
+      @use "../assets/scss/base/mixins" as *;
+
+      // smooth scroll globally
+      html {
+        scroll-behavior: smooth;
+      }
 
       // sticky footer on low content pages
       html,
@@ -68,6 +377,16 @@ const {
         a {
           @include text-decoration(transparent, var(--foreground-color), 4px, 2px);
         }
+      }
+
+      // Section reveal animation on scroll
+      section,
+      [class*="section-themed"] {
+        transform: translateY(0);
+        opacity: 1;
+        transition:
+          opacity 0.6s ease-out,
+          transform 0.6s ease-out;
       }
     </style>
   </body>

@@ -1,58 +1,73 @@
 ---
-import { Image } from 'astro:assets'
-import { Heading, Link } from 'accessible-astro-components'
+import { Image } from "astro:assets";
+import { Heading, Link } from "accessible-astro-components";
 
 /**
  * Footer Component
  *
  * @description A component that displays the footer of the website
  */
-const currentYear = new Date().getFullYear()
+const currentYear = new Date().getFullYear();
 ---
 
 <footer>
-    <section class="py-20">
-        <Heading level="h2" class="sr-only">Footer</Heading>
-        <div class="container grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <div class="flex flex-col gap-4 md:col-span-2">
-                <Image src="/global/duca-logo.webp" alt="DUCA logo" width={75} height={75} loading="lazy" />
-                <p class="leading-[1.75]">
-                    The Deakin University Cybersecurity Association (DUCA) is a student-led community driven by the
-                    ambition and dedication of its members. DUCA is a launchpad for the next generation of cybersecurity
-                    professionals.
-                </p>
-            </div>
-            <div class="flex flex-col gap-4">
-                <Heading level="h3" size="h6">Pages</Heading>
-                <ul class="flex flex-col gap-2">
-                    <li><Link href="/">Home</Link></li>
-                    <li><Link href="/about">About</Link></li>
-                    <li><Link href="/meet-the-team">Meet The Team</Link></li>
-                    <li><Link href="/get-involved">Get Involved</Link></li>
-                </ul>
-            </div>
-            <div class="flex flex-col gap-4">
-                <Heading level="h3" size="h6">Our Address</Heading>
-                <p class="leading-normal">
-                    Deakin University,<br />
-                    221 Burwood Highway, <br />
-                    Burwood, VIC 3125.
-                </p>
-                <a href="mailto:info@duca.au">info@duca.au</a>
-            </div>
-        </div>
-    </section>
-    <section class="py-8">
-        <div class="container flex flex-col justify-center gap-4 md:flex-row">
-            <p>
-                Copyright DUCA &copy; {currentYear}. All Rights Reserved.
-            </p>
-        </div>
-    </section>
+  <section class="py-20">
+    <Heading level="h2" class="sr-only">Footer</Heading>
+    <div class="container grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+      <div class="flex flex-col gap-4 md:col-span-2">
+        <Image
+          src="/global/duca-logo.webp"
+          alt="DUCA logo"
+          width={75}
+          height={75}
+          loading="lazy"
+          class="logo-hover-bounce"
+        />
+        <p class="leading-[1.75]">
+          The Deakin University Cybersecurity Association (DUCA) is a student-led community driven by the ambition and
+          dedication of its members. DUCA is a launchpad for the next generation of cybersecurity professionals.
+        </p>
+      </div>
+      <div class="flex flex-col gap-4">
+        <Heading level="h3" size="h6">Pages</Heading>
+        <ul class="flex flex-col gap-2">
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/about">About</Link></li>
+          <li><Link href="/meet-the-team">Meet The Team</Link></li>
+          <li><Link href="/join">Join Us</Link></li>
+        </ul>
+      </div>
+      <div class="flex flex-col gap-4">
+        <Heading level="h3" size="h6">Our Address</Heading>
+        <p class="leading-normal">
+          Deakin University,<br />
+          221 Burwood Highway, <br />
+          Burwood, VIC 3125.
+        </p>
+        <a href="mailto:info@duca.au">info@duca.au</a>
+      </div>
+    </div>
+  </section>
+  <section class="py-6">
+    <div class="container">
+      <p class="mx-auto max-w-3xl text-center text-sm leading-relaxed" style="color: var(--theme-text-muted, #64748b);">
+        DUCA acknowledges the Traditional Owners of the lands on which we operate, and we pay our respects to Elders
+        past and present. We celebrate diversity and are committed to creating an inclusive environment for all members,
+        including those who identify as LGBTQIA+.
+      </p>
+    </div>
+  </section>
+  <section class="py-8">
+    <div class="container flex flex-col justify-center gap-4 md:flex-row">
+      <p>
+        Copyright DUCA &copy; {currentYear}. All Rights Reserved.
+      </p>
+    </div>
+  </section>
 </footer>
 
 <style>
-    section {
-        border-top: 1px solid var(--border-color-subtle);
-    }
+  section {
+    border-top: 1px solid var(--border-color-subtle);
+  }
 </style>

@@ -1,6 +1,6 @@
 ---
-import { Heading } from 'accessible-astro-components'
-import { Icon } from 'astro-icon/components'
+import { Heading } from "accessible-astro-components";
+import { Icon } from "astro-icon/components";
 
 /**
  * Feature Component
@@ -11,14 +11,14 @@ interface Props {
   /**
    * The icon to display
    */
-  icon: string
+  icon: string;
   /**
    * The title to display
    */
-  title: string
+  title: string;
 }
 
-const { icon = 'mdi:rocket', title = 'Title' }: Props = Astro.props
+const { icon = "mdi:rocket", title = "Title" }: Props = Astro.props;
 ---
 
 <div class="feature flex flex-col gap-4">
@@ -32,7 +32,7 @@ const { icon = 'mdi:rocket', title = 'Title' }: Props = Astro.props
 </div>
 
 <style lang="scss">
-  @use '../assets/scss/base/breakpoint' as *;
+  @use "../assets/scss/base/breakpoint" as *;
 
   .feature {
     position: relative;
@@ -51,7 +51,7 @@ const { icon = 'mdi:rocket', title = 'Title' }: Props = Astro.props
     &::before,
     &::after {
       position: absolute;
-      content: '';
+      content: "";
     }
 
     &::before {
@@ -77,7 +77,7 @@ const { icon = 'mdi:rocket', title = 'Title' }: Props = Astro.props
     color: var(--link-color);
   }
 
-  :global(.darkmode .feature::before) {
+  .feature::before {
     box-shadow: 0 0 0 6px var(--color-neutral-900);
     background-color: var(--color-neutral-900);
   }
