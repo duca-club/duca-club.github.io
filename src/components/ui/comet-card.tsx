@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
+import { useMouseGlow } from "@/utils/useMouseGlow";
 import type { ReactNode } from "react";
 
 export const CometCard = ({
@@ -12,17 +13,28 @@ export const CometCard = ({
   className?: string;
   containerClassName?: string;
 }) => {
+  const { background, handlers } = useMouseGlow(
+    300,
+    "rgba(168, 85, 247, 0.1)",
+  );
+
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-800/50 to-slate-900/50 p-px",
+        "group/comet relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-800/50 to-slate-900/50 p-px",
         containerClassName
       )}
+      {...handlers}
     >
       <Comet />
+      {/* Mouse-tracked inner spotlight */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover/comet:opacity-100"
+        style={{ background }}
+      />
       <div
         className={cn(
-          "relative rounded-2xl bg-slate-900 p-6",
+          "relative z-[1] rounded-2xl bg-slate-900 p-6",
           className
         )}
       >

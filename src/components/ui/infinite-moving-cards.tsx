@@ -1,5 +1,7 @@
 "use client";
+import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
+import { useMouseGlow } from "@/utils/useMouseGlow";
 import { useEffect, useRef, useState } from "react";
 
 export const InfiniteMovingCards = ({
@@ -68,6 +70,11 @@ export const InfiniteMovingCards = ({
     }
   };
 
+  const { background, isHovering, handlers } = useMouseGlow(
+    400,
+    "rgba(139, 92, 246, 0.08)",
+  );
+
   return (
     <div
       ref={containerRef}
@@ -75,7 +82,13 @@ export const InfiniteMovingCards = ({
         "scroller relative z-20 max-w-7xl overflow-hidden mask-[linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className,
       )}
+      {...handlers}
     >
+      {/* Container-level spotlight that sweeps across the carousel */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-30 transition-opacity duration-500"
+        style={{ background, opacity: isHovering ? 1 : 0 }}
+      />
       <ul
         ref={scrollerRef}
         className={cn(

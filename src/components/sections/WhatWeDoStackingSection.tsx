@@ -1,7 +1,9 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { StackingCards } from "@ui/stacking-cards";
 import { SectionHeading } from "@ui/section-heading";
+import { useMouseGlow } from "@/utils/useMouseGlow";
 
 const whatWeDoCards = [
   {
@@ -54,6 +56,90 @@ const whatWeDoCards = [
   },
 ];
 
+const StackingCardContent = ({
+  card,
+  index,
+}: {
+  card: (typeof whatWeDoCards)[number];
+  index: number;
+}) => {
+  const { background, handlers } = useMouseGlow(
+    400,
+    `${card.color}18`,
+  );
+
+  return (
+    <div
+      className="group/stack relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl"
+      style={{
+        backgroundColor: card.bgColor,
+        padding: "clamp(32px, 5vw, 56px)",
+        minHeight: 340,
+      }}
+      {...handlers}
+    >
+      {/* Mouse-tracked accent glow */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover/stack:opacity-100"
+        style={{ background }}
+      />
+
+      {/* Large background number */}
+      <div
+        className="absolute left-5 top-1/2 -translate-y-1/2 select-none pointer-events-none font-extrabold"
+        style={{
+          fontSize: "clamp(120px, 18vw, 200px)",
+          lineHeight: 1,
+          color: "white",
+          opacity: 0.06,
+        }}
+      >
+        {String(index + 1).padStart(2, "0")}
+      </div>
+
+      {/* Icon + label */}
+      <div className="flex items-center gap-3 mb-4 relative z-10">
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+          style={{ backgroundColor: `${card.color}25` }}
+        >
+          {card.icon}
+        </div>
+        <span
+          className="text-xs font-bold tracking-widest uppercase"
+          style={{ color: card.color, opacity: 0.7 }}
+        >
+          {card.title}
+        </span>
+      </div>
+
+      {/* Title */}
+      <h3
+        className="relative z-10 mb-4 font-bold"
+        style={{
+          color: card.color,
+          fontSize: "clamp(22px, 3.5vw, 34px)",
+          lineHeight: 1.15,
+          maxWidth: "85%",
+        }}
+      >
+        {card.title}
+      </h3>
+
+      {/* Description */}
+      <p
+        className="relative z-10 text-white/70 leading-relaxed"
+        style={{
+          fontSize: "clamp(14px, 1.8vw, 16px)",
+          maxWidth: "80%",
+        }}
+      >
+        {card.description}
+      </p>
+    </div>
+  );
+};
+
 export const WhatWeDoStackingSection = () => {
   return (
     <section className="section-themed-alt">
@@ -66,68 +152,7 @@ export const WhatWeDoStackingSection = () => {
 
       <StackingCards>
         {whatWeDoCards.map((card, i) => (
-          <div
-            key={card.title}
-            className="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl"
-            style={{
-              backgroundColor: card.bgColor,
-              padding: "clamp(32px, 5vw, 56px)",
-              minHeight: 340,
-            }}
-          >
-            {/* Large background number */}
-            <div
-              className="absolute left-5 top-1/2 -translate-y-1/2 select-none pointer-events-none font-extrabold"
-              style={{
-                fontSize: "clamp(120px, 18vw, 200px)",
-                lineHeight: 1,
-                color: "white",
-                opacity: 0.06,
-              }}
-            >
-              {String(i + 1).padStart(2, "0")}
-            </div>
-
-            {/* Icon + label */}
-            <div className="flex items-center gap-3 mb-4 relative z-10">
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
-                style={{ backgroundColor: `${card.color}25` }}
-              >
-                {card.icon}
-              </div>
-              <span
-                className="text-xs font-bold tracking-widest uppercase"
-                style={{ color: card.color, opacity: 0.7 }}
-              >
-                {card.title}
-              </span>
-            </div>
-
-            {/* Title */}
-            <h3
-              className="relative z-10 mb-4 font-bold"
-              style={{
-                color: card.color,
-                fontSize: "clamp(22px, 3.5vw, 34px)",
-                lineHeight: 1.15,
-                maxWidth: "85%",
-              }}
-            >
-              {card.title}
-            </h3>
-
-            {/* Description */}
-            <p
-              className="relative z-10 text-white/70 leading-relaxed"
-              style={{
-                fontSize: "clamp(14px, 1.8vw, 16px)",
-                maxWidth: "80%",
-              }}
-            >
-              {card.description}
-            </p>
-          </div>
+          <StackingCardContent key={card.title} card={card} index={i} />
         ))}
       </StackingCards>
 
