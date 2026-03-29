@@ -21,6 +21,37 @@ const {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script is:inline>
+      (() => {
+        const key = "duca-accessibility-options";
+        const optionIds = ["duca41", "duca42", "duca43", "duca44", "duca45", "duca46", "duca47", "duca48", "duca49", "duca50"];
+        const options = {};
+
+        optionIds.forEach((id) => {
+          options[id] = false;
+        });
+
+        try {
+          const raw = window.localStorage.getItem(key);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            optionIds.forEach((id) => {
+              options[id] = Boolean(parsed[id]);
+            });
+          }
+        } catch {
+          optionIds.forEach((id) => {
+            options[id] = false;
+          });
+        }
+
+        optionIds.forEach((id) => {
+          document.documentElement.setAttribute(`data-a11y-${id}`, options[id] ? "true" : "false");
+        });
+
+        document.documentElement.setAttribute("data-page-path", window.location.pathname);
+      })();
+    </script>
 
     <!-- favicon -->
     <link rel="icon" type="image/webp" href="/global/duca-logo.webp" />
@@ -38,9 +69,16 @@ const {
     </main>
     <Footer />
     <script>
+      document.addEventListener("astro:page-load", () => {
+        document.documentElement.setAttribute("data-page-path", window.location.pathname);
+      });
+    </script>
+    <script>
       // Smooth momentum scroll - creates a buttery scroll feel
       document.addEventListener("astro:page-load", () => {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const reducedMotionEnabled = document.documentElement.getAttribute("data-a11y-duca41") === "true";
+        if (reducedMotionEnabled) return;
+
         // Apply scroll-driven reveal animations to sections
         const sections = document.querySelectorAll('section, [class*="section-themed"]');
         const observer = new IntersectionObserver(
@@ -59,7 +97,9 @@ const {
     <script>
       // Click particle explosion effect
       document.addEventListener("click", (e) => {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const reducedMotionEnabled = document.documentElement.getAttribute("data-a11y-duca41") === "true";
+        if (reducedMotionEnabled) return;
+
         const count = 12;
         for (let i = 0; i < count; i++) {
           const particle = document.createElement("div");
@@ -86,6 +126,17 @@ const {
         let dot: HTMLDivElement | null = null;
         let glow: HTMLDivElement | null = null;
 
+        const isReducedMotionEnabled = (): boolean => {
+          return document.documentElement.getAttribute("data-a11y-duca41") === "true";
+        };
+
+        const hideCursorFollower = () => {
+          const existingDot = document.querySelector(".cursor-follower-dot") as HTMLDivElement | null;
+          const existingGlow = document.querySelector(".cursor-follower-glow") as HTMLDivElement | null;
+          if (existingDot) existingDot.style.opacity = "0";
+          if (existingGlow) existingGlow.style.opacity = "0";
+        };
+
         const ensureElements = () => {
           dot = document.querySelector(".cursor-follower-dot") as HTMLDivElement | null;
           if (!dot) {
@@ -103,7 +154,10 @@ const {
         };
 
         const initCursorFollower = () => {
-          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          if (isReducedMotionEnabled()) {
+            hideCursorFollower();
+            return;
+          }
 
           // Always recreate elements — they may have been removed by a page swap.
           ensureElements();
@@ -123,9 +177,6 @@ const {
           let targetY = window.innerHeight / 2;
           let renderX = targetX;
           let renderY = targetY;
-          let velocityX = 0;
-          let velocityY = 0;
-          let lastFrameTime = performance.now();
 
           let pointerX = window.innerWidth / 2;
           let pointerY = window.innerHeight / 2;
@@ -288,6 +339,8 @@ const {
           };
 
           const handleMove = (event: PointerEvent | MouseEvent) => {
+            if (isReducedMotionEnabled()) return;
+
             targetX = event.clientX + cursorOffsetX;
             targetY = event.clientY + cursorOffsetY;
             pointerX = event.clientX;
@@ -298,12 +351,17 @@ const {
           };
 
           const render = () => {
+            if (isReducedMotionEnabled()) {
+              if (dot) dot.style.opacity = "0";
+              if (glow) glow.style.opacity = "0";
+              window.requestAnimationFrame(render);
+              return;
+            }
+
             // Place the follower directly on the target position.
             // This removes the intentional trailing delay from the spring model.
             renderX = targetX;
             renderY = targetY;
-            velocityX = 0;
-            velocityY = 0;
 
             dot!.style.left = `${renderX}px`;
             dot!.style.top = `${renderY}px`;
@@ -337,6 +395,7 @@ const {
           initCursorFollower();
         }
         document.addEventListener("astro:page-load", initCursorFollower);
+        window.addEventListener("duca:accessibility-options-change", initCursorFollower as EventListener);
       })();
     </script>
     <style lang="scss" is:global>

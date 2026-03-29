@@ -78,5 +78,15 @@ import { SkipLink } from "accessible-astro-components";
         box-shadow: 0 0 20px rgba(214, 72, 255, 0.4);
       }
     }
+
+    :root[data-a11y-duca49="true"] .highlight a {
+      transition-duration: 0.12s;
+    }
+
+    :root[data-a11y-duca49="true"] .highlight a:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 12px rgba(214, 72, 255, 0.25);
+      color: #f8f5ff !important;
+    }
   }
 </style>
