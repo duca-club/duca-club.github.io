@@ -27,6 +27,16 @@ const {
         const optionIds = ["duca41", "duca42", "duca43", "duca44", "duca45", "duca46", "duca47", "duca48", "duca49", "duca50"];
         const options = {};
 
+        const toBoolean = (value) => {
+          if (typeof value === "boolean") return value;
+          if (typeof value === "string") {
+            const normalized = value.trim().toLowerCase();
+            if (normalized === "true") return true;
+            if (normalized === "false") return false;
+          }
+          return Boolean(value);
+        };
+
         optionIds.forEach((id) => {
           options[id] = false;
         });
@@ -36,7 +46,7 @@ const {
           if (raw) {
             const parsed = JSON.parse(raw);
             optionIds.forEach((id) => {
-              options[id] = Boolean(parsed[id]);
+              options[id] = toBoolean(parsed[id]);
             });
           }
         } catch {

@@ -57,7 +57,7 @@ const StatCard = ({ value, suffix, label, sublabel, useShortAnimation = false }:
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: useShortAnimation ? 0.25 : 0.45 }}
+      transition={{ duration: useShortAnimation ? 0.5 : 0.45 }}
       viewport={{ once: true }}
       onViewportEnter={() => setIsInView(true)}
       className="group/stat relative overflow-hidden rounded-2xl border border-slate-700/50 bg-linear-to-b from-slate-800/50 to-slate-900/50 p-8 text-center transition-colors hover:border-purple-500/50"
@@ -107,7 +107,7 @@ export const StatsSection = ({ memberCount = DEFAULT_DISCORD_MEMBER_COUNT }: { m
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: shortAnimations ? 0.3 : 0.6 }}
+          transition={{ duration: shortAnimations ? 0.5 : 0.6 }}
           viewport={{ once: true }}
           className="mb-16 text-center text-3xl font-bold text-white md:text-4xl"
         >

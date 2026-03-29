@@ -7,10 +7,12 @@ import { useEffect, useState } from "react";
 
 export const HeroSection = () => {
   const [shortAnimations, setShortAnimations] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [improveReadability, setImproveReadability] = useState(false);
 
   useEffect(() => {
     const syncOptions = () => {
+      setReducedMotion(document.documentElement.getAttribute("data-a11y-duca41") === "true");
       setShortAnimations(document.documentElement.getAttribute("data-a11y-duca42") === "true");
       setImproveReadability(document.documentElement.getAttribute("data-a11y-duca43") === "true");
     };
@@ -27,9 +29,10 @@ export const HeroSection = () => {
 
   const { background, isHovering, handlers } = useMouseGlow(600, "rgba(139, 92, 246, 0.12)");
 
-  const introDuration = shortAnimations ? 0.45 : 0.8;
-  const ctaDuration = shortAnimations ? 0.32 : 0.5;
-  const ctaDelay = shortAnimations ? 1.05 : 2;
+  const introDuration = shortAnimations ? 0.5 : 0.5;
+  const ctaDuration = shortAnimations ? 0.5 : 0.5;
+  const ctaDelay = shortAnimations ? 0.5 : 0.1;
+  const encryptedSpeed = shortAnimations ? 1 : 10;
 
   return (
     <section
@@ -85,9 +88,9 @@ export const HeroSection = () => {
               text="Building a community of cybersecurity enthusiasts at Deakin University. Learn, share, and grow together with
             Australia's leading student cyber club."
               className={`text-balance ${improveReadability ? "text-slate-100 [text-shadow:0_1px_8px_rgba(0,0,0,0.9)]" : "text-white"}`}
-              speed={1}
+              speed={encryptedSpeed}
               revealDelay={0}
-              disableAnimation={shortAnimations}
+              disableAnimation={reducedMotion}
             />
           </div>
 
