@@ -188,6 +188,16 @@ import { Image } from "astro:assets";
 
     const optionToggleButtons = [...mainNav.querySelectorAll(".a11y-option-toggle")] as HTMLButtonElement[];
 
+    const toBoolean = (value: unknown): boolean => {
+      if (typeof value === "boolean") return value;
+      if (typeof value === "string") {
+        const normalized = value.trim().toLowerCase();
+        if (normalized === "true") return true;
+        if (normalized === "false") return false;
+      }
+      return Boolean(value);
+    };
+
     const getDefaultOptions = (): Record<string, boolean> => {
       return {
         duca41: false,
@@ -211,7 +221,7 @@ import { Image } from "astro:assets";
       try {
         const parsed = JSON.parse(raw) as Record<string, unknown>;
         a11yOptionIds.forEach((id) => {
-          defaults[id] = Boolean(parsed[id]);
+          defaults[id] = toBoolean(parsed[id]);
         });
       } catch {
         return defaults;
@@ -411,7 +421,8 @@ import { Image } from "astro:assets";
       });
 
     optionToggleButtons.forEach((button) => {
-      button.addEventListener("click", () => {
+      button.addEventListener("click", (event: MouseEvent) => {
+        event.stopPropagation();
         const optionId = button.dataset.optionId;
         if (!optionId) return;
 
@@ -427,7 +438,10 @@ import { Image } from "astro:assets";
 
     window.addEventListener("click", (event: MouseEvent) => {
       const element = event.target as Element;
-      if (!element.hasAttribute("aria-haspopup") && !element.classList.contains("submenu-item")) {
+      const isDropdownButton = element.hasAttribute("aria-haspopup") || element.closest("[aria-haspopup]");
+      const isSubmenuItem = element.classList.contains("submenu-item") || element.closest(".submenu-item");
+
+      if (!isDropdownButton && !isSubmenuItem) {
         closeAllDropdownMenus();
       }
     });

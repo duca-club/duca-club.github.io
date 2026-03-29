@@ -120,10 +120,10 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
       <div className="mb-8 flex flex-wrap justify-center gap-2">
         <button
           onClick={clearTags}
-          className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+          className={`events-page-tag-filter-chip rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
             selectedTags.length === 0 && !searchQuery
-              ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
-              : "border border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
+              ? "events-page-tag-filter-chip-active bg-purple-600 text-white shadow-lg shadow-purple-600/30"
+              : "events-page-tag-filter-chip-inactive border border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
           }`}
         >
           All
@@ -132,10 +132,10 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
           <button
             key={tag}
             onClick={() => toggleTag(tag)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+            className={`events-page-tag-filter-chip rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
               selectedTags.includes(tag)
-                ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
-                : "border border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
+                ? "events-page-tag-filter-chip-active bg-purple-600 text-white shadow-lg shadow-purple-600/30"
+                : "events-page-tag-filter-chip-inactive border border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
             }`}
           >
             {tag}
