@@ -9,17 +9,25 @@ export const EncryptedText = ({
   className,
   speed = 50,
   revealDelay = 100,
+  disableAnimation = false,
 }: {
   text: string;
   className?: string;
   speed?: number;
   revealDelay?: number;
+  disableAnimation?: boolean;
 }) => {
   const [displayText, setDisplayText] = useState(text);
   const [isAnimating, setIsAnimating] = useState(true);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
+    if (disableAnimation) {
+      setDisplayText(text);
+      setIsAnimating(false);
+      return;
+    }
+
     let iteration = 0;
 
     const animate = () => {
@@ -54,7 +62,7 @@ export const EncryptedText = ({
       }
       clearTimeout(delayTimeout);
     };
-  }, [text, speed, revealDelay]);
+  }, [text, speed, revealDelay, disableAnimation]);
 
   return <span className={cn("font-mono", isAnimating && "text-purple-400", className)}>{displayText}</span>;
 };
