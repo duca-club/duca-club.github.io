@@ -16,19 +16,16 @@ export const HeroSection = () => {
     };
 
     syncOptions();
-    window.addEventListener("duca:accessibility-options-change", syncOptions as EventListener);
+    window.addEventListener("duca:accessibility-options-change", syncOptions);
     document.addEventListener("astro:page-load", syncOptions);
 
     return () => {
-      window.removeEventListener("duca:accessibility-options-change", syncOptions as EventListener);
+      window.removeEventListener("duca:accessibility-options-change", syncOptions);
       document.removeEventListener("astro:page-load", syncOptions);
     };
   }, []);
 
-  const { background, isHovering, handlers } = useMouseGlow(
-    600,
-    "rgba(139, 92, 246, 0.12)",
-  );
+  const { background, isHovering, handlers } = useMouseGlow(600, "rgba(139, 92, 246, 0.12)");
 
   const introDuration = shortAnimations ? 0.45 : 0.8;
   const ctaDuration = shortAnimations ? 0.32 : 0.5;
@@ -42,7 +39,7 @@ export const HeroSection = () => {
     >
       {/* Background Effects */}
       <div
-        className={`absolute inset-0 bg-linear-to-b via-transparent to-transparent ${
+        className={`a11y-hero-overlay absolute inset-0 bg-linear-to-b via-transparent to-transparent ${
           improveReadability ? "from-black/55" : "from-purple-900/20"
         }`}
       />
@@ -68,7 +65,7 @@ export const HeroSection = () => {
         >
           {/* Encrypted DUCA Title */}
           <h1
-            className={`mb-4 text-7xl font-bold md:text-9xl ${
+            className={`a11y-hero-title mb-4 text-7xl font-bold md:text-9xl ${
               improveReadability ? "text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.85)]" : ""
             }`}
           >
@@ -76,7 +73,7 @@ export const HeroSection = () => {
           </h1>
 
           <h2
-            className={`mb-4 text-3xl font-bold md:text-4xl ${
+            className={`a11y-hero-subtitle mb-4 text-3xl font-bold md:text-4xl ${
               improveReadability ? "text-slate-100 [text-shadow:0_2px_10px_rgba(0,0,0,0.8)]" : ""
             }`}
           >
@@ -87,7 +84,7 @@ export const HeroSection = () => {
             <EncryptedText
               text="Building a community of cybersecurity enthusiasts at Deakin University. Learn, share, and grow together with
             Australia's leading student cyber club."
-              className={`text-balance ${improveReadability ? "text-slate-100 [text-shadow:0_1px_8px_rgba(0,0,0,0.9)]" : "text-white"}`}
+              className={`a11y-hero-body text-balance ${improveReadability ? "text-slate-100 [text-shadow:0_1px_8px_rgba(0,0,0,0.9)]" : "text-white"}`}
               speed={1}
               revealDelay={0}
             />
@@ -100,12 +97,9 @@ export const HeroSection = () => {
             transition={{ delay: ctaDelay, duration: ctaDuration }}
             className="mt-10 flex flex-col justify-center gap-4 sm:flex-row"
           >
-           {/*<GlowingButton href="/join">Join Us</GlowingButton>*/}
-            <Button
-              href="/join"
-              variant="primary"
-            >
-            Join Us
+            {/*<GlowingButton href="/join">Join Us</GlowingButton>*/}
+            <Button href="/join" variant="primary">
+              Join Us
             </Button>
 
             <Button variant="outline" href="#what-we-do">

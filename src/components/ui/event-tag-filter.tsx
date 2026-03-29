@@ -42,9 +42,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const toggleTag = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
+    setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
   };
 
   const clearTags = () => {
@@ -57,9 +55,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
   const filteredEvents = useMemo(() => {
     let filtered = events;
     if (selectedTags.length > 0) {
-      filtered = filtered.filter((event) =>
-        event.tags?.some((tag) => selectedTags.includes(tag))
-      );
+      filtered = filtered.filter((event) => event.tags?.some((tag) => selectedTags.includes(tag)));
     }
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
@@ -68,7 +64,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
           event.title.toLowerCase().includes(q) ||
           event.description.toLowerCase().includes(q) ||
           event.location.toLowerCase().includes(q) ||
-          event.tags?.some((tag) => tag.toLowerCase().includes(q))
+          event.tags?.some((tag) => tag.toLowerCase().includes(q)),
       );
     }
     return filtered;
@@ -85,10 +81,10 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
   return (
     <div>
       {/* Search Bar */}
-      <div className="max-w-xl mx-auto mb-6">
+      <div className="mx-auto mb-6 max-w-xl">
         <div className="relative">
           <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"
+            className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -105,14 +101,14 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search events..."
-            className="w-full pl-12 pr-4 py-3 rounded-xl bg-gray-900/60 border border-gray-700/50 text-white placeholder:text-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all font-mono text-sm"
+            className="w-full rounded-xl border border-gray-700/50 bg-gray-900/60 py-3 pr-4 pl-12 font-mono text-sm text-white transition-all placeholder:text-gray-500 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 focus:outline-none"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+              className="absolute top-1/2 right-4 -translate-y-1/2 text-gray-500 transition-colors hover:text-gray-300"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -121,13 +117,13 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
       </div>
 
       {/* Tag Filter Chips */}
-      <div className="flex flex-wrap gap-2 mb-8 justify-center">
+      <div className="mb-8 flex flex-wrap justify-center gap-2">
         <button
           onClick={clearTags}
-          className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+          className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
             selectedTags.length === 0 && !searchQuery
               ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
-              : "bg-purple-500/10 text-purple-400 border border-purple-500/30 hover:bg-purple-500/20"
+              : "border border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
           }`}
         >
           All
@@ -136,10 +132,10 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
           <button
             key={tag}
             onClick={() => toggleTag(tag)}
-            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
               selectedTags.includes(tag)
                 ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
-                : "bg-purple-500/10 text-purple-400 border border-purple-500/30 hover:bg-purple-500/20"
+                : "border border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
             }`}
           >
             {tag}
@@ -150,13 +146,9 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
       {/* Upcoming Events */}
       {upcomingEvents.length > 0 && (
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-white mb-2 text-center">
-            Upcoming Events
-          </h2>
-          <p className="text-gray-400 text-center mb-8">
-            Don't miss out on these exciting opportunities
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <h2 className="mb-2 text-center text-3xl font-bold text-white">Upcoming Events</h2>
+          <p className="mb-8 text-center text-gray-400">Don't miss out on these exciting opportunities</p>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <AnimatePresence mode="popLayout">
               {upcomingEvents.map((event) => (
                 <motion.div
@@ -166,23 +158,21 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  className="relative p-6 rounded-xl border border-gray-700/50 bg-gradient-to-br from-gray-900/80 to-gray-800/40 hover:border-purple-500/30 transition-colors group"
+                  className="a11y-scroll-overlay-card group relative rounded-xl border border-gray-700/50 bg-gradient-to-br from-gray-900/80 to-gray-800/40 p-6 transition-colors hover:border-purple-500/30"
                 >
-                  <div className="flex flex-col h-full">
-                    <div className="flex items-center gap-2 mb-2">
+                  <div className="flex h-full flex-col">
+                    <div className="mb-2 flex items-center gap-2">
                       {event.tags?.slice(0, 2).map((tag) => (
                         <span
                           key={tag}
-                          className="text-xs font-semibold text-purple-400 uppercase tracking-wider px-2 py-1 bg-purple-500/10 rounded"
+                          className="rounded bg-purple-500/10 px-2 py-1 text-xs font-semibold tracking-wider text-purple-400 uppercase"
                         >
                           {tag}
                         </span>
                       ))}
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {event.title}
-                    </h3>
-                    <div className="text-gray-400 text-sm mb-4 space-y-1">
+                    <h3 className="a11y-scroll-overlay-title mb-2 text-xl font-bold text-white">{event.title}</h3>
+                    <div className="a11y-scroll-overlay-meta mb-4 space-y-1 text-sm text-gray-400">
                       <p>📅 {formatDate(event.eventDate)}</p>
                       <p>
                         🕐 {formatTime(event.eventDate)}
@@ -190,13 +180,13 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                       </p>
                       <p>📍 {event.location}</p>
                     </div>
-                    <p className="text-gray-300 mb-6 flex-grow line-clamp-3">
+                    <p className="a11y-scroll-overlay-text mb-6 line-clamp-3 flex-grow text-gray-300">
                       {event.description}
                     </p>
                     <div className="flex gap-3">
                       <a
                         href={`/events/${event.slug}`}
-                        className="inline-flex items-center justify-center px-4 py-2 rounded-full border border-purple-500/30 text-purple-400 text-sm font-semibold hover:bg-purple-500/10 transition-colors"
+                        className="inline-flex items-center justify-center rounded-full border border-purple-500/30 px-4 py-2 text-sm font-semibold text-purple-400 transition-colors hover:bg-purple-500/10"
                       >
                         Learn More
                       </a>
@@ -205,7 +195,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                           href={event.registrationUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-purple-600 text-white text-sm font-semibold hover:bg-purple-700 transition-colors"
+                          className="inline-flex items-center justify-center rounded-full bg-purple-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-purple-700"
                         >
                           Register Now
                         </a>
@@ -220,8 +210,8 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
       )}
 
       {upcomingEvents.length === 0 && (
-        <div className="text-center py-12 mb-16">
-          <p className="text-gray-400 text-lg">
+        <div className="mb-16 py-12 text-center">
+          <p className="text-lg text-gray-400">
             {selectedTags.length > 0 || searchQuery
               ? "No upcoming events match your search."
               : "No upcoming events at the moment. Check back soon!"}
@@ -232,13 +222,9 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
       {/* Past Events */}
       {pastEvents.length > 0 && (
         <div className="border-t border-gray-700/50 pt-16">
-          <h2 className="text-3xl font-bold text-white mb-2 text-center">
-            Past Events
-          </h2>
-          <p className="text-gray-400 text-center mb-8">
-            Highlights from our previous activities
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <h2 className="mb-2 text-center text-3xl font-bold text-white">Past Events</h2>
+          <p className="mb-8 text-center text-gray-400">Highlights from our previous activities</p>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <AnimatePresence mode="popLayout">
               {pastEvents.map((event) => (
                 <motion.a
@@ -249,27 +235,20 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  className="block p-6 rounded-xl bg-gray-900/60 border border-gray-700/50 hover:border-purple-500/30 transition-colors group"
+                  className="a11y-scroll-overlay-card group block rounded-xl border border-gray-700/50 bg-gray-900/60 p-6 transition-colors hover:border-purple-500/30"
                 >
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="mb-2 flex items-center gap-2">
                     {event.tags?.slice(0, 1).map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs font-semibold text-gray-500 uppercase tracking-wider"
-                      >
+                      <span key={tag} className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <h3 className="text-lg font-bold text-gray-200 mt-2 mb-1 group-hover:text-purple-400 transition-colors">
+                  <h3 className="a11y-scroll-overlay-title mt-2 mb-1 text-lg font-bold text-gray-200 transition-colors group-hover:text-purple-400">
                     {event.title}
                   </h3>
-                  <p className="text-gray-500 text-sm mb-2">
-                    {formatDate(event.eventDate)}
-                  </p>
-                  <p className="text-gray-400 text-sm line-clamp-2">
-                    {event.description}
-                  </p>
+                  <p className="a11y-scroll-overlay-meta mb-2 text-sm text-gray-500">{formatDate(event.eventDate)}</p>
+                  <p className="a11y-scroll-overlay-text line-clamp-2 text-sm text-gray-400">{event.description}</p>
                 </motion.a>
               ))}
             </AnimatePresence>
