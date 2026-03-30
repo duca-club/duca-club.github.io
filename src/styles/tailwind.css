@@ -671,25 +671,27 @@
 }
 
 :root[data-a11y-duca45="true"] .landing-card-button-secondary {
-  border-color: #ddd6fe;
-  background: rgba(76, 29, 149, 0.5);
-  color: #f5f3ff;
+  border: 2px solid #d946ef;
+  background: #d946ef;
+  color: #ffffff;
 }
 
 :root[data-a11y-duca45="true"] .landing-card-button-secondary:hover,
 :root[data-a11y-duca45="true"] .landing-card-button-secondary:focus-visible {
-  background: rgba(91, 33, 182, 0.64);
+  border-color: #e879f9;
+  background: #e879f9;
 }
 
 :root[data-a11y-duca45="true"] .landing-card-button-primary {
-  border: 2px solid #c4b5fd;
-  background: #4c1d95;
+  border: 2px solid #06b6d4;
+  background: #06b6d4;
   color: #ffffff;
 }
 
 :root[data-a11y-duca45="true"] .landing-card-button-primary:hover,
 :root[data-a11y-duca45="true"] .landing-card-button-primary:focus-visible {
-  background: #5b21b6;
+  border-color: #22d3ee;
+  background: #22d3ee;
 }
 
 :root[data-a11y-duca50="true"] .cursor-follower-dot,
