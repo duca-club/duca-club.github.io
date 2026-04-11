@@ -617,14 +617,22 @@
   text-decoration-thickness: 1px;
 }
 
-:root[data-a11y-duca48="true"] header .highlight a {
+:root[data-a11y-duca48="true"][data-page-path="/contact/"] .contact-page-action,
+:root[data-a11y-duca48="true"][data-page-path="/contact"] .contact-page-action {
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-underline-offset: 4px;
+}
+
+:root[data-a11y-duca49="true"] header .highlight a {
   transition-duration: 0.12s;
 }
 
-:root[data-a11y-duca48="true"] header .highlight a:hover,
-:root[data-a11y-duca48="true"] header .highlight a:focus-visible {
+:root[data-a11y-duca49="true"] header .highlight a:hover,
+:root[data-a11y-duca49="true"] header .highlight a:focus-visible {
   transform: none !important;
-  box-shadow: 0 0 8px rgba(214, 72, 255, 0.18) !important;
+  filter: none !important;
+  box-shadow: none !important;
   color: #ffffff !important;
   text-decoration: none !important;
 }
