@@ -13,8 +13,7 @@ import { Image } from "astro:assets";
 <div id="main-navigation" class="py-4">
   <div class="container">
     <a href="/">
-      <Image src="/global/duca-logo.webp" alt="DUCA" width={60} height={60} class="logo-hover-bounce" />
-    </a>
+        <Image src="/global/duca-logo.webp" alt="DUCA" width={60} height={60} loading="eager" fetchpriority="high" decoding="async" class="logo-hover-bounce" />    </a>
     <div class="wrapper">
       <nav class="desktop-menu" aria-label="Main navigation desktop">
         <ul class="menu">

@@ -61,11 +61,16 @@ export const LogoCarousel = ({
             href={partner.href ?? "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 transition-all duration-300 opacity-70 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(214,72,255,0.5)] px-4"
+            className="flex-shrink-0 px-4 opacity-70 transition-all duration-300 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(214,72,255,0.5)]"
           >
             <img
               src={partner.logo}
               alt={partner.name}
+              loading="lazy"
+              decoding="async"
+              fetchPriority="low"
+              width={160}
+              height={48}
               className="h-12 w-auto object-contain transition-all duration-300 hover:brightness-125"
             />
           </a>
@@ -105,16 +110,10 @@ export const InfiniteLogoCarousel = ({
       });
 
       if (containerRef.current) {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          direction === "left" ? "forwards" : "reverse"
-        );
+        containerRef.current.style.setProperty("--animation-direction", direction === "left" ? "forwards" : "reverse");
 
         const speedMap = { fast: "20s", normal: "40s", slow: "80s" };
-        containerRef.current.style.setProperty(
-          "--animation-duration",
-          speedMap[speed]
-        );
+        containerRef.current.style.setProperty("--animation-duration", speedMap[speed]);
       }
     }
   }
@@ -124,25 +123,27 @@ export const InfiniteLogoCarousel = ({
       ref={containerRef}
       className={cn(
         "scroller relative z-20 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]",
-        className
+        className,
       )}
     >
-      <div
-        ref={scrollerRef}
-        className="flex min-w-full shrink-0 gap-8 py-4 w-max flex-nowrap animate-scroll"
-      >
+      <div ref={scrollerRef} className="animate-scroll flex w-max min-w-full shrink-0 flex-nowrap gap-8 py-4">
         {partners.map((partner, idx) => (
           <a
             key={`${partner.name}-${idx}`}
             href={partner.href ?? "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(214,72,255,0.5)] px-4"
+            className="flex-shrink-0 px-4 opacity-60 grayscale transition-all duration-300 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(214,72,255,0.5)] hover:grayscale-0"
           >
             <img
               src={partner.logo}
               alt={partner.name}
-              className="h-16 w-auto object-contain transition-all duration-300 brightness-0 invert hover:brightness-100 hover:invert-0"
+              loading="lazy"
+              decoding="async"
+              fetchPriority="low"
+              width={192}
+              height={64}
+              className="h-16 w-auto object-contain brightness-0 invert transition-all duration-300 hover:brightness-100 hover:invert-0"
             />
           </a>
         ))}
