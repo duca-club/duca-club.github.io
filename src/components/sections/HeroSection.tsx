@@ -27,9 +27,10 @@ export const HeroSection = () => {
 
   const { background, isHovering, handlers } = useMouseGlow(600, "rgba(139, 92, 246, 0.12)");
 
-  const introDuration = shortAnimations ? 0.45 : 0.8;
-  const ctaDuration = shortAnimations ? 0.32 : 0.5;
-  const ctaDelay = shortAnimations ? 1.05 : 2;
+  const introDuration = shortAnimations ? 0.36 : 0.8;
+  const ctaDuration = shortAnimations ? 0.24 : 0.5;
+  const ctaDelay = shortAnimations ? 0.7 : 2;
+  const encryptedSpeed = shortAnimations ? 0.4 : 1;
 
   return (
     <section
@@ -85,7 +86,7 @@ export const HeroSection = () => {
               text="Building a community of cybersecurity enthusiasts at Deakin University. Learn, share, and grow together with
             Australia's leading student cyber club."
               className={`a11y-hero-body text-balance ${improveReadability ? "text-slate-100 [text-shadow:0_1px_8px_rgba(0,0,0,0.9)]" : "text-white"}`}
-              speed={1}
+              speed={encryptedSpeed}
               revealDelay={0}
             />
           </div>

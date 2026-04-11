@@ -617,14 +617,15 @@
   text-decoration-thickness: 1px;
 }
 
-:root[data-a11y-duca48="true"] header .highlight a {
-  transition-duration: 0.12s;
+:root[data-a11y-duca49="true"] header .highlight a {
+  transition-duration: 0.08s;
 }
 
-:root[data-a11y-duca48="true"] header .highlight a:hover,
-:root[data-a11y-duca48="true"] header .highlight a:focus-visible {
-  transform: none !important;
-  box-shadow: 0 0 8px rgba(214, 72, 255, 0.18) !important;
+:root[data-a11y-duca49="true"] header .highlight a:hover,
+:root[data-a11y-duca49="true"] header .highlight a:focus-visible {
+  transform: scale(1.01) !important;
+  box-shadow: 0 0 6px rgba(214, 72, 255, 0.12) !important;
+  filter: saturate(0.9) brightness(0.97) !important;
   color: #ffffff !important;
   text-decoration: none !important;
 }
