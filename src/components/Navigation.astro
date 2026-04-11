@@ -73,12 +73,6 @@ import { Image } from "astro:assets";
               </li>
               <li>
                 <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca48" aria-checked="false">
-                  <span class="a11y-option-label">Use consistent Contact button underlines</span>
-                  <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
-                </button>
-              </li>
-              <li>
-                <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca49" aria-checked="false">
                   <span class="a11y-option-label">Soften Join Us hover text changes</span>
                   <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
                 </button>
@@ -153,12 +147,6 @@ import { Image } from "astro:assets";
             </li>
             <li>
               <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca48" aria-checked="false">
-                <span class="a11y-option-label">Use consistent Contact button underlines</span>
-                <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
-              </button>
-            </li>
-            <li>
-              <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca49" aria-checked="false">
                 <span class="a11y-option-label">Soften Join Us hover text changes</span>
                 <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
               </button>
@@ -179,7 +167,7 @@ import { Image } from "astro:assets";
 <script>
   document.addEventListener("astro:page-load", () => {
     const A11Y_OPTIONS_KEY = "duca-accessibility-options";
-    const a11yOptionIds = ["duca41", "duca42", "duca43", "duca44", "duca45", "duca46", "duca47", "duca48", "duca49", "duca50"];
+    const a11yOptionIds = ["duca41", "duca42", "duca43", "duca44", "duca45", "duca46", "duca47", "duca48", "duca50"];
 
     // variables
     const mainNav = document.querySelector("#main-navigation") as HTMLElement | null;
@@ -207,7 +195,6 @@ import { Image } from "astro:assets";
         duca46: false,
         duca47: false,
         duca48: false,
-        duca49: false,
         duca50: false,
       };
     };
