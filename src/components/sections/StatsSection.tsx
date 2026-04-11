@@ -42,10 +42,7 @@ const AnimatedCounter = ({ value, suffix = "" }: { value: number; suffix?: strin
 
 const StatCard = ({ value, suffix, label, sublabel }: StatProps) => {
   const [isInView, setIsInView] = useState(false);
-  const { background, handlers } = useMouseGlow(
-    250,
-    "rgba(168, 85, 247, 0.12)",
-  );
+  const { background, handlers } = useMouseGlow(250, "rgba(168, 85, 247, 0.12)");
 
   return (
     <motion.div
@@ -83,7 +80,9 @@ export const StatsSection = ({ memberCount = DEFAULT_DISCORD_MEMBER_COUNT }: { m
           className="mb-16 text-center text-3xl font-bold text-white md:text-4xl"
         >
           DUCA by the{" "}
-          <span className="bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">numbers</span>
+          <span className="a11y-gradient-text bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            numbers
+          </span>
         </motion.h2>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
