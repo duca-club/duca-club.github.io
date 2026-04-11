@@ -15,6 +15,18 @@ const calendarEvents = allEvents.map((event) => ({
   eventDate: event.data.eventDate.toISOString(),
   tags: event.data.tags,
 }));
+
+const sortedCalendarFallback = [...allEvents].sort(
+  (a, b) => new Date(a.data.eventDate).getTime() - new Date(b.data.eventDate).getTime(),
+);
+
+const formatFallbackDate = (value: Date) =>
+  value.toLocaleDateString("en-AU", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 ---
 
 <DefaultLayout title="Calendar">
@@ -35,7 +47,25 @@ const calendarEvents = allEvents.map((event) => ({
   <!-- Events Calendar -->
   <section class="section-themed py-24">
     <div class="container mx-auto px-4">
-      <EventsCalendar events={calendarEvents} client:load />
+      <noscript>
+        <div class="mb-8 rounded-2xl border border-violet-500/30 bg-violet-500/10 p-5 text-sm text-violet-100">
+          JavaScript is disabled. Showing a static calendar list.
+        </div>
+        <ul class="space-y-3">
+          {sortedCalendarFallback.map((event) => (
+            <li class="theme-card rounded-xl border p-4">
+              <a href={`/events/${event.data.slug}`} class="theme-text font-semibold">
+                {event.data.title}
+              </a>
+              <p class="theme-text-muted mt-1 text-sm">{formatFallbackDate(event.data.eventDate)}</p>
+            </li>
+          ))}
+        </ul>
+      </noscript>
+
+      <div class="js-only">
+        <EventsCalendar events={calendarEvents} client:load />
+      </div>
     </div>
   </section>
 

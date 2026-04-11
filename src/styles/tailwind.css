@@ -703,22 +703,26 @@
   background: #22d3ee;
 }
 
-:root[data-a11y-duca50="true"] .cursor-follower-dot,
-:root[data-a11y-duca50="true"] .cursor-follower-glow,
-:root[data-a11y-duca50="true"] .click-particle,
-:root[data-a11y-duca50="true"] .background-beams,
-:root[data-a11y-duca50="true"] .bg-grid-pattern {
+:root.no-js .cursor-follower-dot,
+:root.no-js .cursor-follower-glow,
+:root.no-js .click-particle,
+:root.no-js .background-beams,
+:root.no-js .bg-grid-pattern {
   display: none !important;
 }
 
-:root[data-a11y-duca50="true"] .animate-aurora,
-:root[data-a11y-duca50="true"] .animate-spotlight,
-:root[data-a11y-duca50="true"] .animate-scroll,
-:root[data-a11y-duca50="true"] .animate-marquee,
-:root[data-a11y-duca50="true"] .animate-marquee-vertical,
-:root[data-a11y-duca50="true"] .animate-shimmer,
-:root[data-a11y-duca50="true"] .animate-float,
-:root[data-a11y-duca50="true"] .animate-border-glow,
-:root[data-a11y-duca50="true"] .animate-pulse-glow {
+:root.no-js .animate-aurora,
+:root.no-js .animate-spotlight,
+:root.no-js .animate-scroll,
+:root.no-js .animate-marquee,
+:root.no-js .animate-marquee-vertical,
+:root.no-js .animate-shimmer,
+:root.no-js .animate-float,
+:root.no-js .animate-border-glow,
+:root.no-js .animate-pulse-glow {
   animation: none !important;
+}
+
+:root.no-js .js-only {
+  display: none !important;
 }

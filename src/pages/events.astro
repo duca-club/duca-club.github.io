@@ -9,6 +9,23 @@ const allEvents = await getCollection("events");
 
 // Extract unique tags
 const allTags = [...new Set(allEvents.flatMap((e) => e.data.tags || []))];
+const now = new Date();
+
+const upcomingEvents = allEvents
+  .filter((event) => new Date(event.data.eventDate) >= now)
+  .sort((a, b) => new Date(a.data.eventDate).getTime() - new Date(b.data.eventDate).getTime());
+
+const pastEvents = allEvents
+  .filter((event) => new Date(event.data.eventDate) < now)
+  .sort((a, b) => new Date(b.data.eventDate).getTime() - new Date(a.data.eventDate).getTime());
+
+const formatFallbackDate = (value: Date) =>
+  value.toLocaleDateString("en-AU", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
 // Serialize events for the React component
 const serializedEvents = allEvents.map((event) => ({
@@ -43,7 +60,52 @@ const serializedEvents = allEvents.map((event) => ({
   <!-- Events with Tag Filtering -->
   <section class="section-themed data-stream-bg relative -mt-14 overflow-hidden pb-24">
     <div class="relative z-10 container mx-auto px-4">
-      <EventTagFilter events={serializedEvents} tags={allTags} client:load />
+      <noscript>
+        <div class="mb-12 rounded-2xl border border-yellow-500/40 bg-yellow-500/10 p-5 text-sm text-yellow-100">
+          JavaScript is disabled. Showing static event listings instead of interactive filters.
+        </div>
+
+        {
+          upcomingEvents.length > 0 && (
+            <div class="mb-14">
+              <h2 class="theme-text mb-4 text-3xl font-bold">Upcoming Events</h2>
+              <ul class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {upcomingEvents.map((event) => (
+                  <li class="theme-card rounded-xl border p-5">
+                    <a href={`/events/${event.data.slug}`} class="theme-text text-xl font-semibold">
+                      {event.data.title}
+                    </a>
+                    <p class="theme-text-muted mt-1 text-sm">{formatFallbackDate(event.data.eventDate)}</p>
+                    <p class="theme-text-secondary mt-2 text-sm">{event.data.description}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+
+        {
+          pastEvents.length > 0 && (
+            <div>
+              <h2 class="theme-text mb-4 text-3xl font-bold">Past Events</h2>
+              <ul class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {pastEvents.map((event) => (
+                  <li class="theme-card rounded-xl border p-5">
+                    <a href={`/events/${event.data.slug}`} class="theme-text font-semibold">
+                      {event.data.title}
+                    </a>
+                    <p class="theme-text-muted mt-1 text-sm">{formatFallbackDate(event.data.eventDate)}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </noscript>
+
+      <div class="js-only">
+        <EventTagFilter events={serializedEvents} tags={allTags} client:load />
+      </div>
     </div>
   </section>
 

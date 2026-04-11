@@ -16,15 +16,17 @@ const {
 } = Astro.props;
 ---
 
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <script is:inline>
       (() => {
+        document.documentElement.classList.remove("no-js");
+
         const key = "duca-accessibility-options";
-        const optionIds = ["duca41", "duca42", "duca43", "duca44", "duca45", "duca46", "duca47", "duca48", "duca50"];
+        const optionIds = ["duca41", "duca42", "duca43", "duca44", "duca45", "duca46", "duca47", "duca48"];
         const options = {};
 
         const toBoolean = (value) => {
@@ -186,7 +188,7 @@ const {
           let targetX = window.innerWidth / 2;
           let targetY = window.innerHeight / 2;
           let renderX = targetX;
-          let renderY = targetY;
+            let renderY = targetY;
 
           let pointerX = window.innerWidth / 2;
           let pointerY = window.innerHeight / 2;
