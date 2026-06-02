@@ -9,14 +9,14 @@ export const DiscordCTASection = () => {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           {/* Discord Card - Large */}
           <WobbleCard
-            containerClassName="col-span-1 lg:col-span-2 bg-purple-800 min-h-[300px] lg:min-h-[400px]"
+            containerClassName="col-span-1 lg:col-span-2 bg-gradient-to-br from-purple-700 via-indigo-800 to-purple-900 min-h-[300px] lg:min-h-[400px] ring-1 ring-purple-400/30"
             className=""
           >
             <div className="max-w-lg">
-              <h2 className="text-left text-2xl font-semibold tracking-tight text-balance text-white md:text-3xl lg:text-4xl">
+              <h2 className="text-left text-2xl font-semibold tracking-tight text-balance text-white md:text-3xl lg:text-4xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
                 Join our Discord Community
               </h2>
-              <p className="mt-4 text-left text-base/6 text-purple-200">
+              <p className="mt-4 text-left text-base/6 text-purple-50/95">
                 Connect with 750+ cybersecurity enthusiasts. Get instant updates on events, ask questions, share
                 resources, and network with fellow students and industry professionals.
               </p>
@@ -41,11 +41,11 @@ export const DiscordCTASection = () => {
           </WobbleCard>
 
           {/* Join Club Card */}
-          <WobbleCard containerClassName="col-span-1 bg-cyan-800 min-h-[300px]">
-            <h2 className="text-left text-2xl font-semibold tracking-tight text-balance text-white md:text-xl lg:text-2xl">
+          <WobbleCard containerClassName="col-span-1 bg-gradient-to-br from-cyan-600 via-teal-700 to-cyan-900 min-h-[300px] ring-1 ring-cyan-300/30">
+            <h2 className="text-left text-2xl font-semibold tracking-tight text-balance text-white md:text-xl lg:text-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
               Become a Member
             </h2>
-            <p className="mt-4 text-left text-base/6 text-cyan-200">
+            <p className="mt-4 text-left text-base/6 text-cyan-50/95">
               Join DUCA through DUSA and unlock exclusive benefits, workshops, and networking opportunities.
             </p>
             <div className="mt-6">
@@ -54,7 +54,7 @@ export const DiscordCTASection = () => {
                 variant="secondary"
                 className="bg-white text-cyan-900 hover:bg-gray-100"
               >
-                Regsiter
+                Register
               </Button>
             </div>
           </WobbleCard>

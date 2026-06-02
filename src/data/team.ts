@@ -19,7 +19,7 @@ export const executives: TeamMember[] = [
     role: "Vice President",
     image: "/team/aditya-kapoor.png",
     linkedIn: "https://www.linkedin.com/in/adityakapoor23/",
-    bio: "Can chug a full liter of vodka with a straight face.",
+    bio: "",
   },
   {
     name: "Ashley Mathew",
@@ -64,7 +64,7 @@ export const executives: TeamMember[] = [
     bio: "Hacked in-game currency into moshi monsters using cheat engine in 2009.",
   },
   {
-    name: "Maple Fox",
+    name: "Maple 'Ryan' Fox",
     role: "Advisor",
     image: "/team/maple-fox.png",
     linkedIn: "https://www.linkedin.com/in/maplefox/",
@@ -132,15 +132,6 @@ export const divisions: TeamDivision[] = [
       { name: "Azelma Aghakishiyeva", role: "Team Member", image: "/team/azelma-aghakishiyeva.png", linkedIn: "https://www.linkedin.com/in/azelma-aghakishiyeva-081053278/" },
       { name: "Marco", role: "Team Member", image: "https://ui-avatars.com/api/?name=Marco", linkedIn: "#" },
       { name: "Jasmin Smallu", role: "Team Member", image: "/team/jasmin-smallu.png", linkedIn: "https://www.linkedin.com/in/jasmin-smallu-5b0852268/" },
-    ],
-  },
-  {
-    name: "Remote Events Division",
-    description:
-      "We make sure everyone can join in the fun from anywhere! We host online workshops, games, streams, and events so no one ever feels left out.",
-    members: [
-      { name: "George Ferres", role: "Team Lead", image: "/team/george-ferres.png", linkedIn: "https://www.linkedin.com/in/georgeferres/" },
-      { name: "Bang Mach", role: "Team Member", image: "/team/bang-mach.png", linkedIn: "https://www.linkedin.com/in/bang-mach-dieu/" },
     ],
   },
   {

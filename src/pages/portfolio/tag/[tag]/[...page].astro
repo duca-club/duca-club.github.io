@@ -71,7 +71,7 @@ const { page, currentTag, uniqueTags } = Astro.props;
 >
   <PageHeader
     title={`Portfolio: ${currentTag.label}`}
-    subtitle={`Showing ${page.total} project${page.total !== 1 ? "s" : ""} tagged with "${currentTag.label}". <a href="/portfolio">View all projects</a> or filter by other tags below.`}
+    subtitle={`Showing ${page.total} project${page.total !== 1 ? "s" : ""} tagged with "${currentTag.label}". <a href="/portfolio/">View all projects</a> or filter by other tags below.`}
     bgType="bordered"
     customBreadcrumbLabels={{
       [currentTag.slug]: currentTag.label,
@@ -82,7 +82,7 @@ const { page, currentTag, uniqueTags } = Astro.props;
     <div class="container">
       <Heading level="h2" size="h5" class="mb-2">Tags</Heading>
       <div class="flex flex-wrap gap-4">
-        <Link href="/portfolio">All projects</Link>
+        <Link href="/portfolio/">All projects</Link>
         {
           uniqueTags.map((tag: { label: string; slug: string }) => {
             const isCurrentTag = tag.slug === currentTag.slug;

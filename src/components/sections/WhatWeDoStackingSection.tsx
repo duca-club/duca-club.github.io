@@ -162,7 +162,7 @@ export const WhatWeDoStackingSection = () => {
             Ready to start your cybersecurity journey?
           </p>
           <a
-            href="/join"
+            href="/join/"
             className="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"
           >
             Join Us

@@ -177,7 +177,7 @@ export const EventsCalendar = ({
                   {dayEvents.slice(0, 2).map((event) => (
                     <a
                       key={event.slug}
-                      href={`/events/${event.slug}`}
+                      href={`/events/${event.slug}/`}
                       className="block p-1 rounded text-xs bg-violet-600/20 text-violet-300 hover:bg-violet-600/30 transition-colors truncate"
                       title={event.title}
                     >
@@ -210,7 +210,7 @@ export const EventsCalendar = ({
                 return (
                   <a
                     key={event.slug}
-                    href={`/events/${event.slug}`}
+                    href={`/events/${event.slug}/`}
                     className="flex items-center gap-4 p-3 rounded-lg theme-card border hover:border-violet-500/30 transition-colors"
                   >
                     <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-violet-600 text-white flex flex-col items-center justify-center">

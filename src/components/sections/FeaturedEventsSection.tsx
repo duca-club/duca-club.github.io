@@ -134,7 +134,7 @@ export const FeaturedEventsSection = ({ events }: { events: Event[] }) => {
                 {/* Action Buttons */}
                 <div className="mt-6 flex gap-3">
                   <a
-                    href={`/events/${event.slug}`}
+                    href={`/events/${event.slug}/`}
                     className="flex-1 rounded-lg border border-purple-500/30 px-4 py-2 text-center text-sm font-medium text-purple-400 transition-colors hover:bg-purple-500/10"
                   >
                     Learn More
@@ -167,7 +167,7 @@ export const FeaturedEventsSection = ({ events }: { events: Event[] }) => {
           viewport={{ once: true }}
           className="mt-12 text-center"
         >
-          <Button href="/events" variant="outline">
+          <Button href="/events/" variant="outline">
             View All Events
           </Button>
         </motion.div>

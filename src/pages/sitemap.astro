@@ -110,7 +110,7 @@ const staticPages = [
             projects.map((project) => (
               <article>
                 <Heading level="h3" size="h6" class="mb-3">
-                  <a href={`/portfolio/${project.id}`}>{project.data.title}</a>
+                  <a href={`/portfolio/${project.id}/`}>{project.data.title}</a>
                 </Heading>
                 <p class="mb-3">{project.data.description}</p>
                 <div class="text-xs">
@@ -135,7 +135,7 @@ const staticPages = [
         <Heading level="h2" class="mb-6">Blog</Heading>
         <article>
           <Heading level="h3" size="h6" class="mb-3">
-            <a href="/blog"> Blog posts </a>
+            <a href="/blog/"> Blog posts </a>
           </Heading>
           <p>
             Discover articles about web accessibility, development best practices, and inclusive design. Our blog

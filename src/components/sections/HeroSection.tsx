@@ -37,9 +37,15 @@ export const HeroSection = () => {
           className="flex flex-col items-center justify-center text-center"
         >
           {/* Encrypted DUCA Title */}
-          <h1 className="mb-4 text-7xl font-bold md:text-9xl">DUCA</h1>
+          <h1 className="mb-4 bg-gradient-to-r from-purple-300 via-fuchsia-400 to-cyan-300 bg-clip-text text-7xl font-bold tracking-tight text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.35)] md:text-9xl">
+            DUCA
+          </h1>
 
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">Deakin University Cybersecurity Association</h2>
+          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
+            <span className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+              Deakin University Cybersecurity Association
+            </span>
+          </h2>
 
           <div className="w-full text-balance xl:w-4/5">
             <EncryptedText
@@ -58,9 +64,9 @@ export const HeroSection = () => {
             transition={{ delay: 2, duration: 0.5 }}
             className="mt-10 flex flex-col justify-center gap-4 sm:flex-row"
           >
-           {/*<GlowingButton href="/join">Join Us</GlowingButton>*/}
+           {/*<GlowingButton href="/join/">Join Us</GlowingButton>*/}
             <Button
-              href="/join"
+              href="/join/"
               variant="primary"
             >
             Join Us

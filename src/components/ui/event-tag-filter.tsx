@@ -195,7 +195,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                     </p>
                     <div className="flex gap-3">
                       <a
-                        href={`/events/${event.slug}`}
+                        href={`/events/${event.slug}/`}
                         className="inline-flex items-center justify-center px-4 py-2 rounded-full border border-purple-500/30 text-purple-400 text-sm font-semibold hover:bg-purple-500/10 transition-colors"
                       >
                         Learn More
@@ -243,7 +243,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
               {pastEvents.map((event) => (
                 <motion.a
                   key={event.slug}
-                  href={`/events/${event.slug}`}
+                  href={`/events/${event.slug}/`}
                   layout
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}

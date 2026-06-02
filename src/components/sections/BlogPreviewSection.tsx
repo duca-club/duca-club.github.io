@@ -51,7 +51,7 @@ export const BlogPreviewSection = ({ posts }: { posts: BlogPost[] }) => {
           viewport={{ once: true }}
           className="mt-12 text-center"
         >
-          <Button href="/blog" variant="outline">
+          <Button href="/blog/" variant="outline">
             View All Posts
           </Button>
         </motion.div>
