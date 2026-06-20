@@ -99,7 +99,7 @@ export const HeroSection = () => {
         <img 
           src="/duca.png" 
           alt="DUCA Logo" 
-          className="h-full w-auto max-w-full object-contain relative z-10 filter drop-shadow-[0_0_25px_rgba(0,243,255,0.45)] drop-shadow-[0_0_50px_rgba(214,72,255,0.35)] animate-float"
+          className="h-full w-auto max-w-full object-contain relative z-10 animate-float"
           style={{
             maskImage: 'linear-gradient(to bottom, black 0%, black 45%, transparent 90%)',
             WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 45%, transparent 90%)'
