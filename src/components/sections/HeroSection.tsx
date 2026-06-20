@@ -91,14 +91,18 @@ export const HeroSection = () => {
         <div className="absolute top-[28%] left-[55%] w-[2px] h-[2px] bg-white rounded-full animate-star-twinkle-2" />
       </div>
 
-      {/* Synthwave Sun */}
-      <div 
-        className="absolute left-1/2 bottom-[40%] -translate-x-1/2 w-[280px] h-[280px] md:w-[400px] md:h-[400px] rounded-full bg-gradient-to-b from-[#ffe600] via-[#ff007f] to-[#d648ff] opacity-85 neon-glow-sun select-none pointer-events-none z-0"
-        style={{
-          maskImage: 'linear-gradient(to bottom, black 0%, black 45%, transparent 45%, transparent 50%, black 50%, black 62%, transparent 62%, transparent 67%, black 67%, black 77%, transparent 77%, transparent 82%, black 82%, black 90%, transparent 90%, transparent 94%, black 94%, black 97%, transparent 97%, transparent 99%, black 99%, black 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 45%, transparent 45%, transparent 50%, black 50%, black 62%, transparent 62%, transparent 67%, black 67%, black 77%, transparent 77%, transparent 82%, black 82%, black 90%, transparent 90%, transparent 94%, black 94%, black 97%, transparent 97%, transparent 99%, black 99%, black 100%)'
-        }}
-      />
+      {/* Synthwave Logo (replaces Sun) */}
+      <div className="absolute left-1/2 bottom-[40%] -translate-x-1/2 w-[220px] h-[220px] md:w-[320px] md:h-[320px] z-0 flex items-center justify-center select-none pointer-events-none">
+        {/* Glow Aura behind the logo */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-b from-[#ff007f]/30 to-[#d648ff]/30 blur-[40px] opacity-75 md:blur-[60px]" />
+        {/* Logo Image */}
+        <img 
+          src="/duca.png" 
+          alt="DUCA Logo" 
+          className="w-full h-full object-contain relative z-10 filter drop-shadow-[0_0_20px_rgba(0,243,255,0.4)] drop-shadow-[0_0_40px_rgba(214,72,255,0.3)] animate-float"
+        />
+      </div>
+
 
       {/* Retro Wireframe Mountains */}
       <svg 
