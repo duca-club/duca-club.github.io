@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { StackingCards } from "@ui/stacking-cards";
 import { SectionHeading } from "@ui/section-heading";
 import { useMouseGlow } from "@/utils/useMouseGlow";
-import { SpotlightNew } from "@ui/spotlight";
 
 const whatWeDoCards = [
   {
@@ -143,17 +142,7 @@ const StackingCardContent = ({
 
 export const WhatWeDoStackingSection = () => {
   return (
-    <section className="section-themed-alt relative overflow-hidden">
-      {/* Seamless blend gradient overlays to blend '#060b14' alt section with '#00051a' themed sections */}
-      <div className="absolute top-0 left-0 right-0 h-56 pointer-events-none z-10" style={{ backgroundImage: "linear-gradient(to bottom, var(--theme-bg), transparent)" }} />
-      <div className="absolute bottom-0 left-0 right-0 h-56 pointer-events-none z-10" style={{ backgroundImage: "linear-gradient(to top, var(--theme-bg), transparent)" }} />
-
-      {/* Subtle background gradient glow overlay matching the hero theme */}
-      <div className="absolute inset-0 bg-linear-to-b from-purple-950/10 via-transparent to-cyan-950/10 pointer-events-none z-0" />
-
-      {/* Spotlight light beam effects matching the hero theme */}
-      <SpotlightNew className="-top-20 left-0 opacity-25" fill="#d648ff" />
-      <SpotlightNew className="top-1/3 right-0 opacity-20" fill="#00d1b7" />
+    <section className="section-themed-alt">
 
       <div data-sticky-header className="sticky top-[96px] z-20 bg-gradient-to-b from-[#060b14] via-[#060b14]/95 to-transparent pt-20 pb-16 mb-12">
         <div className="container mx-auto px-4">
