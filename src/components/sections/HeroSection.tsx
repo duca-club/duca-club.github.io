@@ -4,39 +4,59 @@ import { EncryptedText } from "@ui/encrypted-text";
 import { Button } from "@ui/button";
 import { useMouseGlow } from "@/utils/useMouseGlow";
 
-// Neon Palm Tree component
-const PalmTree = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
+// Neon Cyber/IT Icon component
+const CyberIcon = ({ type, className, style }: { type: 'lock' | 'shield' | 'terminal' | 'server'; className?: string; style?: React.CSSProperties }) => (
   <svg 
-    viewBox="0 0 100 150" 
+    viewBox="0 0 100 100" 
     className={`absolute pointer-events-none select-none z-0 ${className || ""}`}
     style={style}
   >
     <defs>
-      <linearGradient id="palm-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <linearGradient id="cyber-grad" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stopColor="#00f3ff" />
-        <stop offset="70%" stopColor="#d648ff" />
+        <stop offset="60%" stopColor="#d648ff" />
         <stop offset="100%" stopColor="#ff007f" />
       </linearGradient>
     </defs>
-    {/* Trunk */}
-    <path 
-      d="M50,150 Q46,90 42,40" 
-      stroke="url(#palm-grad)" 
-      strokeWidth="5" 
-      fill="none" 
-      strokeLinecap="round" 
-    />
-    
-    {/* Leaves */}
-    {/* Left side leaves */}
-    <path d="M42,40 C32,35 15,35 10,45" stroke="url(#palm-grad)" strokeWidth="3" fill="none" strokeLinecap="round" />
-    <path d="M42,40 C34,25 20,20 15,28" stroke="url(#palm-grad)" strokeWidth="3" fill="none" strokeLinecap="round" />
-    <path d="M42,40 C38,15 30,10 25,18" stroke="url(#palm-grad)" strokeWidth="3" fill="none" strokeLinecap="round" />
-    
-    {/* Right side leaves */}
-    <path d="M42,40 C46,15 56,10 61,18" stroke="url(#palm-grad)" strokeWidth="3" fill="none" strokeLinecap="round" />
-    <path d="M42,40 C50,25 62,20 67,28" stroke="url(#palm-grad)" strokeWidth="3" fill="none" strokeLinecap="round" />
-    <path d="M42,40 C52,35 67,35 72,45" stroke="url(#palm-grad)" strokeWidth="3" fill="none" strokeLinecap="round" />
+    {type === 'lock' && (
+      <>
+        <path d="M30,45 L30,78 C30,80 32,82 34,82 L66,82 C68,82 70,80 70,78 L70,45 Z" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
+        <path d="M40,45 L40,30 C40,18 60,18 60,30 L60,45" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
+        <circle cx="50" cy="58" r="4.5" fill="url(#cyber-grad)" />
+        <line x1="50" y1="62.5" x2="50" y2="71" stroke="url(#cyber-grad)" strokeWidth="3" strokeLinecap="round" />
+      </>
+    )}
+    {type === 'shield' && (
+      <>
+        <path d="M50,15 C65,18 80,15 80,15 C80,45 75,70 50,85 C25,70 20,45 20,15 C20,15 35,18 50,15 Z" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" strokeLinejoin="round" />
+        <path d="M50,25 C60,27 70,25 70,25 C70,45 65,65 50,77 C35,65 30,45 30,25 C30,25 40,27 50,25 Z" fill="none" stroke="url(#cyber-grad)" strokeWidth="2.5" opacity="0.6" strokeLinejoin="round" />
+      </>
+    )}
+    {type === 'terminal' && (
+      <>
+        <rect x="15" y="25" width="70" height="50" rx="5" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
+        <path d="M25,42 L33,49 L25,56" fill="none" stroke="url(#cyber-grad)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+        <line x1="38" y1="56" x2="53" y2="56" stroke="url(#cyber-grad)" strokeWidth="4.5" strokeLinecap="round" />
+      </>
+    )}
+    {type === 'server' && (
+      <>
+        <rect x="15" y="20" width="70" height="17" rx="3" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
+        <circle cx="28" cy="28.5" r="3" fill="#00f3ff" className="animate-star-twinkle-1" />
+        <circle cx="38" cy="28.5" r="3" fill="#ff007f" className="animate-star-twinkle-2" />
+        <line x1="48" y1="28.5" x2="72" y2="28.5" stroke="url(#cyber-grad)" strokeWidth="3" strokeDasharray="5 5" />
+
+        <rect x="15" y="41.5" width="70" height="17" rx="3" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
+        <circle cx="28" cy="50" r="3" fill="#00f3ff" className="animate-star-twinkle-2" />
+        <circle cx="38" cy="50" r="3" fill="#ff007f" className="animate-star-twinkle-3" />
+        <line x1="48" y1="50" x2="72" y2="50" stroke="url(#cyber-grad)" strokeWidth="3" strokeDasharray="5 5" />
+
+        <rect x="15" y="63" width="70" height="17" rx="3" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
+        <circle cx="28" cy="71.5" r="3" fill="#00f3ff" className="animate-star-twinkle-3" />
+        <circle cx="38" cy="71.5" r="3" fill="#ff007f" className="animate-star-twinkle-1" />
+        <line x1="48" y1="71.5" x2="72" y2="71.5" stroke="url(#cyber-grad)" strokeWidth="3" strokeDasharray="5 5" />
+      </>
+    )}
   </svg>
 );
 
@@ -159,15 +179,15 @@ export const HeroSection = () => {
       <div className="absolute bottom-[40%] left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#00f3ff] to-transparent shadow-[0_0_8px_#00f3ff,0_0_15px_#00f3ff] z-0" />
       <div className="absolute bottom-[38%] left-0 w-full h-[8%] bg-gradient-to-t from-transparent to-[#00f3ff]/12 blur-[4px] pointer-events-none z-0" />
 
-      {/* Scrolling Palm Trees - Left Side */}
-      <PalmTree className="w-[120px] h-[180px] md:w-[180px] md:h-[270px] origin-bottom-left" style={{ animation: 'palm-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '0s' }} />
-      <PalmTree className="w-[120px] h-[180px] md:w-[180px] md:h-[270px] origin-bottom-left" style={{ animation: 'palm-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '2s' }} />
-      <PalmTree className="w-[120px] h-[180px] md:w-[180px] md:h-[270px] origin-bottom-left" style={{ animation: 'palm-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '4s' }} />
+      {/* Scrolling Cyber Security / IT Icons - Left Side */}
+      <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '0s' }} />
+      <CyberIcon type="terminal" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '2s' }} />
+      <CyberIcon type="server" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '4s' }} />
 
-      {/* Scrolling Palm Trees - Right Side */}
-      <PalmTree className="w-[120px] h-[180px] md:w-[180px] md:h-[270px] origin-bottom-right" style={{ animation: 'palm-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '1s' }} />
-      <PalmTree className="w-[120px] h-[180px] md:w-[180px] md:h-[270px] origin-bottom-right" style={{ animation: 'palm-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '3s' }} />
-      <PalmTree className="w-[120px] h-[180px] md:w-[180px] md:h-[270px] origin-bottom-right" style={{ animation: 'palm-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '5s' }} />
+      {/* Scrolling Cyber Security / IT Icons - Right Side */}
+      <CyberIcon type="shield" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '1s' }} />
+      <CyberIcon type="server" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '3s' }} />
+      <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '5s' }} />
 
       {/* Mouse-reactive torch glow — illuminates the grid as the cursor moves */}
       <motion.div

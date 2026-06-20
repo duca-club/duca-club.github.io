@@ -548,7 +548,7 @@
   }
 }
 
-@keyframes palm-scroll-left {
+@keyframes cyber-scroll-left {
   0% {
     transform: translate(-50%, -100%) scale(0.05);
     left: 48%;
@@ -562,14 +562,14 @@
     opacity: 0.8;
   }
   100% {
-    transform: translate(-50%, -100%) scale(2.2);
-    left: -15%;
-    bottom: -35%;
+    transform: translate(-50%, -100%) scale(2.0);
+    left: -10%;
+    bottom: -30%;
     opacity: 0;
   }
 }
 
-@keyframes palm-scroll-right {
+@keyframes cyber-scroll-right {
   0% {
     transform: translate(-50%, -100%) scale(0.05);
     left: 52%;
@@ -583,12 +583,13 @@
     opacity: 0.8;
   }
   100% {
-    transform: translate(-50%, -100%) scale(2.2);
-    left: 115%;
-    bottom: -35%;
+    transform: translate(-50%, -100%) scale(2.0);
+    left: 110%;
+    bottom: -30%;
     opacity: 0;
   }
 }
+
 
 @keyframes star-twinkle {
   0%, 100% {
