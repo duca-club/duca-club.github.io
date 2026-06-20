@@ -5,25 +5,7 @@ import MeetTheTeamSection from "@components/sections/MeetTheTeamSection";
 ---
 
 <DefaultLayout title="Meet The Team">
-  <!-- Hero Section -->
-  <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
-    <AuroraBackground className="absolute inset-0 h-full!" showRadialGradient={false} client:load>
-      <div></div>
-    </AuroraBackground>
-    <div class="absolute inset-0 z-10 flex items-center justify-center px-4 pt-40 pb-20">
-      <div class="text-center">
-        <h1 class="mb-6 text-5xl font-bold text-white md:text-7xl">
-          <span class="bg-linear-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Meet The Team</span>
-        </h1>
-        <p class="mx-auto max-w-3xl text-xl text-gray-300 md:text-2xl">
-          We're a bunch of curious, passionate people building a welcoming space for everyone - come see what we get up
-          to!
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Interactive Year Switcher + Team Lists -->
+  <!-- Interactive Year Switcher + Team Lists (including integrated Hero) -->
   <MeetTheTeamSection client:load />
 
   <!-- CTA -->
