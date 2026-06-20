@@ -303,11 +303,19 @@
 /* Section styling that adapts to theme */
 .section-themed {
   background-color: var(--theme-bg);
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
   color: var(--theme-text);
 }
 
 .section-themed-alt {
   background-color: var(--theme-section-alt);
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
   color: var(--theme-text);
 }
 
