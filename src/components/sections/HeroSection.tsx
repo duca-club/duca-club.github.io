@@ -203,11 +203,11 @@ export const HeroSection = () => {
         className="pointer-events-none absolute inset-0 z-[1] transition-opacity duration-500"
         style={{ background, opacity: isHovering ? 1 : 0 }}
       />
-      {/* Soft radial backdrop shadow behind text (spans full-width to prevent clipping borders) */}
+      {/* Soft radial backdrop shadow behind text (spans full height & width to prevent any clipping borders) */}
       <div 
-        className="absolute left-0 right-0 top-[110px] md:top-[130px] bottom-[25%] z-0 select-none pointer-events-none"
+        className="absolute inset-0 z-0 select-none pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at 50% 50%, rgba(2, 1, 12, 0.95) 0%, rgba(2, 1, 12, 0.75) 45%, rgba(2, 1, 12, 0.2) 75%, transparent 100%)'
+          background: 'radial-gradient(ellipse at 50% 48%, rgba(2, 1, 12, 0.95) 0%, rgba(2, 1, 12, 0.7) 35%, rgba(2, 1, 12, 0.3) 65%, rgba(2, 1, 12, 0.1) 85%, transparent 100%)'
         }}
       />
 
