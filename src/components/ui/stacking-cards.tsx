@@ -5,6 +5,7 @@ import { cn } from "@/utils/cn";
 
 interface StackingCardsProps {
   children: ReactNode;
+  footer?: ReactNode;
   className?: string;
 }
 
@@ -41,8 +42,9 @@ export function StackingCardItem({
   );
 }
 
-export function StackingCards({ children, className }: StackingCardsProps) {
+export function StackingCards({ children, footer, className }: StackingCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const [progresses, setProgresses] = useState<number[]>([]);
 
   useEffect(() => {
@@ -50,47 +52,82 @@ export function StackingCards({ children, className }: StackingCardsProps) {
     if (!container) return;
 
     let rafId: number | null = null;
+    let scrollTrigger = 0;
+    const cardTriggers: number[] = [];
+
+    const calculateTriggers = () => {
+      const cards = container.querySelectorAll<HTMLElement>("[data-stack-card]");
+      const sentinel = sentinelRef.current;
+      if (cards.length === 0 || !sentinel) return;
+
+      // Temporarily store original inline positioning styles
+      const originalStyles = Array.from(cards).map(card => ({
+        position: card.style.position,
+        top: card.style.top,
+      }));
+
+      // Set position to relative temporarily to read layout-natural coordinates
+      cards.forEach(card => {
+        card.style.position = "relative";
+        card.style.top = "auto";
+      });
+
+      // Force a single document-wide layout read
+      const naturalDocTops = Array.from(cards).map(card => {
+        return card.getBoundingClientRect().top + window.scrollY;
+      });
+
+      // Restore original sticky positioning styles
+      cards.forEach((card, i) => {
+        card.style.position = originalStyles[i].position;
+        card.style.top = originalStyles[i].top;
+      });
+
+      // Populate scroll offsets where each card sticks
+      cardTriggers.length = 0;
+      cards.forEach((_, index) => {
+        const cardDocTop = naturalDocTops[index];
+        const stickyTop = 310 + index * 18;
+        cardTriggers.push(cardDocTop - stickyTop);
+      });
+
+      // Pre-calculate the scroll threshold when the last card reaches its destination
+      const lastIndex = cards.length - 1;
+      const lastCard = cards[lastIndex];
+      if (lastCard) {
+        const lastCardHeight = lastCard.getBoundingClientRect().height;
+        const lastStickyTop = 310 + lastIndex * 18;
+        const lastStickyBottom = lastStickyTop + lastCardHeight;
+        const sentinelDocTop = sentinel.getBoundingClientRect().top + window.scrollY;
+        scrollTrigger = sentinelDocTop - lastStickyBottom;
+      }
+    };
 
     const update = () => {
       const cards = container.querySelectorAll<HTMLElement>("[data-stack-card]");
       const header = document.querySelector<HTMLElement>("[data-sticky-header]");
       const newProgresses: number[] = [];
 
-      const lastCard = cards[cards.length - 1];
-      const lastCardHeight = lastCard ? lastCard.getBoundingClientRect().height : 340;
-      const stackBottom = 310 + (cards.length - 1) * 18 + lastCardHeight;
-      const containerRect = container.getBoundingClientRect();
-      const pushOffset = Math.max(0, stackBottom - containerRect.bottom);
+      const currentScroll = window.scrollY;
+      const pushOffset = Math.max(0, currentScroll - scrollTrigger);
 
       if (header) {
         header.style.top = `${96 - pushOffset}px`;
       }
 
       cards.forEach((card, index) => {
-        // Adjust each card's sticky top dynamically so that they scroll up with the header
+        // Shift sticky offsets in unison during exit scroll
         card.style.top = `calc(310px + ${index * 18}px - ${pushOffset}px)`;
 
-        // If this is the last card, it doesn't have a card stacking on top of it, so progress is 0.
+        // The top-most stacked card doesn't scale/dim
         if (index === cards.length - 1) {
           newProgresses.push(0);
           return;
         }
 
-        const nextCard = cards[index + 1];
-        if (!nextCard) {
-          newProgresses.push(0);
-          return;
-        }
-
-        const nextRect = nextCard.getBoundingClientRect();
-        // The next card's target sticky top position in the viewport (shifted by pushOffset)
-        const nextStickyTop = 310 + ((index + 1) * 18) - pushOffset;
-        
-        // Transition starts when the next card is 200px below its sticky position,
-        // and finishes when the next card reaches its sticky position.
-        const startOffset = nextStickyTop + 200;
-        const distanceTraveled = startOffset - nextRect.top;
-        const progress = Math.max(0, Math.min(1, distanceTraveled / 200));
+        // Scale and dim each card relative to the scroll progress of the card stacked directly on top of it
+        const nextStickScroll = cardTriggers[index + 1] ?? 0;
+        const progress = Math.max(0, Math.min(1, (currentScroll - (nextStickScroll - 200)) / 200));
         newProgresses.push(progress);
       });
 
@@ -102,12 +139,21 @@ export function StackingCards({ children, className }: StackingCardsProps) {
       rafId = requestAnimationFrame(update);
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    const onResize = () => {
+      calculateTriggers();
+      update();
+    };
+
+    calculateTriggers();
     update();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
 
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -144,8 +190,20 @@ export function StackingCards({ children, className }: StackingCardsProps) {
           </div>
         );
       })}
-      {/* Spacer so the last card has room to fully enter and center */}
-      <div style={{ height: "60vh" }} />
+      {/* Sentinel to track the natural scroll position of the last card */}
+      <div ref={sentinelRef} className="h-0 w-0 opacity-0 pointer-events-none" />
+      {/* Footer / CTA content rendered directly below the cards stack in the normal document flow */}
+      {footer && (
+        <div 
+          data-stack-footer
+          className="relative z-10 w-full"
+          style={{
+            marginTop: 40,
+          }}
+        >
+          {footer}
+        </div>
+      )}
     </div>
   );
 }

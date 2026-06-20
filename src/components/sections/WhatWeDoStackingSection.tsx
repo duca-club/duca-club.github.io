@@ -153,25 +153,27 @@ export const WhatWeDoStackingSection = () => {
         </div>
       </div>
 
-      <StackingCards>
+      <StackingCards
+        footer={
+          <div className="container mx-auto px-4 pb-12 pt-8">
+            <div className="text-center">
+              <p className="theme-text-secondary mb-6 text-lg">
+                Ready to start your cybersecurity journey?
+              </p>
+              <a
+                href="/join/"
+                className="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"
+              >
+                Join Us
+              </a>
+            </div>
+          </div>
+        }
+      >
         {whatWeDoCards.map((card, i) => (
           <StackingCardContent key={card.title} card={card} index={i} />
         ))}
       </StackingCards>
-
-      <div className="container mx-auto px-4 pb-12 pt-8">
-        <div className="text-center">
-          <p className="theme-text-secondary mb-6 text-lg">
-            Ready to start your cybersecurity journey?
-          </p>
-          <a
-            href="/join/"
-            className="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"
-          >
-            Join Us
-          </a>
-        </div>
-      </div>
     </section>
   );
 };
