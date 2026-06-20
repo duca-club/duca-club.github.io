@@ -210,7 +210,10 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col items-center justify-center text-center"
+          className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto px-6 py-6 md:py-10"
+          style={{
+            background: 'radial-gradient(circle, rgba(2, 1, 12, 0.85) 0%, rgba(2, 1, 12, 0.65) 60%, transparent 100%)'
+          }}
         >
           {/* Encrypted DUCA Title */}
           <h1 className="mb-4 bg-gradient-to-r from-purple-300 via-fuchsia-400 to-cyan-300 bg-clip-text text-7xl font-bold tracking-tight text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.35)] md:text-9xl">
