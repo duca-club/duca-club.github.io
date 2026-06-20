@@ -74,6 +74,8 @@ export const StatsSection = ({ memberCount = DEFAULT_DISCORD_MEMBER_COUNT }: { m
   return (
     <section className="section-themed data-stream-bg relative overflow-hidden py-24">
       <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-purple-900/10 to-transparent" />
+      {/* Top transition blend layer (fades in the flat boxes grid gradually below the hero) */}
+      <div className="absolute top-0 left-0 w-full h-[180px] bg-gradient-to-b from-[#00051a] via-[#00051a]/85 via-[#00051a]/40 to-transparent z-[2] pointer-events-none" />
 
       <div className="relative z-10 container mx-auto px-4">
         <motion.h2

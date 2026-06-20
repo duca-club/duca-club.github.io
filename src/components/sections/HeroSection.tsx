@@ -243,7 +243,7 @@ export const HeroSection = () => {
       <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '5s' }} />
 
       {/* Bottom transition blend layer (blends 3D grid/road smoothly into the next section's flat grid) */}
-      <div className="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#00051a] via-[#00051a]/80 to-transparent z-[2] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-[280px] bg-gradient-to-t from-[#00051a] via-[#00051a]/85 via-[#00051a]/40 to-transparent z-[2] pointer-events-none" />
 
       {/* Mouse-reactive torch glow — illuminates the grid as the cursor moves */}
       <motion.div
