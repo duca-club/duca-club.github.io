@@ -142,12 +142,15 @@ const StackingCardContent = ({
 
 export const WhatWeDoStackingSection = () => {
   return (
-    <section className="section-themed-alt">
-      <div className="container mx-auto px-4 pt-24 pb-12">
-        <SectionHeading
-          title="What We Do"
-          subtitle="Hands-on learning and community support for future cybersecurity professionals"
-        />
+    <section className="section-themed-alt relative">
+      <div className="sticky top-[96px] z-20 bg-[#060b14]/85 backdrop-blur-md pt-20 pb-6 border-b border-white/5 mb-12">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="What We Do"
+            subtitle="Hands-on learning and community support for future cybersecurity professionals"
+            className="mb-0"
+          />
+        </div>
       </div>
 
       <StackingCards>
