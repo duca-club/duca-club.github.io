@@ -528,3 +528,106 @@
       transparent 62%
     );
 }
+
+/* Synthwave Retro Background Animations and Styles */
+@keyframes synthwave-grid-scroll {
+  from {
+    background-position-y: 0px;
+  }
+  to {
+    background-position-y: 60px;
+  }
+}
+
+@keyframes synthwave-road-scroll {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes palm-scroll-left {
+  0% {
+    transform: translate(-50%, -100%) scale(0.05);
+    left: 48%;
+    bottom: 40%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.8;
+  }
+  88% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -100%) scale(2.2);
+    left: -15%;
+    bottom: -35%;
+    opacity: 0;
+  }
+}
+
+@keyframes palm-scroll-right {
+  0% {
+    transform: translate(-50%, -100%) scale(0.05);
+    left: 52%;
+    bottom: 40%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.8;
+  }
+  88% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -100%) scale(2.2);
+    left: 115%;
+    bottom: -35%;
+    opacity: 0;
+  }
+}
+
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.neon-glow-pink {
+  filter: drop-shadow(0 0 3px rgba(255, 0, 127, 0.7)) drop-shadow(0 0 8px rgba(255, 0, 127, 0.4));
+}
+
+.neon-glow-cyan {
+  filter: drop-shadow(0 0 3px rgba(0, 243, 255, 0.7)) drop-shadow(0 0 8px rgba(0, 243, 255, 0.4));
+}
+
+.neon-glow-sun {
+  filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.6)) drop-shadow(0 0 40px rgba(214, 72, 255, 0.4));
+}
+
+.animate-synthwave-grid {
+  animation: synthwave-grid-scroll 1.2s linear infinite;
+}
+
+.animate-synthwave-road {
+  animation: synthwave-road-scroll 0.8s linear infinite;
+}
+
+.animate-star-twinkle-1 {
+  animation: star-twinkle 3s ease-in-out infinite;
+}
+
+.animate-star-twinkle-2 {
+  animation: star-twinkle 4s ease-in-out infinite 1s;
+}
+
+.animate-star-twinkle-3 {
+  animation: star-twinkle 5s ease-in-out infinite 2s;
+}
+
