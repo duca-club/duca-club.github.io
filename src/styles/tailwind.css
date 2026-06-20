@@ -608,16 +608,12 @@
   }
 }
 
-.neon-glow-pink {
-  filter: drop-shadow(0 0 3px rgba(255, 0, 127, 0.7)) drop-shadow(0 0 8px rgba(255, 0, 127, 0.4));
+.neon-glow-purple {
+  filter: drop-shadow(0 0 3px rgba(214, 72, 255, 0.7)) drop-shadow(0 0 8px rgba(214, 72, 255, 0.4));
 }
 
-.neon-glow-cyan {
-  filter: drop-shadow(0 0 3px rgba(0, 243, 255, 0.7)) drop-shadow(0 0 8px rgba(0, 243, 255, 0.4));
-}
-
-.neon-glow-sun {
-  filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.6)) drop-shadow(0 0 40px rgba(214, 72, 255, 0.4));
+.neon-glow-bluish-green {
+  filter: drop-shadow(0 0 3px rgba(0, 209, 183, 0.7)) drop-shadow(0 0 8px rgba(0, 209, 183, 0.4));
 }
 
 .animate-synthwave-grid {
