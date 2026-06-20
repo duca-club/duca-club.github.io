@@ -92,16 +92,21 @@ export const HeroSection = () => {
       </div>
 
       {/* Synthwave Logo (replaces Sun) */}
-      <div className="absolute left-1/2 bottom-[40%] -translate-x-1/2 w-[220px] h-[220px] md:w-[320px] md:h-[320px] z-0 flex items-center justify-center select-none pointer-events-none">
+      <div className="absolute top-[110px] md:top-[130px] bottom-[40%] left-0 right-0 z-0 flex items-center justify-center select-none pointer-events-none px-4">
         {/* Glow Aura behind the logo */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-b from-[#ff007f]/30 to-[#d648ff]/30 blur-[40px] opacity-75 md:blur-[60px]" />
-        {/* Logo Image */}
+        <div className="absolute w-[280px] h-[280px] md:w-[480px] md:h-[480px] rounded-full bg-gradient-to-b from-[#ff007f]/25 to-[#d648ff]/25 blur-[50px] opacity-80 md:blur-[80px]" />
+        {/* Logo Image with bottom gradient fade mask */}
         <img 
           src="/duca.png" 
           alt="DUCA Logo" 
-          className="w-full h-full object-contain relative z-10 filter drop-shadow-[0_0_20px_rgba(0,243,255,0.4)] drop-shadow-[0_0_40px_rgba(214,72,255,0.3)] animate-float"
+          className="h-full w-auto max-w-full object-contain relative z-10 filter drop-shadow-[0_0_25px_rgba(0,243,255,0.45)] drop-shadow-[0_0_50px_rgba(214,72,255,0.35)] animate-float"
+          style={{
+            maskImage: 'linear-gradient(to bottom, black 0%, black 45%, transparent 90%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 45%, transparent 90%)'
+          }}
         />
       </div>
+
 
 
       {/* Retro Wireframe Mountains */}
