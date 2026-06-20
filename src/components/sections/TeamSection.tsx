@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { TeamGrid, type TeamMember } from "@ui/team-card";
 import { SectionHeading } from "@ui/section-heading";
 import { Button } from "@ui/button";
+import { SpotlightNew } from "@ui/spotlight";
 
 interface Division {
   name: string;
@@ -18,7 +19,11 @@ export const TeamSection = ({
   showFullTeam?: boolean;
 }) => {
   return (
-    <section id="team" className="section-themed relative py-24">
+    <section id="team" className="section-themed relative overflow-hidden py-24">
+      {/* Spotlight light beam effect matching the hero theme */}
+      <SpotlightNew className="-top-30 left-0 opacity-20" fill="#d648ff" />
+      {/* Background light gradient overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent via-cyan-900/5 to-transparent" />
       <div className="container mx-auto px-4">
         <SectionHeading title="Meet the Team" subtitle="The passionate people behind DUCA's mission" />
 

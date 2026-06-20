@@ -1,9 +1,7 @@
 ---
 import DefaultLayout from "@layouts/DefaultLayout.astro";
-import { SectionHeading } from "@components/ui/section-heading";
-import { TeamGrid } from "@components/ui/team-card";
 import { AuroraBackground } from "@components/ui/aurora-background";
-import { executives, divisions } from "@/data/team";
+import MeetTheTeamSection from "@components/sections/MeetTheTeamSection";
 ---
 
 <DefaultLayout title="Meet The Team">
@@ -25,28 +23,8 @@ import { executives, divisions } from "@/data/team";
     </div>
   </section>
 
-  <!-- Executives -->
-  <section class="section-themed py-24">
-    <div class="container mx-auto px-4">
-      <SectionHeading title="Executives" subtitle="The leadership team driving DUCA forward" client:visible />
-      <TeamGrid members={executives} className="mt-12" client:visible />
-    </div>
-  </section>
-
-  <!-- Divisions -->
-  {
-    divisions.map((division, divIdx) => (
-      <section
-        class={`section-themed py-20 ${divIdx % 2 === 0 ? "border-t border-purple-500/10" : "border-t border-slate-700/30"}`}
-      >
-        <div class="container mx-auto px-4">
-          <SectionHeading title={division.name} subtitle={division.description} client:visible />
-
-          <TeamGrid members={division.members} className="mt-8" client:visible />
-        </div>
-      </section>
-    ))
-  }
+  <!-- Interactive Year Switcher + Team Lists -->
+  <MeetTheTeamSection client:load />
 
   <!-- CTA -->
   <section class="section-themed data-stream-bg relative overflow-hidden border-t border-purple-500/10 py-24">

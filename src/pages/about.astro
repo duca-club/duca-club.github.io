@@ -8,6 +8,7 @@ import TeamSection from "@components/sections/TeamSection";
 import PartnersSection from "@components/sections/PartnersSection";
 import { getDiscordMemberCount } from "@/utils/discordMembers";
 import { executives } from "@/data/team";
+import { SpotlightNew } from "@components/ui/spotlight";
 
 const memberCount = await getDiscordMemberCount();
 ---
@@ -17,8 +18,13 @@ const memberCount = await getDiscordMemberCount();
   <AboutHeroSection client:load />
 
   <!-- Terminal Typing Element -->
-  <section class="section-themed py-16">
-    <div class="container mx-auto max-w-3xl px-4">
+  <section class="section-themed relative overflow-hidden py-16">
+    {/* Spotlight light beam effect matching the theme */}
+    <SpotlightNew className="-top-30 left-10 opacity-20" fill="#d648ff" />
+    {/* Background light gradient overlay */}
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent pointer-events-none"></div>
+
+    <div class="container mx-auto max-w-3xl px-4 relative z-10">
       <TerminalTyping memberCount={memberCount} client:visible />
     </div>
   </section>
@@ -30,13 +36,18 @@ const memberCount = await getDiscordMemberCount();
   <CoreValuesSection client:visible />
 
   <!-- Meet the Executives -->
-  <TeamSection executives={executives} client:visible />
+  <TeamSection executives={executives["2026"]} client:visible />
 
   <!-- Partners -->
   <PartnersSection client:visible />
 
   <!-- CTA Section -->
   <section class="section-themed data-stream-bg relative overflow-hidden py-24">
+    {/* Spotlight light beam effect matching the hero theme */}
+    <SpotlightNew className="-top-40 right-0 opacity-25" fill="#00d1b7" />
+    {/* Background light gradient overlay */}
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent pointer-events-none"></div>
+
     <div class="relative z-10 container mx-auto px-4 text-center">
       <h2 class="theme-text mb-6 text-3xl font-bold md:text-4xl">Ready to join our community?</h2>
       <p class="theme-text-secondary mx-auto mb-8 max-w-2xl">
