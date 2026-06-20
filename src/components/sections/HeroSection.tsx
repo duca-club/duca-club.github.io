@@ -203,6 +203,13 @@ export const HeroSection = () => {
         className="pointer-events-none absolute inset-0 z-[1] transition-opacity duration-500"
         style={{ background, opacity: isHovering ? 1 : 0 }}
       />
+      {/* Soft radial backdrop shadow behind text (spans full-width to prevent clipping borders) */}
+      <div 
+        className="absolute left-0 right-0 top-[110px] md:top-[130px] bottom-[25%] z-0 select-none pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at 50% 50%, rgba(2, 1, 12, 0.95) 0%, rgba(2, 1, 12, 0.75) 45%, rgba(2, 1, 12, 0.2) 75%, transparent 100%)'
+        }}
+      />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-20">
@@ -210,10 +217,7 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto px-6 py-6 md:py-10"
-          style={{
-            background: 'radial-gradient(circle, rgba(2, 1, 12, 0.85) 0%, rgba(2, 1, 12, 0.65) 60%, transparent 100%)'
-          }}
+          className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto"
         >
           {/* Encrypted DUCA Title */}
           <h1 className="mb-4 bg-gradient-to-r from-purple-300 via-fuchsia-400 to-cyan-300 bg-clip-text text-7xl font-bold tracking-tight text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.35)] md:text-9xl">
