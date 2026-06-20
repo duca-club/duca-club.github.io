@@ -53,9 +53,23 @@ export function StackingCards({ children, className }: StackingCardsProps) {
 
     const update = () => {
       const cards = container.querySelectorAll<HTMLElement>("[data-stack-card]");
+      const header = document.querySelector<HTMLElement>("[data-sticky-header]");
       const newProgresses: number[] = [];
 
-      cards.forEach((_, index) => {
+      const lastCard = cards[cards.length - 1];
+      const lastCardHeight = lastCard ? lastCard.getBoundingClientRect().height : 340;
+      const stackBottom = 310 + (cards.length - 1) * 18 + lastCardHeight;
+      const containerRect = container.getBoundingClientRect();
+      const pushOffset = Math.max(0, stackBottom - containerRect.bottom);
+
+      if (header) {
+        header.style.top = `${96 - pushOffset}px`;
+      }
+
+      cards.forEach((card, index) => {
+        // Adjust each card's sticky top dynamically so that they scroll up with the header
+        card.style.top = `calc(310px + ${index * 18}px - ${pushOffset}px)`;
+
         // If this is the last card, it doesn't have a card stacking on top of it, so progress is 0.
         if (index === cards.length - 1) {
           newProgresses.push(0);
@@ -69,8 +83,8 @@ export function StackingCards({ children, className }: StackingCardsProps) {
         }
 
         const nextRect = nextCard.getBoundingClientRect();
-        // The next card's target sticky top position in the viewport
-        const nextStickyTop = 310 + ((index + 1) * 18);
+        // The next card's target sticky top position in the viewport (shifted by pushOffset)
+        const nextStickyTop = 310 + ((index + 1) * 18) - pushOffset;
         
         // Transition starts when the next card is 200px below its sticky position,
         // and finishes when the next card reaches its sticky position.

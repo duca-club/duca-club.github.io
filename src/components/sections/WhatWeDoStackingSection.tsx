@@ -143,7 +143,7 @@ const StackingCardContent = ({
 export const WhatWeDoStackingSection = () => {
   return (
     <section className="section-themed-alt relative">
-      <div className="sticky top-[96px] z-20 bg-[#060b14]/85 backdrop-blur-md pt-20 pb-6 border-b border-white/5 mb-12">
+      <div data-sticky-header className="sticky top-[96px] z-20 bg-gradient-to-b from-[#060b14] via-[#060b14]/95 to-transparent pt-20 pb-16 mb-12">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="What We Do"
