@@ -640,3 +640,34 @@
   animation: star-twinkle 5s ease-in-out infinite 2s;
 }
 
+@keyframes cyber-glitch {
+  0% {
+    clip-path: inset(40% 0 61% 0);
+    transform: skew(0.3deg);
+  }
+  20% {
+    clip-path: inset(92% 0 1% 0);
+    transform: skew(-0.5deg);
+  }
+  40% {
+    clip-path: inset(15% 0 80% 0);
+    transform: skew(0.5deg);
+  }
+  60% {
+    clip-path: inset(80% 0 5% 0);
+    transform: skew(-0.8deg);
+  }
+  80% {
+    clip-path: inset(5% 0 92% 0);
+    transform: skew(0.8deg);
+  }
+  100% {
+    clip-path: inset(40% 0 61% 0);
+    transform: skew(0deg);
+  }
+}
+
+.animate-cyber-glitch {
+  animation: cyber-glitch 0.25s linear infinite;
+}
+

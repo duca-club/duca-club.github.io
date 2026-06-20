@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { EncryptedText } from "@ui/encrypted-text";
 import { Button } from "@ui/button";
 import { useMouseGlow } from "@/utils/useMouseGlow";
+import { useEffect, useState } from "react";
 
 // Neon Cyber/IT Icon component
 const CyberIcon = ({ type, className, style }: { type: 'lock' | 'shield' | 'terminal' | 'server'; className?: string; style?: React.CSSProperties }) => (
@@ -65,6 +66,49 @@ export const HeroSection = () => {
     600,
     "rgba(139, 92, 246, 0.12)",
   );
+  const [glitch, setGlitch] = useState<{ active: boolean; text: string; top: string; left: string; type: "text" | "bar" }>({
+    active: false,
+    text: "",
+    top: "20%",
+    left: "10%",
+    type: "text"
+  });
+
+  useEffect(() => {
+    const glitchPhrases = [
+      "[SYSTEM] EXPLOIT RUNNING - OVERRIDE INITIATED",
+      "duca-cybersec:~# ./decrypt_db.sh -force",
+      ">>> BYPASSING NEURAL FIREWALL... [99%]",
+      "WARNING: ACCESS DETECTED ON PORT 22",
+      "01000100 01010101 01000011 01000001",
+      "SYSTEM: ROOT ACCESS GRANTED TO SYSTEM/KERNEL",
+      "NMAP SCAN: 192.168.1.1 [PORT 443 OPEN]",
+      "BYPASSING SSL PINNING... SUCCESS",
+      "[*] BUFFER OVERFLOW TRIGGERED",
+      "STATUS: EXPLOITING VULNERABILITY [CVE-2026-9999]"
+    ];
+
+    let glitchTimeout: NodeJS.Timeout;
+
+    const triggerGlitch = () => {
+      const text = glitchPhrases[Math.floor(Math.random() * glitchPhrases.length)] || "";
+      const top = `${Math.floor(Math.random() * 60) + 15}%`;
+      const left = `${Math.floor(Math.random() * 50) + 10}%`;
+      const type = Math.random() > 0.85 ? "bar" : "text";
+
+      setGlitch({ active: true, text, top, left, type });
+
+      setTimeout(() => {
+        setGlitch(prev => ({ ...prev, active: false }));
+        const nextInterval = Math.floor(Math.random() * 6000) + 4000;
+        glitchTimeout = setTimeout(triggerGlitch, nextInterval);
+      }, 250);
+    };
+
+    glitchTimeout = setTimeout(triggerGlitch, 5000);
+
+    return () => clearTimeout(glitchTimeout);
+  }, []);
 
   return (
     <section
@@ -198,6 +242,9 @@ export const HeroSection = () => {
       <CyberIcon type="server" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '3s' }} />
       <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '5s' }} />
 
+      {/* Bottom transition blend layer (blends 3D grid/road smoothly into the next section's flat grid) */}
+      <div className="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#00051a] via-[#00051a]/80 to-transparent z-[2] pointer-events-none" />
+
       {/* Mouse-reactive torch glow — illuminates the grid as the cursor moves */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-[1] transition-opacity duration-500"
@@ -210,6 +257,29 @@ export const HeroSection = () => {
           background: 'radial-gradient(ellipse at 50% 48%, rgba(2, 1, 12, 0.95) 0%, rgba(2, 1, 12, 0.7) 35%, rgba(2, 1, 12, 0.3) 65%, rgba(2, 1, 12, 0.1) 85%, transparent 100%)'
         }}
       />
+
+      {/* Random Cybersecurity Terminal Glitch Effect Overlay */}
+      {glitch.active && glitch.type === "text" && (
+        <div 
+          className="absolute pointer-events-none select-none z-0 font-mono text-emerald-400/65 font-bold text-base md:text-xl tracking-wider animate-cyber-glitch"
+          style={{
+            top: glitch.top,
+            left: glitch.left,
+            textShadow: '0 0 8px rgba(16, 185, 129, 0.8), -2px 0 #ff007f, 2px 0 #00f3ff'
+          }}
+        >
+          {glitch.text}
+        </div>
+      )}
+      {glitch.active && glitch.type === "bar" && (
+        <div 
+          className="absolute left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#ff007f]/45 to-transparent pointer-events-none select-none z-0"
+          style={{
+            top: glitch.top,
+            boxShadow: '0 0 10px #ff007f, 0 0 20px #00f3ff'
+          }}
+        />
+      )}
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-20">
