@@ -26,7 +26,7 @@ export function StackingCardItem({
     <div
       className={cn("sticky mx-auto w-full max-w-5xl px-4 md:px-8", className)}
       style={{
-        top: `calc(4rem + ${index * 18}px)`,
+        top: `calc(50vh - 170px + ${index * 18}px)`,
         zIndex: index + 1,
         transform: `scale(${scale})`,
         filter: `brightness(${brightness})`,
@@ -55,12 +55,28 @@ export function StackingCards({ children, className }: StackingCardsProps) {
       const cards = container.querySelectorAll<HTMLElement>("[data-stack-card]");
       const newProgresses: number[] = [];
 
-      cards.forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        const stickyTop = parseFloat(card.style.top) || 64;
-        // How far the card has been pushed past its sticky point by the next card.
-        const offset = stickyTop - rect.top;
-        const progress = Math.max(0, Math.min(1, offset / 300));
+      cards.forEach((card, index) => {
+        // If this is the last card, it doesn't have a card stacking on top of it, so progress is 0.
+        if (index === cards.length - 1) {
+          newProgresses.push(0);
+          return;
+        }
+
+        const nextCard = cards[index + 1];
+        if (!nextCard) {
+          newProgresses.push(0);
+          return;
+        }
+
+        const nextRect = nextCard.getBoundingClientRect();
+        // The next card's target sticky top position in the viewport
+        const nextStickyTop = (window.innerHeight / 2) - 170 + ((index + 1) * 18);
+        
+        // Transition starts when the next card is 200px below its sticky position,
+        // and finishes when the next card reaches its sticky position.
+        const startOffset = nextStickyTop + 200;
+        const distanceTraveled = startOffset - nextRect.top;
+        const progress = Math.max(0, Math.min(1, distanceTraveled / 200));
         newProgresses.push(progress);
       });
 
@@ -97,9 +113,10 @@ export function StackingCards({ children, className }: StackingCardsProps) {
           <div
             key={i}
             data-stack-card
+            data-index={i}
             className="sticky mx-auto w-full max-w-5xl px-4 md:px-8"
             style={{
-              top: `calc(4rem + ${i * 18}px)`,
+              top: `calc(50vh - 170px + ${i * 18}px)`,
               zIndex: i + 1,
               transform: `scale(${scale})`,
               filter: `brightness(${brightness})`,
@@ -113,8 +130,8 @@ export function StackingCards({ children, className }: StackingCardsProps) {
           </div>
         );
       })}
-      {/* Spacer so the last card has room to fully enter */}
-      <div style={{ height: "30vh" }} />
+      {/* Spacer so the last card has room to fully enter and center */}
+      <div style={{ height: "60vh" }} />
     </div>
   );
 }
