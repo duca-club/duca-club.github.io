@@ -80,7 +80,7 @@ export const WobbleCard = ({
     >
       <motion.div
         className={cn(
-          "relative h-full w-full rounded-2xl overflow-hidden [background-image:radial-gradient(88%_100%_at_top,rgba(255,255,255,0.5),rgba(255,255,255,0))]",
+          "relative h-full w-full rounded-2xl overflow-hidden",
           hasBgClass(innerClasses) ? "" : "bg-indigo-800",
           innerClasses
         )}
@@ -93,6 +93,7 @@ export const WobbleCard = ({
             "0 10px 32px rgba(34, 42, 53, 0.12), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.05), 0 4px 6px rgba(34, 42, 53, 0.08), 0 24px 108px rgba(47, 48, 55, 0.10)",
         }}
       >
+        <div className="absolute inset-0 pointer-events-none [background-image:radial-gradient(88%_100%_at_top,rgba(255,255,255,0.5),rgba(255,255,255,0))] z-0" />
         <div className={cn("h-full px-4 py-20 sm:px-10 relative z-10", className)}>
           <Noise />
           <div className="relative z-20">{children}</div>
