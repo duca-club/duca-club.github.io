@@ -78,7 +78,7 @@ const featuredPosts = sortedPosts.slice(0, limit).map((post) => {
         featuredPosts.map((post) => (
           <Card
             imageComponent={post.featuredImage}
-            url={"/blog/" + post.data.slug}
+            url={"/blog/" + post.data.slug + "/"}
             headingLevel="h2"
             title={post.data.title}
             footer={`Author: ${post.authorName}`}

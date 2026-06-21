@@ -109,7 +109,7 @@ const { page, currentTag, uniqueTags } = Astro.props;
             <li>
               <Card
                 imageComponent={project.featuredImage}
-                url={"/portfolio/" + project.id}
+                url={"/portfolio/" + project.id + "/"}
                 title={project.data.title}
                 headingLevel="h2"
                 footer={"Author: " + project.data.author}

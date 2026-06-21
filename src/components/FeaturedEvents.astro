@@ -51,7 +51,7 @@ const featuredEvents = projects.slice(0, limit).map((project, index) => ({
         featuredEvents.map((event) => (
           <Card
             imageComponent={event.featuredImage}
-            url={"/portfolio/" + event.id}
+            url={"/portfolio/" + event.id + "/"}
             headingLevel="h2"
             title={event.data.title}
             footer={"Organised by: " + event.data.author}
