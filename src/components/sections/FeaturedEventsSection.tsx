@@ -132,23 +132,13 @@ export const FeaturedEventsSection = ({ events }: { events: Event[] }) => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="mt-6 flex gap-3">
+                <div className="mt-6">
                   <a
                     href={`/events/${event.slug}/`}
-                    className="flex-1 rounded-lg border border-purple-500/30 px-4 py-2 text-center text-sm font-medium text-purple-400 transition-colors hover:bg-purple-500/10"
+                    className="block w-full rounded-lg border border-purple-500/30 px-4 py-2 text-center text-sm font-medium text-purple-400 transition-colors hover:bg-purple-500/10"
                   >
                     Learn More
                   </a>
-                  {event.registrationUrl && (
-                    <a
-                      href={event.registrationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 rounded-lg bg-purple-600 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-purple-700"
-                    >
-                      Register
-                    </a>
-                  )}
                 </div>
               </div>
             </motion.article>

@@ -147,90 +147,8 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
         ))}
       </div>
 
-      {/* Upcoming Events */}
-      {upcomingEvents.length > 0 && (
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-white mb-2 text-center">
-            Upcoming Events
-          </h2>
-          <p className="text-gray-400 text-center mb-8">
-            Don't miss out on these exciting opportunities
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <AnimatePresence mode="popLayout">
-              {upcomingEvents.map((event) => (
-                <motion.div
-                  key={event.slug}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative p-6 rounded-xl border border-gray-700/50 bg-gradient-to-br from-gray-900/80 to-gray-800/40 hover:border-purple-500/30 transition-colors group"
-                >
-                  <div className="flex flex-col h-full">
-                    <div className="flex items-center gap-2 mb-2">
-                      {event.tags?.slice(0, 2).map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-xs font-semibold text-purple-400 uppercase tracking-wider px-2 py-1 bg-purple-500/10 rounded"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {event.title}
-                    </h3>
-                    <div className="text-gray-400 text-sm mb-4 space-y-1">
-                      <p>📅 {formatDate(event.eventDate)}</p>
-                      <p>
-                        🕐 {formatTime(event.eventDate)}
-                        {event.endDate && ` - ${formatTime(event.endDate)}`}
-                      </p>
-                      <p>📍 {event.location}</p>
-                    </div>
-                    <p className="text-gray-300 mb-6 flex-grow line-clamp-3">
-                      {event.description}
-                    </p>
-                    <div className="flex gap-3">
-                      <a
-                        href={`/events/${event.slug}/`}
-                        className="inline-flex items-center justify-center px-4 py-2 rounded-full border border-purple-500/30 text-purple-400 text-sm font-semibold hover:bg-purple-500/10 transition-colors"
-                      >
-                        Learn More
-                      </a>
-                      {event.registrationUrl && (
-                        <a
-                          href={event.registrationUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-purple-600 text-white text-sm font-semibold hover:bg-purple-700 transition-colors"
-                        >
-                          Register Now
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
-      )}
-
-      {upcomingEvents.length === 0 && (
-        <div className="text-center py-12 mb-16">
-          <p className="text-gray-400 text-lg">
-            {selectedTags.length > 0 || searchQuery
-              ? "No upcoming events match your search."
-              : "No upcoming events at the moment. Check back soon!"}
-          </p>
-        </div>
-      )}
-
       {/* Past Events */}
-      {pastEvents.length > 0 && (
+      {pastEvents.length > 0 ? (
         <div className="border-t border-gray-700/50 pt-16">
           <h2 className="text-3xl font-bold text-white mb-2 text-center">
             Past Events
@@ -274,6 +192,12 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
               ))}
             </AnimatePresence>
           </div>
+        </div>
+      ) : (
+        <div className="text-center py-12">
+          <p className="text-gray-400 text-lg">
+            No past events match your search filters.
+          </p>
         </div>
       )}
     </div>
