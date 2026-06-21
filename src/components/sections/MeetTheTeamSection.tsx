@@ -59,7 +59,7 @@ export const MeetTheTeamSection = () => {
                       transition={{ type: "spring", stiffness: 350, damping: 25 }}
                     />
                   )}
-                  <span className="relative z-10">{year} Term</span>
+                  <span className="relative z-10">{year}</span>
                 </button>
               );
             })}
