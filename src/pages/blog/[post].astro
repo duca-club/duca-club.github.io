@@ -52,6 +52,7 @@ if (post.data.featuredImage) {
     author={author}
     bgType="bordered"
     featuredImage={featuredImage}
+    customBreadcrumbLabels={{ [post.data.slug]: post.data.title }}
   />
   <section class="my-12">
     <div class="narrow space-content container">
