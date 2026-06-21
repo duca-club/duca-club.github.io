@@ -2,6 +2,8 @@
 import DefaultLayout from "@layouts/DefaultLayout.astro";
 import { BackgroundBeams } from "@components/ui/background-beams";
 import { EventTagFilter } from "@components/ui/event-tag-filter";
+import { EventsCalendar } from "@components/ui/events-calendar";
+import FeaturedEventsSection from "@components/sections/FeaturedEventsSection";
 import { getCollection } from "astro:content";
 
 // Fetch all events from the collection
@@ -20,6 +22,31 @@ const serializedEvents = allEvents.map((event) => ({
   tags: event.data.tags,
   registrationUrl: event.data.registrationUrl,
   slug: event.data.slug,
+}));
+
+// Fetch and serialize upcoming events for the FeaturedEventsSection
+const now = new Date();
+const upcomingEvents = allEvents
+  .filter((event) => new Date(event.data.eventDate) >= now)
+  .sort((a, b) => new Date(a.data.eventDate).getTime() - new Date(b.data.eventDate).getTime());
+
+const featuredEvents = upcomingEvents.map((event) => ({
+  title: event.data.title,
+  description: event.data.description,
+  eventDate: event.data.eventDate.toISOString(),
+  location: event.data.location,
+  registrationUrl: event.data.registrationUrl,
+  slug: event.data.slug,
+  tags: event.data.tags,
+  featuredImage: event.data.featuredImage,
+}));
+
+// Transform events for the calendar component
+const calendarEvents = allEvents.map((event) => ({
+  title: event.data.title,
+  slug: event.data.slug,
+  eventDate: event.data.eventDate.toISOString(),
+  tags: event.data.tags,
 }));
 ---
 
@@ -40,9 +67,27 @@ const serializedEvents = allEvents.map((event) => ({
     </div>
   </section>
 
+  <!-- Upcoming Events Section -->
+  <FeaturedEventsSection events={featuredEvents} client:load />
+
+  <!-- Events Calendar Section -->
+  <section id="calendar" class="section-themed border-t border-slate-800/40 py-24">
+    <div class="container mx-auto px-4">
+      <div class="mb-12 text-center">
+        <h2 class="theme-text text-3xl font-bold md:text-4xl">Events Calendar</h2>
+        <p class="theme-text-secondary mt-4 max-w-2xl mx-auto">Stay up to date with our monthly schedule and upcoming sessions</p>
+      </div>
+      <EventsCalendar events={calendarEvents} client:load />
+    </div>
+  </section>
+
   <!-- Events with Tag Filtering -->
-  <section class="section-themed data-stream-bg relative -mt-14 overflow-hidden pb-24">
+  <section class="section-themed data-stream-bg relative border-t border-slate-800/40 overflow-hidden py-24">
     <div class="relative z-10 container mx-auto px-4">
+      <div class="mb-12 text-center">
+        <h2 class="theme-text text-3xl font-bold md:text-4xl">All Events Directory</h2>
+        <p class="theme-text-secondary mt-4 max-w-2xl mx-auto">Search and filter through our full history of events</p>
+      </div>
       <EventTagFilter events={serializedEvents} tags={allTags} client:load />
     </div>
   </section>
@@ -67,7 +112,7 @@ const serializedEvents = allEvents.map((event) => ({
             Discord
           </a>
           <a
-            href="/calendar/"
+            href="#calendar"
             class="theme-text inline-flex items-center justify-center rounded-full border-2 border-purple-500 px-6 py-3 font-semibold transition-colors hover:bg-purple-500/10"
           >
             View Calendar
