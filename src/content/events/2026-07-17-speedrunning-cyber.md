@@ -6,7 +6,7 @@ endDate: 2026-07-17T19:00:00+10:00
 location: "Deakin Burwood Campus, Building HD"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-speedrunning-cyber"
-featuredImage: "/events/placeholder.jpg"
+featuredImage: "/events/speedrunning-cyber.png"
 tags: ["Career", "Workshop", "Student-led"]
 featured: true
 slug: "speedrunning-cyber-2026"

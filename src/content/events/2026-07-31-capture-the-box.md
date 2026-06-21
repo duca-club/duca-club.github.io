@@ -6,7 +6,7 @@ endDate: 2026-07-31T21:00:00+10:00
 location: "Deakin Burwood Campus, Building LC"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-capture-the-box"
-featuredImage: "/events/placeholder.jpg"
+featuredImage: "/events/capture-the-box.png"
 tags: ["CTF", "Competition", "Collab"]
 featured: true
 slug: "capture-the-box-2026"

@@ -6,7 +6,7 @@ endDate: 2026-08-28T18:00:00+10:00
 location: "Deakin Burwood Campus, Building LC"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-zero-to-cert"
-featuredImage: "/events/placeholder.jpg"
+featuredImage: "/events/zero-to-cert.png"
 tags: ["Certification", "Workshop", "Education"]
 featured: true
 slug: "zero-to-cert-2026"

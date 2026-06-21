@@ -6,7 +6,7 @@ endDate: 2026-09-11T21:00:00+10:00
 location: "Deakin Burwood Campus, Building HD"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-logoff-social"
-featuredImage: "/events/placeholder.jpg"
+featuredImage: "/events/logoff-social.png"
 tags: ["Social", "Community", "Logoff"]
 featured: true
 slug: "logoff-social-2026"

@@ -6,7 +6,7 @@ endDate: 2026-08-21T19:00:00+10:00
 location: "Deakin Burwood Campus, Building LC"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-spot-the-risk"
-featuredImage: "/events/placeholder.jpg"
+featuredImage: "/events/spot-the-risk.png"
 tags: ["Risk Assessment", "Workshop", "Collab"]
 featured: true
 slug: "spot-the-risk-2026"

@@ -6,7 +6,7 @@ endDate: 2026-09-04T19:30:00+10:00
 location: "Deakin Burwood Campus, Building LC"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-last-seen-online"
-featuredImage: "/events/placeholder.jpg"
+featuredImage: "/events/last-seen-online.png"
 tags: ["Forensics", "Workshop", "Collab"]
 featured: true
 slug: "last-seen-online-2026"

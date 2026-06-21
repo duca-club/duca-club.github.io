@@ -6,7 +6,7 @@ endDate: 2026-08-07T19:00:00+10:00
 location: "Deakin Burwood Campus, Building HD"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-confessions-cyber"
-featuredImage: "/events/placeholder.jpg"
+featuredImage: "/events/confessions-cyber.png"
 tags: ["Career", "Industry", "Stories"]
 featured: true
 slug: "confessions-cyber-professional-2026"

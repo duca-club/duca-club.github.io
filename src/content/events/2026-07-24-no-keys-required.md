@@ -6,7 +6,7 @@ endDate: 2026-07-24T19:00:00+10:00
 location: "Deakin Burwood Campus, Building LC"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-no-keys-required"
-featuredImage: "/events/placeholder.jpg"
+featuredImage: "/events/no-keys-required.png"
 tags: ["Physical Security", "Workshop", "Collab"]
 featured: true
 slug: "no-keys-required-2026"
