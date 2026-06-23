@@ -61,11 +61,11 @@ export const FeaturedEventsSection = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group theme-card relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-purple-500/30"
+            className="group theme-card relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-purple-500/30 flex flex-col h-full"
           >
             {/* Event Image/Gradient Background */}
             <div
-              className="relative h-48 bg-linear-to-br from-purple-900/50 via-indigo-900/50 to-slate-900"
+              className="relative h-48 bg-linear-to-br from-purple-900/50 via-indigo-900/50 to-slate-900 shrink-0"
               style={{
                 backgroundImage: event.featuredImage ? `url(${event.featuredImage})` : undefined,
                 backgroundSize: "cover",
@@ -95,53 +95,55 @@ export const FeaturedEventsSection = ({
             </div>
 
             {/* Content */}
-            <div className="p-6">
-              <h3 className="theme-text mb-2 text-xl font-bold transition-colors group-hover:text-purple-400">
-                {event.title}
-              </h3>
+            <div className="p-6 flex flex-col flex-1 justify-between">
+              <div>
+                <h3 className="theme-text mb-2 text-xl font-bold transition-colors group-hover:text-purple-400">
+                  {event.title}
+                </h3>
 
-              <p className="theme-text-secondary mb-4 line-clamp-2 text-sm">{event.description}</p>
+                <p className="theme-text-secondary mb-4 line-clamp-2 text-sm">{event.description}</p>
 
-              {/* Event Details */}
-              <div className="theme-text-secondary space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  <span>{formatDate(event.eventDate)}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span>{formatTime(event.eventDate)}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                  <span className="truncate">{event.location}</span>
+                {/* Event Details */}
+                <div className="theme-text-secondary space-y-2 text-sm">
+                  <div className="flex items-center gap-2">
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span>{formatDate(event.eventDate)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span>{formatTime(event.eventDate)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    <span className="truncate">{event.location}</span>
+                  </div>
                 </div>
               </div>
 
