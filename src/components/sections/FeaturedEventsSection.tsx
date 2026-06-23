@@ -56,7 +56,7 @@ export const FeaturedEventsSection = ({
           >
             {/* Event Image/Gradient Background */}
             <div
-              className="h-48 bg-linear-to-br from-purple-900/50 via-indigo-900/50 to-slate-900"
+              className="relative h-48 bg-linear-to-br from-purple-900/50 via-indigo-900/50 to-slate-900"
               style={{
                 backgroundImage: event.featuredImage ? `url(${event.featuredImage})` : undefined,
                 backgroundSize: "cover",
