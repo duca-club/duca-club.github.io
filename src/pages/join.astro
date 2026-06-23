@@ -8,42 +8,39 @@ import { WobbleCard } from "@components/ui/wobble-card";
 
 const divisions = [
   {
-    title: "Penetration Testing",
+    title: "Development Division",
     description:
-      "Research division exploring ethical hacking in a safe environment. Share with DUCA members how attackers think and how to stop them.",
-    icon: "🔓",
-    color: "#ef4444",
-  },
-  {
-    title: "Networking",
-    description:
-      "Find people in industry across Cyber, AI, Development and recruitment to talk to DUCA members about getting into industry.",
-    icon: "🌐",
-    color: "#3b82f6",
-  },
-  {
-    title: "Cyber Essentials",
-    description: "Research and share the fundamentals of cybersecurity in a supportive environment.",
-    icon: "🛡️",
-    color: "#22c55e",
-  },
-  {
-    title: "Capture The Flag",
-    description: "Put on CTF event's for DUCA! Even compete in CTF competitions as a team.",
-    icon: "🚩",
-    color: "#a855f7",
-  },
-  {
-    title: "Development",
-    description: "Build cool software projects for the club and beyond. Perfect for aspiring developers!",
+      "We make cool software for the club! Whether you're new to coding or already building things, we'll work together, learn together, and create useful tools for everyone.",
     icon: "💻",
     color: "#06b6d4",
   },
   {
-    title: "Advertising",
-    description: "Create engaging content and spread the word about DUCA's activities.",
+    title: "Capture The Flag Division",
+    description:
+      "We're all about solving fun cybersecurity puzzles together! We learn heaps, celebrate progress, and help each other crack challenges in a relaxed, supportive environment.",
+    icon: "🚩",
+    color: "#a855f7",
+  },
+  {
+    title: "Presentation Division",
+    description:
+      "We dig into how the internet actually works! Through fun, hands-on activities, we learn how devices connect, talk, and stay secure - together!",
+    icon: "🌐",
+    color: "#3b82f6",
+  },
+  {
+    title: "Advertising Division",
+    description:
+      "We're the team that makes everything look fun and exciting! We spread the word about our events, projects, and wins so everyone feels welcome and included.",
     icon: "📢",
     color: "#f97316",
+  },
+  {
+    title: "General Committee",
+    description:
+      "We're the team that makes everything look fun and exciting! We spread the word about our events, projects, and wins so everyone feels welcome and included.",
+    icon: "👥",
+    color: "#ec4899",
   },
 ];
 ---
@@ -249,10 +246,15 @@ const divisions = [
     <div class="container mx-auto px-4">
       <SectionHeading title="Join the Team" subtitle="Want to contribute? Join one of our divisions!" client:visible />
 
-      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-12 flex flex-wrap justify-center gap-6">
         {
           divisions.map((division) => (
-            <CardSpotlight radius={300} color={division.color} className="h-full" client:visible>
+            <CardSpotlight
+              radius={300}
+              color={division.color}
+              className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+              client:visible
+            >
               <div class="relative z-10">
                 <div class="mb-4 text-4xl">{division.icon}</div>
                 <h3 class="theme-text mb-2 text-xl font-bold">{division.title}</h3>
