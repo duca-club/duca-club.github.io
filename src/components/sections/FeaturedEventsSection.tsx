@@ -42,7 +42,16 @@ export const FeaturedEventsSection = ({
 
   const content = (
     <>
-      <SectionHeading title="Upcoming Events" subtitle="Join us for workshops, networking, and hands-on learning" />
+      {isSeamless ? (
+        <div className="mb-12 text-center">
+          <h2 className="theme-text text-3xl font-bold md:text-4xl">Upcoming Events</h2>
+          <p className="theme-text-secondary mt-4 max-w-2xl mx-auto">
+            Join us for workshops, networking, and hands-on learning
+          </p>
+        </div>
+      ) : (
+        <SectionHeading title="Upcoming Events" subtitle="Join us for workshops, networking, and hands-on learning" />
+      )}
 
       <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {events.map((event, index) => (
