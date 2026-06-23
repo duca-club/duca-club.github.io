@@ -67,11 +67,8 @@ const calendarEvents = allEvents.map((event) => ({
     </div>
   </section>
 
-  <!-- Upcoming Events Section -->
-  <FeaturedEventsSection events={featuredEvents} client:load />
-
   <!-- Events Calendar Section -->
-  <section id="calendar" class="section-themed border-t border-slate-800/40 py-24">
+  <section id="calendar" class="section-themed py-24">
     <div class="container mx-auto px-4">
       <div class="mb-12 text-center">
         <h2 class="theme-text text-3xl font-bold md:text-4xl">Events Calendar</h2>
@@ -80,6 +77,11 @@ const calendarEvents = allEvents.map((event) => ({
       <EventsCalendar events={calendarEvents} client:load />
     </div>
   </section>
+
+  <!-- Upcoming Events Section -->
+  <div class="border-t border-slate-800/40">
+    <FeaturedEventsSection events={featuredEvents} client:load />
+  </div>
 
   <!-- Events with Tag Filtering -->
   <section class="section-themed data-stream-bg relative border-t border-slate-800/40 overflow-hidden py-24">
