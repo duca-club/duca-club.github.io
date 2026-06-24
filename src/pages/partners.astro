@@ -218,14 +218,14 @@ LINK: ACTIVE ●</span></pre>
         client:visible
       />
 
-      <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div class="mt-12 flex flex-wrap justify-center gap-8">
         {
           collaborators.map((collab, idx) => (
             <a
               href={collab.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="collaborator-card theme-card theme-border rounded-2xl border p-10 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5"
+              class="collaborator-card theme-card theme-border w-full md:w-[calc(50%-16px)] rounded-2xl border p-10 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5"
               style={`animation-delay: ${idx * 0.2}s;`}
             >
               <div class="flex items-start gap-6">

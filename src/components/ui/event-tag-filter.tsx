@@ -156,7 +156,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
           <p className="text-gray-400 text-center mb-8">
             Highlights from our previous activities
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             <AnimatePresence mode="popLayout">
               {pastEvents.map((event) => (
                 <motion.a
@@ -167,7 +167,7 @@ export function EventTagFilter({ events, tags }: EventTagFilterProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  className="block p-6 rounded-xl bg-gray-900/60 border border-gray-700/50 hover:border-purple-500/30 transition-colors group"
+                  className="block p-6 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] rounded-xl bg-gray-900/60 border border-gray-700/50 hover:border-purple-500/30 transition-colors group"
                 >
                   <div className="flex items-center gap-2 mb-2">
                     {event.tags?.slice(0, 1).map((tag) => (
