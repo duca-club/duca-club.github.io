@@ -53,7 +53,7 @@ export const FeaturedEventsSection = ({
         <SectionHeading title="Upcoming Events" subtitle="Join us for workshops, networking, and hands-on learning" />
       )}
 
-      <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 flex flex-wrap justify-center items-stretch gap-6">
         {events.map((event, index) => (
           <motion.article
             key={event.slug}
@@ -61,7 +61,7 @@ export const FeaturedEventsSection = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group theme-card relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-purple-500/30 flex flex-col h-full"
+            className="group theme-card relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-purple-500/30 flex flex-col w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
           >
             {/* Event Image/Gradient Background */}
             <div
