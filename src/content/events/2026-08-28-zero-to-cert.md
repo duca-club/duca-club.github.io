@@ -3,7 +3,7 @@ title: "Zero to Cert: Pass Your First Cyber Cert"
 description: "Zero to Cert — pass your first cyber cert in one afternoon."
 eventDate: 2026-08-28T14:00:00+10:00
 endDate: 2026-08-28T18:00:00+10:00
-location: "Deakin Burwood Campus, Building LC"
+location: "Deakin Burwood Campus, Room LC2.105"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-zero-to-cert"
 featuredImage: "/events/zero-to-cert.png"

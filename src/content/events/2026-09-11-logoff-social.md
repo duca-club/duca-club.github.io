@@ -3,7 +3,7 @@ title: "Logoff: End of Trimester Social"
 description: "Logoff — DUCA's end-of-trimester social."
 eventDate: 2026-09-11T18:00:00+10:00
 endDate: 2026-09-11T21:00:00+10:00
-location: "Deakin Burwood Campus, Building HD"
+location: "Deakin Burwood Campus, Room LC1.003"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-logoff-social"
 featuredImage: "/events/logoff-social.png"

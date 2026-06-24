@@ -3,7 +3,7 @@ title: "No Keys Required: Lockpicking and Physical Security Workshop"
 description: "A lockpicking and physical security workshop, in collaboration with RMIT."
 eventDate: 2026-07-24T17:00:00+10:00
 endDate: 2026-07-24T19:00:00+10:00
-location: "Deakin Burwood Campus, Building LC"
+location: "Deakin Burwood Campus, Room LC2.105"
 locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
 registrationUrl: "https://www.humanitix.com/au/duca-no-keys-required"
 featuredImage: "/events/no-keys-required.png"
