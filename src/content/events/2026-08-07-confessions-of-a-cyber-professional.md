@@ -1,6 +1,6 @@
 ---
-title: "Confessions of a Cyber Professional"
-description: "Confessions of a Cyber professional — post-mortems of real disaster stories and real lessons."
+title: "Confessions of a Cyber professional"
+description: "post-mortems of real disaster stories and real lessons"
 eventDate: 2026-08-07T17:00:00+10:00
 endDate: 2026-08-07T19:00:00+10:00
 location: "Deakin Burwood Campus, Room LC2.105"

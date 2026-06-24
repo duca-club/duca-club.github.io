@@ -1,6 +1,6 @@
 ---
-title: "Spot the Risk: Risk Assessment Workshop"
-description: "Spot the Risk — a hands-on risk assessment workshop with ISACA Melbourne."
+title: "Spot the Risk"
+description: "a hands-on risk assessment workshop with ISACA Melbourne"
 eventDate: 2026-08-21T17:00:00+10:00
 endDate: 2026-08-21T19:00:00+10:00
 location: "Deakin Burwood Campus, Room LC2.105"

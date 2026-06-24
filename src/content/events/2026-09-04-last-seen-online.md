@@ -1,6 +1,6 @@
 ---
-title: "Last Seen Online: Digital Forensics Workshop"
-description: "Last Seen Online — a missing student, a locked laptop, 30 minutes to piece it together. A digital forensics workshop, In collab with WiCyS, for International women in cyber day."
+title: "Last Seen Online"
+description: "a missing student, a locked laptop, 30 minutes to piece it together. A digital forensics workshop, In collab with WiCyS, for International women in cyber day."
 eventDate: 2026-09-04T17:00:00+10:00
 endDate: 2026-09-04T19:30:00+10:00
 location: "Deakin Burwood Campus, Room LC2.105"

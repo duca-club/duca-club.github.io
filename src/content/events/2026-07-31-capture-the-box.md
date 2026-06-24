@@ -1,6 +1,6 @@
 ---
-title: "Capture the Box: HTB x DUCA CTF Night"
-description: "Capture the Box — HTB × DUCA CTF night."
+title: "Capture the Box"
+description: "HTB × DUCA CTF night"
 eventDate: 2026-07-31T17:00:00+10:00
 endDate: 2026-07-31T21:00:00+10:00
 location: "Deakin Burwood Campus, Room LC2.105"
