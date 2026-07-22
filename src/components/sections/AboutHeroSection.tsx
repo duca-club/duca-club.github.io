@@ -23,7 +23,7 @@ export const AboutHeroSection = () => {
       <div className="relative z-10 container mx-auto px-4 py-20 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           <h1 className="mb-6 text-5xl font-bold text-white md:text-7xl">
-            About <span className="bg-linear-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">DUCA</span>
+            About <span className="a11y-gradient-text bg-linear-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">DUCA</span>
           </h1>
 
           <div className="mb-8 flex flex-wrap items-center justify-center text-2xl text-gray-300 md:text-4xl">

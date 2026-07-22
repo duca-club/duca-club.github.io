@@ -109,6 +109,28 @@ export const HeroSection = () => {
     return () => clearTimeout(glitchTimeout);
   }, []);
 
+  const [shortAnimations, setShortAnimations] = useState(false);
+
+  useEffect(() => {
+    const syncOptions = () => {
+      setShortAnimations(document.documentElement.getAttribute("data-a11y-duca42") === "true");
+    };
+
+    syncOptions();
+    window.addEventListener("duca:accessibility-options-change", syncOptions);
+    document.addEventListener("astro:page-load", syncOptions);
+
+    return () => {
+      window.removeEventListener("duca:accessibility-options-change", syncOptions);
+      document.removeEventListener("astro:page-load", syncOptions);
+    };
+  }, []);
+
+  const introDuration = shortAnimations ? 0.36 : 0.8;
+  const ctaDuration = shortAnimations ? 0.24 : 0.5;
+  const ctaDelay = shortAnimations ? 0.7 : 2;
+  const encryptedSpeed = shortAnimations ? 0.4 : 1;
+
   return (
     <section
       className="relative flex min-h-screen items-center justify-center overflow-hidden pt-40"
@@ -116,7 +138,7 @@ export const HeroSection = () => {
       {...handlers}
     >
       {/* Deep Space / Night Sky Background */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#02010c] via-[#0b0518] to-[#12082b]" />
+      <div className="a11y-hero-overlay absolute inset-0 z-0 bg-gradient-to-b from-[#02010c] via-[#0b0518] to-[#12082b]" />
 
       {/* Twinkling Stars */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -285,16 +307,16 @@ export const HeroSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: introDuration }}
           className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto"
         >
           {/* Encrypted DUCA Title */}
-          <h1 className="mb-4 bg-gradient-to-r from-purple-300 via-fuchsia-400 to-cyan-300 bg-clip-text text-7xl font-bold tracking-tight text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.35)] md:text-9xl">
+          <h1 className="a11y-hero-title a11y-gradient-text mb-4 bg-gradient-to-r from-purple-300 via-fuchsia-400 to-cyan-300 bg-clip-text text-7xl font-bold tracking-tight text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.35)] md:text-9xl">
             DUCA
           </h1>
 
           <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-            <span className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+            <span className="a11y-hero-subtitle a11y-gradient-text bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
               Deakin University Cybersecurity Association
             </span>
           </h2>
@@ -303,8 +325,8 @@ export const HeroSection = () => {
             <EncryptedText
               text="Building a community of cybersecurity enthusiasts at Deakin University. Learn, share, and grow together with
             Australia's leading student cyber club."
-              className="text-balance text-white"
-              speed={1}
+              className="a11y-hero-body text-balance text-white"
+              speed={encryptedSpeed}
               revealDelay={0}
             />
           </div>
@@ -313,7 +335,7 @@ export const HeroSection = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2, duration: 0.5 }}
+            transition={{ delay: ctaDelay, duration: ctaDuration }}
             className="mt-10 flex flex-col justify-center gap-4 sm:flex-row"
           >
            {/*<GlowingButton href="/join/">Join Us</GlowingButton>*/}
