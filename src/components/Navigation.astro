@@ -19,6 +19,63 @@ import { Image } from "astro:assets";
       <nav class="desktop-menu" aria-label="Main navigation desktop">
         <ul class="menu">
           <slot />
+          <li class="menu-item menu-item-accessibility has-dropdown">
+            <button
+              type="button"
+              class="accessibility-trigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-label="Open accessibility menu"
+            >
+              Accessibility
+            </button>
+            <ul class="accessibility-menu" aria-label="Accessibility options">
+              <li>
+                <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca41" aria-checked="false">
+                  <span class="a11y-option-label">Reduce motion</span>
+                  <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+                </button>
+              </li>
+              <li>
+                <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca42" aria-checked="false">
+                  <span class="a11y-option-label">Shorter animations</span>
+                  <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+                </button>
+              </li>
+              <li>
+                <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca43" aria-checked="false">
+                  <span class="a11y-option-label">Improve home page text contrast</span>
+                  <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+                </button>
+              </li>
+              <li>
+                <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca44" aria-checked="false">
+                  <span class="a11y-option-label">Improve Events button contrast</span>
+                  <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+                </button>
+              </li>
+              <li>
+                <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca45" aria-checked="false">
+                  <span class="a11y-option-label">Improve Home card button contrast</span>
+                  <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+                </button>
+              </li>
+              <li>
+                <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca46" aria-checked="false">
+                  <span class="a11y-option-label">Simplify gradient text</span>
+                  <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+                </button>
+              </li>
+              <li>
+                <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca49" aria-checked="false">
+                  <span class="a11y-option-label">Soften Join Us hover effect</span>
+                  <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+                </button>
+              </li>
+              <!-- DUCA-47 disabled for now -->
+              <!-- DUCA-48 disabled for now -->
+            </ul>
+          </li>
         </ul>
       </nav>
       <ResponsiveToggle />
@@ -26,6 +83,63 @@ import { Image } from "astro:assets";
     <nav class="mobile-menu" aria-label="Main navigation mobile">
       <ul class="menu">
         <slot />
+        <li class="menu-item menu-item-accessibility has-dropdown">
+          <button
+            type="button"
+            class="accessibility-trigger"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-label="Open accessibility menu"
+          >
+            Accessibility
+          </button>
+          <ul class="accessibility-menu" aria-label="Accessibility options">
+            <li>
+              <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca41" aria-checked="false">
+                <span class="a11y-option-label">Reduce motion</span>
+                <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+              </button>
+            </li>
+            <li>
+              <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca42" aria-checked="false">
+                <span class="a11y-option-label">Shorter animations</span>
+                <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+              </button>
+            </li>
+            <li>
+              <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca43" aria-checked="false">
+                <span class="a11y-option-label">Improve home page text contrast</span>
+                <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+              </button>
+            </li>
+            <li>
+              <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca44" aria-checked="false">
+                <span class="a11y-option-label">Improve Events button contrast</span>
+                <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+              </button>
+            </li>
+            <li>
+              <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca45" aria-checked="false">
+                <span class="a11y-option-label">Improve Home card button contrast</span>
+                <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+              </button>
+            </li>
+            <li>
+              <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca46" aria-checked="false">
+                <span class="a11y-option-label">Simplify gradient text</span>
+                <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+              </button>
+            </li>
+            <li>
+              <button class="submenu-item a11y-option-toggle" type="button" role="switch" data-option-id="duca49" aria-checked="false">
+                <span class="a11y-option-label">Soften Join Us hover effect</span>
+                <span class="a11y-option-switch" aria-hidden="true"><span class="a11y-option-knob"></span></span>
+              </button>
+            </li>
+            <!-- DUCA-47 disabled for now -->
+            <!-- DUCA-48 disabled for now -->
+          </ul>
+        </li>
       </ul>
     </nav>
   </div>
@@ -33,12 +147,75 @@ import { Image } from "astro:assets";
 
 <script>
   document.addEventListener("astro:page-load", () => {
+    const A11Y_OPTIONS_KEY = "duca-accessibility-options";
+    const a11yOptionIds = ["duca41", "duca42", "duca43", "duca44", "duca45", "duca46", "duca49"];
+
     // variables
     const mainNav = document.querySelector("#main-navigation") as HTMLElement | null;
     if (!mainNav) return;
 
+    const optionToggleButtons = [...mainNav.querySelectorAll(".a11y-option-toggle")] as HTMLButtonElement[];
+
+    const toBoolean = (value: unknown): boolean => {
+      if (typeof value === "boolean") return value;
+      if (typeof value === "string") {
+        const normalized = value.trim().toLowerCase();
+        if (normalized === "true") return true;
+        if (normalized === "false") return false;
+      }
+      return Boolean(value);
+    };
+
+    const getDefaultOptions = (): Record<string, boolean> => {
+      return {
+        duca41: false,
+        duca42: false,
+        duca43: false,
+        duca44: false,
+        duca45: false,
+        duca46: false,
+        duca49: false,
+      };
+    };
+
+    const readOptions = (): Record<string, boolean> => {
+      const defaults = getDefaultOptions();
+      const raw = window.localStorage.getItem(A11Y_OPTIONS_KEY);
+      if (!raw) return defaults;
+
+      try {
+        const parsed = JSON.parse(raw) as Record<string, unknown>;
+        a11yOptionIds.forEach((id) => {
+          defaults[id] = toBoolean(parsed[id]);
+        });
+      } catch {
+        return defaults;
+      }
+
+      return defaults;
+    };
+
+    const applyOptions = (options: Record<string, boolean>): void => {
+      a11yOptionIds.forEach((id) => {
+        document.documentElement.setAttribute(`data-a11y-${id}`, options[id] ? "true" : "false");
+      });
+
+      optionToggleButtons.forEach((button) => {
+        const optionId = button.dataset.optionId;
+        if (!optionId) return;
+
+        const isEnabled = Boolean(options[optionId]);
+        button.setAttribute("aria-checked", isEnabled ? "true" : "false");
+        const label = button.querySelector(".a11y-option-label")?.textContent?.trim() || "Accessibility option";
+        button.setAttribute("aria-label", `${label}: ${isEnabled ? "On" : "Off"}`);
+        button.classList.toggle("is-enabled", isEnabled);
+      });
+
+      window.dispatchEvent(new CustomEvent("duca:accessibility-options-change"));
+    };
+
     const mainMenu = mainNav.querySelector("ul") as HTMLUListElement | null;
-    const dropdownMenus = [...document.querySelectorAll(".has-dropdown button")] as HTMLButtonElement[];
+    const dropdownMenus = [...mainNav.querySelectorAll(".has-dropdown > .accessibility-trigger")] as HTMLButtonElement[];
 
     // functions
     const setActiveMenuItem = (): void => {
@@ -89,7 +266,9 @@ import { Image } from "astro:assets";
     };
 
     const toggleDropdownMenu = (event: MouseEvent): void => {
-      const target = event.target as HTMLButtonElement;
+      const target = (event.target as HTMLElement).closest("button") as HTMLButtonElement | null;
+      if (!target) return;
+
       if (target.getAttribute("aria-expanded") === "false") {
         closeAllDropdownMenus();
         openDropdownMenu(target);
@@ -206,10 +385,28 @@ import { Image } from "astro:assets";
         dropdownMenu.addEventListener("click", toggleDropdownMenu as EventListener);
       });
 
+    optionToggleButtons.forEach((button) => {
+      button.addEventListener("click", (event: MouseEvent) => {
+        event.stopPropagation();
+        const optionId = button.dataset.optionId;
+        if (!optionId) return;
+
+        const options = readOptions();
+        options[optionId] = !options[optionId];
+        window.localStorage.setItem(A11Y_OPTIONS_KEY, JSON.stringify(options));
+        applyOptions(options);
+      });
+    });
+
     setActiveMenuItem();
+    applyOptions(readOptions());
+
     window.addEventListener("click", (event: MouseEvent) => {
       const element = event.target as Element;
-      if (!element.hasAttribute("aria-haspopup") && !element.classList.contains("submenu-item")) {
+      const isDropdownButton = element.hasAttribute("aria-haspopup") || element.closest("[aria-haspopup]");
+      const isSubmenuItem = element.classList.contains("submenu-item") || element.closest(".submenu-item");
+
+      if (!isDropdownButton && !isSubmenuItem) {
         closeAllDropdownMenus();
       }
     });
@@ -315,6 +512,90 @@ import { Image } from "astro:assets";
             color: var(--background-color) !important;
           }
         }
+
+        .menu-item-accessibility {
+          .accessibility-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-4xs);
+            transition: all var(--animation-speed-fast) var(--cubic-bezier);
+            border: 1px solid var(--border-color-subtle);
+            border-radius: var(--radius-large);
+            background-color: transparent;
+            padding: var(--space-4xs) var(--space-2xs);
+            font: inherit;
+            color: var(--foreground-color);
+          }
+
+          .accessibility-trigger::after {
+            content: "▾";
+            font-size: 0.85em;
+          }
+
+          .a11y-option-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-2xs);
+            border: 1px solid transparent;
+            border-radius: var(--radius-small);
+            background: transparent;
+            padding: 0.45rem 0.6rem;
+            text-align: left;
+            inline-size: 100%;
+            font-size: var(--font-size--1);
+            line-height: 1.25;
+          }
+
+          .a11y-option-label {
+            flex: 1;
+            text-wrap: pretty;
+          }
+
+          .a11y-option-switch {
+            flex-shrink: 0;
+            position: relative;
+            border-radius: 999px;
+            background: color-mix(in oklch, var(--foreground-color) 14%, transparent);
+            inline-size: 2.5rem;
+            block-size: 1.4rem;
+            transition: background-color var(--animation-speed-fast) var(--cubic-bezier);
+          }
+
+          .a11y-option-knob {
+            position: absolute;
+            inset-block-start: 2px;
+            inset-inline-start: 2px;
+            border-radius: 50%;
+            background: var(--foreground-color);
+            inline-size: 1rem;
+            block-size: 1rem;
+            transition: transform var(--animation-speed-fast) var(--cubic-bezier);
+          }
+
+          .a11y-option-toggle.is-enabled {
+            border-color: color-mix(in oklch, var(--foreground-color) 30%, transparent);
+            background-color: color-mix(in oklch, var(--foreground-color) 14%, transparent);
+          }
+
+          .a11y-option-toggle.is-enabled .a11y-option-switch {
+            background: #16a34a;
+          }
+
+          .a11y-option-toggle.is-enabled .a11y-option-knob {
+            transform: translateX(1.1rem);
+          }
+
+          .accessibility-trigger:where(:hover, :focus-visible),
+          .a11y-option-toggle:where(:hover, :focus-visible) {
+            border-color: var(--foreground-color);
+          }
+
+          .accessibility-menu {
+            max-block-size: 60vh;
+            overflow-y: auto;
+          }
+        }
       }
     }
 
@@ -340,6 +621,12 @@ import { Image } from "astro:assets";
         display: block;
         padding: var(--space-2xs) 0;
         inline-size: 100%;
+      }
+
+      .menu-item-accessibility .accessibility-trigger {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
     }
 

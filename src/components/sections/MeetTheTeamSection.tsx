@@ -26,7 +26,7 @@ export const MeetTheTeamSection = () => {
         <div className="absolute inset-0 z-10 flex items-center justify-center px-4 pt-40 pb-28">
           <div className="text-center">
             <h1 className="mb-6 text-5xl font-bold text-white md:text-7xl">
-              <span className="bg-linear-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Meet The Team</span>
+              <span className="a11y-gradient-text bg-linear-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Meet The Team</span>
             </h1>
             <p className="mx-auto max-w-3xl text-xl text-gray-300 md:text-2xl">
               We're a bunch of curious, passionate people building a welcoming space for everyone - come see what we get up

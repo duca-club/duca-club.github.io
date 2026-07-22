@@ -151,7 +151,7 @@ export const FeaturedEventsSection = ({
               <div className="mt-6">
                 <a
                   href={`/events/${event.slug}/`}
-                  className="block w-full rounded-lg border border-purple-500/30 px-4 py-2 text-center text-sm font-medium text-purple-400 transition-colors hover:bg-purple-500/10"
+                  className="landing-card-button-secondary block w-full rounded-lg border border-purple-500/30 px-4 py-2 text-center text-sm font-medium text-purple-400 transition-colors hover:bg-purple-500/10"
                 >
                   Learn More
                 </a>
