@@ -446,6 +446,11 @@ import { Image } from "astro:assets";
 
     // Desktop: switch to desktop menu at nav breakpoint
     @include breakpoint("nav") {
+      // Keep the logo and all menu links together on a single line
+      > .container {
+        flex-wrap: nowrap;
+      }
+
       .mobile-menu {
         display: none;
       }
@@ -456,6 +461,11 @@ import { Image } from "astro:assets";
 
       .desktop-menu {
         display: block;
+
+        // Tighter gap so the full menu fits on one line within the container
+        .menu {
+          gap: var(--space-xs);
+        }
       }
     }
 
