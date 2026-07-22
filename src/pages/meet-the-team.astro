@@ -1,52 +1,12 @@
 ---
 import DefaultLayout from "@layouts/DefaultLayout.astro";
-import { SectionHeading } from "@components/ui/section-heading";
-import { TeamGrid } from "@components/ui/team-card";
 import { AuroraBackground } from "@components/ui/aurora-background";
-import { executives, divisions } from "@/data/team";
+import MeetTheTeamSection from "@components/sections/MeetTheTeamSection";
 ---
 
 <DefaultLayout title="Meet The Team">
-  <!-- Hero Section -->
-  <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
-    <AuroraBackground className="absolute inset-0 h-full!" showRadialGradient={false} client:load>
-      <div></div>
-    </AuroraBackground>
-    <div class="absolute inset-0 z-10 flex items-center justify-center px-4 pt-40 pb-20">
-      <div class="text-center">
-        <h1 class="mb-6 text-5xl font-bold text-white md:text-7xl">
-          <span class="a11y-gradient-text bg-linear-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Meet The Team</span>
-        </h1>
-        <p class="mx-auto max-w-3xl text-xl text-gray-300 md:text-2xl">
-          We're a bunch of curious, passionate people building a welcoming space for everyone - come see what we get up
-          to!
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Executives -->
-  <section class="section-themed py-24">
-    <div class="container mx-auto px-4">
-      <SectionHeading title="Executives" subtitle="The leadership team driving DUCA forward" client:visible />
-      <TeamGrid members={executives} className="mt-12" client:visible />
-    </div>
-  </section>
-
-  <!-- Divisions -->
-  {
-    divisions.map((division, divIdx) => (
-      <section
-        class={`section-themed py-20 ${divIdx % 2 === 0 ? "border-t border-purple-500/10" : "border-t border-slate-700/30"}`}
-      >
-        <div class="container mx-auto px-4">
-          <SectionHeading title={division.name} subtitle={division.description} client:visible />
-
-          <TeamGrid members={division.members} className="mt-8" client:visible />
-        </div>
-      </section>
-    ))
-  }
+  <!-- Interactive Year Switcher + Team Lists (including integrated Hero) -->
+  <MeetTheTeamSection client:load />
 
   <!-- CTA -->
   <section class="section-themed data-stream-bg relative overflow-hidden border-t border-purple-500/10 py-24">
@@ -66,7 +26,7 @@ import { executives, divisions } from "@/data/team";
           Regsiter
         </a>
         <a
-          href="/contact"
+          href="/contact/"
           class="inline-flex items-center justify-center rounded-full border-2 border-purple-500 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-500/10"
         >
           Get in Touch

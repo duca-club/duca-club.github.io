@@ -2,41 +2,37 @@
 import { InfiniteMovingCards } from "@ui/infinite-moving-cards";
 import { SectionHeading } from "@ui/section-heading";
 
+// Member testimonials — replace with real, attributed quotes when collected.
 const testimonials = [
   {
     quote:
-      "DUCA has been instrumental in my cybersecurity journey. The workshops and CTF events have given me practical skills that I use every day in my internship.",
-    name: "Sarah Chen",
-    title: "Cybersecurity Intern @ CyberCX",
-    image: "/testimonials/sarah.jpg",
+      "DUCA has been instrumental in my cybersecurity journey. The workshops and CTF events give you practical skills you can take straight into industry.",
+    name: "DUCA Member",
+    title: "Deakin Cybersecurity Student",
   },
   {
     quote:
-      "The community at DUCA is amazing. I've made lifelong friends and professional connections that have helped me land my dream job.",
-    name: "Marcus Williams",
-    title: "Security Analyst @ Telstra",
-    image: "/testimonials/marcus.jpg",
+      "The community at DUCA is amazing. I've made lifelong friends and professional connections that have shaped where my career is heading.",
+    name: "DUCA Member",
+    title: "Deakin Cybersecurity Student",
   },
   {
     quote:
-      "As a beginner, I was nervous about joining. But DUCA welcomes everyone regardless of skill level. The mentorship I received was invaluable.",
-    name: "Emily Rodriguez",
-    title: "Computer Science Student",
-    image: "/testimonials/emily.jpg",
+      "As a beginner I was nervous about joining, but DUCA welcomes everyone regardless of skill level. The mentorship has been invaluable.",
+    name: "DUCA Member",
+    title: "Deakin Computer Science Student",
   },
   {
     quote:
-      "The CTF competitions organised by DUCA are top-notch. They've helped me develop problem-solving skills that set me apart in job interviews.",
-    name: "James Liu",
-    title: "Graduate Security Engineer",
-    image: "/testimonials/james.jpg",
+      "The CTFs DUCA runs are top-notch. They've sharpened the problem-solving skills that set me apart in technical interviews.",
+    name: "DUCA Member",
+    title: "Deakin IT Student",
   },
   {
     quote:
-      "DUCA's industry nights connected me with mentors who guided my career transition into cybersecurity. Couldn't have done it without them!",
-    name: "Priya Sharma",
-    title: "Penetration Tester @ Deloitte",
-    image: "/testimonials/priya.jpg",
+      "DUCA's industry nights connected me with mentors who guided my path into cybersecurity. Couldn't have asked for a better launchpad.",
+    name: "DUCA Member",
+    title: "Deakin Cybersecurity Student",
   },
 ];
 

@@ -145,7 +145,7 @@ const sanitizedSubtitle: string = subtitle
       {
         author && (
           <div class="mt-6 flex items-center">
-            <Avatar title={author.name} image={author.image} subtitle={author.bio} />
+            <Avatar title={author.name} img={author.image} subtitle={author.bio} />
           </div>
         )
       }
@@ -180,6 +180,12 @@ const sanitizedSubtitle: string = subtitle
     .featured-image-container {
       max-height: 500px;
       overflow: hidden;
+    }
+
+    :global(.avatar .image img) {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
     }
   }
 </style>

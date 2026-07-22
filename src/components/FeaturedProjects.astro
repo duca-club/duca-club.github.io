@@ -51,7 +51,7 @@ const featuredProjects = projects.slice(0, limit).map((project, index) => ({
         featuredProjects.map((project) => (
           <Card
             imageComponent={project.featuredImage}
-            url={"/portfolio/" + project.id}
+            url={"/portfolio/" + project.id + "/"}
             headingLevel="h2"
             title={project.data.title}
             footer={"Author: " + project.data.author}

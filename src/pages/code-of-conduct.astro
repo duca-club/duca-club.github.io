@@ -1,0 +1,275 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import PageHeader from "@components/PageHeader.astro";
+import { Heading } from "accessible-astro-components";
+---
+
+<DefaultLayout title="Code of Conduct">
+  <PageHeader
+    title="Code of Conduct"
+    subtitle="Our guidelines for ensuring a safe, welcoming, and respectful community for all DUCA members, event attendees, and online participants."
+    bgType="bordered"
+    customBreadcrumbLabels={{ "code-of-conduct": "Code of Conduct" }}
+  />
+  <section class="narrow container my-16">
+    <div class="space-content">
+      <Heading level="h2">1. Introduction</Heading>
+      <p>
+        The Deakin University Cybersecurity Association (DUCA) is committed to providing a safe, welcoming, and valuable community for everyone, regardless of experience level, background, identity, or ability. We believe that a vibrant cybersecurity community thrives when participants treat one another with respect and kindness.
+      </p>
+      <p>
+        This Code of Conduct outlines our expectations for behaviour in all official DUCA spaces and events, as well as the consequences for unacceptable behaviour. We expect all members, event attendees, guest speakers, sponsors, volunteers, and officers to cooperate in upholding these standards.
+      </p>
+
+      <Heading level="h2">2. Who and Where This Applies To</Heading>
+      <p>
+        This Code of Conduct applies to every individual who participates in any DUCA activity or space.
+      </p>
+      
+      <div class="my-6 overflow-x-auto rounded-xl border border-slate-800">
+        <table class="min-w-full divide-y divide-slate-800 bg-slate-950/20 text-left text-sm text-slate-300">
+          <thead class="bg-slate-900/50 text-xs font-semibold uppercase tracking-wider text-slate-200">
+            <tr>
+              <th class="px-6 py-4">Environment Type</th>
+              <th class="px-6 py-4">Spaces Included</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Physical Events</td>
+              <td class="px-6 py-4">Workshops, CTF nights, networking events, social gatherings, and industry talks.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Online Communities</td>
+              <td class="px-6 py-4">The DUCA Discord server, official social media channels, email lists, and GitHub repositories.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Representation</td>
+              <td class="px-6 py-4">Any context where you are representing DUCA or identifying as a DUCA member or volunteer.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <Heading level="h2">3. Our Community Values</Heading>
+      <p>
+        These core values guide our community interactions and help define the environment we aim to cultivate.
+      </p>
+
+      <div class="my-6 overflow-x-auto rounded-xl border border-slate-800">
+        <table class="min-w-full divide-y divide-slate-800 bg-slate-950/20 text-left text-sm text-slate-300">
+          <thead class="bg-slate-900/50 text-xs font-semibold uppercase tracking-wider text-slate-200">
+            <tr>
+              <th class="px-6 py-4">Value</th>
+              <th class="px-6 py-4">What it means for members</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Inclusion</td>
+              <td class="px-6 py-4">Welcoming newcomers, supporting students of all skill levels, and actively encouraging diverse perspectives.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Respect</td>
+              <td class="px-6 py-4">Valuing others' time, opinions, and boundaries. Engaging in constructive discussions, even during disagreements.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Accountability</td>
+              <td class="px-6 py-4">Taking responsibility for your actions, acknowledging mistakes, and learning from feedback.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Collaboration</td>
+              <td class="px-6 py-4">Sharing knowledge, working together on challenges, and building up fellow peers.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Curiosity</td>
+              <td class="px-6 py-4">Fostering a growth mindset, asking questions, and exploring cybersecurity in a safe, ethical manner.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <Heading level="h2">4. Respect and Inclusion</Heading>
+      
+      <Heading level="h3">4.1 Expected Behaviour</Heading>
+      <p>
+        We expect all community members to exhibit the following positive behaviours:
+      </p>
+      <ul class="list-inside list-disc space-y-1 pl-4">
+        <li>Use welcoming and inclusive language.</li>
+        <li>Be respectful of differing viewpoints and experiences.</li>
+        <li>Gracefully accept constructive criticism.</li>
+        <li>Focus on what is best for the community.</li>
+        <li>Show empathy and kindness towards other community members.</li>
+      </ul>
+
+      <Heading level="h3">4.2 Unacceptable Behaviour</Heading>
+      <p>
+        DUCA has zero tolerance for harassment, discrimination, or bullying. Unacceptable behaviours include:
+      </p>
+      <ul class="list-inside list-disc space-y-1 pl-4">
+        <li>Violent threats or language directed against another person.</li>
+        <li>Discriminatory jokes, comments, or language targeting race, gender, gender identity, sexual orientation, disability, religion, age, or background.</li>
+        <li>Posting sexually explicit or violent material in online or physical spaces.</li>
+        <li>Personal attacks, insults, or condescending comments.</li>
+        <li>Unwelcome physical contact or sexual attention.</li>
+        <li>Deliberate intimidation, stalking, or following.</li>
+        <li>Sustained disruption of talks, workshops, or events.</li>
+        <li>Public or private harassment of any kind.</li>
+      </ul>
+
+      <div class="rounded-xl border border-red-500/30 bg-red-950/20 p-6 my-6">
+        <strong class="text-red-400 block mb-2">⚠️ Zero Tolerance Policy</strong>
+        <p class="text-sm text-red-200/90 leading-relaxed m-0">
+          Discriminatory, abusive, or harassing behaviour will be addressed immediately. Serious or repeated breaches will result in immediate removal from DUCA spaces, exclusion from future events, and revocation of membership.
+        </p>
+      </div>
+
+      <Heading level="h2">5. Online Community Guidelines</Heading>
+      <p>
+        Our online platforms, particularly the DUCA Discord, serve as a virtual hub for learning and networking. To maintain a productive online space, please observe the following rules:
+      </p>
+
+      <Heading level="h3">5.1 General Interaction</Heading>
+      <ul class="list-inside list-disc space-y-1 pl-4">
+        <li>Keep conversations constructive, friendly, and related to the channel topic.</li>
+        <li>Do not engage in flame wars, trolling, or baiting.</li>
+        <li>All contents shared must be safe-for-work (SFW). Explicit, offensive, or highly graphic media is prohibited.</li>
+      </ul>
+
+      <Heading level="h3">5.2 Self-Promotion and Marketing</Heading>
+      <p>
+        We want to support members' projects and achievements. However, unsolicited spam or commercial advertising is not permitted. Please use designated channels (such as resource-sharing channels) and avoid DMing members with promotional pitches.
+      </p>
+
+      <Heading level="h3">5.3 Ethical Hacking and Academics</Heading>
+      <p>
+        In accordance with Deakin University policies and ethical hacking standards:
+      </p>
+      <ul class="list-inside list-disc space-y-1 pl-4">
+        <li>Do not share, promote, or request illegal exploits, cracked software, or malicious tools.</li>
+        <li>Do not use DUCA platforms to facilitate academic misconduct (e.g., sharing exam answers or assignment files).</li>
+        <li>Discussions around security testing must focus on ethical hacking, educational platforms (like Hack The Box, PortSwigger, TryHackMe), and authorized activities.</li>
+      </ul>
+
+      <div class="rounded-xl border border-purple-500/30 bg-purple-950/20 p-6 my-6">
+        <strong class="text-purple-400 block mb-2">ℹ️ Moderator Authority</strong>
+        <p class="text-sm text-purple-200/90 leading-relaxed m-0">
+          Our online spaces are moderated by DUCA committee members. Moderators have the authority to warn users, delete messages, timeout, or ban accounts that breach this Code of Conduct.
+        </p>
+      </div>
+
+      <Heading level="h2">6. Physical Event Guidelines</Heading>
+      <p>
+        DUCA events are designed to be interactive and engaging. To ensure a safe environment:
+      </p>
+
+      <Heading level="h3">6.1 Safety and Substance Use</Heading>
+      <ul class="list-inside list-disc space-y-1 pl-4">
+        <li>Under no circumstances should illegal drugs or substances be brought to or consumed at DUCA events.</li>
+        <li>If alcohol is provided at a DUCA event (e.g., licensed venues or social mixers), it must be consumed responsibly. Disruptive intoxication, aggressive behavior, or underage drinking is strictly prohibited.</li>
+        <li>Follow all venue safety guidelines, fire evacuation protocols, and instructions given by DUCA organizers.</li>
+      </ul>
+
+      <Heading level="h3">6.2 Equipment and Respect for Venues</Heading>
+      <ul class="list-inside list-disc space-y-1 pl-4">
+        <li>Treat the venue facilities, event materials, and equipment (whether owned by Deakin, DUSA, DUCA, or fellow attendees) with care and respect.</li>
+        <li>Leave event spaces tidy and dispose of waste appropriately.</li>
+      </ul>
+
+      <Heading level="h2">7. Reporting a Violation</Heading>
+      <p>
+        If you experience or witness behaviour that violates this Code of Conduct, or if you have any safety concerns, please report it to us as soon as possible.
+      </p>
+
+      <div class="my-6 overflow-x-auto rounded-xl border border-slate-800">
+        <table class="min-w-full divide-y divide-slate-800 bg-slate-950/20 text-left text-sm text-slate-300">
+          <thead class="bg-slate-900/50 text-xs font-semibold uppercase tracking-wider text-slate-200">
+            <tr>
+              <th class="px-6 py-4">Method</th>
+              <th class="px-6 py-4">How to report</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">In-Person (At Events)</td>
+              <td class="px-6 py-4">Locate any DUCA committee member or event organizer. They will help you find a quiet space to discuss the issue.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Online (Discord)</td>
+              <td class="px-6 py-4">Direct message (DM) a moderator, administrator, or Executive officer, or open a support ticket if available.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">Email</td>
+              <td class="px-6 py-4">Send a detailed description of the incident to <a href="mailto:info@duca.au" class="text-cyan-400 hover:underline">info@duca.au</a>. Reports are treated confidentially.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="rounded-xl border border-amber-500/30 bg-amber-950/20 p-6 my-6">
+        <strong class="text-amber-400 block mb-2">⚠️ Confidentiality of Reports</strong>
+        <p class="text-sm text-amber-200/90 leading-relaxed m-0">
+          All reports will be handled with discretion and respect for your privacy. The DUCA Executive team will investigate reports fairly, gather relevant context, and take appropriate action.
+        </p>
+      </div>
+
+      <Heading level="h2">8. Enforcement and Consequences</Heading>
+      <p>
+        If a participant is found to have breached this Code of Conduct, the DUCA Executive team may take any action they deem necessary to preserve community safety and integrity.
+      </p>
+
+      <div class="my-6 overflow-x-auto rounded-xl border border-slate-800">
+        <table class="min-w-full divide-y divide-slate-800 bg-slate-950/20 text-left text-sm text-slate-300">
+          <thead class="bg-slate-900/50 text-xs font-semibold uppercase tracking-wider text-slate-200">
+            <tr>
+              <th class="px-6 py-4">Action Level</th>
+              <th class="px-6 py-4">Consequence details</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">1. Warning</td>
+              <td class="px-6 py-4">A private verbal or written explanation detailing the violation and outlining expected future behaviour.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">2. Suspension</td>
+              <td class="px-6 py-4">A temporary ban from the Discord server, online platforms, and/or physical events for a set period.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">3. Ban & Revocation</td>
+              <td class="px-6 py-4">Permanent expulsion from the DUCA Discord, termination of DUCA membership, and permanent ban from all future events.</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-white">4. External Escalation</td>
+              <td class="px-6 py-4">For severe violations (theft, assault, harassment, illegal acts), the matter will be escalated to DUSA, Deakin University security, or law enforcement.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <Heading level="h2">9. DUCA's Rights and Protections</Heading>
+      <p>
+        To ensure a safe environment for all participants, DUCA reserves the following rights:
+      </p>
+      <ul class="list-inside list-disc space-y-1 pl-4">
+        <li>The right to ask anyone violating the Code of Conduct to leave an event immediately without refund (if applicable).</li>
+        <li>The right to restrict access to DUCA digital spaces, including muting, kicking, or banning accounts.</li>
+        <li>The right to modify this Code of Conduct to adapt to new situations or university policy updates. Changes will be updated publicly on this page.</li>
+      </ul>
+
+      <hr class="border-slate-800 my-8" />
+      <p class="text-xs text-slate-500 text-center">
+        Deakin University Cybersecurity Association | DUCA Code of Conduct | Version 2.0<br />
+        This document is maintained by the DUCA Executive Team and reviewed annually.
+      </p>
+    </div>
+  </section>
+</DefaultLayout>
+
+<style lang="scss" is:global>
+  .narrow {
+    margin-inline: auto;
+    max-width: 75ch;
+  }
+</style>

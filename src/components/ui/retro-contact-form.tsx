@@ -280,7 +280,7 @@ export function RetroContactForm() {
                   type="text"
                   value="info@duca.au"
                   readOnly
-                  className="flex-1 border-b border-green-900/50 bg-transparent px-1 py-2 font-mono text-sm outline-none"
+                  className="flex-1 border-b border-green-800/40 bg-transparent px-1 py-2 font-mono text-sm outline-none"
                   style={{ color: "#33ff33", opacity: 0.6 }}
                 />
               </div>
@@ -297,7 +297,7 @@ export function RetroContactForm() {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
                   required
-                  className="flex-1 border-b border-green-900/50 bg-transparent px-1 py-2 font-mono text-sm outline-none placeholder:text-green-900/60 focus:border-green-500/50"
+                  className="flex-1 border-b border-green-800/60 bg-transparent px-1 py-2 font-mono text-sm outline-none placeholder:text-green-500/50 focus:border-green-500/50"
                   style={{ color: "#33ff33" }}
                 />
               </div>
@@ -314,7 +314,7 @@ export function RetroContactForm() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   required
-                  className="flex-1 border-b border-green-900/50 bg-transparent px-1 py-2 font-mono text-sm outline-none placeholder:text-green-900/60 focus:border-green-500/50"
+                  className="flex-1 border-b border-green-800/60 bg-transparent px-1 py-2 font-mono text-sm outline-none placeholder:text-green-500/50 focus:border-green-500/50"
                   style={{ color: "#33ff33" }}
                 />
               </div>
@@ -330,7 +330,7 @@ export function RetroContactForm() {
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="What's this about?"
-                  className="flex-1 border-b border-green-900/50 bg-transparent px-1 py-2 font-mono text-sm outline-none placeholder:text-green-900/60 focus:border-green-500/50"
+                  className="flex-1 border-b border-green-800/60 bg-transparent px-1 py-2 font-mono text-sm outline-none placeholder:text-green-500/50 focus:border-green-500/50"
                   style={{ color: "#33ff33" }}
                 />
               </div>
@@ -347,7 +347,7 @@ export function RetroContactForm() {
                   placeholder="Type your message here..."
                   required
                   rows={6}
-                  className="flex-1 resize-none rounded border border-green-900/30 bg-transparent px-3 py-2 font-mono text-sm outline-none placeholder:text-green-900/60 focus:border-green-500/50"
+                  className="flex-1 resize-none rounded border border-green-800/40 bg-transparent px-3 py-2 font-mono text-sm outline-none placeholder:text-green-500/50 focus:border-green-500/50"
                   style={{ color: "#33ff33" }}
                 />
               </div>

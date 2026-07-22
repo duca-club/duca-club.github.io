@@ -2,6 +2,8 @@
 import DefaultLayout from "@layouts/DefaultLayout.astro";
 import { BackgroundBeams } from "@components/ui/background-beams";
 import { EventTagFilter } from "@components/ui/event-tag-filter";
+import { EventsCalendar } from "@components/ui/events-calendar";
+import FeaturedEventsSection from "@components/sections/FeaturedEventsSection";
 import { getCollection } from "astro:content";
 
 // Fetch all events from the collection
@@ -9,23 +11,6 @@ const allEvents = await getCollection("events");
 
 // Extract unique tags
 const allTags = [...new Set(allEvents.flatMap((e) => e.data.tags || []))];
-const now = new Date();
-
-const upcomingEvents = allEvents
-  .filter((event) => new Date(event.data.eventDate) >= now)
-  .sort((a, b) => new Date(a.data.eventDate).getTime() - new Date(b.data.eventDate).getTime());
-
-const pastEvents = allEvents
-  .filter((event) => new Date(event.data.eventDate) < now)
-  .sort((a, b) => new Date(b.data.eventDate).getTime() - new Date(a.data.eventDate).getTime());
-
-const formatFallbackDate = (value: Date) =>
-  value.toLocaleDateString("en-AU", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
 
 // Serialize events for the React component
 const serializedEvents = allEvents.map((event) => ({
@@ -38,6 +23,31 @@ const serializedEvents = allEvents.map((event) => ({
   registrationUrl: event.data.registrationUrl,
   slug: event.data.slug,
 }));
+
+// Fetch and serialize upcoming events for the FeaturedEventsSection
+const now = new Date();
+const upcomingEvents = allEvents
+  .filter((event) => new Date(event.data.eventDate) >= now)
+  .sort((a, b) => new Date(a.data.eventDate).getTime() - new Date(b.data.eventDate).getTime());
+
+const featuredEvents = upcomingEvents.map((event) => ({
+  title: event.data.title,
+  description: event.data.description,
+  eventDate: event.data.eventDate.toISOString(),
+  location: event.data.location,
+  registrationUrl: event.data.registrationUrl,
+  slug: event.data.slug,
+  tags: event.data.tags,
+  featuredImage: event.data.featuredImage,
+}));
+
+// Transform events for the calendar component
+const calendarEvents = allEvents.map((event) => ({
+  title: event.data.title,
+  slug: event.data.slug,
+  eventDate: event.data.eventDate.toISOString(),
+  tags: event.data.tags,
+}));
 ---
 
 <DefaultLayout title="Events">
@@ -49,7 +59,7 @@ const serializedEvents = allEvents.map((event) => ({
 
     <div class="relative z-10 container mx-auto px-4 py-20 text-center">
       <h1 class="mb-6 text-5xl font-bold md:text-7xl">
-        <span class="a11y-gradient-text bg-linear-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">Events</span>
+        <span class="bg-linear-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">Events</span>
       </h1>
       <p class="theme-text-secondary mx-auto mb-8 max-w-2xl text-xl">
         Join us for workshops, competitions, networking events, and more. There's always something happening at DUCA!
@@ -57,55 +67,26 @@ const serializedEvents = allEvents.map((event) => ({
     </div>
   </section>
 
-  <!-- Events with Tag Filtering -->
-  <section class="section-themed data-stream-bg relative -mt-14 overflow-hidden pb-24">
-    <div class="relative z-10 container mx-auto px-4">
-      <noscript>
-        <div class="mb-12 rounded-2xl border border-yellow-500/40 bg-yellow-500/10 p-5 text-sm text-yellow-100">
-          JavaScript is disabled. Showing static event listings instead of interactive filters.
-        </div>
-
-        {
-          upcomingEvents.length > 0 && (
-            <div class="mb-14">
-              <h2 class="theme-text mb-4 text-3xl font-bold">Upcoming Events</h2>
-              <ul class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                {upcomingEvents.map((event) => (
-                  <li class="theme-card rounded-xl border p-5">
-                    <a href={`/events/${event.data.slug}`} class="theme-text text-xl font-semibold">
-                      {event.data.title}
-                    </a>
-                    <p class="theme-text-muted mt-1 text-sm">{formatFallbackDate(event.data.eventDate)}</p>
-                    <p class="theme-text-secondary mt-2 text-sm">{event.data.description}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
-
-        {
-          pastEvents.length > 0 && (
-            <div>
-              <h2 class="theme-text mb-4 text-3xl font-bold">Past Events</h2>
-              <ul class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {pastEvents.map((event) => (
-                  <li class="theme-card rounded-xl border p-5">
-                    <a href={`/events/${event.data.slug}`} class="theme-text font-semibold">
-                      {event.data.title}
-                    </a>
-                    <p class="theme-text-muted mt-1 text-sm">{formatFallbackDate(event.data.eventDate)}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
-      </noscript>
-
-      <div class="js-only">
-        <EventTagFilter events={serializedEvents} tags={allTags} client:load />
+  <!-- Events Calendar Section -->
+  <section id="calendar" class="section-themed py-24">
+    <div class="container mx-auto px-4">
+      <div class="mb-12 text-center">
+        <h2 class="theme-text text-3xl font-bold md:text-4xl">Events Calendar</h2>
+        <p class="theme-text-secondary mt-4 max-w-2xl mx-auto">Stay up to date with our monthly schedule and upcoming sessions</p>
       </div>
+      <EventsCalendar events={calendarEvents} client:load />
+      <FeaturedEventsSection events={featuredEvents} isSeamless={true} client:load />
+    </div>
+  </section>
+
+  <!-- Events with Tag Filtering -->
+  <section class="section-themed data-stream-bg relative border-t border-slate-800/40 overflow-hidden py-24">
+    <div class="relative z-10 container mx-auto px-4">
+      <div class="mb-12 text-center">
+        <h2 class="theme-text text-3xl font-bold md:text-4xl">Past Events Search</h2>
+        <p class="theme-text-secondary mt-4 max-w-2xl mx-auto">Explore and filter through our full history of previous events</p>
+      </div>
+      <EventTagFilter events={serializedEvents} tags={allTags} client:load />
     </div>
   </section>
 
@@ -124,13 +105,13 @@ const serializedEvents = allEvents.map((event) => ({
             href="https://discord.com/invite/duca"
             target="_blank"
             rel="noopener noreferrer"
-            class="events-page-button-primary inline-flex items-center justify-center rounded-full bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700"
+            class="inline-flex items-center justify-center rounded-full bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700"
           >
             Discord
           </a>
           <a
-            href="/calendar"
-            class="events-page-button-secondary theme-text inline-flex items-center justify-center rounded-full border-2 border-purple-500 px-6 py-3 font-semibold transition-colors hover:bg-purple-500/10"
+            href="#calendar"
+            class="theme-text inline-flex items-center justify-center rounded-full border-2 border-purple-500 px-6 py-3 font-semibold transition-colors hover:bg-purple-500/10"
           >
             View Calendar
           </a>

@@ -177,7 +177,7 @@ export const EventsCalendar = ({
                   {dayEvents.slice(0, 2).map((event) => (
                     <a
                       key={event.slug}
-                      href={`/events/${event.slug}`}
+                      href={`/events/${event.slug}/`}
                       className="block p-1 rounded text-xs bg-violet-600/20 text-violet-300 hover:bg-violet-600/30 transition-colors truncate"
                       title={event.title}
                     >
@@ -195,48 +195,6 @@ export const EventsCalendar = ({
           })}
         </motion.div>
       </AnimatePresence>
-
-      {/* Upcoming Events List */}
-      {events.filter(e => new Date(e.eventDate) >= new Date()).length > 0 && (
-        <div className="mt-8 pt-8 border-t theme-border">
-          <h3 className="text-lg font-bold theme-text mb-4">Upcoming Events</h3>
-          <div className="space-y-3">
-            {events
-              .filter(e => new Date(e.eventDate) >= new Date())
-              .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
-              .slice(0, 5)
-              .map((event) => {
-                const date = new Date(event.eventDate);
-                return (
-                  <a
-                    key={event.slug}
-                    href={`/events/${event.slug}`}
-                    className="flex items-center gap-4 p-3 rounded-lg theme-card border hover:border-violet-500/30 transition-colors"
-                  >
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-violet-600 text-white flex flex-col items-center justify-center">
-                      <span className="text-xs font-medium">
-                        {date.toLocaleDateString("en-AU", { month: "short" })}
-                      </span>
-                      <span className="text-lg font-bold leading-none">
-                        {date.getDate()}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium theme-text truncate">{event.title}</h4>
-                      <p className="text-sm theme-text-muted">
-                        {date.toLocaleDateString("en-AU", { weekday: "long" })} at{" "}
-                        {date.toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", hour12: true })}
-                      </p>
-                    </div>
-                    <svg className="w-5 h-5 theme-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </a>
-                );
-              })}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

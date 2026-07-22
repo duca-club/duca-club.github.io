@@ -31,7 +31,7 @@ const blogPosts = sortedPosts.map((post) => {
   return {
     title: post.data.title,
     description: post.data.description,
-    href: `/blog/${post.data.slug || post.id}`,
+    href: `/blog/${post.data.slug || post.id}/`,
     image,
     category: post.data.tags?.[0] || "Blog",
   };

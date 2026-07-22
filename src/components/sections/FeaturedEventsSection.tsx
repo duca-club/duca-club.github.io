@@ -14,7 +14,13 @@ interface Event {
   featuredImage?: string;
 }
 
-export const FeaturedEventsSection = ({ events }: { events: Event[] }) => {
+export const FeaturedEventsSection = ({
+  events,
+  isSeamless = false,
+}: {
+  events: Event[];
+  isSeamless?: boolean;
+}) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-AU", {
@@ -34,54 +40,63 @@ export const FeaturedEventsSection = ({ events }: { events: Event[] }) => {
     });
   };
 
-  return (
-    <section className="section-themed py-24">
-      <div className="container mx-auto px-4">
+  const content = (
+    <>
+      {isSeamless ? (
+        <div className="mb-12 text-center">
+          <h2 className="theme-text text-3xl font-bold md:text-4xl">Upcoming Events</h2>
+          <p className="theme-text-secondary mt-4 max-w-2xl mx-auto">
+            Join us for workshops, networking, and hands-on learning
+          </p>
+        </div>
+      ) : (
         <SectionHeading title="Upcoming Events" subtitle="Join us for workshops, networking, and hands-on learning" />
+      )}
 
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {events.map((event, index) => (
-            <motion.article
-              key={event.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group theme-card relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-purple-500/30"
+      <div className="mt-12 flex flex-wrap justify-center items-stretch gap-6">
+        {events.map((event, index) => (
+          <motion.article
+            key={event.slug}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="group theme-card relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-purple-500/30 flex flex-col w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+          >
+            {/* Event Image/Gradient Background */}
+            <div
+              className="relative h-48 bg-linear-to-br from-purple-900/50 via-indigo-900/50 to-slate-900 shrink-0"
+              style={{
+                backgroundImage: event.featuredImage ? `url(${event.featuredImage})` : undefined,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
             >
-              {/* Event Image/Gradient Background */}
-              <div
-                className="h-48 bg-linear-to-br from-purple-900/50 via-indigo-900/50 to-slate-900"
-                style={{
-                  backgroundImage: event.featuredImage ? `url(${event.featuredImage})` : undefined,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              >
-                <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 
-                {/* Date Badge */}
-                <div className="absolute top-4 left-4 rounded-lg bg-purple-600 px-3 py-1.5 text-sm font-semibold text-white">
-                  {new Date(event.eventDate).toLocaleDateString("en-AU", {
-                    day: "numeric",
-                    month: "short",
-                  })}
-                </div>
-
-                {/* Tags */}
-                {event.tags && event.tags.length > 0 && (
-                  <div className="absolute top-4 right-4 flex gap-2">
-                    {event.tags.slice(0, 2).map((tag) => (
-                      <span key={tag} className="rounded bg-white/10 px-2 py-1 text-xs text-white backdrop-blur-sm">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
+              {/* Date Badge */}
+              <div className="absolute top-4 left-4 rounded-lg bg-purple-600 px-3 py-1.5 text-sm font-semibold text-white">
+                {new Date(event.eventDate).toLocaleDateString("en-AU", {
+                  day: "numeric",
+                  month: "short",
+                })}
               </div>
 
-              {/* Content */}
-              <div className="p-6">
+              {/* Tags */}
+              {event.tags && event.tags.length > 0 && (
+                <div className="absolute top-4 right-4 flex gap-2">
+                  {event.tags.slice(0, 2).map((tag) => (
+                    <span key={tag} className="rounded bg-white/10 px-2 py-1 text-xs text-white backdrop-blur-sm">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Content */}
+            <div className="p-6 flex flex-col flex-1 justify-between">
+              <div>
                 <h3 className="theme-text mb-2 text-xl font-bold transition-colors group-hover:text-purple-400">
                   {event.title}
                 </h3>
@@ -130,48 +145,50 @@ export const FeaturedEventsSection = ({ events }: { events: Event[] }) => {
                     <span className="truncate">{event.location}</span>
                   </div>
                 </div>
-
-                {/* Action Buttons */}
-                <div className="mt-6 flex gap-3">
-                  <a
-                    href={`/events/${event.slug}`}
-                    className="landing-card-button-secondary flex-1 rounded-lg border border-purple-400/60 bg-purple-600/20 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-purple-600/35"
-                  >
-                    Learn More
-                  </a>
-                  {event.registrationUrl && (
-                    <a
-                      href={event.registrationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="landing-card-button-primary flex-1 rounded-lg bg-purple-600 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-purple-700"
-                    >
-                      Register
-                    </a>
-                  )}
-                </div>
               </div>
-            </motion.article>
-          ))}
+
+              {/* Action Buttons */}
+              <div className="mt-6">
+                <a
+                  href={`/events/${event.slug}/`}
+                  className="block w-full rounded-lg border border-purple-500/30 px-4 py-2 text-center text-sm font-medium text-purple-400 transition-colors hover:bg-purple-500/10"
+                >
+                  Learn More
+                </a>
+              </div>
+            </div>
+          </motion.article>
+        ))}
+      </div>
+
+      {events.length === 0 && (
+        <div className="py-12 text-center">
+          <p className="theme-text-secondary text-lg">No upcoming events scheduled. Check back soon!</p>
         </div>
+      )}
 
-        {events.length === 0 && (
-          <div className="py-12 text-center">
-            <p className="theme-text-secondary text-lg">No upcoming events scheduled. Check back soon!</p>
-          </div>
-        )}
-
+      {events.length > 0 && !isSeamless && (
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="mt-12 text-center"
         >
-          <Button href="/events" variant="outline">
+          <Button href="/events/" variant="outline">
             View All Events
           </Button>
         </motion.div>
-      </div>
+      )}
+    </>
+  );
+
+  if (isSeamless) {
+    return <div className="mt-20">{content}</div>;
+  }
+
+  return (
+    <section className="section-themed py-24">
+      <div className="container mx-auto px-4">{content}</div>
     </section>
   );
 };

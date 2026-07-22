@@ -1,0 +1,20 @@
+name: hirusha-duca-site
+
+services:
+  hirusha-duca-site:
+    image: nginx:alpine
+    container_name: hirusha-duca-site
+    restart: unless-stopped
+
+    volumes:
+      - /srv/hirusha-duca-site:/usr/share/nginx/html:ro
+
+    expose:
+      - "80"
+
+    networks:
+      - intranet_1
+
+networks:
+  intranet_1:
+    external: true

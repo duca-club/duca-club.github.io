@@ -34,14 +34,20 @@ export const SectionHeading = ({
     >
       <h2
         className={cn(
-          "a11y-gradient-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-3xl font-bold text-transparent md:text-4xl lg:text-5xl",
-          titleClassName,
+          "text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent",
+          titleClassName
         )}
       >
         {title}
       </h2>
       {subtitle && (
-        <p className={cn("mt-4 max-w-2xl text-lg text-gray-400", align === "center" && "mx-auto", subtitleClassName)}>
+        <p
+          className={cn(
+            "mt-4 text-lg text-gray-400 max-w-2xl",
+            align === "center" && "mx-auto",
+            subtitleClassName
+          )}
+        >
           {subtitle}
         </p>
       )}
@@ -49,12 +55,18 @@ export const SectionHeading = ({
   );
 };
 
-export const GradientHeading = ({ children, className }: { children: ReactNode; className?: string }) => {
+export const GradientHeading = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
   return (
     <h2
       className={cn(
-        "a11y-gradient-text bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 bg-clip-text text-3xl font-bold text-transparent md:text-4xl lg:text-5xl",
-        className,
+        "text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent",
+        className
       )}
     >
       {children}

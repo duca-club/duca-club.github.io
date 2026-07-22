@@ -5,39 +5,15 @@ import { SectionHeading } from "@components/ui/section-heading";
 import { SpotlightNew } from "@components/ui/spotlight";
 import { getCollection } from "astro:content";
 
-// Get projects from content collection
-const allProjects = await getCollection("projects");
+// Get projects from content collection, excluding starter-template placeholders.
+const allProjects = (await getCollection("projects")).filter((p) => p.data.author !== "John Doe");
 
-// Sample projects if none exist
-const projects =
-  allProjects.length > 0
-    ? allProjects.map((p) => ({
-        id: p.id,
-        title: p.data.title,
-        description: p.data.description,
-        tags: p.data.tags,
-      }))
-    : [
-        {
-          id: "duca-sentinel",
-          title: "DUCA Sentinel",
-          description: "An automated security monitoring and alerting system built by the DUCA dev team.",
-          tags: ["Python", "Security", "Automation"],
-        },
-        {
-          id: "acusys",
-          title: "ACUSyS",
-          description:
-            "Australian Cybersecurity University System - A collaborative platform for university cyber clubs.",
-          tags: ["Web", "Collaboration", "Platform"],
-        },
-        {
-          id: "ctf-platform",
-          title: "DUCA CTF Platform",
-          description: "Custom Capture The Flag platform for hosting internal competitions.",
-          tags: ["CTF", "Web", "Security"],
-        },
-      ];
+const projects = allProjects.map((p) => ({
+  id: p.id,
+  title: p.data.title,
+  description: p.data.description,
+  tags: p.data.tags,
+}));
 ---
 
 <DefaultLayout title="Projects">
@@ -49,7 +25,7 @@ const projects =
 
     <div class="relative z-10 container mx-auto px-4 py-20 text-center">
       <h1 class="mb-6 text-5xl font-bold text-white md:text-7xl">
-        <span class="a11y-gradient-text bg-linear-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">Projects</span>
+        <span class="bg-linear-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">Projects</span>
       </h1>
       <p class="mx-auto mb-8 max-w-2xl text-xl text-gray-300">
         Explore the innovative projects built by our development team and community members.
@@ -64,24 +40,56 @@ const projects =
 
       <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {
-          projects.map((project) => (
-            <a href={`/portfolio/${project.id}`} class="group">
-              <div class="theme-card theme-border h-full rounded-2xl border p-6 transition-all duration-300 hover:border-emerald-500/50">
-                <div class="mb-6 flex h-40 items-center justify-center rounded-xl bg-linear-to-br from-emerald-900/30 to-emerald-950/50">
-                  <span class="text-6xl opacity-50">🔐</span>
+          projects.map((project, i) => {
+            const accents = [
+              {
+                grad: "from-emerald-500/20 via-emerald-700/20 to-cyan-700/30",
+                ring: "hover:border-emerald-500/60",
+                title: "group-hover:text-emerald-400",
+                tag: "bg-emerald-500/10 text-emerald-400",
+                glow: "from-emerald-500/0 via-emerald-500/40 to-cyan-500/0",
+                icon: "🔐",
+              },
+              {
+                grad: "from-purple-500/20 via-fuchsia-700/20 to-indigo-700/30",
+                ring: "hover:border-purple-500/60",
+                title: "group-hover:text-purple-300",
+                tag: "bg-purple-500/10 text-purple-300",
+                glow: "from-purple-500/0 via-fuchsia-500/40 to-indigo-500/0",
+                icon: "🛡️",
+              },
+              {
+                grad: "from-cyan-500/20 via-sky-700/20 to-blue-700/30",
+                ring: "hover:border-cyan-500/60",
+                title: "group-hover:text-cyan-300",
+                tag: "bg-cyan-500/10 text-cyan-300",
+                glow: "from-cyan-500/0 via-sky-500/40 to-blue-500/0",
+                icon: "⚡",
+              },
+            ];
+            const a = accents[i % accents.length]!;
+            return (
+              <a href={`/portfolio/${project.id}/`} class="group relative">
+                <div
+                  class={`pointer-events-none absolute -inset-px rounded-2xl bg-gradient-to-br opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-60 ${a.glow}`}
+                />
+                <div class={`theme-card theme-border relative h-full rounded-2xl border p-6 transition-all duration-300 ${a.ring} group-hover:-translate-y-1`}>
+                  <div class={`mb-6 flex h-40 items-center justify-center rounded-xl bg-gradient-to-br ${a.grad}`}>
+                    <span class="text-6xl opacity-70 transition-transform duration-300 group-hover:scale-110">{a.icon}</span>
+                  </div>
+                  <h3 class={`theme-text mb-2 text-xl font-bold transition-colors ${a.title}`}>
+                    {project.title}
+                  </h3>
+                  <p class="theme-text-secondary mb-4">{project.description}</p>
+                  <div class="flex flex-wrap gap-2">
+                    {project.tags.map((tag: string) => (
+                      <span class={`rounded-full px-2 py-1 text-xs ${a.tag}`}>{tag}</span>
+                    ))}
+                  </div>
                 </div>
-                <h3 class="theme-text mb-2 text-xl font-bold transition-colors group-hover:text-emerald-400">
-                  {project.title}
-                </h3>
-                <p class="theme-text-secondary mb-4">{project.description}</p>
-                <div class="flex flex-wrap gap-2">
-                  {project.tags.map((tag: string) => (
-                    <span class="rounded-full bg-emerald-500/10 px-2 py-1 text-xs text-emerald-400">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </a>
-          ))
+              </a>
+            );
+          })
         }
       </div>
     </div>
@@ -97,7 +105,7 @@ const projects =
       </p>
       <div class="flex flex-col justify-center gap-4 sm:flex-row">
         <a
-          href="/join"
+          href="/join/"
           class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-emerald-700"
         >
           Join Us

@@ -74,7 +74,7 @@ LINK: ACTIVE ●</span></pre>
         <!-- Title + Description -->
         <div class="text-center md:text-left">
           <h1 class="mb-8 text-5xl font-bold text-white md:text-7xl">
-            <span class="a11y-gradient-text bg-linear-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent"
+            <span class="bg-linear-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent"
               >Partners & Sponsors</span
             >
           </h1>
@@ -125,129 +125,141 @@ LINK: ACTIVE ●</span></pre>
   </section>
 
   <!-- ═══════════════ GOLD TIER ═══════════════ -->
-  <section id="gold-sponsors" class="section-themed theme-border relative overflow-hidden border-t py-24">
-    <div class="bg-grid-pattern absolute inset-0 opacity-30"></div>
+  {
+    goldSponsors.length > 0 && (
+      <section id="gold-sponsors" class="section-themed theme-border relative overflow-hidden border-t py-24">
+        <div class="bg-grid-pattern absolute inset-0 opacity-30"></div>
 
-    <div class="relative z-10 container mx-auto px-4">
-      <div class="mb-12 text-center">
-        <span class="tier-badge tier-badge--gold mb-4 inline-block rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest">
-          Gold Sponsors
-        </span>
-        <p class="mx-auto mt-2 max-w-xl text-gray-400">Our premier supporters</p>
-      </div>
+        <div class="relative z-10 container mx-auto px-4">
+          <div class="mb-12 text-center">
+            <span class="tier-badge tier-badge--gold mb-4 inline-block rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest">
+              Gold Sponsors
+            </span>
+            <p class="mx-auto mt-2 max-w-xl text-gray-400">Our premier supporters</p>
+          </div>
 
-      <div class="grid grid-cols-1 gap-8">
-        {
-          goldSponsors.map((sponsor, idx) => (
-            <a
-              href={sponsor.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="gold-card theme-card rounded-2xl border border-yellow-500/30 p-10 transition-all duration-300 hover:-translate-y-1 hover:border-yellow-400/60"
-              style={`animation-delay: ${idx * 0.2}s;`}
-            >
-              <div class="flex flex-col items-center gap-6 md:flex-row">
-                <div class="flex h-32 w-32 shrink-0 items-center justify-center rounded-2xl border border-yellow-500/20 bg-yellow-950/20">
-                  <img
-                    src={sponsor.logo}
-                    alt={sponsor.name}
-                    class="h-28 w-28 object-contain"
-                    onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
-                  />
-                </div>
-                <div class="text-center md:text-left">
-                  <h3 class="theme-text mb-3 text-2xl font-bold">{sponsor.name}</h3>
-                  <p class="theme-text-secondary text-lg leading-relaxed">{sponsor.description}</p>
-                </div>
-              </div>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+          <div class="grid grid-cols-1 gap-8">
+            {
+              goldSponsors.map((sponsor, idx) => (
+                <a
+                  href={sponsor.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="gold-card theme-card rounded-2xl border border-yellow-500/30 p-10 transition-all duration-300 hover:-translate-y-1 hover:border-yellow-400/60"
+                  style={`animation-delay: ${idx * 0.2}s;`}
+                >
+                  <div class="flex flex-col items-center gap-6 md:flex-row">
+                    <div class="flex h-32 w-32 shrink-0 items-center justify-center rounded-2xl border border-yellow-500/20 bg-yellow-950/20">
+                      <img
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        class="h-28 w-28 object-contain"
+                        onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
+                      />
+                    </div>
+                    <div class="text-center md:text-left">
+                      <h3 class="theme-text mb-3 text-2xl font-bold">{sponsor.name}</h3>
+                      <p class="theme-text-secondary text-lg leading-relaxed">{sponsor.description}</p>
+                    </div>
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <!-- ═══════════════ SILVER TIER ═══════════════ -->
-  <section id="silver-sponsors" class="section-themed theme-border relative overflow-hidden border-t py-24">
-    <div class="relative z-10 container mx-auto px-4">
-      <div class="mb-12 text-center">
-        <span class="tier-badge tier-badge--silver mb-4 inline-block rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest">
-          Silver Sponsors
-        </span>
-        <p class="mx-auto mt-2 max-w-xl text-gray-400">Valued supporters of our mission</p>
-      </div>
+  {
+    silverSponsors.length > 0 && (
+      <section id="silver-sponsors" class="section-themed theme-border relative overflow-hidden border-t py-24">
+        <div class="relative z-10 container mx-auto px-4">
+          <div class="mb-12 text-center">
+            <span class="tier-badge tier-badge--silver mb-4 inline-block rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest">
+              Silver Sponsors
+            </span>
+            <p class="mx-auto mt-2 max-w-xl text-gray-400">Valued supporters of our mission</p>
+          </div>
 
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {
-          silverSponsors.map((sponsor, idx) => (
-            <a
-              href={sponsor.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="silver-card theme-card rounded-2xl border border-gray-400/20 p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gray-300/40"
-              style={`animation-delay: ${idx * 0.2}s;`}
-            >
-              <div class="flex items-start gap-6">
-                <div class="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl border border-gray-400/10 bg-gray-800/30">
-                  <img
-                    src={sponsor.logo}
-                    alt={sponsor.name}
-                    class="h-20 w-20 object-contain"
-                    onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
-                  />
-                </div>
-                <div>
-                  <h3 class="theme-text mt-1 mb-2 text-xl font-bold">{sponsor.name}</h3>
-                  <p class="theme-text-secondary leading-relaxed">{sponsor.description}</p>
-                </div>
-              </div>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+          <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {
+              silverSponsors.map((sponsor, idx) => (
+                <a
+                  href={sponsor.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="silver-card theme-card rounded-2xl border border-gray-400/20 p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gray-300/40"
+                  style={`animation-delay: ${idx * 0.2}s;`}
+                >
+                  <div class="flex items-start gap-6">
+                    <div class="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl border border-gray-400/10 bg-gray-800/30">
+                      <img
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        class="h-20 w-20 object-contain"
+                        onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
+                      />
+                    </div>
+                    <div>
+                      <h3 class="theme-text mt-1 mb-2 text-xl font-bold">{sponsor.name}</h3>
+                      <p class="theme-text-secondary leading-relaxed">{sponsor.description}</p>
+                    </div>
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <!-- ═══════════════ BRONZE TIER ═══════════════ -->
-  <section id="bronze-sponsors" class="section-themed theme-border relative overflow-hidden border-t py-24">
-    <div class="relative z-10 container mx-auto px-4">
-      <div class="mb-12 text-center">
-        <span class="tier-badge tier-badge--bronze mb-4 inline-block rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest">
-          Bronze Sponsors
-        </span>
-        <p class="mx-auto mt-2 max-w-xl text-gray-400">Community champions</p>
-      </div>
+  {
+    bronzeSponsors.length > 0 && (
+      <section id="bronze-sponsors" class="section-themed theme-border relative overflow-hidden border-t py-24">
+        <div class="relative z-10 container mx-auto px-4">
+          <div class="mb-12 text-center">
+            <span class="tier-badge tier-badge--bronze mb-4 inline-block rounded-full px-4 py-1 text-sm font-bold uppercase tracking-widest">
+              Bronze Sponsors
+            </span>
+            <p class="mx-auto mt-2 max-w-xl text-gray-400">Community champions</p>
+          </div>
 
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-        {
-          bronzeSponsors.map((sponsor, idx) => (
-            <a
-              href={sponsor.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="bronze-card theme-card rounded-2xl border border-amber-700/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-amber-600/40"
-              style={`animation-delay: ${idx * 0.15}s;`}
-            >
-              <div class="flex flex-col items-center gap-4 text-center">
-                <div class="flex h-16 w-16 items-center justify-center rounded-lg border border-amber-700/10 bg-amber-950/20">
-                  <img
-                    src={sponsor.logo}
-                    alt={sponsor.name}
-                    class="h-12 w-12 object-contain"
-                    onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
-                  />
-                </div>
-                <div>
-                  <h3 class="theme-text mb-1 text-base font-bold">{sponsor.name}</h3>
-                  <p class="theme-text-secondary text-sm leading-relaxed">{sponsor.description}</p>
-                </div>
-              </div>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+            {
+              bronzeSponsors.map((sponsor, idx) => (
+                <a
+                  href={sponsor.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="bronze-card theme-card rounded-2xl border border-amber-700/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-amber-600/40"
+                  style={`animation-delay: ${idx * 0.15}s;`}
+                >
+                  <div class="flex flex-col items-center gap-4 text-center">
+                    <div class="flex h-16 w-16 items-center justify-center rounded-lg border border-amber-700/10 bg-amber-950/20">
+                      <img
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        class="h-12 w-12 object-contain"
+                        onerror="this.onerror=null;this.src='/global/duca-logo.webp';"
+                      />
+                    </div>
+                    <div>
+                      <h3 class="theme-text mb-1 text-base font-bold">{sponsor.name}</h3>
+                      <p class="theme-text-secondary text-sm leading-relaxed">{sponsor.description}</p>
+                    </div>
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <!-- Partners — organisations we work with and that support us -->
   <section id="partners" class="section-themed theme-border relative overflow-hidden border-t py-24">
@@ -302,14 +314,14 @@ LINK: ACTIVE ●</span></pre>
         client:visible
       />
 
-      <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div class="mt-12 flex flex-wrap justify-center gap-8">
         {
           collaborators.map((collab, idx) => (
             <a
               href={collab.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="collaborator-card theme-card theme-border rounded-2xl border p-10 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5"
+              class="collaborator-card theme-card theme-border w-full md:w-[calc(50%-16px)] rounded-2xl border p-10 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5"
               style={`animation-delay: ${idx * 0.2}s;`}
             >
               <div class="flex items-start gap-6">
@@ -355,7 +367,7 @@ LINK: ACTIVE ●</span></pre>
             Get in touch to find the right fit.
           </p>
           <a
-            href="/contact"
+            href="/contact/"
             class="inline-flex items-center justify-center rounded-full bg-amber-500 px-8 py-4 text-lg font-semibold text-black transition-colors hover:bg-amber-400"
           >
             Get in Touch
@@ -369,7 +381,7 @@ LINK: ACTIVE ●</span></pre>
   <section class="section-themed theme-border border-t py-16">
     <div class="container mx-auto px-4 text-center">
       <div
-        class="animate-border-glow mx-auto max-w-2xl rounded-2xl border border-amber-500/20 bg-linear-to-br from-amber-900/10 to-black p-10"
+        class="mx-auto max-w-2xl rounded-2xl border border-amber-500/20 bg-linear-to-br from-amber-900/10 to-black p-10"
       >
         <h3 class="mb-4 text-2xl font-bold text-white">Join Our Community</h3>
         <p class="mb-6 text-gray-400">

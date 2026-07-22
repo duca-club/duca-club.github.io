@@ -36,13 +36,21 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
 <DefaultLayout title={event.data.title}>
   <article class="section-themed">
     <!-- Hero -->
-    <header class="relative overflow-hidden pt-40 pb-20">
-      <div class="absolute inset-0 bg-linear-to-b from-purple-900/20 via-transparent to-transparent"></div>
-      <div class="bg-grid-pattern absolute inset-0"></div>
+    <header class="relative overflow-hidden pt-40 pb-20 bg-slate-950">
+      {
+        event.data.featuredImage && (
+          <div
+            class="absolute inset-0 bg-cover bg-center opacity-20 pointer-events-none"
+            style={{ backgroundImage: `url(${event.data.featuredImage})` }}
+          />
+        )
+      }
+      <div class="absolute inset-0 bg-linear-to-b from-purple-900/30 via-slate-950/80 to-slate-950"></div>
+      <div class="bg-grid-pattern absolute inset-0 opacity-40"></div>
 
       <div class="relative z-10 container mx-auto px-4">
         <a
-          href="/events"
+          href="/events/"
           class="theme-text-secondary mb-6 inline-flex items-center gap-2 transition-colors hover:text-purple-400"
         >
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -77,7 +85,7 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
         </p>
 
         <!-- Event Details Grid -->
-        <div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           <div class="theme-card rounded-xl border p-4">
             <div class="theme-text-muted mb-1 text-sm">Date</div>
             <div class="theme-text font-medium">{formatDate(event.data.eventDate)}</div>
@@ -93,21 +101,6 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
             <div class="theme-text-muted mb-1 text-sm">Location</div>
             <div class="theme-text font-medium">{event.data.location}</div>
           </div>
-          {
-            event.data.registrationUrl && isUpcoming && (
-              <div class="rounded-xl bg-purple-600 p-4 text-white">
-                <div class="mb-1 text-sm text-purple-200">Registration</div>
-                <a
-                  href={event.data.registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="font-medium hover:underline"
-                >
-                  Register Now →
-                </a>
-              </div>
-            )
-          }
         </div>
 
         {
@@ -146,27 +139,7 @@ const isUpcoming = new Date(event.data.eventDate) >= new Date();
       </div>
     </div>
 
-    <!-- Action Buttons -->
-    {
-      isUpcoming && event.data.registrationUrl && (
-        <div class="container mx-auto px-4 pb-16">
-          <div class="theme-card mx-auto max-w-3xl rounded-2xl border p-8 text-center">
-            <h2 class="theme-text mb-4 text-2xl font-bold">Ready to join us?</h2>
-            <p class="theme-text-secondary mb-6">
-              Secure your spot for this event. Registration helps us plan and ensures you get all the updates.
-            </p>
-            <a
-              href={event.data.registrationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"
-            >
-              Register on Humanitix
-            </a>
-          </div>
-        </div>
-      )
-    }
+
   </article>
 </DefaultLayout>
 

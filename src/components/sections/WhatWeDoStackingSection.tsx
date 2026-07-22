@@ -143,32 +143,38 @@ const StackingCardContent = ({
 export const WhatWeDoStackingSection = () => {
   return (
     <section className="section-themed-alt">
-      <div className="container mx-auto px-4 pt-24 pb-12">
-        <SectionHeading
-          title="What We Do"
-          subtitle="Hands-on learning and community support for future cybersecurity professionals"
-        />
+
+      <div data-sticky-header className="sticky top-[96px] z-20 bg-gradient-to-b from-[#060b14] via-[#060b14]/95 to-transparent pt-20 pb-16 mb-12">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="What We Do"
+            subtitle="Hands-on learning and community support for future cybersecurity professionals"
+            className="mb-0"
+          />
+        </div>
       </div>
 
-      <StackingCards>
+      <StackingCards
+        footer={
+          <div className="container mx-auto px-4 pb-12 pt-8">
+            <div className="text-center">
+              <p className="theme-text-secondary mb-6 text-lg">
+                Ready to start your cybersecurity journey?
+              </p>
+              <a
+                href="/join/"
+                className="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"
+              >
+                Join Us
+              </a>
+            </div>
+          </div>
+        }
+      >
         {whatWeDoCards.map((card, i) => (
           <StackingCardContent key={card.title} card={card} index={i} />
         ))}
       </StackingCards>
-
-      <div className="container mx-auto px-4 pb-12 pt-8">
-        <div className="text-center">
-          <p className="theme-text-secondary mb-6 text-lg">
-            Ready to start your cybersecurity journey?
-          </p>
-          <a
-            href="/join"
-            className="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"
-          >
-            Join Us
-          </a>
-        </div>
-      </div>
     </section>
   );
 };

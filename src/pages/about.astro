@@ -30,7 +30,7 @@ const memberCount = await getDiscordMemberCount();
   <CoreValuesSection client:visible />
 
   <!-- Meet the Executives -->
-  <TeamSection executives={executives} client:visible />
+  <TeamSection executives={executives["2026"]} client:visible />
 
   <!-- Partners -->
   <PartnersSection client:visible />
@@ -45,7 +45,7 @@ const memberCount = await getDiscordMemberCount();
       </p>
       <div class="flex flex-col justify-center gap-4 sm:flex-row">
         <a
-          href="/join"
+          href="/join/"
           class="inline-flex items-center justify-center rounded-full bg-purple-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-purple-700"
         >
           Join Us

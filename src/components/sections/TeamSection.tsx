@@ -31,7 +31,7 @@ export const TeamSection = ({
             viewport={{ once: true }}
             className="mt-12 text-center"
           >
-            <Button href="/meet-the-team" variant="outline">
+            <Button href="/meet-the-team/" variant="outline">
               View Full Team & Divisions
             </Button>
           </motion.div>

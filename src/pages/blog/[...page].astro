@@ -90,7 +90,7 @@ const authors = authorsJson as Record<string, Author>;
               <li>
                 <Card
                   imageComponent={post.featuredImage}
-                  url={"/blog/" + post.data.slug}
+                  url={"/blog/" + post.data.slug + "/"}
                   title={post.data.title}
                   headingLevel="h2"
                   footer={`Author: ${authorName}`}

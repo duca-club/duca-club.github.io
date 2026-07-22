@@ -29,7 +29,7 @@ export const sponsors: PartnerEntry[] = [
   {
     name: "Red Bull",
     logo: "/global/redbull.png",
-    href: "#",
+    href: "https://www.redbull.com/",
     description:
       "Red Bull fuels our hackathons, CTF nights, and study sessions, keeping our members energised and focused when it matters most.",
   },
@@ -65,32 +65,32 @@ export const collaborators: PartnerEntry[] = [
   {
     name: "Mastercard",
     logo: "/global/mastercard.png",
-    href: "#",
-    description: "Placeholder collaborator — replace with real details.",
+    href: "https://www.mastercard.com.au/",
+    description: "Teamed up to host cybersecurity career panels and mentoring sessions, giving members insights into security engineering at global scale.",
   },
   {
     name: "Hack4G",
     logo: "/global/hck4g.jpeg",
-    href: "#",
-    description: "Placeholder collaborator — replace with real details.",
+    href: "https://acucys.com.au/",
+    description: "Partnered on community hackathons and cybersecurity challenges, helping students build hands-on skills in a collaborative environment.",
   },
   {
     name: "CommBank",
     logo: "/global/commbank.png",
-    href: "#",
-    description: "Placeholder collaborator — replace with real details.",
+    href: "https://www.commbank.com.au/",
+    description: "Collaborated on secure code training seminars, incident response workshops, and exclusive graduate recruitment pathway talks.",
   },
   {
     name: "DownUnderCTF",
     logo: "/global/ductf.png",
-    href: "#",
-    description: "Placeholder collaborator — replace with real details.",
+    href: "https://downunderctf.com/",
+    description: "Teamed up to host local play-alongs and training sessions for DownUnderCTF, the largest CTF competition in the Southern Hemisphere.",
   },
   {
     name: "Accenture",
     logo: "/global/Accenture.png",
-    href: "#",
-    description: "Placeholder collaborator — replace with real details.",
+    href: "https://www.accenture.com/au-en",
+    description: "Collaborated on security consulting case study workshops, resume reviews, and career networking nights for aspiring analysts.",
   },
 ];
 
@@ -107,38 +107,10 @@ export const tieredSponsors: TieredSponsorEntry[] = [
   {
     name: "Red Bull",
     logo: "/global/redbull.png",
-    href: "#",
+    href: "https://www.redbull.com/",
     description:
       "Red Bull fuels our hackathons, CTF nights, and study sessions, keeping our members energised and focused when it matters most.",
     tier: "silver",
-  },
-  {
-    name: "Placeholder Silver Sponsor",
-    logo: "/global/duca-logo.webp",
-    href: "#",
-    description: "Placeholder — replace with a real silver sponsor.",
-    tier: "silver",
-  },
-  {
-    name: "Placeholder Bronze A",
-    logo: "/global/duca-logo.webp",
-    href: "#",
-    description: "Placeholder — replace with a real bronze sponsor.",
-    tier: "bronze",
-  },
-  {
-    name: "Placeholder Bronze B",
-    logo: "/global/duca-logo.webp",
-    href: "#",
-    description: "Placeholder — replace with a real bronze sponsor.",
-    tier: "bronze",
-  },
-  {
-    name: "Placeholder Bronze C",
-    logo: "/global/duca-logo.webp",
-    href: "#",
-    description: "Placeholder — replace with a real bronze sponsor.",
-    tier: "bronze",
   },
 ];
 

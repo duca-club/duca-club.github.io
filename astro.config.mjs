@@ -95,7 +95,8 @@ export default defineConfig({
     compressHTML: true,
     site: 'https://duca-club.github.io',
     base: '/',
-    trailingSlash: 'ignore',
+    trailingSlash: 'always',
+    build: { format: 'directory' },
     integrations: [compress(), icon(), mdx(), sitemap(), react()],
     vite: viteConfig,
 })

@@ -1,7 +1,5 @@
 ---
 import DefaultLayout from "@layouts/DefaultLayout.astro";
-import { SectionHeading } from "@components/ui/section-heading";
-import { AnimatedGradientBackground } from "@components/ui/animated-gradient";
 import { RetroContactForm } from "@components/ui/retro-contact-form";
 
 const contactMethods = [
@@ -41,136 +39,141 @@ const contactMethods = [
 ---
 
 <DefaultLayout title="Contact">
-  <!-- Hero Section with Animated Gradient -->
-  <section class="relative flex min-h-[50vh] items-center justify-center overflow-hidden">
-    <AnimatedGradientBackground
-      containerClassName="absolute inset-0 !min-h-0"
-      gradientColors={["#3b82f6", "#06b6d4", "#6366f1", "#8b5cf6"]}
-      client:load
-    >
-      <div></div>
-    </AnimatedGradientBackground>
-    <div class="absolute inset-0 bg-black/50"></div>
-    <div class="bg-grid-pattern absolute inset-0 opacity-20"></div>
+  <div class="section-themed relative min-h-screen overflow-hidden pt-32 pb-24">
+    <!-- Seamless Grid Pattern across entire page background -->
+    <div class="bg-grid-pattern absolute inset-0 opacity-15 pointer-events-none"></div>
 
-    <div class="relative z-10 container mx-auto px-4 pt-40 pb-20 text-center">
-      <h1 class="mb-6 text-5xl font-bold text-white md:text-7xl">
-        <span class="a11y-gradient-text bg-linear-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">Contact Us</span>
-      </h1>
-      <p class="mx-auto max-w-2xl text-xl text-gray-300">
-        Have questions? Want to partner with us? We'd love to hear from you!
-      </p>
-    </div>
-  </section>
+    <!-- Soft, ambient cyberpunk glow at the top -->
+    <div 
+      class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1200px] h-[500px] rounded-full blur-3xl pointer-events-none z-0"
+      style="background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.03) 60%, transparent 100%);"
+    ></div>
 
-  <!-- Contact Methods - Funky Boxes -->
-  <section class="section-themed data-stream-bg relative overflow-hidden py-24">
     <div class="relative z-10 container mx-auto px-4">
-      <SectionHeading title="Get In Touch" subtitle="Choose your preferred way to reach us" client:visible />
+      <!-- Page Title -->
+      <div class="text-center mb-72 mt-72">
+        <h1 class="mb-4 text-4xl font-bold text-white md:text-6xl">
+          <span class="bg-linear-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">Contact Hub</span>
+        </h1>
+        <p class="mx-auto max-w-2xl text-base text-gray-300">
+          Choose a direct channel below or drop us a secure message using our retro mail terminal.
+        </p>
+      </div>
 
-      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-        {
-          contactMethods.map((method, idx) => (
+      <!-- Dashboard Workspace -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch mb-24">
+        <!-- Left Column: Retro Mail Terminal -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="mb-2">
+            <h2 class="theme-text text-2xl font-bold md:text-3xl">Send Us a Message</h2>
+            <p class="theme-text-secondary mt-2 text-sm">Use our retro mail terminal to drop us a line</p>
+          </div>
+          <RetroContactForm client:visible />
+        </div>
+
+        <!-- Right Column: Connections Grid -->
+        <div class="lg:col-span-5 flex flex-col">
+          <div class="mb-8">
+            <h2 class="theme-text text-2xl font-bold md:text-3xl">Direct Channels</h2>
+            <p class="theme-text-secondary mt-2 text-sm">Find us on our social and community channels</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
+            {
+              contactMethods.map((method, idx) => (
+                <a
+                  href={method.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-funky-box group theme-card theme-border relative overflow-hidden rounded-xl border p-5 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between h-full"
+                  style={`--glow-color: ${method.color};`}
+                >
+                  <div class="relative z-10 flex flex-col justify-between h-full flex-1">
+                    <div>
+                      <div class="mb-3 inline-block text-3xl transition-transform group-hover:scale-110">{method.icon}</div>
+                      <h3 class="theme-text mb-1 text-base font-bold">{method.title}</h3>
+                      <p class="theme-text-secondary mb-3 text-xs line-clamp-3">{method.description}</p>
+                    </div>
+                    <span class="inline-flex items-center text-xs font-semibold transition-colors mt-auto" style={`color: ${method.color};`}>
+                      {method.linkText}
+                      <svg
+                        class="ml-1.5 h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2.5"
+                          d="M14 5l7 7m0 0l-7 7m7-7H3"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Campus Coordinates -->
+      <div class="mt-20">
+        <div class="mb-12 text-center">
+          <h2 class="theme-text text-3xl font-bold md:text-4xl">Campus Coordinates</h2>
+          <p class="theme-text-secondary mt-3 max-w-2xl mx-auto">We operate across multiple Deakin University campuses</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div
+            class="theme-card theme-border relative overflow-hidden rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/30"
+          >
+            <div class="absolute top-0 right-0 p-4 font-mono text-xs text-blue-500/40">HQ_EAST</div>
+            <h3 class="theme-text mb-4 text-xl font-bold flex items-center gap-2">
+              <span class="text-2xl">📍</span> Burwood Campus
+            </h3>
+            <p class="theme-text-secondary">221 Burwood Hwy</p>
+            <p class="theme-text-secondary mb-4">Burwood VIC 3125</p>
+            <p class="theme-text-muted text-sm mb-6">Main meeting location for workshops, presentations, and cyber lab events.</p>
             <a
-              href={method.link}
+              href="https://maps.google.com/?q=Deakin+University+Burwood+Campus"
               target="_blank"
               rel="noopener noreferrer"
-              class="contact-funky-box group theme-card theme-border relative overflow-hidden rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1"
-              style={`--glow-color: ${method.color}; animation-delay: ${idx * 0.15}s;`}
+              class="inline-flex items-center text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors"
             >
-              <div class="relative z-10">
-                <div class="mb-4 inline-block text-4xl transition-transform group-hover:scale-110">{method.icon}</div>
-                <h3 class="theme-text mb-2 text-xl font-bold">{method.title}</h3>
-                <p class="theme-text-secondary mb-4">{method.description}</p>
-                <span class="inline-flex items-center font-medium transition-colors" style={`color: ${method.color};`}>
-                  {method.linkText}
-                  <svg
-                    class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
-                </span>
-              </div>
+              Open in Google Maps
+              <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
             </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- Retro Contact Form -->
-  <section class="section-themed-alt theme-border border-t py-24">
-    <div class="container mx-auto px-4">
-      <SectionHeading
-        title="Send Us a Message"
-        subtitle="Use our retro mail terminal to drop us a line"
-        client:visible
-      />
-
-      <div class="mt-12">
-        <RetroContactForm client:visible />
-      </div>
-    </div>
-  </section>
-
-  <!-- Discord CTA - Terminal Style -->
-  <section class="section-themed theme-border border-t py-16">
-    <div class="container mx-auto px-4">
-      <div
-        class="mx-auto max-w-2xl rounded-xl p-8 text-center font-mono"
-        style="background: rgba(0,20,0,0.6); border: 1px solid rgba(51, 255, 51, 0.3); box-shadow: 0 0 30px rgba(51,255,51,0.08);"
-      >
-        <p class="mb-4 text-sm" style="color: rgba(51,255,51,0.6);">{">"} DUCA_NET // COMMUNITY_LINK</p>
-        <p class="mb-6 text-lg" style="color: #33ff33; text-shadow: 0 0 10px rgba(51,255,51,0.4);">
-          {">"} connect --server discord.com/invite/duca
-          <span class="ml-1 animate-pulse">█</span>
-        </p>
-        <a
-          href="https://discord.com/invite/duca"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="contact-page-action inline-flex items-center justify-center rounded-lg px-6 py-3 font-mono font-bold transition-all duration-200 hover:scale-105"
-          style="background-color: #33ff33; color: #000; box-shadow: 0 0 20px rgba(51,255,51,0.4); text-shadow: none;"
-        >
-          [ENTER] Discord
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Location Info -->
-  <section class="section-themed theme-border border-t py-24">
-    <div class="container mx-auto px-4">
-      <SectionHeading title="Find Us" subtitle="We're based at Deakin University campuses" client:visible />
-
-      <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div
-          class="theme-card theme-border rounded-2xl border p-8 transition-colors duration-300 hover:-translate-y-1 hover:border-blue-500/30"
-        >
-          <h3 class="theme-text mb-4 text-xl font-bold">Burwood Campus</h3>
-          <p class="theme-text-secondary mb-2">221 Burwood Hwy</p>
-          <p class="theme-text-secondary mb-2">Burwood VIC 3125</p>
-          <p class="theme-text-muted text-sm">Main meeting location for most events</p>
-        </div>
-        <div
-          class="theme-card theme-border rounded-2xl border p-8 transition-colors duration-300 hover:-translate-y-1 hover:border-blue-500/30"
-        >
-          <h3 class="theme-text mb-4 text-xl font-bold">Geelong Waurn Ponds Campus</h3>
-          <p class="theme-text-secondary mb-2">75 Pigdons Rd</p>
-          <p class="theme-text-secondary mb-2">Waurn Ponds VIC 3216</p>
-          <p class="theme-text-muted text-sm">Regular events for Geelong members</p>
+          </div>
+          <div
+            class="theme-card theme-border relative overflow-hidden rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500/30"
+          >
+            <div class="absolute top-0 right-0 p-4 font-mono text-xs text-indigo-500/40">HQ_WEST</div>
+            <h3 class="theme-text mb-4 text-xl font-bold flex items-center gap-2">
+              <span class="text-2xl">📍</span> Geelong Waurn Ponds Campus
+            </h3>
+            <p class="theme-text-secondary">75 Pigdons Rd</p>
+            <p class="theme-text-secondary mb-4">Waurn Ponds VIC 3216</p>
+            <p class="theme-text-muted text-sm mb-6">Regular meetups, hackathons, and local events for our Geelong members.</p>
+            <a
+              href="https://maps.google.com/?q=Deakin+University+Waurn+Ponds+Campus"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
+            >
+              Open in Google Maps
+              <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </DefaultLayout>
 
 <style>
