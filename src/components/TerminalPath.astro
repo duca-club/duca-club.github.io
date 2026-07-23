@@ -1,0 +1,54 @@
+---
+/**
+ * TerminalPath Component
+ *
+ * @description A directory-style breadcrumb path rendered like a terminal
+ * path, e.g. duca / events / "Speedrunning Cyber". Segments containing
+ * spaces are quoted, as they would need to be in a shell. Every segment
+ * except the last links to its page.
+ */
+interface Props {
+  /**
+   * Path segments in order from root to current page. The last segment is
+   * treated as the current page and rendered without a link.
+   */
+  segments: { label: string; href?: string }[];
+  /**
+   * Additional classes to apply to the nav element
+   */
+  class?: string;
+}
+
+const { segments, class: className } = Astro.props;
+
+// Quote segments with spaces, as a terminal would require for directories.
+const quote = (label: string): string => (label.includes(" ") ? `"${label}"` : label);
+---
+
+<nav aria-label="Breadcrumb" class:list={["terminal-path", className]}>
+  <ol class="flex flex-wrap items-center gap-x-2 font-mono text-sm">
+    {
+      segments.map((segment, index) => {
+        const isLast = index === segments.length - 1;
+        return (
+          <li class="flex items-center gap-x-2">
+            {index > 0 && (
+              <span class="theme-text-muted select-none" aria-hidden="true">
+                /
+              </span>
+            )}
+            {!isLast && segment.href ? (
+              <a href={segment.href} class="theme-text-secondary transition-colors hover:text-purple-400">
+                {quote(segment.label)}
+              </a>
+            ) : (
+              <span class="theme-text" aria-current={isLast ? "page" : undefined}>
+                {quote(segment.label)}
+              </span>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>
