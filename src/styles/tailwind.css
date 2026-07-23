@@ -404,6 +404,44 @@
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
+/* Emerald variant used on the projects page */
+@keyframes pulse-glow-emerald {
+  0%,
+  100% {
+    box-shadow:
+      0 0 5px rgba(16, 185, 129, 0.3),
+      0 0 10px rgba(16, 185, 129, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 15px rgba(16, 185, 129, 0.5),
+      0 0 30px rgba(16, 185, 129, 0.2);
+  }
+}
+
+.animate-pulse-glow-emerald {
+  animation: pulse-glow-emerald 2s ease-in-out infinite;
+}
+
+/* Meteor shower streaks (Aceternity-style) */
+@keyframes meteor {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-500px);
+    opacity: 0;
+  }
+}
+
+.animate-meteor {
+  animation: meteor 5s linear infinite;
+}
+
 /* Subtle grid pulse for sections - makes the background grid "breathe" */
 @keyframes grid-pulse {
   0%,
@@ -860,7 +898,9 @@
 :root.no-js .animate-shimmer,
 :root.no-js .animate-float,
 :root.no-js .animate-border-glow,
-:root.no-js .animate-pulse-glow {
+:root.no-js .animate-pulse-glow,
+:root.no-js .animate-pulse-glow-emerald,
+:root.no-js .animate-meteor {
   animation: none !important;
 }
 
