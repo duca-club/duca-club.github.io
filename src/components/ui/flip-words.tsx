@@ -12,22 +12,27 @@ export const FlipWords = ({
   duration?: number;
   className?: string;
 }) => {
-  const [currentWord, setCurrentWord] = useState(words[0]);
+  const [currentWord, setCurrentWord] = useState(words[0] ?? "");
   const [isAnimating, setIsAnimating] = useState(false);
 
   const startAnimation = useCallback(() => {
-    const word = words[words.indexOf(currentWord) + 1] ?? words[0];
+    const word = words[words.indexOf(currentWord) + 1] ?? words[0] ?? "";
     setCurrentWord(word);
     setIsAnimating(true);
   }, [currentWord, words]);
 
   useEffect(() => {
-    if (!isAnimating) {
-      const timer = setTimeout(() => {
-        startAnimation();
-      }, duration);
-      return () => clearTimeout(timer);
-    }
+    if (isAnimating) return undefined;
+    // The a11y reduced-motion kill-switch only zeroes CSS animations, so
+    // the JS rotation loop has to check it (and the OS preference) itself.
+    const reducedMotion =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      document.documentElement.getAttribute("data-a11y-duca41") === "true";
+    if (reducedMotion) return undefined;
+    const timer = setTimeout(() => {
+      startAnimation();
+    }, duration);
+    return () => clearTimeout(timer);
   }, [isAnimating, duration, startAnimation]);
 
   return (
