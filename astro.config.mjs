@@ -97,6 +97,18 @@ export default defineConfig({
     base: '/',
     trailingSlash: 'always',
     build: { format: 'directory' },
-    integrations: [compress(), icon(), mdx(), sitemap(), react()],
+    integrations: [
+        // astro-compress's html-minifier-terser pass rewrites the built HTML
+        // (sorting class names, minifying inline style attributes, etc.) in ways
+        // React's client render doesn't reproduce, which breaks hydration of the
+        // React islands (React error #418). It is not hydration-aware. Astro's own
+        // `compressHTML: true` already minifies HTML safely, so disable only the
+        // HTML pass here and keep astro-compress for CSS/JS/Image/SVG.
+        compress({ HTML: false }),
+        icon(),
+        mdx(),
+        sitemap(),
+        react(),
+    ],
     vite: viteConfig,
 })
