@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn";
 
@@ -17,7 +17,16 @@ export const EventsCalendar = ({
   events: CalendarEvent[];
   className?: string;
 }) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(() => new Date());
+  // On a static build the SSR'd month is frozen at build time; without this it
+  // would flash the stale build-time month before hydration corrects it to the
+  // visitor's real "now". Render a placeholder on the server and set the real
+  // date only after mounting on the client.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    setCurrentDate(new Date());
+  }, []);
 
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
@@ -83,6 +92,33 @@ export const EventsCalendar = ({
   // Add days of the month
   for (let day = 1; day <= daysInMonth; day++) {
     calendarDays.push(day);
+  }
+
+  // Structural placeholder rendered on the server / before mount so no stale
+  // build-time month is ever shown. Mirrors the real grid dimensions to avoid
+  // layout shift when the calendar swaps in.
+  if (!mounted) {
+    return (
+      <div className={cn("w-full", className)} aria-busy="true" aria-label="Loading calendar">
+        <div className="flex items-center justify-between mb-6">
+          <div className="h-9 w-9 rounded-lg theme-card border" />
+          <div className="h-7 w-44 rounded theme-card" />
+          <div className="h-9 w-9 rounded-lg theme-card border" />
+        </div>
+        <div className="grid grid-cols-7 gap-1 mb-2">
+          {dayNames.map((day) => (
+            <div key={day} className="text-center py-2 text-sm font-medium theme-text-muted">
+              {day}
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-7 gap-1">
+          {Array.from({ length: 42 }).map((_, i) => (
+            <div key={i} className="min-h-[100px] rounded-lg border theme-card" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
