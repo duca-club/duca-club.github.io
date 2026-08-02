@@ -254,14 +254,17 @@ export const HeroSection = () => {
       <div className="absolute bottom-[38%] left-0 w-full h-[8%] bg-gradient-to-t from-transparent to-[#00d1b7]/12 blur-[4px] pointer-events-none z-0" />
 
       {/* Scrolling Cyber Security / IT Icons - Left Side */}
-      <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '0s' }} />
-      <CyberIcon type="terminal" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '2s' }} />
-      <CyberIcon type="server" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '4s' }} />
+      {/* `both` fill mode holds the 0% keyframe (opacity 0) during animation-delay,
+          so staggered icons stay hidden until their scroll begins instead of
+          flashing bunched-up at their default position on load. */}
+      <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '0s' }} />
+      <CyberIcon type="terminal" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '2s' }} />
+      <CyberIcon type="server" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '4s' }} />
 
       {/* Scrolling Cyber Security / IT Icons - Right Side */}
-      <CyberIcon type="shield" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '1s' }} />
-      <CyberIcon type="server" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '3s' }} />
-      <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite', animationDelay: '5s' }} />
+      <CyberIcon type="shield" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '1s' }} />
+      <CyberIcon type="server" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '3s' }} />
+      <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '5s' }} />
 
       {/* Bottom transition blend layer (blends 3D grid/road smoothly into the next section's flat grid) */}
       <div className="absolute bottom-0 left-0 w-full h-[280px] bg-gradient-to-t from-[#00051a] via-[#00051a]/85 via-[#00051a]/40 to-transparent z-[2] pointer-events-none" />

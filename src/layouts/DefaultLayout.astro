@@ -99,8 +99,13 @@ const {
         const reducedMotionEnabled = document.documentElement.getAttribute("data-a11y-duca41") === "true";
         if (reducedMotionEnabled) return;
 
-        // Apply scroll-driven reveal animations to sections
-        const sections = document.querySelectorAll('section, [class*="section-themed"]');
+        // Apply scroll-driven reveal animations to sections.
+        // Skip sections owned by a hydrating React island: adding a class to
+        // their root before hydration causes a className hydration mismatch,
+        // and those islands already animate their own entrance via framer-motion.
+        const sections = [...document.querySelectorAll('section, [class*="section-themed"]')].filter(
+          (el) => !el.closest("astro-island"),
+        );
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {

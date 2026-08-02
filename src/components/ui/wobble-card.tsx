@@ -104,10 +104,11 @@ export const WobbleCard = ({
 };
 
 const Noise = () => (
+  // Uses the inline-SVG `.bg-noise` utility instead of a /noise.webp asset the
+  // repo never shipped (which 404'd on every page using WobbleCard).
   <div
-    className="absolute inset-0 w-full h-full scale-[1.2] transform opacity-10 [mask-image:radial-gradient(#fff,transparent,75%)] pointer-events-none"
+    className="bg-noise absolute inset-0 w-full h-full scale-[1.2] transform opacity-10 [mask-image:radial-gradient(#fff,transparent,75%)] pointer-events-none"
     style={{
-      backgroundImage: "url(/noise.webp)",
       backgroundSize: "30%",
     }}
   ></div>

@@ -113,6 +113,7 @@ export function TerminalTyping({
           const last = updated[updated.length - 1];
           if (!last) return prev;
           updated[updated.length - 1] = {
+            id: last.id,
             prompt: last.prompt,
             text: fullText.slice(0, currentCharIdx + 1),
             isTyping: last.isTyping,
