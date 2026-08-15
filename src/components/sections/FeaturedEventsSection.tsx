@@ -28,6 +28,7 @@ export const FeaturedEventsSection = ({
       day: "numeric",
       month: "long",
       year: "numeric",
+      timeZone: "Australia/Melbourne",
     });
   };
 
@@ -37,6 +38,7 @@ export const FeaturedEventsSection = ({
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
+      timeZone: "Australia/Melbourne",
     });
   };
 
@@ -79,6 +81,7 @@ export const FeaturedEventsSection = ({
                 {new Date(event.eventDate).toLocaleDateString("en-AU", {
                   day: "numeric",
                   month: "short",
+                  timeZone: "Australia/Melbourne",
                 })}
               </div>
 

@@ -25,6 +25,7 @@ const formatDate = (dateStr: string) => {
     day: "numeric",
     month: "short",
     year: "numeric",
+    timeZone: "Australia/Melbourne",
   });
 };
 
@@ -34,6 +35,7 @@ const formatTime = (dateStr: string) => {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
+    timeZone: "Australia/Melbourne",
   });
 };
 
