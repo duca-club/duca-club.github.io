@@ -4,11 +4,16 @@ import { getCollection } from 'astro:content';
 export async function GET(context: any) {
   const events = await getCollection('events');
   
+  // Sort events from newest to oldest
+  const sortedEvents = events.sort(
+    (a, b) => b.data.eventDate.valueOf() - a.data.eventDate.valueOf()
+  );
+
   return rss({
     title: 'DUCA Events',
     description: 'Upcoming events and workshops by the Deakin University Cyber Security Club (DUCA)',
     site: context.site || 'https://duca-club.github.io',
-    items: events.map((event) => ({
+    items: sortedEvents.map((event) => ({
       title: event.data.title,
       pubDate: event.data.eventDate,
       description: event.data.description,
