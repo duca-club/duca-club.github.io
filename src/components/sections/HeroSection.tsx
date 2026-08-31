@@ -6,10 +6,18 @@ import { useMouseGlow } from "@/utils/useMouseGlow";
 import { useEffect, useState } from "react";
 
 // Neon Cyber/IT Icon component
-const CyberIcon = ({ type, className, style }: { type: 'lock' | 'shield' | 'terminal' | 'server'; className?: string; style?: React.CSSProperties }) => (
-  <svg 
-    viewBox="0 0 100 100" 
-    className={`absolute pointer-events-none select-none z-0 ${className || ""}`}
+const CyberIcon = ({
+  type,
+  className,
+  style,
+}: {
+  type: "lock" | "shield" | "terminal" | "server";
+  className?: string;
+  style?: React.CSSProperties;
+}) => (
+  <svg
+    viewBox="0 0 100 100"
+    className={`pointer-events-none absolute z-0 select-none ${className || ""}`}
     style={style}
   >
     <defs>
@@ -18,28 +26,53 @@ const CyberIcon = ({ type, className, style }: { type: 'lock' | 'shield' | 'term
         <stop offset="100%" stopColor="#d648ff" />
       </linearGradient>
     </defs>
-    {type === 'lock' && (
+    {type === "lock" && (
       <>
-        <path d="M30,45 L30,78 C30,80 32,82 34,82 L66,82 C68,82 70,80 70,78 L70,45 Z" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
+        <path
+          d="M30,45 L30,78 C30,80 32,82 34,82 L66,82 C68,82 70,80 70,78 L70,45 Z"
+          fill="none"
+          stroke="url(#cyber-grad)"
+          strokeWidth="4"
+        />
         <path d="M40,45 L40,30 C40,18 60,18 60,30 L60,45" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
         <circle cx="50" cy="58" r="4.5" fill="url(#cyber-grad)" />
         <line x1="50" y1="62.5" x2="50" y2="71" stroke="url(#cyber-grad)" strokeWidth="3" strokeLinecap="round" />
       </>
     )}
-    {type === 'shield' && (
+    {type === "shield" && (
       <>
-        <path d="M50,15 C65,18 80,15 80,15 C80,45 75,70 50,85 C25,70 20,45 20,15 C20,15 35,18 50,15 Z" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" strokeLinejoin="round" />
-        <path d="M50,25 C60,27 70,25 70,25 C70,45 65,65 50,77 C35,65 30,45 30,25 C30,25 40,27 50,25 Z" fill="none" stroke="url(#cyber-grad)" strokeWidth="2.5" opacity="0.6" strokeLinejoin="round" />
+        <path
+          d="M50,15 C65,18 80,15 80,15 C80,45 75,70 50,85 C25,70 20,45 20,15 C20,15 35,18 50,15 Z"
+          fill="none"
+          stroke="url(#cyber-grad)"
+          strokeWidth="4"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M50,25 C60,27 70,25 70,25 C70,45 65,65 50,77 C35,65 30,45 30,25 C30,25 40,27 50,25 Z"
+          fill="none"
+          stroke="url(#cyber-grad)"
+          strokeWidth="2.5"
+          opacity="0.6"
+          strokeLinejoin="round"
+        />
       </>
     )}
-    {type === 'terminal' && (
+    {type === "terminal" && (
       <>
         <rect x="15" y="25" width="70" height="50" rx="5" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
-        <path d="M25,42 L33,49 L25,56" fill="none" stroke="url(#cyber-grad)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d="M25,42 L33,49 L25,56"
+          fill="none"
+          stroke="url(#cyber-grad)"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
         <line x1="38" y1="56" x2="53" y2="56" stroke="url(#cyber-grad)" strokeWidth="4.5" strokeLinecap="round" />
       </>
     )}
-    {type === 'server' && (
+    {type === "server" && (
       <>
         <rect x="15" y="20" width="70" height="17" rx="3" fill="none" stroke="url(#cyber-grad)" strokeWidth="4" />
         <circle cx="28" cy="28.5" r="3" fill="#00d1b7" className="animate-star-twinkle-1" />
@@ -61,16 +94,19 @@ const CyberIcon = ({ type, className, style }: { type: 'lock' | 'shield' | 'term
 );
 
 export const HeroSection = () => {
-  const { background, isHovering, handlers } = useMouseGlow(
-    600,
-    "rgba(139, 92, 246, 0.12)",
-  );
-  const [glitch, setGlitch] = useState<{ active: boolean; text: string; top: string; left: string; type: "text" | "bar" }>({
+  const { background, isHovering, handlers } = useMouseGlow(600, "rgba(139, 92, 246, 0.12)");
+  const [glitch, setGlitch] = useState<{
+    active: boolean;
+    text: string;
+    top: string;
+    left: string;
+    type: "text" | "bar";
+  }>({
     active: false,
     text: "",
     top: "20%",
     left: "10%",
-    type: "text"
+    type: "text",
   });
 
   useEffect(() => {
@@ -84,7 +120,7 @@ export const HeroSection = () => {
       "NMAP SCAN: 192.168.1.1 [PORT 443 OPEN]",
       "BYPASSING SSL PINNING... SUCCESS",
       "[*] BUFFER OVERFLOW TRIGGERED",
-      "STATUS: EXPLOITING VULNERABILITY [CVE-2026-9999]"
+      "STATUS: EXPLOITING VULNERABILITY [CVE-2026-9999]",
     ];
 
     let glitchTimeout: NodeJS.Timeout;
@@ -98,7 +134,7 @@ export const HeroSection = () => {
       setGlitch({ active: true, text, top, left, type });
 
       setTimeout(() => {
-        setGlitch(prev => ({ ...prev, active: false }));
+        setGlitch((prev) => ({ ...prev, active: false }));
         const nextInterval = Math.floor(Math.random() * 6000) + 4000;
         glitchTimeout = setTimeout(triggerGlitch, nextInterval);
       }, 250);
@@ -129,7 +165,7 @@ export const HeroSection = () => {
   const introDuration = shortAnimations ? 0.36 : 0.8;
   const ctaDuration = shortAnimations ? 0.24 : 0.5;
   const ctaDelay = shortAnimations ? 0.7 : 2;
-  const encryptedSpeed = shortAnimations ? 0.4 : 1;
+  const encryptedSpeed = shortAnimations ? 6 : 18;
 
   return (
     <section
@@ -141,43 +177,41 @@ export const HeroSection = () => {
       <div className="a11y-hero-overlay absolute inset-0 z-0 bg-gradient-to-b from-[#02010c] via-[#0b0518] to-[#12082b]" />
 
       {/* Twinkling Stars */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="pointer-events-none absolute inset-0 z-0">
         {/* Star set 1 */}
-        <div className="absolute top-[10%] left-[15%] w-[2px] h-[2px] bg-white rounded-full animate-star-twinkle-1" />
-        <div className="absolute top-[25%] left-[45%] w-[1.5px] h-[1.5px] bg-white rounded-full animate-star-twinkle-2" />
-        <div className="absolute top-[15%] left-[80%] w-[2px] h-[2px] bg-white rounded-full animate-star-twinkle-3" />
+        <div className="animate-star-twinkle-1 absolute top-[10%] left-[15%] h-[2px] w-[2px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-2 absolute top-[25%] left-[45%] h-[1.5px] w-[1.5px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-3 absolute top-[15%] left-[80%] h-[2px] w-[2px] rounded-full bg-white" />
         {/* Star set 2 */}
-        <div className="absolute top-[30%] left-[25%] w-[1.5px] h-[1.5px] bg-white rounded-full animate-star-twinkle-2" />
-        <div className="absolute top-[8%] left-[65%] w-[2px] h-[2px] bg-white rounded-full animate-star-twinkle-1" />
-        <div className="absolute top-[22%] left-[90%] w-[1.5px] h-[1.5px] bg-white rounded-full animate-star-twinkle-3" />
+        <div className="animate-star-twinkle-2 absolute top-[30%] left-[25%] h-[1.5px] w-[1.5px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-1 absolute top-[8%] left-[65%] h-[2px] w-[2px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-3 absolute top-[22%] left-[90%] h-[1.5px] w-[1.5px] rounded-full bg-white" />
         {/* Star set 3 */}
-        <div className="absolute top-[35%] left-[70%] w-[2px] h-[2px] bg-white rounded-full animate-star-twinkle-3" />
-        <div className="absolute top-[18%] left-[5%] w-[1.5px] h-[1.5px] bg-white rounded-full animate-star-twinkle-1" />
-        <div className="absolute top-[28%] left-[55%] w-[2px] h-[2px] bg-white rounded-full animate-star-twinkle-2" />
+        <div className="animate-star-twinkle-3 absolute top-[35%] left-[70%] h-[2px] w-[2px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-1 absolute top-[18%] left-[5%] h-[1.5px] w-[1.5px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-2 absolute top-[28%] left-[55%] h-[2px] w-[2px] rounded-full bg-white" />
       </div>
 
       {/* Synthwave Logo (replaces Sun) */}
-      <div className="absolute top-[110px] md:top-[130px] bottom-[40%] left-0 right-0 z-0 flex items-center justify-center select-none pointer-events-none px-4">
+      <div className="pointer-events-none absolute top-[110px] right-0 bottom-[40%] left-0 z-0 flex items-center justify-center px-4 select-none md:top-[130px]">
         {/* Glow Aura behind the logo */}
-        <div className="absolute w-[280px] h-[280px] md:w-[480px] md:h-[480px] rounded-full bg-gradient-to-b from-[#d648ff]/25 to-[#00d1b7]/20 blur-[50px] opacity-80 md:blur-[80px]" />
+        <div className="absolute h-[280px] w-[280px] rounded-full bg-gradient-to-b from-[#d648ff]/25 to-[#00d1b7]/20 opacity-80 blur-[50px] md:h-[480px] md:w-[480px] md:blur-[80px]" />
         {/* Logo Image with bottom gradient fade mask */}
-        <img 
-          src="/duca.png" 
-          alt="DUCA Logo" 
-          className="h-full w-auto max-w-full object-contain relative z-10 animate-float"
+        <img
+          src="/duca.png"
+          alt="DUCA Logo"
+          className="animate-float relative z-10 h-full w-auto max-w-full object-contain"
           style={{
-            maskImage: 'linear-gradient(to bottom, black 0%, black 45%, transparent 90%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 45%, transparent 90%)'
+            maskImage: "linear-gradient(to bottom, black 0%, black 45%, transparent 90%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 45%, transparent 90%)",
           }}
         />
       </div>
 
-
-
       {/* Retro Wireframe Mountains */}
-      <svg 
-        className="absolute bottom-[40%] left-0 w-full h-[100px] md:h-[140px] pointer-events-none select-none z-0" 
-        viewBox="0 0 1440 120" 
+      <svg
+        className="pointer-events-none absolute bottom-[40%] left-0 z-0 h-[100px] w-full select-none md:h-[140px]"
+        viewBox="0 0 1440 120"
         preserveAspectRatio="none"
       >
         <defs>
@@ -187,40 +221,40 @@ export const HeroSection = () => {
           </linearGradient>
         </defs>
         {/* Back mountains */}
-        <path 
-          d="M0,120 L150,60 L320,100 L500,30 L720,95 L950,20 L1150,85 L1300,45 L1440,120 Z" 
-          fill="url(#mountains-grad)" 
-          stroke="#d648ff" 
-          strokeWidth="1" 
-          strokeOpacity="0.3" 
+        <path
+          d="M0,120 L150,60 L320,100 L500,30 L720,95 L950,20 L1150,85 L1300,45 L1440,120 Z"
+          fill="url(#mountains-grad)"
+          stroke="#d648ff"
+          strokeWidth="1"
+          strokeOpacity="0.3"
         />
         {/* Front mountains */}
-        <path 
-          d="M0,120 L220,80 L380,105 L580,50 L800,90 L1080,40 L1250,80 L1440,120 Z" 
-          fill="url(#mountains-grad)" 
-          stroke="#00d1b7" 
-          strokeWidth="1.5" 
-          strokeOpacity="0.5" 
+        <path
+          d="M0,120 L220,80 L380,105 L580,50 L800,90 L1080,40 L1250,80 L1440,120 Z"
+          fill="url(#mountains-grad)"
+          stroke="#00d1b7"
+          strokeWidth="1.5"
+          strokeOpacity="0.5"
         />
       </svg>
 
       {/* 3D Floor Grid */}
-      <div 
-        className="absolute bottom-0 left-[-50%] w-[200%] h-[40%] overflow-hidden z-0 select-none pointer-events-none origin-top animate-synthwave-grid"
+      <div
+        className="animate-synthwave-grid pointer-events-none absolute bottom-0 left-[-50%] z-0 h-[40%] w-[200%] origin-top overflow-hidden select-none"
         style={{
-          transform: 'perspective(180px) rotateX(65deg)',
+          transform: "perspective(180px) rotateX(65deg)",
           backgroundImage: `
             linear-gradient(to right, rgba(0, 209, 183, 0.18) 1.5px, transparent 1.5px),
             linear-gradient(to bottom, rgba(0, 209, 183, 0.18) 1.5px, transparent 1.5px)
           `,
-          backgroundSize: '60px 60px',
+          backgroundSize: "60px 60px",
         }}
       />
 
       {/* Perspective Retro Road */}
-      <svg 
-        className="absolute bottom-0 left-0 w-full h-[40%] overflow-visible z-0 pointer-events-none select-none" 
-        viewBox="0 0 1000 500" 
+      <svg
+        className="pointer-events-none absolute bottom-0 left-0 z-0 h-[40%] w-full overflow-visible select-none"
+        viewBox="0 0 1000 500"
         preserveAspectRatio="none"
       >
         <defs>
@@ -231,43 +265,67 @@ export const HeroSection = () => {
         </defs>
         {/* Road surface */}
         <polygon points="475,0 525,0 780,500 220,500" fill="url(#road-grad)" opacity="0.9" />
-        
+
         {/* Neon Pink Road Borders */}
         <line x1="475" y1="0" x2="220" y2="500" stroke="#d648ff" strokeWidth="4" className="neon-glow-purple" />
         <line x1="525" y1="0" x2="780" y2="500" stroke="#d648ff" strokeWidth="4" className="neon-glow-purple" />
-        
+
         {/* Center Dash lines (Cyan) */}
-        <line 
-          x1="500" 
-          y1="0" 
-          x2="500" 
-          y2="500" 
-          stroke="#00d1b7" 
-          strokeWidth="3.5" 
-          strokeDasharray="40 60" 
-          className="neon-glow-bluish-green animate-synthwave-road" 
+        <line
+          x1="500"
+          y1="0"
+          x2="500"
+          y2="500"
+          stroke="#00d1b7"
+          strokeWidth="3.5"
+          strokeDasharray="40 60"
+          className="neon-glow-bluish-green animate-synthwave-road"
         />
       </svg>
 
       {/* Horizon Blend & Neon Light bar */}
-      <div className="absolute bottom-[40%] left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#00d1b7] to-transparent shadow-[0_0_8px_#00d1b7,0_0_15px_#00d1b7] z-0" />
-      <div className="absolute bottom-[38%] left-0 w-full h-[8%] bg-gradient-to-t from-transparent to-[#00d1b7]/12 blur-[4px] pointer-events-none z-0" />
+      <div className="absolute bottom-[40%] left-0 z-0 h-[2px] w-full bg-gradient-to-r from-transparent via-[#00d1b7] to-transparent shadow-[0_0_8px_#00d1b7,0_0_15px_#00d1b7]" />
+      <div className="pointer-events-none absolute bottom-[38%] left-0 z-0 h-[8%] w-full bg-gradient-to-t from-transparent to-[#00d1b7]/12 blur-[4px]" />
 
       {/* Scrolling Cyber Security / IT Icons - Left Side */}
       {/* `both` fill mode holds the 0% keyframe (opacity 0) during animation-delay,
           so staggered icons stay hidden until their scroll begins instead of
           flashing bunched-up at their default position on load. */}
-      <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '0s' }} />
-      <CyberIcon type="terminal" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '2s' }} />
-      <CyberIcon type="server" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-left" style={{ animation: 'cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '4s' }} />
+      <CyberIcon
+        type="lock"
+        className="h-[80px] w-[80px] origin-bottom-left md:h-[120px] md:w-[120px]"
+        style={{ animation: "cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "0s" }}
+      />
+      <CyberIcon
+        type="terminal"
+        className="h-[80px] w-[80px] origin-bottom-left md:h-[120px] md:w-[120px]"
+        style={{ animation: "cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "2s" }}
+      />
+      <CyberIcon
+        type="server"
+        className="h-[80px] w-[80px] origin-bottom-left md:h-[120px] md:w-[120px]"
+        style={{ animation: "cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "4s" }}
+      />
 
       {/* Scrolling Cyber Security / IT Icons - Right Side */}
-      <CyberIcon type="shield" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '1s' }} />
-      <CyberIcon type="server" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '3s' }} />
-      <CyberIcon type="lock" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] origin-bottom-right" style={{ animation: 'cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both', animationDelay: '5s' }} />
+      <CyberIcon
+        type="shield"
+        className="h-[80px] w-[80px] origin-bottom-right md:h-[120px] md:w-[120px]"
+        style={{ animation: "cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "1s" }}
+      />
+      <CyberIcon
+        type="server"
+        className="h-[80px] w-[80px] origin-bottom-right md:h-[120px] md:w-[120px]"
+        style={{ animation: "cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "3s" }}
+      />
+      <CyberIcon
+        type="lock"
+        className="h-[80px] w-[80px] origin-bottom-right md:h-[120px] md:w-[120px]"
+        style={{ animation: "cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "5s" }}
+      />
 
       {/* Bottom transition blend layer (blends 3D grid/road smoothly into the next section's flat grid) */}
-      <div className="absolute bottom-0 left-0 w-full h-[280px] bg-gradient-to-t from-[#00051a] via-[#00051a]/85 via-[#00051a]/40 to-transparent z-[2] pointer-events-none" />
+      <div className="pointer-events-none absolute bottom-0 left-0 z-[2] h-[280px] w-full bg-gradient-to-t from-[#00051a] via-[#00051a]/40 via-[#00051a]/85 to-transparent" />
 
       {/* Mouse-reactive torch glow — illuminates the grid as the cursor moves */}
       <motion.div
@@ -275,32 +333,33 @@ export const HeroSection = () => {
         style={{ background, opacity: isHovering ? 1 : 0 }}
       />
       {/* Soft radial backdrop shadow behind text (spans full height & width to prevent any clipping borders) */}
-      <div 
-        className="absolute inset-0 z-0 select-none pointer-events-none"
+      <div
+        className="pointer-events-none absolute inset-0 z-0 select-none"
         style={{
-          background: 'radial-gradient(ellipse at 50% 48%, rgba(2, 1, 12, 0.95) 0%, rgba(2, 1, 12, 0.7) 35%, rgba(2, 1, 12, 0.3) 65%, rgba(2, 1, 12, 0.1) 85%, transparent 100%)'
+          background:
+            "radial-gradient(ellipse at 50% 48%, rgba(2, 1, 12, 0.95) 0%, rgba(2, 1, 12, 0.7) 35%, rgba(2, 1, 12, 0.3) 65%, rgba(2, 1, 12, 0.1) 85%, transparent 100%)",
         }}
       />
 
       {/* Random Cybersecurity Terminal Glitch Effect Overlay */}
       {glitch.active && glitch.type === "text" && (
-        <div 
-          className="absolute pointer-events-none select-none z-0 font-mono text-[#00d1b7]/80 font-bold text-base md:text-xl tracking-wider animate-cyber-glitch"
+        <div
+          className="animate-cyber-glitch pointer-events-none absolute z-0 font-mono text-base font-bold tracking-wider text-[#00d1b7]/80 select-none md:text-xl"
           style={{
             top: glitch.top,
             left: glitch.left,
-            textShadow: '0 0 8px rgba(0, 209, 183, 0.8), -2px 0 #d648ff, 2px 0 #00d1b7'
+            textShadow: "0 0 8px rgba(0, 209, 183, 0.8), -2px 0 #d648ff, 2px 0 #00d1b7",
           }}
         >
           {glitch.text}
         </div>
       )}
       {glitch.active && glitch.type === "bar" && (
-        <div 
-          className="absolute left-0 right-0 h-[6px] bg-gradient-to-r from-transparent via-[#d648ff]/45 to-transparent pointer-events-none select-none z-0"
+        <div
+          className="pointer-events-none absolute right-0 left-0 z-0 h-[6px] bg-gradient-to-r from-transparent via-[#d648ff]/45 to-transparent select-none"
           style={{
             top: glitch.top,
-            boxShadow: '0 0 10px #d648ff, 0 0 20px #00d1b7'
+            boxShadow: "0 0 10px #d648ff, 0 0 20px #00d1b7",
           }}
         />
       )}
@@ -311,7 +370,7 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: introDuration }}
-          className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto"
+          className="mx-auto flex max-w-4xl flex-col items-center justify-center text-center"
         >
           {/* Encrypted DUCA Title */}
           <h1 className="a11y-hero-title a11y-gradient-text mb-4 bg-gradient-to-r from-purple-300 via-fuchsia-400 to-cyan-300 bg-clip-text text-7xl font-bold tracking-tight text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.35)] md:text-9xl">
@@ -341,12 +400,9 @@ export const HeroSection = () => {
             transition={{ delay: ctaDelay, duration: ctaDuration }}
             className="mt-10 flex flex-col justify-center gap-4 sm:flex-row"
           >
-           {/*<GlowingButton href="/join/">Join Us</GlowingButton>*/}
-            <Button
-              href="/join/"
-              variant="primary"
-            >
-            Join Us
+            {/*<GlowingButton href="/join/">Join Us</GlowingButton>*/}
+            <Button href="/join/" variant="primary">
+              Join Us
             </Button>
 
             <Button variant="outline" href="#what-we-do">
