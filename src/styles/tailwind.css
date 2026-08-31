@@ -757,9 +757,20 @@
 :root[data-a11y-duca43="true"] .a11y-hero-title,
 :root[data-a11y-duca43="true"] .a11y-hero-subtitle,
 :root[data-a11y-duca43="true"] .a11y-hero-body {
-  text-shadow:
+  color: #f8fafc !important;
+  -webkit-text-fill-color: #f8fafc !important;
+    text-shadow:
     0 2px 14px rgba(0, 0, 0, 0.82),
     0 0 1px rgba(0, 0, 0, 0.85);
+
+:root[data-a11y-duca43="true"] .a11y-hero-title,
+:root[data-a11y-duca43="true"] .a11y-hero-subtitle {
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+}
+
 }
 
 :root[data-a11y-duca43="true"] .a11y-scroll-overlay-card {
