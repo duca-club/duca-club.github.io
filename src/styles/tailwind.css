@@ -816,27 +816,27 @@
   text-decoration: none !important;
 }
 
-:root[data-a11y-duca44="true"] .events-page-button-primary {
+:root[data-a11y-duca44="true"][data-page-path="/events/"] .events-page-button-primary {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
   border: 2px solid #ffffff;
   background: #f5f3ff;
   color: #1f1147;
 }
 
-:root[data-a11y-duca44="true"] .events-page-button-primary:hover,
-:root[data-a11y-duca44="true"] .events-page-button-primary:focus-visible {
+:root[data-a11y-duca44="true"][data-page-path="/events/"] .events-page-button-primary:hover,
+:root[data-a11y-duca44="true"][data-page-path="/events/"] .events-page-button-primary:focus-visible {
   background: #ffffff;
 }
 
-:root[data-a11y-duca44="true"] .events-page-button-secondary {
+:root[data-a11y-duca44="true"][data-page-path="/events/"] .events-page-button-secondary {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   border-color: #ffffff;
   background: rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
 
-:root[data-a11y-duca44="true"] .events-page-button-secondary:hover,
-:root[data-a11y-duca44="true"] .events-page-button-secondary:focus-visible {
+:root[data-a11y-duca44="true"][data-page-path="/events/"] .events-page-button-secondary:hover,
+:root[data-a11y-duca44="true"][data-page-path="/events/"] .events-page-button-secondary:focus-visible {
   background: rgba(255, 255, 255, 0.3);
 }
 

@@ -14,13 +14,7 @@ interface Event {
   featuredImage?: string;
 }
 
-export const FeaturedEventsSection = ({
-  events,
-  isSeamless = false,
-}: {
-  events: Event[];
-  isSeamless?: boolean;
-}) => {
+export const FeaturedEventsSection = ({ events, isSeamless = false }: { events: Event[]; isSeamless?: boolean }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-AU", {
@@ -47,7 +41,7 @@ export const FeaturedEventsSection = ({
       {isSeamless ? (
         <div className="mb-12 text-center">
           <h2 className="theme-text text-3xl font-bold md:text-4xl">Upcoming Events</h2>
-          <p className="theme-text-secondary mt-4 max-w-2xl mx-auto">
+          <p className="theme-text-secondary mx-auto mt-4 max-w-2xl">
             Join us for workshops, networking, and hands-on learning
           </p>
         </div>
@@ -55,7 +49,7 @@ export const FeaturedEventsSection = ({
         <SectionHeading title="Upcoming Events" subtitle="Join us for workshops, networking, and hands-on learning" />
       )}
 
-      <div className="mt-12 flex flex-wrap justify-center items-stretch gap-6">
+      <div className="mt-12 flex flex-wrap items-stretch justify-center gap-6">
         {events.map((event, index) => (
           <motion.article
             key={event.slug}
@@ -63,11 +57,11 @@ export const FeaturedEventsSection = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group theme-card relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-purple-500/30 flex flex-col w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+            className="group theme-card relative flex w-full flex-col overflow-hidden rounded-2xl border transition-all duration-300 hover:border-purple-500/30 md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
           >
             {/* Event Image/Gradient Background */}
             <div
-              className="relative h-48 bg-linear-to-br from-purple-900/50 via-indigo-900/50 to-slate-900 shrink-0"
+              className="relative h-48 shrink-0 bg-linear-to-br from-purple-900/50 via-indigo-900/50 to-slate-900"
               style={{
                 backgroundImage: event.featuredImage ? `url(${event.featuredImage})` : undefined,
                 backgroundSize: "cover",
@@ -98,7 +92,7 @@ export const FeaturedEventsSection = ({
             </div>
 
             {/* Content */}
-            <div className="p-6 flex flex-col flex-1 justify-between">
+            <div className="flex flex-1 flex-col justify-between p-6">
               <div>
                 <h3 className="theme-text mb-2 text-xl font-bold transition-colors group-hover:text-purple-400">
                   {event.title}
@@ -154,7 +148,7 @@ export const FeaturedEventsSection = ({
               <div className="mt-6">
                 <a
                   href={`/events/${event.slug}/`}
-                  className="landing-card-button-secondary block w-full rounded-lg border border-purple-500/30 px-4 py-2 text-center text-sm font-medium text-purple-400 transition-colors hover:bg-purple-500/10"
+                  className="events-page-button-secondary landing-card-button-secondary block w-full rounded-lg border border-purple-500/30 px-4 py-2 text-center text-sm font-medium text-purple-400 transition-colors hover:bg-purple-500/10"
                 >
                   Learn More
                 </a>
