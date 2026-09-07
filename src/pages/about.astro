@@ -10,6 +10,7 @@ import { getDiscordMemberCount } from "@/utils/discordMembers";
 import { executives } from "@/data/team";
 
 const memberCount = await getDiscordMemberCount();
+const currentExecutives = executives["2026"];
 ---
 
 <DefaultLayout title="About Us">
@@ -30,7 +31,7 @@ const memberCount = await getDiscordMemberCount();
   <CoreValuesSection client:visible />
 
   <!-- Meet the Executives -->
-  <TeamSection executives={executives["2026"]} client:visible />
+  <TeamSection executives={currentExecutives} client:visible />
 
   <!-- Partners -->
   <PartnersSection client:visible />

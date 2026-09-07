@@ -23,14 +23,16 @@ export const Tabs = ({
   tabClassName?: string;
   contentClassName?: string;
 }) => {
-  const [active, setActive] = useState<Tab>(tabs[0]);
+  const [active, setActive] = useState<Tab>(
+    () => tabs[0] ?? { title: "", value: "" },
+  );
   const [hovering, setHovering] = useState(false);
 
   return (
     <>
       <div
         className={cn(
-          "flex flex-row items-center justify-start [perspective:1000px] relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full",
+          "flex flex-row items-center justify-start perspective-[1000px] relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full",
           containerClassName
         )}
       >

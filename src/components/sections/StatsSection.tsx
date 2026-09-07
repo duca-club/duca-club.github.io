@@ -51,10 +51,7 @@ const AnimatedCounter = ({
 
 const StatCard = ({ value, suffix, label, sublabel, shortAnimations = false }: StatProps) => {
   const [isInView, setIsInView] = useState(false);
-  const { background, handlers } = useMouseGlow(
-    250,
-    "rgba(168, 85, 247, 0.12)",
-  );
+  const { background, handlers } = useMouseGlow(250, "rgba(168, 85, 247, 0.12)");
 
   return (
     <motion.div
@@ -70,11 +67,11 @@ const StatCard = ({ value, suffix, label, sublabel, shortAnimations = false }: S
         className="pointer-events-none absolute inset-0 z-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover/stat:opacity-100"
         style={{ background }}
       />
-      <div className="relative z-[1] mb-2 text-5xl font-bold text-white md:text-6xl">
+      <div className="relative z-1 mb-2 text-5xl font-bold text-white md:text-6xl">
         {isInView ? <AnimatedCounter value={value} suffix={suffix} shortAnimations={shortAnimations} /> : `0${suffix}`}
       </div>
-      <div className="relative z-[1] text-xl font-medium text-purple-400">{label}</div>
-      <div className="relative z-[1] mt-1 text-sm text-gray-300">{sublabel}</div>
+      <div className="relative z-1 text-xl font-medium text-purple-400">{label}</div>
+      <div className="relative z-1 mt-1 text-sm text-gray-300">{sublabel}</div>
     </motion.div>
   );
 };
@@ -101,7 +98,7 @@ export const StatsSection = ({ memberCount = DEFAULT_DISCORD_MEMBER_COUNT }: { m
     <section className="section-themed data-stream-bg relative overflow-hidden py-24">
       <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-purple-900/10 to-transparent" />
       {/* Top transition blend layer (fades in the flat boxes grid gradually below the hero) */}
-      <div className="absolute top-0 left-0 w-full h-[180px] bg-gradient-to-b from-[#00051a] via-[#00051a]/85 via-[#00051a]/40 to-transparent z-[2] pointer-events-none" />
+      <div className="pointer-events-none absolute top-0 left-0 z-2 h-45 w-full bg-linear-to-b from-[#00051a] via-[#00051a]/85 to-transparent" />
 
       <div className="relative z-10 container mx-auto px-4">
         <motion.h2
@@ -111,13 +108,27 @@ export const StatsSection = ({ memberCount = DEFAULT_DISCORD_MEMBER_COUNT }: { m
           className="mb-16 text-center text-3xl font-bold text-white md:text-4xl"
         >
           DUCA by the{" "}
-          <span className="a11y-gradient-text bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">numbers</span>
+          <span className="a11y-gradient-text bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            numbers
+          </span>
         </motion.h2>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard value={memberCount} suffix="+" label="Members" sublabel="Active community" shortAnimations={shortAnimations} />
+          <StatCard
+            value={memberCount}
+            suffix="+"
+            label="Members"
+            sublabel="Active community"
+            shortAnimations={shortAnimations}
+          />
           <StatCard value={50} suffix="+" label="Events" sublabel="This year" shortAnimations={shortAnimations} />
-          <StatCard value={20} suffix="+" label="Workshops" sublabel="Hands-on learning" shortAnimations={shortAnimations} />
+          <StatCard
+            value={20}
+            suffix="+"
+            label="Workshops"
+            sublabel="Hands-on learning"
+            shortAnimations={shortAnimations}
+          />
           <StatCard value={100} suffix="%" label="Free" sublabel="Always welcome" shortAnimations={shortAnimations} />
         </div>
       </div>

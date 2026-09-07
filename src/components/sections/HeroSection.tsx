@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { motion } from "framer-motion";
 import { EncryptedText } from "@ui/encrypted-text";
 import { Button } from "@ui/button";
@@ -123,7 +124,7 @@ export const HeroSection = () => {
       "STATUS: EXPLOITING VULNERABILITY [CVE-2026-9999]",
     ];
 
-    let glitchTimeout: NodeJS.Timeout;
+    let glitchTimeout: ReturnType<typeof setTimeout>;
 
     const triggerGlitch = () => {
       const text = glitchPhrases[Math.floor(Math.random() * glitchPhrases.length)] || "";
@@ -174,28 +175,28 @@ export const HeroSection = () => {
       {...handlers}
     >
       {/* Deep Space / Night Sky Background */}
-      <div className="a11y-hero-overlay absolute inset-0 z-0 bg-gradient-to-b from-[#02010c] via-[#0b0518] to-[#12082b]" />
+      <div className="a11y-hero-overlay absolute inset-0 z-0 bg-linear-to-b from-[#02010c] via-[#0b0518] to-[#12082b]" />
 
       {/* Twinkling Stars */}
       <div className="pointer-events-none absolute inset-0 z-0">
         {/* Star set 1 */}
-        <div className="animate-star-twinkle-1 absolute top-[10%] left-[15%] h-[2px] w-[2px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-1 absolute top-[10%] left-[15%] h-0.5 w-0.5 rounded-full bg-white" />
         <div className="animate-star-twinkle-2 absolute top-[25%] left-[45%] h-[1.5px] w-[1.5px] rounded-full bg-white" />
-        <div className="animate-star-twinkle-3 absolute top-[15%] left-[80%] h-[2px] w-[2px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-3 absolute top-[15%] left-[80%] h-0.5 w-0.5 rounded-full bg-white" />
         {/* Star set 2 */}
         <div className="animate-star-twinkle-2 absolute top-[30%] left-[25%] h-[1.5px] w-[1.5px] rounded-full bg-white" />
-        <div className="animate-star-twinkle-1 absolute top-[8%] left-[65%] h-[2px] w-[2px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-1 absolute top-[8%] left-[65%] h-0.5 w-0.5 rounded-full bg-white" />
         <div className="animate-star-twinkle-3 absolute top-[22%] left-[90%] h-[1.5px] w-[1.5px] rounded-full bg-white" />
         {/* Star set 3 */}
-        <div className="animate-star-twinkle-3 absolute top-[35%] left-[70%] h-[2px] w-[2px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-3 absolute top-[35%] left-[70%] h-0.5 w-0.5 rounded-full bg-white" />
         <div className="animate-star-twinkle-1 absolute top-[18%] left-[5%] h-[1.5px] w-[1.5px] rounded-full bg-white" />
-        <div className="animate-star-twinkle-2 absolute top-[28%] left-[55%] h-[2px] w-[2px] rounded-full bg-white" />
+        <div className="animate-star-twinkle-2 absolute top-[28%] left-[55%] h-0.5 w-0.5 rounded-full bg-white" />
       </div>
 
       {/* Synthwave Logo (replaces Sun) */}
-      <div className="pointer-events-none absolute top-[110px] right-0 bottom-[40%] left-0 z-0 flex items-center justify-center px-4 select-none md:top-[130px]">
+      <div className="pointer-events-none absolute top-27.5 right-0 bottom-[40%] left-0 z-0 flex items-center justify-center px-4 select-none md:top-32.5">
         {/* Glow Aura behind the logo */}
-        <div className="absolute h-[280px] w-[280px] rounded-full bg-gradient-to-b from-[#d648ff]/25 to-[#00d1b7]/20 opacity-80 blur-[50px] md:h-[480px] md:w-[480px] md:blur-[80px]" />
+        <div className="absolute h-70 w-70 rounded-full bg-linear-to-b from-[#d648ff]/25 to-[#00d1b7]/20 opacity-80 blur-[50px] md:h-120 md:w-120 md:blur-[80px]" />
         {/* Logo Image with bottom gradient fade mask */}
         <img
           src="/duca.png"
@@ -210,7 +211,7 @@ export const HeroSection = () => {
 
       {/* Retro Wireframe Mountains */}
       <svg
-        className="pointer-events-none absolute bottom-[40%] left-0 z-0 h-[100px] w-full select-none md:h-[140px]"
+        className="pointer-events-none absolute bottom-[40%] left-0 z-0 h-25 w-full select-none md:h-35"
         viewBox="0 0 1440 120"
         preserveAspectRatio="none"
       >
@@ -284,8 +285,8 @@ export const HeroSection = () => {
       </svg>
 
       {/* Horizon Blend & Neon Light bar */}
-      <div className="absolute bottom-[40%] left-0 z-0 h-[2px] w-full bg-gradient-to-r from-transparent via-[#00d1b7] to-transparent shadow-[0_0_8px_#00d1b7,0_0_15px_#00d1b7]" />
-      <div className="pointer-events-none absolute bottom-[38%] left-0 z-0 h-[8%] w-full bg-gradient-to-t from-transparent to-[#00d1b7]/12 blur-[4px]" />
+      <div className="absolute bottom-[40%] left-0 z-0 h-0.5 w-full bg-linear-to-r from-transparent via-[#00d1b7] to-transparent shadow-[0_0_8px_#00d1b7,0_0_15px_#00d1b7]" />
+      <div className="pointer-events-none absolute bottom-[38%] left-0 z-0 h-[8%] w-full bg-linear-to-t from-transparent to-[#00d1b7]/12 blur-xs" />
 
       {/* Scrolling Cyber Security / IT Icons - Left Side */}
       {/* `both` fill mode holds the 0% keyframe (opacity 0) during animation-delay,
@@ -293,43 +294,43 @@ export const HeroSection = () => {
           flashing bunched-up at their default position on load. */}
       <CyberIcon
         type="lock"
-        className="h-[80px] w-[80px] origin-bottom-left md:h-[120px] md:w-[120px]"
+        className="h-20 w-20 origin-bottom-left md:h-30 md:w-30"
         style={{ animation: "cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "0s" }}
       />
       <CyberIcon
         type="terminal"
-        className="h-[80px] w-[80px] origin-bottom-left md:h-[120px] md:w-[120px]"
+        className="h-20 w-20 origin-bottom-left md:h-30 md:w-30"
         style={{ animation: "cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "2s" }}
       />
       <CyberIcon
         type="server"
-        className="h-[80px] w-[80px] origin-bottom-left md:h-[120px] md:w-[120px]"
+        className="h-20 w-20 origin-bottom-left md:h-30 md:w-30"
         style={{ animation: "cyber-scroll-left 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "4s" }}
       />
 
       {/* Scrolling Cyber Security / IT Icons - Right Side */}
       <CyberIcon
         type="shield"
-        className="h-[80px] w-[80px] origin-bottom-right md:h-[120px] md:w-[120px]"
+        className="h-20 w-20 origin-bottom-right md:h-30 md:w-30"
         style={{ animation: "cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "1s" }}
       />
       <CyberIcon
         type="server"
-        className="h-[80px] w-[80px] origin-bottom-right md:h-[120px] md:w-[120px]"
+        className="h-20 w-20 origin-bottom-right md:h-30 md:w-30"
         style={{ animation: "cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "3s" }}
       />
       <CyberIcon
         type="lock"
-        className="h-[80px] w-[80px] origin-bottom-right md:h-[120px] md:w-[120px]"
+        className="h-20 w-20 origin-bottom-right md:h-30 md:w-30"
         style={{ animation: "cyber-scroll-right 6s cubic-bezier(0.8, 0, 1, 1) infinite both", animationDelay: "5s" }}
       />
 
       {/* Bottom transition blend layer (blends 3D grid/road smoothly into the next section's flat grid) */}
-      <div className="pointer-events-none absolute bottom-0 left-0 z-[2] h-[280px] w-full bg-gradient-to-t from-[#00051a] via-[#00051a]/40 via-[#00051a]/85 to-transparent" />
+      <div className="pointer-events-none absolute bottom-0 left-0 z-2 h-70 w-full bg-linear-to-t from-[#00051a] via-[#00051a]/40 to-transparent" />
 
       {/* Mouse-reactive torch glow — illuminates the grid as the cursor moves */}
       <motion.div
-        className="pointer-events-none absolute inset-0 z-[1] transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0 z-1 transition-opacity duration-500"
         style={{ background, opacity: isHovering ? 1 : 0 }}
       />
       {/* Soft radial backdrop shadow behind text (spans full height & width to prevent any clipping borders) */}
@@ -356,7 +357,7 @@ export const HeroSection = () => {
       )}
       {glitch.active && glitch.type === "bar" && (
         <div
-          className="pointer-events-none absolute right-0 left-0 z-0 h-[6px] bg-gradient-to-r from-transparent via-[#d648ff]/45 to-transparent select-none"
+          className="pointer-events-none absolute right-0 left-0 z-0 h-1.5 bg-linear-to-r from-transparent via-[#d648ff]/45 to-transparent select-none"
           style={{
             top: glitch.top,
             boxShadow: "0 0 10px #d648ff, 0 0 20px #00d1b7",
@@ -373,12 +374,12 @@ export const HeroSection = () => {
           className="mx-auto flex max-w-4xl flex-col items-center justify-center text-center"
         >
           {/* Encrypted DUCA Title */}
-          <h1 className="a11y-hero-title a11y-gradient-text mb-4 bg-gradient-to-r from-purple-300 via-fuchsia-400 to-cyan-300 bg-clip-text text-7xl font-bold tracking-tight text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.35)] md:text-9xl">
+          <h1 className="a11y-hero-title a11y-gradient-text mb-4 bg-linear-to-r from-purple-300 via-fuchsia-400 to-cyan-300 bg-clip-text text-7xl font-bold tracking-tight text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.35)] md:text-9xl">
             DUCA
           </h1>
 
           <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-            <span className="a11y-hero-subtitle a11y-gradient-text bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+            <span className="a11y-hero-subtitle a11y-gradient-text bg-linear-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
               Deakin University Cybersecurity Association
             </span>
           </h2>

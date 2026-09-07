@@ -28,7 +28,7 @@ export const TeamCard = ({
     <motion.div
       whileHover={{ y: -5 }}
       className={cn(
-        "group relative flex h-[20rem] flex-col overflow-hidden rounded-2xl border border-slate-700/50 bg-gradient-to-b from-slate-800/50 to-slate-900/80 p-6",
+        "group relative flex h-80 flex-col overflow-hidden rounded-2xl border border-slate-700/50 bg-linear-to-b from-slate-800/50 to-slate-900/80 p-6",
         className
       )}
       {...handlers}

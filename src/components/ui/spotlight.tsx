@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/utils/cn";
-import { useRef, useState, useCallback } from "react";
-import type { MouseEvent, ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 
 interface SpotlightProps {
   children: ReactNode;
@@ -14,28 +14,29 @@ export function Spotlight({ children, className = "", fill = "white" }: Spotligh
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
 
-  const handleMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-    const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  }, []);
+  useEffect(() => {
+    const el = divRef.current;
+    if (!el) return;
 
-  const handleMouseEnter = useCallback(() => {
-    setOpacity(1);
-  }, []);
+    const handlePointerMove = (event: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      setPosition({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+    };
+    const handlePointerEnter = () => setOpacity(1);
+    const handlePointerLeave = () => setOpacity(0);
 
-  const handleMouseLeave = useCallback(() => {
-    setOpacity(0);
+    el.addEventListener("pointermove", handlePointerMove);
+    el.addEventListener("pointerenter", handlePointerEnter);
+    el.addEventListener("pointerleave", handlePointerLeave);
+    return () => {
+      el.removeEventListener("pointermove", handlePointerMove);
+      el.removeEventListener("pointerenter", handlePointerEnter);
+      el.removeEventListener("pointerleave", handlePointerLeave);
+    };
   }, []);
 
   return (
-    <div
-      ref={divRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className={cn("relative overflow-hidden", className)}
-    >
+    <div ref={divRef} className={cn("relative overflow-hidden", className)}>
       <div
         className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300"
         style={{

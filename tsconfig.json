@@ -4,25 +4,24 @@
   "exclude": ["dist"],
   "compilerOptions": {
     "exactOptionalPropertyTypes": false,
-    "baseUrl": ".",
     "paths": {
       "@components/*": [
-        "src/components/*"
+        "./src/components/*"
       ],
       "@layouts/*": [
-        "src/layouts/*"
+        "./src/layouts/*"
       ],
       "@assets/*": [
-        "src/assets/*"
+        "./src/assets/*"
       ],
       "@/utils/*": [
-        "src/utils/*"
+        "./src/utils/*"
       ],
       "@/data/*": [
-        "src/data/*"
+        "./src/data/*"
       ],
       "@ui/*": [
-        "src/components/ui/*"
+        "./src/components/ui/*"
       ]
     }
   }

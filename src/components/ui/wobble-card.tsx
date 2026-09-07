@@ -1,6 +1,6 @@
 "use client";
-import type { ReactNode, MouseEvent } from "react";
-import { useState } from "react";
+import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
 
@@ -51,25 +51,42 @@ export const WobbleCard = ({
 }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-    const { clientX, clientY } = event;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (clientX - (rect.left + rect.width / 2)) / rect.width;
-    const y = (clientY - (rect.top + rect.height / 2)) / rect.height;
-    setMousePosition({ x, y });
-  };
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handlePointerMove = (event: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      const x = (event.clientX - (rect.left + rect.width / 2)) / rect.width;
+      const y = (event.clientY - (rect.top + rect.height / 2)) / rect.height;
+      setMousePosition({ x, y });
+    };
+
+    const handlePointerEnter = () => setIsHovering(true);
+
+    const handlePointerLeave = () => {
+      setIsHovering(false);
+      setMousePosition({ x: 0, y: 0 });
+    };
+
+    el.addEventListener("pointermove", handlePointerMove);
+    el.addEventListener("pointerenter", handlePointerEnter);
+    el.addEventListener("pointerleave", handlePointerLeave);
+
+    return () => {
+      el.removeEventListener("pointermove", handlePointerMove);
+      el.removeEventListener("pointerenter", handlePointerEnter);
+      el.removeEventListener("pointerleave", handlePointerLeave);
+    };
+  }, []);
 
   const { outer: outerClasses, inner: innerClasses } = splitClasses(containerClassName);
 
   return (
-    <section
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => {
-        setIsHovering(false);
-        setMousePosition({ x: 0, y: 0 });
-      }}
+    <div
+      ref={containerRef}
       className={cn(
         "mx-auto w-full relative",
         outerClasses
@@ -93,13 +110,13 @@ export const WobbleCard = ({
             "0 10px 32px rgba(34, 42, 53, 0.12), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.05), 0 4px 6px rgba(34, 42, 53, 0.08), 0 24px 108px rgba(47, 48, 55, 0.10)",
         }}
       >
-        <div className="absolute inset-0 pointer-events-none [background-image:radial-gradient(88%_100%_at_top,rgba(255,255,255,0.5),rgba(255,255,255,0))] z-0" />
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(88%_100%_at_top,rgba(255,255,255,0.5),rgba(255,255,255,0))] z-0" />
         <div className={cn("h-full px-4 py-20 sm:px-10 relative z-10", className)}>
           <Noise />
           <div className="relative z-20">{children}</div>
         </div>
       </motion.div>
-    </section>
+    </div>
   );
 };
 
@@ -107,7 +124,7 @@ const Noise = () => (
   // Uses the inline-SVG `.bg-noise` utility instead of a /noise.webp asset the
   // repo never shipped (which 404'd on every page using WobbleCard).
   <div
-    className="bg-noise absolute inset-0 w-full h-full scale-[1.2] transform opacity-10 [mask-image:radial-gradient(#fff,transparent,75%)] pointer-events-none"
+    className="bg-noise absolute inset-0 w-full h-full scale-[1.2] transform opacity-10 mask-[radial-gradient(#fff,transparent,75%)] pointer-events-none"
     style={{
       backgroundSize: "30%",
     }}

@@ -6,7 +6,7 @@ export interface TeamDivision {
   members: TeamMember[];
 }
 
-export const executives: Record<string, TeamMember[]> = {
+export const executives = {
   "2025": [
     {
       name: "Maple 'Ryan' Fox",
@@ -110,7 +110,7 @@ export const executives: Record<string, TeamMember[]> = {
       bio: "Full-time caffeinated nerd/dweeb/dork/dingus that likes lifting heavy things.",
     },
   ],
-};
+} satisfies Record<string, TeamMember[]>;
 
 export const divisions: Record<string, TeamDivision[]> = {
   "2025": [

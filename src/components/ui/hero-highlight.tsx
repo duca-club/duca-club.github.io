@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/utils/cn";
 import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
-import type { ReactNode, MouseEvent } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 export const HeroHighlight = ({
   children,
@@ -12,31 +12,32 @@ export const HeroHighlight = ({
   className?: string;
   containerClassName?: string;
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  function handleMouseMove({
-    currentTarget,
-    clientX,
-    clientY,
-  }: MouseEvent<HTMLDivElement>) {
-    if (!currentTarget) return;
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handlePointerMove = (event: PointerEvent) => {
+      const { left, top } = el.getBoundingClientRect();
+      mouseX.set(event.clientX - left);
+      mouseY.set(event.clientY - top);
+    };
+
+    el.addEventListener("pointermove", handlePointerMove);
+    return () => el.removeEventListener("pointermove", handlePointerMove);
+  }, [mouseX, mouseY]);
 
   return (
     <div
-      className={cn(
-        "relative h-[40rem] flex items-center bg-transparent justify-center w-full group",
-        containerClassName
-      )}
-      onMouseMove={handleMouseMove}
+      ref={containerRef}
+      className={cn("group relative flex h-160 w-full items-center justify-center bg-transparent", containerClassName)}
     >
-      <div className="absolute inset-0 bg-dot-thick-neutral-800 pointer-events-none" />
+      <div className="bg-dot-thick-neutral-800 pointer-events-none absolute inset-0" />
       <motion.div
-        className="pointer-events-none bg-dot-thick-indigo-500 absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
+        className="bg-dot-thick-indigo-500 pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
         style={{
           WebkitMaskImage: useMotionTemplate`
             radial-gradient(
@@ -59,13 +60,7 @@ export const HeroHighlight = ({
   );
 };
 
-export const Highlight = ({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) => {
+export const Highlight = ({ children, className }: { children: ReactNode; className?: string }) => {
   return (
     <motion.span
       initial={{
@@ -85,8 +80,8 @@ export const Highlight = ({
         display: "inline",
       }}
       className={cn(
-        `relative inline-block pb-1 px-1 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500`,
-        className
+        `relative inline-block rounded-lg bg-linear-to-r from-indigo-500 to-purple-500 px-1 pb-1`,
+        className,
       )}
     >
       {children}

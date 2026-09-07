@@ -8,19 +8,18 @@ import PartnersSection from "@components/sections/PartnersSection";
 import DiscordCTASection from "@components/sections/DiscordCTASection";
 import BlogPreviewSection from "@components/sections/BlogPreviewSection";
 import FeaturedEventsSection from "@components/sections/FeaturedEventsSection";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { getDiscordMemberCount } from "@/utils/discordMembers";
 
 // Pre-import all blog images using glob pattern
 const blogImages = import.meta.glob("../content/blog/**/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" });
-
 // Fetch latest blog posts
 const allPosts = await getCollection("blog");
 const sortedPosts = allPosts
   .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
   .slice(0, 5);
 
-const blogPosts = sortedPosts.map((post) => {
+const blogPosts = sortedPosts.map((post: CollectionEntry<"blog">) => {
   let image: string | undefined;
   if (post.data.featuredImage) {
     const imageFileName = post.data.featuredImage.replace(/^\.\//, "");
@@ -134,7 +133,7 @@ const memberCount = await getDiscordMemberCount();
           const fs = 14;
           const cols = Math.floor(cv.width / fs);
           const drops = Array(cols).fill(1);
-          const iv = setInterval(() => {
+          const iv = window.setInterval(() => {
             ctx.fillStyle = "rgba(0,0,0,0.05)";
             ctx.fillRect(0, 0, cv.width, cv.height);
             ctx.fillStyle = "#33ff33";
@@ -146,7 +145,7 @@ const memberCount = await getDiscordMemberCount();
             }
           }, 33);
           setTimeout(() => {
-            clearInterval(iv);
+            window.clearInterval(iv);
             c.remove();
           }, 5000);
         }

@@ -107,7 +107,7 @@ export const PixelatedHero = ({
       />
       <div
         className={cn(
-          "absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent",
+          "absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent",
           overlayClassName
         )}
       />

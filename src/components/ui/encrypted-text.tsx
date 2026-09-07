@@ -17,13 +17,13 @@ export const EncryptedText = ({
 }) => {
   const [displayText, setDisplayText] = useState(text);
   const [isAnimating, setIsAnimating] = useState(true);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
     let iteration = 0;
 
     const animate = () => {
-      intervalRef.current = setInterval(() => {
+      intervalRef.current = window.setInterval(() => {
         setDisplayText((_prev) =>
           text
             .split("")

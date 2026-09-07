@@ -23,7 +23,7 @@ export const AnimatedGradientBackground = ({
     >
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
-          className="absolute -inset-[100%] opacity-50"
+          className="absolute -inset-full opacity-50"
           animate={{
             background: [
               `radial-gradient(circle at 20% 50%, ${gradientColors[0]} 0%, transparent 50%)`,

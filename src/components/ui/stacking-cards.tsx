@@ -79,14 +79,17 @@ export function StackingCards({ children, footer, className }: StackingCardsProp
 
       // Restore original sticky positioning styles
       cards.forEach((card, i) => {
-        card.style.position = originalStyles[i].position;
-        card.style.top = originalStyles[i].top;
+        const originalStyle = originalStyles[i];
+        if (!originalStyle) return;
+        card.style.position = originalStyle.position;
+        card.style.top = originalStyle.top;
       });
 
       // Populate scroll offsets where each card sticks
       cardTriggers.length = 0;
       cards.forEach((_, index) => {
         const cardDocTop = naturalDocTops[index];
+        if (cardDocTop === undefined) return;
         const stickyTop = 310 + index * 18;
         cardTriggers.push(cardDocTop - stickyTop);
       });
