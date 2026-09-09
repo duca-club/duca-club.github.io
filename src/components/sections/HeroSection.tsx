@@ -326,7 +326,7 @@ export const HeroSection = () => {
       />
 
       {/* Bottom transition blend layer (blends 3D grid/road smoothly into the next section's flat grid) */}
-      <div className="pointer-events-none absolute bottom-0 left-0 z-2 h-70 w-full bg-linear-to-t from-[#00051a] via-[#00051a]/40 to-transparent" />
+      <div className="pointer-events-none absolute bottom-0 left-0 z-2 h-70 w-full bg-linear-to-t from-[#00051a] via-[#00051a]/85 to-transparent" />
 
       {/* Mouse-reactive torch glow — illuminates the grid as the cursor moves */}
       <motion.div
