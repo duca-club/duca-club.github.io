@@ -24,7 +24,7 @@ export const Marquee3D = ({
   return (
     <div
       className={cn(
-        "group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]",
+        "group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] gap-(--gap)",
         vertical && "flex-col",
         className
       )}
@@ -35,7 +35,7 @@ export const Marquee3D = ({
           <div
             key={i}
             className={cn(
-              "flex shrink-0 justify-around [gap:var(--gap)]",
+              "flex shrink-0 justify-around gap-(--gap)",
               vertical && "flex-col animate-marquee-vertical",
               !vertical && "animate-marquee",
               reverse && "[animation-direction:reverse]",
@@ -45,7 +45,7 @@ export const Marquee3D = ({
             {items.map((item) => (
               <div
                 key={item.id}
-                className="relative flex-shrink-0"
+                className="relative shrink-0"
                 style={{ perspective: "1000px" }}
               >
                 <motion.div
@@ -86,7 +86,7 @@ export const ProjectMarquee = ({
         items={projects.map((project) => ({
           id: project.id,
           content: (
-            <div className="w-80 h-48 rounded-xl overflow-hidden bg-gradient-to-br from-purple-900/50 to-black border border-purple-500/20 p-4">
+            <div className="w-80 h-48 rounded-xl overflow-hidden bg-linear-to-br from-purple-900/50 to-black border border-purple-500/20 p-4">
               <div className="relative h-full flex flex-col justify-between">
                 <div>
                   <h3 className="text-white font-bold text-lg">{project.title}</h3>

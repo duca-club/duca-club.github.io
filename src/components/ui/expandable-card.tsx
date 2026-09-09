@@ -14,13 +14,7 @@ export interface ExpandableCardItem {
   thumbnail?: string;
 }
 
-export const ExpandableCard = ({
-  item,
-  className,
-}: {
-  item: ExpandableCardItem;
-  className?: string;
-}) => {
+export const ExpandableCard = ({ item, className }: { item: ExpandableCardItem; className?: string }) => {
   const [active, setActive] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();
@@ -50,21 +44,21 @@ export const ExpandableCard = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 h-full w-full z-10"
+            className="fixed inset-0 z-10 h-full w-full bg-black/80"
             onClick={() => setActive(false)}
           />
         )}
       </AnimatePresence>
       <AnimatePresence>
         {active && (
-          <div className="fixed inset-0 grid place-items-center z-[100]">
+          <div className="fixed inset-0 z-100 grid place-items-center">
             <motion.button
               key={`button-${item.title}-${id}`}
               layout
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex absolute top-4 right-4 items-center justify-center bg-white rounded-full h-8 w-8"
+              className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-white"
               onClick={() => setActive(false)}
             >
               <CloseIcon />
@@ -72,28 +66,18 @@ export const ExpandableCard = ({
             <motion.div
               layoutId={`card-${item.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-slate-900 sm:rounded-3xl overflow-hidden"
+              className="flex h-full w-full max-w-125 flex-col overflow-hidden bg-slate-900 sm:rounded-3xl md:h-fit md:max-h-[90%]"
             >
               {item.thumbnail && (
                 <motion.div layoutId={`image-${item.title}-${id}`}>
-                  <img
-                    src={item.thumbnail}
-                    alt={item.title}
-                    className="w-full h-80 object-cover"
-                  />
+                  <img src={item.thumbnail} alt={item.title} className="h-80 w-full object-cover" />
                 </motion.div>
               )}
               <div className="p-6">
-                <motion.h3
-                  layoutId={`title-${item.title}-${id}`}
-                  className="text-xl font-bold text-white"
-                >
+                <motion.h3 layoutId={`title-${item.title}-${id}`} className="text-xl font-bold text-white">
                   {item.title}
                 </motion.h3>
-                <motion.p
-                  layoutId={`description-${item.description}-${id}`}
-                  className="text-gray-400 mt-2"
-                >
+                <motion.p layoutId={`description-${item.description}-${id}`} className="mt-2 text-gray-400">
                   {item.description}
                 </motion.p>
                 <motion.div
@@ -109,7 +93,7 @@ export const ExpandableCard = ({
                       href={item.ctaLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block mt-4 px-4 py-2 text-sm rounded-full font-bold bg-purple-500 text-white hover:bg-purple-600 transition-colors"
+                      className="mt-4 inline-block rounded-full bg-purple-500 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-purple-600"
                     >
                       {item.ctaText ?? "Learn More"}
                     </a>
@@ -124,30 +108,30 @@ export const ExpandableCard = ({
         layoutId={`card-${item.title}-${id}`}
         onClick={() => setActive(true)}
         className={cn(
-          "p-4 flex flex-col md:flex-row justify-between items-center hover:bg-slate-800/50 rounded-xl cursor-pointer border border-transparent hover:border-slate-700 transition-colors",
-          className
+          "flex cursor-pointer flex-col items-center justify-between rounded-xl border border-transparent p-4 transition-colors hover:border-slate-700 hover:bg-slate-800/50 md:flex-row",
+          className,
         )}
       >
-        <div className="flex gap-4 flex-col md:flex-row">
+        <div className="flex flex-col gap-4 md:flex-row">
           {item.thumbnail && (
             <motion.div layoutId={`image-${item.title}-${id}`}>
               <img
                 src={item.thumbnail}
                 alt={item.title}
-                className="h-40 w-40 md:h-14 md:w-14 rounded-lg object-cover object-center"
+                className="h-40 w-40 rounded-lg object-cover object-center md:h-14 md:w-14"
               />
             </motion.div>
           )}
           <div>
             <motion.h3
               layoutId={`title-${item.title}-${id}`}
-              className="font-medium text-white text-center md:text-left"
+              className="text-center font-medium text-white md:text-left"
             >
               {item.title}
             </motion.h3>
             <motion.p
               layoutId={`description-${item.description}-${id}`}
-              className="text-gray-400 text-center md:text-left"
+              className="text-center text-gray-400 md:text-left"
             >
               {item.description}
             </motion.p>
@@ -155,7 +139,7 @@ export const ExpandableCard = ({
         </div>
         <motion.button
           layoutId={`button-${item.title}-${id}`}
-          className="px-4 py-2 text-sm rounded-full font-bold bg-gray-100 hover:bg-purple-500 hover:text-white text-black mt-4 md:mt-0 transition-colors"
+          className="mt-4 rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-black transition-colors hover:bg-purple-500 hover:text-white md:mt-0"
         >
           {item.ctaText ?? "View"}
         </motion.button>
@@ -164,15 +148,9 @@ export const ExpandableCard = ({
   );
 };
 
-export const ExpandableCardList = ({
-  items,
-  className,
-}: {
-  items: ExpandableCardItem[];
-  className?: string;
-}) => {
+export const ExpandableCardList = ({ items, className }: { items: ExpandableCardItem[]; className?: string }) => {
   return (
-    <ul className={cn("max-w-2xl mx-auto w-full gap-4", className)}>
+    <ul className={cn("mx-auto w-full max-w-2xl gap-4", className)}>
       {items.map((item) => (
         <ExpandableCard key={item.id} item={item} />
       ))}

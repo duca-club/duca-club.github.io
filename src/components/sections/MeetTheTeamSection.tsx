@@ -7,9 +7,11 @@ import { TeamGrid } from "@ui/team-card";
 import { AuroraBackground } from "@ui/aurora-background";
 import { executives, divisions } from "@/data/team";
 
+type TeamYear = keyof typeof executives;
+
 export const MeetTheTeamSection = () => {
-  const [selectedYear, setSelectedYear] = useState<string>("2026");
-  const years = ["2025", "2026"];
+  const [selectedYear, setSelectedYear] = useState<TeamYear>("2026");
+  const years: TeamYear[] = ["2025", "2026"];
 
   const currentExecutives = executives[selectedYear] || [];
   const currentDivisions = divisions[selectedYear] || [];

@@ -24,7 +24,7 @@ export const Meteors = ({
       {meteors.map((meteor, idx) => (
         <span
           key={idx}
-          className="animate-meteor absolute -top-10 h-0.5 w-0.5 rounded-full bg-emerald-400 shadow-[0_0_0_1px_rgba(16,185,129,0.1)] before:absolute before:top-1/2 before:h-px before:w-[60px] before:-translate-y-1/2 before:bg-gradient-to-r before:from-emerald-400 before:to-transparent before:content-['']"
+          className="animate-meteor absolute -top-10 h-0.5 w-0.5 rounded-full bg-emerald-400 shadow-[0_0_0_1px_rgba(16,185,129,0.1)] before:absolute before:top-1/2 before:h-px before:w-[60px] before:-translate-y-1/2 before:bg-linear-to-r before:from-emerald-400 before:to-transparent before:content-['']"
           style={{
             left: meteor.left,
             animationDelay: meteor.delay,

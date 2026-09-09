@@ -6,7 +6,6 @@ type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 type GameState = "start" | "playing" | "gameover" | "won";
 type Position = { x: number; y: number };
 
-const GRID_SIZE = 20;
 const CELL_COUNT = 20;
 const DUCA_LETTERS = ["D", "U", "C", "A"] as const;
 const BASE_SPEED = 150;
@@ -48,7 +47,7 @@ export function SnakeGame() {
   const collectedRef = useRef<string[]>([]);
   const gameStateRef = useRef<GameState>("start");
   const speedRef = useRef(BASE_SPEED);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const intervalRef = useRef<number | null>(null);
   const animFrameRef = useRef<number>(0);
   const pulseRef = useRef(0);
   const confettiRef = useRef<ConfettiParticle[]>([]);
@@ -72,8 +71,6 @@ export function SnakeGame() {
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
   }, []);
-
-  const cellPixelSize = canvasSize / CELL_COUNT;
 
   // --- Place food in a random empty cell ---
   const placeFood = useCallback(() => {
@@ -146,7 +143,7 @@ export function SnakeGame() {
         segment.x * cellPx + padding,
         segment.y * cellPx + padding,
         cellPx - padding * 2,
-        cellPx - padding * 2
+        cellPx - padding * 2,
       );
       // Darker inner for depth
       if (!isHead) {
@@ -155,7 +152,7 @@ export function SnakeGame() {
           segment.x * cellPx + padding + 2,
           segment.y * cellPx + padding + 2,
           cellPx - padding * 2 - 4,
-          cellPx - padding * 2 - 4
+          cellPx - padding * 2 - 4,
         );
       }
     });
@@ -165,7 +162,7 @@ export function SnakeGame() {
     const food = foodRef.current;
     const letterIndex = currentLetterIndexRef.current;
     if (letterIndex < DUCA_LETTERS.length) {
-      const letter = DUCA_LETTERS[letterIndex];
+      const letter = DUCA_LETTERS[letterIndex] ?? "";
       const pulse = Math.sin(pulseRef.current) * 0.3 + 0.7;
 
       // Glow circle behind letter
@@ -175,17 +172,12 @@ export function SnakeGame() {
         0,
         food.x * cellPx + cellPx / 2,
         food.y * cellPx + cellPx / 2,
-        cellPx * 1.2
+        cellPx * 1.2,
       );
       gradient.addColorStop(0, `rgba(214, 72, 255, ${0.4 * pulse})`);
       gradient.addColorStop(1, "rgba(214, 72, 255, 0)");
       ctx.fillStyle = gradient;
-      ctx.fillRect(
-        food.x * cellPx - cellPx * 0.3,
-        food.y * cellPx - cellPx * 0.3,
-        cellPx * 1.6,
-        cellPx * 1.6
-      );
+      ctx.fillRect(food.x * cellPx - cellPx * 0.3, food.y * cellPx - cellPx * 0.3, cellPx * 1.6, cellPx * 1.6);
 
       // Letter text
       ctx.fillStyle = `rgba(214, 72, 255, ${pulse * 0.9 + 0.1})`;
@@ -194,11 +186,7 @@ export function SnakeGame() {
       ctx.font = `bold ${cellPx * 0.75}px "Courier New", monospace`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(
-        letter,
-        food.x * cellPx + cellPx / 2,
-        food.y * cellPx + cellPx / 2 + 1
-      );
+      ctx.fillText(letter, food.x * cellPx + cellPx / 2, food.y * cellPx + cellPx / 2 + 1);
       ctx.shadowBlur = 0;
     }
 
@@ -211,7 +199,9 @@ export function SnakeGame() {
 
     const snake = [...snakeRef.current];
     directionRef.current = nextDirectionRef.current;
-    const head = { ...snake[0] };
+    const currentHead = snake[0];
+    if (!currentHead) return;
+    const head: Position = { x: currentHead.x, y: currentHead.y };
 
     switch (directionRef.current) {
       case "UP":
@@ -231,14 +221,14 @@ export function SnakeGame() {
     // Wall collision
     if (head.x < 0 || head.x >= CELL_COUNT || head.y < 0 || head.y >= CELL_COUNT) {
       setGameState("gameover");
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
       return;
     }
 
     // Self collision
     if (snake.some((s) => s.x === head.x && s.y === head.y)) {
       setGameState("gameover");
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
       return;
     }
 
@@ -250,6 +240,7 @@ export function SnakeGame() {
       // Ate a letter
       const letterIndex = currentLetterIndexRef.current;
       const letter = DUCA_LETTERS[letterIndex];
+      if (letter === undefined) return;
       const newCollected = [...collectedRef.current, letter];
       collectedRef.current = newCollected;
       currentLetterIndexRef.current = letterIndex + 1;
@@ -260,7 +251,7 @@ export function SnakeGame() {
       speedRef.current = Math.max(50, BASE_SPEED - newCollected.length * SPEED_INCREASE);
 
       // Restart interval with new speed
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
 
       // Check win
       if (newCollected.length >= DUCA_LETTERS.length) {
@@ -273,7 +264,7 @@ export function SnakeGame() {
       placeFood();
 
       // New interval
-      intervalRef.current = setInterval(tick, speedRef.current);
+      intervalRef.current = window.setInterval(tick, speedRef.current);
     } else {
       snake.pop();
     }
@@ -288,8 +279,8 @@ export function SnakeGame() {
     setGameState("playing");
 
     // Start tick loop
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(tick, speedRef.current);
+    if (intervalRef.current) window.clearInterval(intervalRef.current);
+    intervalRef.current = window.setInterval(tick, speedRef.current);
   }, [resetGame, tick]);
 
   // --- Render loop (animation) ---
@@ -310,7 +301,7 @@ export function SnakeGame() {
   // --- Cleanup interval on unmount ---
   useEffect(() => {
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
     };
   }, []);
 
@@ -331,7 +322,7 @@ export function SnakeGame() {
         y: canvasSize / 2,
         vx: (Math.random() - 0.5) * 12,
         vy: (Math.random() - 0.5) * 12 - 4,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        color: colors[Math.floor(Math.random() * colors.length)] ?? "#33ff33",
         size: Math.random() * 6 + 3,
         life: 1,
       });
@@ -404,7 +395,7 @@ export function SnakeGame() {
           break;
       }
     },
-    [gameState, startGame]
+    [gameState, startGame],
   );
 
   useEffect(() => {
@@ -426,7 +417,7 @@ export function SnakeGame() {
         nextDirectionRef.current = dir;
       }
     },
-    [gameState]
+    [gameState],
   );
 
   const handleTapStart = useCallback(() => {
@@ -438,12 +429,12 @@ export function SnakeGame() {
   return (
     <div
       ref={containerRef}
-      className="relative flex flex-col items-center w-full max-w-[700px] mx-auto px-4 py-8 select-none"
+      className="relative mx-auto flex w-full max-w-175 flex-col items-center px-4 py-8 select-none"
       style={{ fontFamily: '"Courier New", Courier, monospace' }}
     >
       {/* Title */}
       <h1
-        className="text-3xl sm:text-4xl font-bold tracking-widest mb-4"
+        className="mb-4 text-3xl font-bold tracking-widest sm:text-4xl"
         style={{
           color: "#33ff33",
           textShadow: "0 0 20px rgba(51,255,51,0.5), 0 0 40px rgba(51,255,51,0.2)",
@@ -453,20 +444,18 @@ export function SnakeGame() {
       </h1>
 
       {/* Collected letters */}
-      <div className="flex items-center gap-2 mb-4 text-sm sm:text-base">
+      <div className="mb-4 flex items-center gap-2 text-sm sm:text-base">
         <span style={{ color: "#33ff33", opacity: 0.7 }}>COLLECTED:</span>
         <div className="flex gap-1">
-          {DUCA_LETTERS.map((letter, i) => {
+          {DUCA_LETTERS.map((letter) => {
             const isCollected = collectedLetters.includes(letter);
             return (
               <span
                 key={letter}
-                className="text-lg sm:text-xl font-bold px-1"
+                className="px-1 text-lg font-bold sm:text-xl"
                 style={{
                   color: isCollected ? "#33ff33" : "#333",
-                  textShadow: isCollected
-                    ? "0 0 10px rgba(51,255,51,0.8)"
-                    : "none",
+                  textShadow: isCollected ? "0 0 10px rgba(51,255,51,0.8)" : "none",
                   transition: "color 0.3s, text-shadow 0.3s",
                 }}
               >
@@ -502,7 +491,7 @@ export function SnakeGame() {
 
         {/* CRT scan lines overlay */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
               "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 4px)",
@@ -512,13 +501,15 @@ export function SnakeGame() {
 
         {/* Start screen overlay */}
         {gameState === "start" && (
-          <div
-            className="absolute inset-0 flex flex-col items-center justify-center z-10"
-            style={{ background: "rgba(0, 0, 0, 0.85)" }}
+          <button
+            type="button"
+            className="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center border-0 p-0"
+            style={{ background: "rgba(0, 0, 0, 0.85)", fontFamily: "inherit" }}
             onClick={handleTapStart}
+            aria-label="Start game"
           >
             <div
-              className="text-4xl sm:text-5xl font-bold tracking-widest mb-2"
+              className="mb-2 text-4xl font-bold tracking-widest sm:text-5xl"
               style={{
                 color: "#33ff33",
                 textShadow: "0 0 30px rgba(51,255,51,0.6)",
@@ -527,7 +518,7 @@ export function SnakeGame() {
               DUCA
             </div>
             <div
-              className="text-2xl sm:text-3xl font-bold tracking-widest mb-8"
+              className="mb-8 text-2xl font-bold tracking-widest sm:text-3xl"
               style={{
                 color: "#d648ff",
                 textShadow: "0 0 20px rgba(214,72,255,0.5)",
@@ -535,30 +526,29 @@ export function SnakeGame() {
             >
               SNAKE
             </div>
-            <div className="text-xs sm:text-sm mb-2" style={{ color: "#33ff33", opacity: 0.7 }}>
+            <div className="mb-2 text-xs sm:text-sm" style={{ color: "#33ff33", opacity: 0.7 }}>
               Collect D - U - C - A to win!
             </div>
-            <div
-              className="text-sm sm:text-base animate-pulse mt-4"
-              style={{ color: "#33ff33" }}
-            >
+            <div className="mt-4 animate-pulse text-sm sm:text-base" style={{ color: "#33ff33" }}>
               Press ENTER or tap to start
             </div>
-            <div className="text-xs mt-6" style={{ color: "#33ff33", opacity: 0.4 }}>
+            <div className="mt-6 text-xs" style={{ color: "#33ff33", opacity: 0.4 }}>
               Arrow keys / WASD to move
             </div>
-          </div>
+          </button>
         )}
 
         {/* Game over screen overlay */}
         {gameState === "gameover" && (
-          <div
-            className="absolute inset-0 flex flex-col items-center justify-center z-10"
-            style={{ background: "rgba(0, 0, 0, 0.85)" }}
+          <button
+            type="button"
+            className="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center border-0 p-0"
+            style={{ background: "rgba(0, 0, 0, 0.85)", fontFamily: "inherit" }}
             onClick={handleTapStart}
+            aria-label="Restart game"
           >
             <div
-              className="text-3xl sm:text-4xl font-bold tracking-widest mb-4"
+              className="mb-4 text-3xl font-bold tracking-widest sm:text-4xl"
               style={{
                 color: "#ff3333",
                 textShadow: "0 0 20px rgba(255,51,51,0.5)",
@@ -566,21 +556,19 @@ export function SnakeGame() {
             >
               GAME OVER
             </div>
-            <div className="text-lg mb-2" style={{ color: "#33ff33" }}>
+            <div className="mb-2 text-lg" style={{ color: "#33ff33" }}>
               SCORE: {score}
             </div>
-            <div className="flex gap-1 mb-6">
+            <div className="mb-6 flex gap-1">
               {DUCA_LETTERS.map((letter) => {
                 const isCollected = collectedLetters.includes(letter);
                 return (
                   <span
                     key={letter}
-                    className="text-xl font-bold px-1"
+                    className="px-1 text-xl font-bold"
                     style={{
                       color: isCollected ? "#33ff33" : "#333",
-                      textShadow: isCollected
-                        ? "0 0 10px rgba(51,255,51,0.8)"
-                        : "none",
+                      textShadow: isCollected ? "0 0 10px rgba(51,255,51,0.8)" : "none",
                     }}
                   >
                     {letter}
@@ -588,21 +576,20 @@ export function SnakeGame() {
                 );
               })}
             </div>
-            <div
-              className="text-sm animate-pulse"
-              style={{ color: "#33ff33" }}
-            >
+            <div className="animate-pulse text-sm" style={{ color: "#33ff33" }}>
               Press ENTER or tap to restart
             </div>
-          </div>
+          </button>
         )}
 
         {/* Win screen overlay */}
         {gameState === "won" && (
-          <div
-            className="absolute inset-0 flex flex-col items-center justify-center z-10"
-            style={{ background: "rgba(0, 0, 0, 0.8)" }}
+          <button
+            type="button"
+            className="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center border-0 p-0"
+            style={{ background: "rgba(0, 0, 0, 0.8)", fontFamily: "inherit" }}
             onClick={handleTapStart}
+            aria-label="Play again"
           >
             {/* Confetti particles */}
             {confettiParticles
@@ -610,7 +597,7 @@ export function SnakeGame() {
               .map((p) => (
                 <div
                   key={p.id}
-                  className="absolute rounded-full pointer-events-none"
+                  className="pointer-events-none absolute rounded-full"
                   style={{
                     left: p.x,
                     top: p.y,
@@ -624,7 +611,7 @@ export function SnakeGame() {
                 />
               ))}
             <div
-              className="text-2xl sm:text-3xl font-bold tracking-widest mb-2"
+              className="mb-2 text-2xl font-bold tracking-widest sm:text-3xl"
               style={{
                 color: "#33ff33",
                 textShadow: "0 0 30px rgba(51,255,51,0.6)",
@@ -633,7 +620,7 @@ export function SnakeGame() {
               YOU SPELLED
             </div>
             <div
-              className="text-4xl sm:text-5xl font-bold tracking-widest mb-4"
+              className="mb-4 text-4xl font-bold tracking-widest sm:text-5xl"
               style={{
                 color: "#d648ff",
                 textShadow: "0 0 30px rgba(214,72,255,0.6)",
@@ -641,16 +628,13 @@ export function SnakeGame() {
             >
               DUCA!
             </div>
-            <div className="text-lg mb-6" style={{ color: "#33ff33" }}>
+            <div className="mb-6 text-lg" style={{ color: "#33ff33" }}>
               SCORE: {score}
             </div>
-            <div
-              className="text-sm animate-pulse"
-              style={{ color: "#33ff33" }}
-            >
+            <div className="animate-pulse text-sm" style={{ color: "#33ff33" }}>
               Press ENTER or tap to play again
             </div>
-          </div>
+          </button>
         )}
       </div>
 
@@ -664,7 +648,7 @@ export function SnakeGame() {
               e.preventDefault();
               handleDirection("UP");
             }}
-            className="w-16 h-16 flex items-center justify-center rounded-lg active:opacity-70 transition-opacity"
+            className="flex h-16 w-16 items-center justify-center rounded-lg transition-opacity active:opacity-70"
             style={{
               background: "rgba(51, 255, 51, 0.1)",
               border: "1px solid rgba(51, 255, 51, 0.3)",
@@ -683,7 +667,7 @@ export function SnakeGame() {
                 e.preventDefault();
                 handleDirection("LEFT");
               }}
-              className="w-16 h-16 flex items-center justify-center rounded-lg active:opacity-70 transition-opacity"
+              className="flex h-16 w-16 items-center justify-center rounded-lg transition-opacity active:opacity-70"
               style={{
                 background: "rgba(51, 255, 51, 0.1)",
                 border: "1px solid rgba(51, 255, 51, 0.3)",
@@ -700,7 +684,7 @@ export function SnakeGame() {
                 e.preventDefault();
                 handleDirection("DOWN");
               }}
-              className="w-16 h-16 flex items-center justify-center rounded-lg active:opacity-70 transition-opacity"
+              className="flex h-16 w-16 items-center justify-center rounded-lg transition-opacity active:opacity-70"
               style={{
                 background: "rgba(51, 255, 51, 0.1)",
                 border: "1px solid rgba(51, 255, 51, 0.3)",
@@ -717,7 +701,7 @@ export function SnakeGame() {
                 e.preventDefault();
                 handleDirection("RIGHT");
               }}
-              className="w-16 h-16 flex items-center justify-center rounded-lg active:opacity-70 transition-opacity"
+              className="flex h-16 w-16 items-center justify-center rounded-lg transition-opacity active:opacity-70"
               style={{
                 background: "rgba(51, 255, 51, 0.1)",
                 border: "1px solid rgba(51, 255, 51, 0.3)",
@@ -733,7 +717,7 @@ export function SnakeGame() {
       </div>
 
       {/* Footer hint */}
-      <div className="mt-4 text-xs text-center" style={{ color: "#33ff33", opacity: 0.3 }}>
+      <div className="mt-4 text-center text-xs" style={{ color: "#33ff33", opacity: 0.3 }}>
         {">"} DUCA_SNAKE v1.0 // Deakin University Cyber Association
       </div>
     </div>

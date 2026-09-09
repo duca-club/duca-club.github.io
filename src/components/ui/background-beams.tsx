@@ -34,7 +34,7 @@ export const BackgroundBeams = ({
     <div
       ref={ref}
       className={cn(
-        "absolute inset-0 overflow-hidden [mask-image:radial-gradient(ellipse_at_center,white,transparent)]",
+        "absolute inset-0 overflow-hidden mask-[radial-gradient(ellipse_at_center,white,transparent)]",
         className
       )}
     >
@@ -131,7 +131,7 @@ const Beam = ({
         repeatDelay: repeatDelay ?? 0,
       }}
       className={cn(
-        "absolute left-0 top-0 w-px h-12 bg-gradient-to-b from-transparent via-purple-500 to-transparent",
+        "absolute left-0 top-0 w-px h-12 bg-linear-to-b from-transparent via-purple-500 to-transparent",
         className
       )}
     />

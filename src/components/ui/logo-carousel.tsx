@@ -35,13 +35,13 @@ export const LogoCarousel = ({
       animationId = requestAnimationFrame(scroll);
     };
 
-    const intervalId = setInterval(() => {
+    const intervalId = window.setInterval(() => {
       cancelAnimationFrame(animationId);
       scroll();
     }, speed);
 
     return () => {
-      clearInterval(intervalId);
+      window.clearInterval(intervalId);
       cancelAnimationFrame(animationId);
     };
   }, [speed]);
@@ -61,7 +61,7 @@ export const LogoCarousel = ({
             href={partner.href ?? "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 transition-all duration-300 opacity-70 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(214,72,255,0.5)] px-4"
+            className="shrink-0 px-4 opacity-70 transition-all duration-300 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(214,72,255,0.5)]"
           >
             <img
               src={partner.logo}
@@ -105,16 +105,10 @@ export const InfiniteLogoCarousel = ({
       });
 
       if (containerRef.current) {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          direction === "left" ? "forwards" : "reverse"
-        );
+        containerRef.current.style.setProperty("--animation-direction", direction === "left" ? "forwards" : "reverse");
 
         const speedMap = { fast: "20s", normal: "40s", slow: "80s" };
-        containerRef.current.style.setProperty(
-          "--animation-duration",
-          speedMap[speed]
-        );
+        containerRef.current.style.setProperty("--animation-duration", speedMap[speed]);
       }
     }
   }
@@ -123,21 +117,18 @@ export const InfiniteLogoCarousel = ({
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]",
-        className
+        "scroller relative z-20 w-full overflow-hidden mask-[linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]",
+        className,
       )}
     >
-      <div
-        ref={scrollerRef}
-        className="flex min-w-full shrink-0 gap-8 py-4 w-max flex-nowrap animate-scroll"
-      >
+      <div ref={scrollerRef} className="animate-scroll flex w-max min-w-full shrink-0 flex-nowrap gap-8 py-4">
         {partners.map((partner, idx) => (
           <a
             key={`${partner.name}-${idx}`}
             href={partner.href ?? "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(214,72,255,0.5)] px-4"
+            className="shrink-0 px-4 opacity-60 transition-all duration-300 hover:opacity-100 hover:drop-shadow-[0_0_12px_rgba(214,72,255,0.5)]"
           >
             <img
               src={partner.logo}

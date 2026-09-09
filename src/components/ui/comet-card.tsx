@@ -21,7 +21,7 @@ export const CometCard = ({
   return (
     <div
       className={cn(
-        "group/comet relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-800/50 to-slate-900/50 p-px",
+        "group/comet relative overflow-hidden rounded-2xl border border-slate-800 bg-linear-to-b from-slate-800/50 to-slate-900/50 p-px",
         containerClassName
       )}
       {...handlers}
@@ -34,7 +34,7 @@ export const CometCard = ({
       />
       <div
         className={cn(
-          "relative z-[1] rounded-2xl bg-slate-900 p-6",
+          "relative z-1 rounded-2xl bg-slate-900 p-6",
           className
         )}
       >
@@ -59,7 +59,7 @@ const Comet = () => {
         repeatDelay: 2,
         ease: "linear",
       }}
-      className="absolute h-px w-[50px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"
+      className="absolute h-px w-[50px] bg-linear-to-r from-transparent via-purple-500 to-transparent"
       style={{
         boxShadow: "0 0 10px 2px rgba(168, 85, 247, 0.5)",
       }}

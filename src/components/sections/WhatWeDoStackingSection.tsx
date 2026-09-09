@@ -56,17 +56,8 @@ const whatWeDoCards = [
   },
 ];
 
-const StackingCardContent = ({
-  card,
-  index,
-}: {
-  card: (typeof whatWeDoCards)[number];
-  index: number;
-}) => {
-  const { background, handlers } = useMouseGlow(
-    400,
-    `${card.color}18`,
-  );
+const StackingCardContent = ({ card, index }: { card: (typeof whatWeDoCards)[number]; index: number }) => {
+  const { background, handlers } = useMouseGlow(400, `${card.color}18`);
 
   return (
     <div
@@ -86,7 +77,7 @@ const StackingCardContent = ({
 
       {/* Large background number */}
       <div
-        className="absolute left-5 top-1/2 -translate-y-1/2 select-none pointer-events-none font-extrabold"
+        className="pointer-events-none absolute top-1/2 left-5 -translate-y-1/2 font-extrabold select-none"
         style={{
           fontSize: "clamp(120px, 18vw, 200px)",
           lineHeight: 1,
@@ -98,17 +89,14 @@ const StackingCardContent = ({
       </div>
 
       {/* Icon + label */}
-      <div className="flex items-center gap-3 mb-4 relative z-10">
+      <div className="relative z-10 mb-4 flex items-center gap-3">
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+          className="flex h-10 w-10 items-center justify-center rounded-xl text-xl"
           style={{ backgroundColor: `${card.color}25` }}
         >
           {card.icon}
         </div>
-        <span
-          className="text-xs font-bold tracking-widest uppercase"
-          style={{ color: card.color, opacity: 0.7 }}
-        >
+        <span className="text-xs font-bold tracking-widest uppercase" style={{ color: card.color, opacity: 0.7 }}>
           {card.title}
         </span>
       </div>
@@ -128,7 +116,7 @@ const StackingCardContent = ({
 
       {/* Description */}
       <p
-        className="relative z-10 text-white/70 leading-relaxed"
+        className="relative z-10 leading-relaxed text-white/70"
         style={{
           fontSize: "clamp(14px, 1.8vw, 16px)",
           maxWidth: "80%",
@@ -143,8 +131,10 @@ const StackingCardContent = ({
 export const WhatWeDoStackingSection = () => {
   return (
     <section className="section-themed-alt">
-
-      <div data-sticky-header className="sticky top-[96px] z-20 bg-gradient-to-b from-[#060b14] via-[#060b14]/95 to-transparent pt-20 pb-16 mb-12">
+      <div
+        data-sticky-header
+        className="sticky top-24 z-20 mb-12 bg-linear-to-b from-[#060b14] via-[#060b14]/95 to-transparent pt-20 pb-16"
+      >
         <div className="container mx-auto px-4">
           <SectionHeading
             title="What We Do"
@@ -156,11 +146,9 @@ export const WhatWeDoStackingSection = () => {
 
       <StackingCards
         footer={
-          <div className="container mx-auto px-4 pb-12 pt-8">
+          <div className="container mx-auto px-4 pt-8 pb-12">
             <div className="text-center">
-              <p className="theme-text-secondary mb-6 text-lg">
-                Ready to start your cybersecurity journey?
-              </p>
+              <p className="theme-text-secondary mb-6 text-lg">Ready to start your cybersecurity journey?</p>
               <a
                 href="/join/"
                 className="inline-flex items-center justify-center rounded-full bg-purple-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-purple-700"

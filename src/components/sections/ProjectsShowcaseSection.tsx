@@ -157,12 +157,12 @@ export const ProjectsShowcaseSection = ({ projects }: { projects: Project[] }) =
                 transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
               >
                 <div
-                  className={`pointer-events-none absolute -inset-px rounded-2xl bg-gradient-to-br opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-60 ${a.glow}`}
+                  className={`pointer-events-none absolute -inset-px rounded-2xl bg-linear-to-br opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-60 ${a.glow}`}
                 />
                 <div
                   className={`theme-card theme-border relative h-full rounded-2xl border p-6 transition-all duration-300 ${a.ring} group-hover:-translate-y-1`}
                 >
-                  <div className={`mb-6 flex h-40 items-center justify-center rounded-xl bg-gradient-to-br ${a.grad}`}>
+                  <div className={`mb-6 flex h-40 items-center justify-center rounded-xl bg-linear-to-br ${a.grad}`}>
                     {project.image ? (
                       <img src={project.image} alt="" loading="lazy" className="h-full w-full rounded-xl object-cover" />
                     ) : (
