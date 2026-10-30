@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { ArrowUpRight, ChevronLeft } from 'lucide-react';
 import '../styles/article.css';
 
 export interface BlogArticleData {
@@ -41,7 +42,7 @@ export default function BlogArticle({ article, children }: BlogArticleProps) {
   return (
     <article className="blog-article" data-anim="hero">
       <div className="article-topline">
-        <a className="article-back" href="/blog/">‹ all posts</a>
+        <a className="article-back" href="/blog/"><ChevronLeft className="ui-icon" aria-hidden="true" />all posts</a>
         <span className="article-meta">
           {article.tags[0] && <>{article.tags[0]} · </>}
           <time dateTime={article.isoDate}>{article.date}</time>
@@ -74,7 +75,8 @@ export default function BlogArticle({ article, children }: BlogArticleProps) {
             </span>
             {authorLink && (
               <span className="article-author-link">
-                {authorUrl?.hostname.endsWith('linkedin.com') ? 'LinkedIn' : 'Website'} ↗
+                {authorUrl?.hostname.endsWith('linkedin.com') ? 'LinkedIn' : 'Website'}
+                <ArrowUpRight className="ui-icon" aria-hidden="true" />
               </span>
             )}
           </AuthorElement>
@@ -86,7 +88,7 @@ export default function BlogArticle({ article, children }: BlogArticleProps) {
         {article.tags.map((tag) => (
           <a className="article-tag" href={`/blog/?tag=${encodeURIComponent(tag)}`} key={tag}>{tag}</a>
         ))}
-        <a className="article-more" href="/blog/">more posts ↗</a>
+        <a className="article-more" href="/blog/">more posts <ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
       </div>
     </article>
   );

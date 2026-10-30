@@ -39,6 +39,16 @@
 .design-hover-17:hover, .design-hover-17:focus-visible { border-color:var(--on-panel) !important; }
 .design-hover-18:hover, .design-hover-18:focus-visible { color:var(--accent) !important; }
 
+.ui-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+}
+
+.theme-icon { width: 18px; height: 18px; }
+
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
@@ -69,6 +79,83 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.home-card-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 17px;
+  padding: 16px 30px;
+}
+
+@media (max-width: 767px) {
+  .home-page {
+    --home-gutter: 20px;
+    --home-section-space: 60px;
+    --home-bottom-space: 72px;
+    --home-hero-padding: 24px;
+    --home-hero-height: calc(50vw + clamp(125px, 40vw, 195px));
+    --home-hero-width: calc(100% + 2 * var(--home-gutter));
+    --home-hero-inline-margin: calc(-1 * var(--home-gutter));
+    --home-hero-margin: 28px;
+    --home-stats-top: 30px;
+    --home-stats-bottom: 44px;
+    --home-stats-width: 100%;
+    --home-stats-columns: 3;
+    --home-stats-gap: 24px 16px;
+    --home-stat-size: 34px;
+    --home-stat-label: 12px;
+    --home-stat-tracking: 0.08em;
+    --home-stat-note: 12px;
+    --home-ticker-top: 36px;
+    --home-ticker-bottom: 64px;
+    --home-card-padding: 24px;
+    --home-card-radius: 24px;
+    --home-card-gap: 28px;
+    --home-button-gap: 10px;
+    --home-copy-size: 16px;
+    --home-join-title: 30px;
+    --home-section-title: 28px;
+    --home-event-title: 30px;
+    --home-event-padding: 30px 24px;
+    --home-event-gap: 24px;
+    --home-blog-padding: 22px 22px 24px;
+    --home-blog-title: 20px;
+    --home-blog-copy: 15px;
+    --home-discord-title: 28px;
+    --home-mark-height: 220px;
+    --home-mark-width: min(52%, 220px);
+    --home-channels-height: 210px;
+  }
+
+  .home-stats > :first-child {
+    grid-column: 1 / -1;
+    --home-stat-size: 56px;
+    --home-stat-label: 13px;
+    --home-stat-note: 13px;
+  }
+
+  .home-join-actions { justify-content: center; }
+  .home-page [data-hero-labels] { display: none; }
+  .home-discord-actions { text-align: center; }
+  .home-page .home-card-button {
+    min-height: 46px;
+    padding: 12px 18px;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 360px) {
+  .home-page {
+    --home-gutter: 16px;
+    --home-card-padding: 20px;
+    --home-stats-gap: 24px 12px;
+    --home-stat-size: 32px;
+  }
+  .home-page .home-card-button { padding-inline: 16px; }
 }
 
 /* Standard keyboard interaction without changing the exported layout. */

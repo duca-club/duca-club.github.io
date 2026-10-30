@@ -27,11 +27,14 @@ Discord membership numbers come from the original site's public invite API. The 
 
 - `src/pages/`: Astro routes and static blog article pages.
 - `src/components/DesignSite.jsx`: the exported interface, converted to a server-rendered React component hydrated by Astro.
+- `src/components/SiteHeader.jsx` and `src/styles/navigation.css`: the responsive header and animated mobile navigation drawer.
+- UI icons use `lucide-react` SVG components. `src/lib/rehype-content-icons.mjs` converts the original posts' decorative emoji to SVG icons at build time without changing their Markdown source.
 - `src/styles/design.css`: the exported design tokens and hover styles.
 - `src/components/BlogArticle.tsx` and `src/styles/article.css`: the exported article styling applied to real Markdown posts.
 - `src/content/blog/`: all 15 original posts and images, copied unchanged from the old website. Existing blog URLs are preserved.
 - `src/content/events/`: the 13 archived events and new event listings. Upcoming details expand on the events page; past events show their title, date, and category. Dates and times display in Melbourne time.
 - `src/data/team.ts`: the original 2025 and 2026 executive and division records. Biographies are available through portrait card tooltips and accessible labels.
+- `src/styles/team.css`: team cards and mobile grids, with two executive columns and three committee columns.
 - `public/`: local logos, portraits, partner images, About photographs, and licensed fonts.
 - `claude-design/`: the original supplied design export and extracted reference.
 - `old-site/`: the archived Astro website, retained for reference.

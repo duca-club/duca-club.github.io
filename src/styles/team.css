@@ -1,0 +1,110 @@
+.team-page .team-exec-grid {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.team-page .team-committee-grid {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fill, max(130px, calc((100% - 60px) / 6)));
+  gap: 12px;
+  align-items: start;
+  justify-content: start;
+}
+
+.team-page .team-card { min-width: 0; }
+
+.team-page .team-card-image {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-bottom: 2px solid var(--ink);
+  background: var(--surface);
+}
+
+.team-page .team-card-image > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-page .team-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.team-page .team-exec-card .team-card-body { padding: 18px 20px 20px; gap: 7px; }
+.team-page .team-committee-card .team-card-body { padding: 13px 14px 15px; gap: 5px; }
+
+.team-page .team-card-role {
+  min-width: 0;
+  color: var(--accent);
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.team-page .team-exec-card .team-card-role { font-size: 11.5px; letter-spacing: 0.12em; }
+.team-page .team-committee-card .team-card-role { font-size: 10.5px; letter-spacing: 0.1em; }
+
+.team-page .team-card-name {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+}
+
+.team-page .team-exec-card .team-card-name { gap: 7px; font-size: 19px; letter-spacing: -0.012em; }
+.team-page .team-committee-card .team-card-name { gap: 5px; font-size: 15px; letter-spacing: -0.01em; line-height: 1.2; }
+.team-page .team-card-name-text { min-width: 0; overflow-wrap: anywhere; }
+
+.team-page .team-card-link-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+}
+
+.team-page .team-exec-card .team-card-link-icon { font-size: 13px; }
+.team-page .team-committee-card .team-card-link-icon { font-size: 11px; }
+
+@media (max-width: 767px) {
+  .team-page { --team-gutter: 16px; }
+
+  .team-page .team-exec-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .team-page .team-committee-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .team-page .team-exec-card .team-card-body { padding: 12px 12px 14px; gap: 6px; }
+  .team-page .team-committee-card .team-card-body { padding: 10px 7px 12px; gap: 5px; }
+  .team-page .team-exec-card .team-card-role { font-size: 10px; letter-spacing: 0.06em; line-height: 1.5; }
+  .team-page .team-committee-card .team-card-role { font-size: 9px; letter-spacing: 0.04em; line-height: 1.45; }
+  .team-page .team-exec-card .team-card-name { gap: 5px; font-size: 16px; line-height: 1.2; }
+  .team-page .team-committee-card .team-card-name { gap: 3px; font-size: 12px; line-height: 1.25; }
+  .team-page .team-exec-card .team-card-link-icon { font-size: 11px; }
+  .team-page .team-committee-card .team-card-link-icon { font-size: 10px; }
+}

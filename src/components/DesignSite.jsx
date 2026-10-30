@@ -1,11 +1,14 @@
 // Ported from Claude Design's “DUCA with Dark MODE” export.
 // Original layout declarations and animation methods are kept to preserve the design.
 import React from 'react';
+import { ArrowRight, ArrowUpRight, Check, ChevronLeft, ChevronRight, Hash, Infinity as InfinityIcon, Minus, Moon, Plus, Search, Star, Sun } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { executives, divisions } from '../data/team';
 import BlogArticle from './BlogArticle';
+import SiteHeader from './SiteHeader.jsx';
 import '../styles/event.css';
+import '../styles/team.css';
 import { getEventSchedule } from '../lib/event-state';
 
 const styleCache = new Map();
@@ -42,7 +45,7 @@ export default class DesignSite extends React.Component {
     { name: 'ctf-and-challenges', meta: '5 solving', live: true },
     { name: 'workshop-notes', meta: '3 new' },
     { name: 'jobs-and-internships', meta: '8 new' },
-    { name: 'duca-cat', meta: '∞', live: true },
+    { name: 'duca-cat', meta: <InfinityIcon className="ui-icon" aria-hidden="true" />, live: true },
     { name: 'study-help', meta: '2 new' },
     { name: 'certifications', meta: '6 new' },
     { name: 'events', meta: 'pinned' },
@@ -71,7 +74,7 @@ export default class DesignSite extends React.Component {
   TEAM = [];
 
   PARTNERS = [
-    { name: 'Deakin Cyber Research', src: '/partners/deakin-cyber.png', url: 'https://cybercentre.org.au/' },
+    { name: 'Deakin Cyber', src: '/partners/deakin-cyber.png', url: 'https://cybercentre.org.au/' },
     { name: 'Deakin University', src: '/partners/deakin.png', url: 'https://www.deakin.edu.au/' },
     { name: 'DUSA', src: '/partners/dusa.png', url: 'https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca' },
     { name: 'ACUCyS', src: '/partners/acucys.png', url: 'https://acucys.com.au/' },
@@ -109,9 +112,22 @@ export default class DesignSite extends React.Component {
     texture.anisotropy = 4;
 
     let textBottom = 0;
+    let mobile = false;
     const cssVar = (n, fb) => {
       const v = getComputedStyle(document.body).getPropertyValue(n).trim();
       return v || fb;
+    };
+    const mobileTextLayout = width => {
+      const gutter = parseFloat(getComputedStyle(canvas).getPropertyValue('--home-gutter')) || 20;
+      const textWidth = Math.max(1, width - gutter * 2);
+      const lines = ['LEARN SECURITY', 'BY ACTUALLY', 'DOING IT'];
+      ctx.font = '800 100px Archivo, sans-serif';
+      const widest = Math.max(...lines.map(line => ctx.measureText(line).width));
+      const hs = Math.min(46, 100 * (textWidth * 0.94 / widest));
+      const lh = hs * 0.96;
+      const ls = Math.min(13, textWidth * 0.04);
+      const subtitleY = hs * 0.98 + 2 * lh + hs * 0.68;
+      return { lines, hs, lh, ls, subtitleY, bottom: subtitleY + ls * 0.5 };
     };
     const drawText = (W, H) => {
       const INK = cssVar('--ink', '#0E0E0C');
@@ -123,6 +139,26 @@ export default class DesignSite extends React.Component {
       ctx.textAlign = 'center';
       const cx = W / 2;
       ctx.font = '800 100px Archivo, sans-serif';
+      if (mobile) {
+        const { lines, hs, lh, ls, subtitleY, bottom } = mobileTextLayout(W);
+        ctx.font = `800 ${hs}px Archivo, sans-serif`;
+        lines.forEach((line, index) => {
+          const y = hs * 0.98 + index * lh;
+          const width = ctx.measureText(line).width;
+          if (index === 2) {
+            ctx.fillStyle = '#C6F24E';
+            ctx.fillRect(cx - width / 2 - hs * 0.06, y - hs * 0.78, width + hs * 0.12, hs * 0.96);
+          }
+          ctx.fillStyle = index === 2 ? '#0E0E0C' : INK;
+          ctx.fillText(line, cx, y);
+        });
+        ctx.font = `600 ${ls}px Archivo, sans-serif`;
+        ctx.fillStyle = BODY2;
+        ctx.fillText('Deakin University Cybersecurity Club', cx, subtitleY);
+        textBottom = bottom;
+        texture.needsUpdate = true;
+        return;
+      }
       const widest = Math.max(ctx.measureText('LEARN SECURITY').width, ctx.measureText('BY ACTUALLY DOING IT').width);
       const hs = Math.min(104, 100 * (W * 0.78 / widest));
       const lh = hs * 0.92;
@@ -160,23 +196,24 @@ export default class DesignSite extends React.Component {
         uniforms: {
           uTex: { value: texture },
           uTime: { value: 0 },
+          uMotion: { value: 1 },
           uOrb: { value: new T.Vector2(1.4, 0.5) },
           uEnter: { value: -0.3 },
           uAspect: { value: 1 }
         },
         vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
         fragmentShader: [
-          'uniform sampler2D uTex; uniform float uTime; uniform vec2 uOrb; uniform float uEnter; uniform float uAspect;',
+          'uniform sampler2D uTex; uniform float uTime; uniform float uMotion; uniform vec2 uOrb; uniform float uEnter; uniform float uAspect;',
           'varying vec2 vUv;',
           'void main(){',
           '  vec2 uv = vUv;',
           '  vec2 d = vec2((uv.x - uOrb.x) * uAspect, uv.y - uOrb.y);',
           '  float dist = length(d);',
-          '  float wave = sin(dist * 11.0 - uTime * 0.8) * exp(-dist * 2.2) * 0.0045;',
+          '  float wave = sin(dist * 11.0 - uTime * 0.8) * exp(-dist * 2.2) * 0.0045 * uMotion;',
           '  uv += normalize(d + 1e-6) * wave;',
           '  float reveal = smoothstep(uEnter, uEnter + 0.28, uv.y);',
           '  vec4 base = texture2D(uTex, uv);',
-          '  vec3 col = mix(base.rgb, vec3(0.17, 0.21, 0.77), exp(-dist * 2.6) * 0.3);',
+          '  vec3 col = mix(base.rgb, vec3(0.17, 0.21, 0.77), exp(-dist * 2.6) * 0.3 * uMotion);',
           '  gl_FragColor = vec4(col, base.a * reveal);',
           '}'
         ].join('\n')
@@ -206,23 +243,36 @@ export default class DesignSite extends React.Component {
 
     let W = 1, H = 1;
     const resize = () => {
+      mobile = window.matchMedia('(max-width: 767px)').matches;
+      if (!mobile) canvas.parentElement.style.removeProperty('--home-hero-height');
       const r = canvas.getBoundingClientRect();
       if (!r.width || !r.height) return;
-      W = r.width; H = r.height;
+      W = r.width;
+      H = mobile ? mobileTextLayout(W).bottom + 24 + W / 2 : r.height;
+      if (mobile) canvas.parentElement.style.setProperty('--home-hero-height', `${H}px`);
       renderer.setSize(W, H, false);
       camera.left = -W / 2; camera.right = W / 2; camera.top = H / 2; camera.bottom = -H / 2;
       camera.updateProjectionMatrix();
       plane.geometry.dispose();
       plane.geometry = new T.PlaneGeometry(W, H, 1, 1);
       plane.material.uniforms.uAspect.value = W / H;
+      plane.material.uniforms.uMotion.value = mobile ? 0 : 1;
       drawText(W, H);
-      const R = Math.min(H * 0.78, W * 0.36);
-      group.scale.setScalar(R);
-      const topY = H / 2 - (textBottom + 34);
-      group.position.set(0, Math.min(-H * 0.5 + R * 0.16, topY - R), -50);
+      if (mobile) {
+        plane.position.set(0, 0, 0);
+        group.scale.setScalar(W / 2);
+        group.position.set(0, -H / 2, -50);
+      } else {
+        const R = Math.min(H * 0.78, W * 0.36);
+        group.scale.setScalar(R);
+        const topY = H / 2 - (textBottom + 34);
+        group.position.set(0, Math.min(-H * 0.5 + R * 0.16, topY - R), -50);
+      }
     };
     resize();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => drawText(W, H));
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+      if (mobile) resize(); else drawText(W, H);
+    });
 
     const mouse = { x: 0, y: 0 };
     const onMove = (e) => {
@@ -253,13 +303,17 @@ export default class DesignSite extends React.Component {
       core.rotation.y -= 0.007;
       core.rotation.z += 0.005;
       group.position.z = -50;
-      plane.position.x += (mouse.x * -8 - plane.position.x) * 0.04;
-      plane.position.y += (mouse.y * 5 - plane.position.y) * 0.04;
+      if (mobile) {
+        plane.position.set(0, 0, 0);
+      } else {
+        plane.position.x += (mouse.x * -8 - plane.position.x) * 0.04;
+        plane.position.y += (mouse.y * 5 - plane.position.y) * 0.04;
+      }
       plane.material.uniforms.uOrb.value.set(
         (group.position.x - plane.position.x) / W + 0.5,
         (group.position.y - plane.position.y) / H + 0.5
       );
-      const show = W >= 760;
+      const show = !mobile && W >= 760;
       const safeTop = textBottom + 20;
       const placed = [];
       ANCHORS.forEach((a, i) => {
@@ -832,11 +886,8 @@ export default class DesignSite extends React.Component {
       isBlog: page === 'blog', isTeam: page === 'team', isPartners: page === 'partners',
       isCtf: page === 'ctf', isJoin: page === 'join', isPost: page === 'post',
       themeIcon: this.state.theme === 'dark'
-        ? React.createElement('svg', { width: 17, height: 17, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2.6, strokeLinecap: 'round', strokeLinejoin: 'round' },
-            React.createElement('path', { key: 'm', d: 'M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z', fill: 'currentColor' }))
-        : React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2.8, strokeLinecap: 'round' },
-            React.createElement('circle', { key: 'c', cx: 12, cy: 12, r: 4.4, fill: 'currentColor' }),
-            React.createElement('path', { key: 'r', d: 'M12 2.4v2.1M12 19.5v2.1M21.6 12h-2.1M4.5 12H2.4M18.8 5.2l-1.5 1.5M6.7 17.3l-1.5 1.5M18.8 18.8l-1.5-1.5M6.7 6.7 5.2 5.2' })),
+        ? <Moon className="ui-icon theme-icon" aria-hidden="true" />
+        : <Sun className="ui-icon theme-icon" aria-hidden="true" />,
       toggleTheme: () => {
         const next = this.state.theme === 'dark' ? 'light' : 'dark';
         document.body.setAttribute('data-theme', next);
@@ -855,13 +906,14 @@ export default class DesignSite extends React.Component {
 
       navItems: this.PAGES.map(([id, label]) => {
         const ext = id === 'ctf';
+        const active = page === id || (page === 'post' && id === 'blog');
         return {
-          label: ext ? label + ' ↗' : label,
+          label,
           href: ext ? 'https://ctf.duca.au/' : (id === 'home' ? '/' : '/' + id + '/'),
           target: ext ? '_blank' : '_self',
           onClick: undefined,
-          color: page === id ? 'var(--on-ink)' : 'var(--ink)',
-          bg: page === id ? 'var(--ink)' : 'transparent'
+          color: active ? 'var(--on-ink)' : 'var(--ink)',
+          bg: active ? 'var(--ink)' : 'transparent'
         };
       }),
       goHome: this.go('home'), goJoin: this.go('join'), goEvents: this.go('events'),
@@ -877,7 +929,7 @@ export default class DesignSite extends React.Component {
         name: c.name, meta: c.meta, key: i,
         tint: c.live ? 'oklch(0.87 0.2 124)' : 'var(--muted)'
       })),
-      tickerLoop: [...this.TICKER, ...this.TICKER, ...this.TICKER].map((t, i) => ({ text: '★ ' + t, key: i })),
+      tickerLoop: [...this.TICKER, ...this.TICKER, ...this.TICKER].map((t, i) => ({ text: t, key: i })),
 
       joinPerks: [
         { num: '01', title: 'Every workshop, free', meta: 'no cost' },
@@ -941,11 +993,8 @@ export default class DesignSite extends React.Component {
         ? 'Elected each year by members. Tap anyone to open their LinkedIn.'
         : 'The ' + this.state.teamYear + ' committee. Tap anyone to open their LinkedIn.',
 
-      execs: (executives[String(this.state.teamYear)] || []).filter(m => ['President', 'Vice President', 'Secretary', 'Treasurer'].includes(m.role)).map(toDesignMember),
-      divisionsTeam: [
-        { name: 'Committee', members: (executives[String(this.state.teamYear)] || []).filter(m => !['President', 'Vice President', 'Secretary', 'Treasurer'].includes(m.role)) },
-        ...(divisions[String(this.state.teamYear)] || [])
-      ].filter(d => d.members.length).map(d => ({ ...d, members: d.members.map(toDesignMember), empty: d.members.length === 0 })),
+      execs: (executives[String(this.state.teamYear)] || []).map(toDesignMember),
+      divisionsTeam: (divisions[String(this.state.teamYear)] || []).filter(d => d.members.length).map(d => ({ ...d, members: d.members.map(toDesignMember), empty: d.members.length === 0 })),
       partners: this.PARTNERS,
       deakinCyber: [
         { stat: '4', label: 'Major events backed' },
@@ -954,7 +1003,7 @@ export default class DesignSite extends React.Component {
       ],
 
       sponsors: this.PARTNERS.filter(p => ['DUSA', 'Deakin University', 'Red Bull'].includes(p.name)),
-      otherPartners: this.PARTNERS.filter(p => !['Deakin Cyber Research', 'DUSA', 'Deakin University', 'Red Bull'].includes(p.name)),
+      otherPartners: this.PARTNERS.filter(p => !['Deakin Cyber', 'DUSA', 'Deakin University', 'Red Bull'].includes(p.name)),
       partnerLoop: [...this.PARTNERS, ...this.PARTNERS].map((p, i) => ({ ...p, key: i })),
       partnerNameLoop: [...this.PARTNERS, ...this.PARTNERS].map((p, i) => ({ name: p.name, key: i })),
 
@@ -1084,25 +1133,25 @@ export default class DesignSite extends React.Component {
         ['Eligible to run for committee', 0, 1]
       ].map(([text, o, m]) => ({
         text,
-        open: o ? '✓' : '—',
-        member: m ? '✓' : '—',
+        open: Boolean(o),
+        member: Boolean(m),
         openColor: o ? 'var(--ink)' : 'var(--muted)',
         memberColor: m ? 'var(--accent)' : 'var(--muted)'
       })),
 
       tierOpen: [
-        { mark: '+', text: 'Attend any event, free' },
-        { mark: '+', text: 'Take part in workshops and CTFs' },
-        { mark: '+', text: 'Full access to the Discord' },
-        { mark: '\u2013', text: 'Not eligible for event prizes' }
+        { Icon: Plus, text: 'Attend any event, free' },
+        { Icon: Plus, text: 'Take part in workshops and CTFs' },
+        { Icon: Plus, text: 'Full access to the Discord' },
+        { Icon: Minus, text: 'Not eligible for event prizes' }
       ],
 
       tierMember: [
-        { mark: '+', text: 'Everything above' },
-        { mark: '+', text: 'Eligible for all event prizes' },
-        { mark: '+', text: 'Counted in club numbers at DUSA' },
-        { mark: '+', text: 'Supports our events and running costs' },
-        { mark: '+', text: 'Eligible to run for committee' }
+        { Icon: Plus, text: 'Everything above' },
+        { Icon: Plus, text: 'Eligible for all event prizes' },
+        { Icon: Plus, text: 'Counted in club numbers at DUSA' },
+        { Icon: Plus, text: 'Supports our events and running costs' },
+        { Icon: Plus, text: 'Eligible to run for committee' }
       ],
 
       steps: [
@@ -1143,35 +1192,14 @@ export default class DesignSite extends React.Component {
   render() {
     const { aboutEvents, aboutStrip, aboutTalks, archiveCount, archiveOpen, archivePosts, archiveRot, blogFilters, blogHasPages, blogNext, blogNextColor, blogPageLabel, blogPosts, blogPrev, blogPrevColor, blogQuery, channelLoop, clearBlogSearch, compare, countdown, ctfCats, discordMemberCount, divisions, divisionsTeam, eventCount, eventFilters, execs, faqs, featuredPost, hasBlogQuery, homePosts, isAbout, isBlog, isCtf, isEvents, isHome, isJoin, isPartners, isPost, isTeam, liveNow, navItems, nextEvent, nextLabel, onBlogSearch, otherPartners, partnerLoop, partnerNameLoop, pastHasPages, pastNext, pastNextColor, pastPage, pastPageLabel, pastPrev, pastPrevColor, showCountdown, sponsors, stats, steps, teamYearLabel, teamYearNote, themeIcon, tickerLoop, toggleArchive, toggleTheme, values, visibleEvents, yearNext, yearNextColor, yearPrev, yearPrevColor } = this.renderVals();
     return (
-<div style={css("background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:100vh;overflow-x:hidden;position:relative")}>
-<header style={css("position:sticky;top:0;z-index:60;background:var(--bg-t);backdrop-filter:blur(12px)")}>
-<div style={css("max-width:1340px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap")}>
-<a href="/" style={css("display:flex;align-items:center;gap:11px;flex:0 0 auto")}>
-<img src={"/duca.png"} alt={"DUCA"} style={css("height:36px;width:auto;display:block")} />
-<span style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.02em")}>{"DUCA"}</span>
-</a>
-<nav style={css("display:flex;gap:5px;flex-wrap:wrap;flex:1 1 auto;justify-content:center")}>
-{navItems.map((item, index) => <React.Fragment key={index}>
-
-<a href={item.href} target={item.target} rel={"noopener"} onClick={item.onClick} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 14px;border-radius:999px;color:${item.color};background:${item.bg}`)} className="design-hover-0">{item.label}</a>
-
-</React.Fragment>)}
-</nav>
-<div style={css("display:flex;gap:8px;flex:0 0 auto;align-items:center")}>
-<button onClick={toggleTheme} aria-label={"Toggle dark mode"} data-theme-toggle={""} style={css("position:relative;width:36px;height:36px;border-radius:999px;border:2px solid var(--ink);background:transparent;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;flex:0 0 auto")} className="design-hover-1">
-<span data-theme-sparks={""} style={css("position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:2")}></span>
-<span data-theme-knob={""} style={css("display:flex;align-items:center;justify-content:center;color:var(--ink);z-index:1")} className="design-hover-2">{themeIcon}</span>
-</button>
-<a href="/join/" style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;padding:9px 20px;border:2px solid var(--ink);border-radius:999px;background:var(--panel);color:var(--on-panel)")} className="design-hover-0">{"Join us"}</a>
-</div>
-</div>
-</header>
+<div style={css("background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:100vh;overflow-x:clip;position:relative")}>
+<SiteHeader items={navItems} themeIcon={themeIcon} onToggleTheme={toggleTheme} />
 <main>
 {isHome && <>
 
-<div>
-<section style={css("max-width:1340px;margin:0 auto;padding:30px 24px 0")}>
-<div style={css("position:relative;width:100%;height:clamp(470px,52vw,700px);margin:52px 0 0")}>
+<div className="home-page">
+<section style={css("max-width:1340px;margin:0 auto;padding:var(--home-hero-padding,30px) var(--home-gutter,24px) 0")}>
+<div className="home-hero-scene" style={css("position:relative;width:var(--home-hero-width,100%);height:var(--home-hero-height,clamp(470px,52vw,700px));margin:var(--home-hero-margin,52px) var(--home-hero-inline-margin,0) 0")}>
 <canvas data-three={"hero"} style={css("position:absolute;inset:0;width:100%;height:100%;display:block")}></canvas>
 <h1 style={css("position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0")}>{"Learn security by actually doing it. Workshops, CTFs and industry nights, run by students at Deakin."}</h1>
 <div data-hero-labels={""} style={css("position:absolute;inset:0;z-index:2;pointer-events:none")}>
@@ -1191,75 +1219,75 @@ export default class DesignSite extends React.Component {
 <span data-label-dot={"4"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
 <span data-label-dot={"5"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
 <span data-label-dot={"6"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
-<span data-label-node={"0"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.04em;white-space:nowrap;transform:translate(-50%,-50%)")}>{"workshops"}</span>
-<span data-label-node={"1"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.04em;white-space:nowrap;transform:translate(-50%,-50%)")}>{"CTFs"}</span>
-<span data-label-node={"2"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.04em;white-space:nowrap;transform:translate(-50%,-50%)")}>{"industry nights"}</span>
-<span data-label-node={"3"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.04em;white-space:nowrap;transform:translate(-50%,-50%)")}>{"socials"}</span>
-<span data-label-node={"4"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.04em;white-space:nowrap;transform:translate(-50%,-50%)")}>{"study groups"}</span>
-<span data-label-node={"5"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.04em;white-space:nowrap;transform:translate(-50%,-50%)")}>{"dev projects"}</span>
-<span data-label-node={"6"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.04em;white-space:nowrap;transform:translate(-50%,-50%)")}>{"career nights"}</span>
+<span data-label-node={"0"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"workshops"}</span>
+<span data-label-node={"1"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"CTFs"}</span>
+<span data-label-node={"2"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"industry nights"}</span>
+<span data-label-node={"3"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"socials"}</span>
+<span data-label-node={"4"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"study groups"}</span>
+<span data-label-node={"5"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"dev projects"}</span>
+<span data-label-node={"6"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"career nights"}</span>
 </div>
 </div>
-<div style={css("display:flex;flex-direction:column;align-items:center;gap:30px;padding:0 0 60px;margin-top:50px;position:relative;z-index:3")}>
-<div data-anim-group={""} style={css("width:min(100%,84vw);max-width:940px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:start;order:-1")}>
+<div style={css("display:flex;flex-direction:column;align-items:center;gap:30px;padding:0 0 var(--home-stats-bottom,60px);margin-top:var(--home-stats-top,50px);position:relative;z-index:3")}>
+<div className="home-stats" data-anim-group={""} style={css("width:var(--home-stats-width,min(100%,84vw));max-width:940px;display:grid;grid-template-columns:repeat(var(--home-stats-columns,4),minmax(0,1fr));gap:var(--home-stats-gap,18px);align-items:start;order:-1")}>
 {stats.map((s, index) => <React.Fragment key={index}>
 
 <div style={css("text-align:center")}>
-<div style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(34px,3.8vw,50px);line-height:1;letter-spacing:-0.02em;color:var(--accent)")}>{s.shown}</div>
-<div style={css("font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;margin-top:12px;color:var(--ink)")}>{s.label}</div>
-<div style={css("font-family:'Space Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:4px")}>{s.note}</div>
+<div style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:var(--home-stat-size,clamp(34px,3.8vw,50px));line-height:1;letter-spacing:-0.02em;color:var(--accent)")}>{s.shown}</div>
+<div style={css("font-family:'Space Mono',monospace;font-size:var(--home-stat-label,13px);letter-spacing:var(--home-stat-tracking,0.14em);text-transform:uppercase;margin-top:12px;color:var(--ink)")}>{s.label}</div>
+<div style={css("font-family:'Space Mono',monospace;font-size:var(--home-stat-note,12.5px);color:var(--muted);margin-top:4px")}>{s.note}</div>
 </div>
 
 </React.Fragment>)}
 </div>
 </div>
 </section>
-<div style={css("overflow:hidden;background:oklch(0.87 0.2 124);color:#0E0E0C;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(-1.4deg);width:108%;margin:52px -4% 96px;padding:13px 0")}>
+<div style={css("overflow:hidden;background:oklch(0.87 0.2 124);color:#0E0E0C;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(-1.4deg);width:108%;margin:var(--home-ticker-top,52px) -4% var(--home-ticker-bottom,96px);padding:13px 0")}>
 <div data-anim={"ticker"} style={css("display:flex;width:max-content;font-family:'Silkscreen',monospace;font-size:14px;letter-spacing:0.06em")}>
 {tickerLoop.map((t, index) => <React.Fragment key={index}>
 
-<span style={css("padding:0 22px;white-space:nowrap")}>{t.text}</span>
+<span style={css("padding:0 22px;white-space:nowrap;display:inline-flex;align-items:center;gap:10px")}><Star className="ui-icon" fill="currentColor" aria-hidden="true" />{t.text}</span>
 
 </React.Fragment>)}
 </div>
 </div>
-<section style={css("max-width:1340px;margin:0 auto;padding:0 24px 76px")}>
-<div data-join={""} style={css("position:relative;overflow:hidden;background:var(--panel);border-radius:30px;padding:clamp(34px,4.8vw,62px);color:var(--on-panel)")}>
+<section style={css("max-width:1340px;margin:0 auto;padding:0 var(--home-gutter,24px) var(--home-section-space,76px)")}>
+<div data-join={""} style={css("position:relative;overflow:hidden;background:var(--panel);border-radius:var(--home-card-radius,30px);padding:var(--home-card-padding,clamp(34px,4.8vw,62px));color:var(--on-panel)")}>
 <canvas data-join-grid={""} style={css("position:absolute;inset:0;width:100%;height:100%;opacity:0.5")}></canvas>
-<div style={css("position:relative;z-index:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:40px;align-items:center")}>
+<div style={css("position:relative;z-index:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:var(--home-card-gap,40px);align-items:center")}>
 <div>
-<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(34px,5.4vw,68px);letter-spacing:-0.018em;margin:0 0 16px;text-transform:uppercase;line-height:0.9")}>
+<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:var(--home-join-title,clamp(34px,5.4vw,68px));letter-spacing:-0.018em;margin:0 0 16px;text-transform:uppercase;line-height:0.9")}>
 <span data-join-line={""} style={css("display:block;overflow:hidden;padding-bottom:0.03em")}><span style={css("display:block")}>{"Join us"}</span></span>
 </h2>
-<p style={css("font-size:18px;line-height:1.6;color:#B4B4AA;margin:0 0 16px;max-width:46ch")}>{"Every event is free to attend and take part in. Join the Discord or check the events page to see what is happening soon."}</p>
-<p style={css("font-size:18px;line-height:1.6;color:#B4B4AA;margin:0 0 28px;max-width:46ch")}>{"Signing up through DUSA makes you an official member, and helps cover the cost of running the club."}</p>
-<div style={css("display:flex;gap:12px;flex-wrap:wrap")}>
-<a href="/join/" style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;background:oklch(0.87 0.2 124);color:#0E0E0C;border-radius:999px;transition:transform 0.15s")} className="design-hover-3">{"How to join"}</a>
-<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border:2px solid #3A3A34;color:var(--on-panel);border-radius:999px;transition:transform 0.15s")} className="design-hover-4">{"Discord ↗"}</a>
+<p style={css("font-size:var(--home-copy-size,18px);line-height:1.6;color:#B4B4AA;margin:0 0 16px;max-width:46ch")}>{"Every event is free to attend and take part in. Join the Discord or check the events page to see what is happening soon."}</p>
+<p style={css("font-size:var(--home-copy-size,18px);line-height:1.6;color:#B4B4AA;margin:0 0 28px;max-width:46ch")}>{"Signing up through DUSA makes you an official member, and helps cover the cost of running the club."}</p>
+<div className="home-join-actions" style={css("display:flex;gap:var(--home-button-gap,12px);flex-wrap:wrap")}>
+<a href="/join/" style={css("font-family:'Archivo',sans-serif;font-weight:700;background:oklch(0.87 0.2 124);color:#0E0E0C;border-radius:999px;transition:transform 0.15s")} className="home-card-button design-hover-3">{"How to join"}</a>
+<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;border:2px solid #3A3A34;color:var(--on-panel);border-radius:999px;transition:transform 0.15s")} className="home-card-button design-hover-4">{"Discord "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 </div>
 </div>
-<div data-join-mark={""} style={css("position:relative;display:flex;align-items:center;justify-content:center;min-height:clamp(260px,30vw,360px)")}>
+<div data-join-mark={""} style={css("position:relative;display:flex;align-items:center;justify-content:center;min-height:var(--home-mark-height,clamp(260px,30vw,360px))")}>
 <canvas data-join-rain={""} style={css("position:absolute;inset:0;width:100%;height:100%")}></canvas>
-<img src={"/duca.png"} alt={"DUCA"} data-join-logo={""} style={css("position:relative;z-index:2;width:min(58%,260px);height:auto;display:block")} />
+<img src={"/duca.png"} alt={"DUCA"} data-join-logo={""} style={css("position:relative;z-index:2;width:var(--home-mark-width,min(58%,260px));height:auto;display:block")} />
 </div>
 </div>
 </div>
 </section>
-<section style={css("max-width:1340px;margin:0 auto;padding:0 24px 76px")}>
+<section style={css("max-width:1340px;margin:0 auto;padding:0 var(--home-gutter,24px) var(--home-section-space,76px)")}>
 <div style={css("display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:26px")}>
-<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,4.4vw,56px);letter-spacing:-0.018em;margin:0;text-transform:uppercase;line-height:0.95")}>{"Next up"}</h2>
-<a href="/events/" style={css("font-family:'Space Mono',monospace;font-size:13px;border:2px solid var(--ink);border-radius:999px;padding:8px 16px")} className="design-hover-5">{"all events →"}</a>
+<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:var(--home-section-title,clamp(30px,4.4vw,56px));letter-spacing:-0.018em;margin:0;text-transform:uppercase;line-height:0.95")}>{"Next up"}</h2>
+<a href="/events/" style={css("font-family:'Space Mono',monospace;font-size:13px;border:2px solid var(--ink);border-radius:999px;padding:8px 16px")} className="design-hover-5">{"all events "}<ArrowRight className="ui-icon" aria-hidden="true" /></a>
 </div>
 <a href={nextEvent.url} data-anim={"up"} style={css("display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));border-radius:26px;overflow:hidden;background:var(--panel);color:var(--on-panel);transition:transform 0.2s")} className="design-hover-6">
-<div style={css("padding:42px 34px;display:flex;flex-direction:column;justify-content:space-between;gap:30px")}>
+<div style={css("padding:var(--home-event-padding,42px 34px);display:flex;flex-direction:column;justify-content:space-between;gap:var(--home-event-gap,30px)")}>
 <span style={css("font-family:'Silkscreen',monospace;font-size:13px;color:oklch(0.87 0.2 124)")}>{nextEvent.homeDate}</span>
 <div>
-<div style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(34px,4.4vw,52px);letter-spacing:-0.018em;line-height:0.95;text-transform:uppercase")}>{nextEvent.title}</div>
+<div style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:var(--home-event-title,clamp(34px,4.4vw,52px));letter-spacing:-0.018em;line-height:0.95;text-transform:uppercase")}>{nextEvent.title}</div>
 <div style={css("font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.12em;color:#8E8E84;margin-top:10px")}>{nextEvent.tags.join(" / ").toUpperCase()}</div>
 </div>
 </div>
-<div style={css("padding:42px 34px;display:flex;flex-direction:column;justify-content:space-between;gap:22px;background:var(--accent-deep);color:#FFFFFF")}>
-<p style={css("font-size:18px;line-height:1.5;margin:0")}>{nextEvent.body}</p>
+<div style={css("padding:var(--home-event-padding,42px 34px);display:flex;flex-direction:column;justify-content:space-between;gap:22px;background:var(--accent-deep);color:#FFFFFF")}>
+<p style={css("font-size:var(--home-copy-size,18px);line-height:1.5;margin:0")}>{nextEvent.body}</p>
 <div style={css("font-family:'Space Mono',monospace;font-size:13px;line-height:1.9")}>{nextEvent.time}<br />{nextEvent.place}</div>
 </div>
 </a>
@@ -1281,10 +1309,10 @@ export default class DesignSite extends React.Component {
 </React.Fragment>)}
 </div>
 </section>
-<section style={css("max-width:1340px;margin:0 auto;padding:76px 24px")}>
+<section style={css("max-width:1340px;margin:0 auto;padding:var(--home-section-space,76px) var(--home-gutter,24px)")}>
 <div style={css("display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:26px")}>
-<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,4.4vw,56px);letter-spacing:-0.018em;margin:0;text-transform:uppercase;line-height:0.95")}>{"From the blog"}</h2>
-<a href="/blog/" style={css("font-family:'Space Mono',monospace;font-size:13px;border:2px solid var(--ink);border-radius:999px;padding:8px 16px")} className="design-hover-5">{"all posts →"}</a>
+<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:var(--home-section-title,clamp(30px,4.4vw,56px));letter-spacing:-0.018em;margin:0;text-transform:uppercase;line-height:0.95")}>{"From the blog"}</h2>
+<a href="/blog/" style={css("font-family:'Space Mono',monospace;font-size:13px;border:2px solid var(--ink);border-radius:999px;padding:8px 16px")} className="design-hover-5">{"all posts "}<ArrowRight className="ui-icon" aria-hidden="true" /></a>
 </div>
 <div data-anim-group={""} className="blog-grid" style={css("grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:16px")}>
 {homePosts.map((post, index) => <React.Fragment key={index}>
@@ -1293,29 +1321,31 @@ export default class DesignSite extends React.Component {
 <div className="blog-card-media">
 <img src={post.image} alt="" loading="lazy" />
 </div>
-<div style={css("display:flex;flex-direction:column;gap:12px;padding:26px 28px 28px")}>
+<div style={css("display:flex;flex-direction:column;gap:12px;padding:var(--home-blog-padding,26px 28px 28px)")}>
 <span style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:var(--muted)")}>{post.date}</span>
-<h3 style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:22px;line-height:1.15;letter-spacing:-0.012em;margin:0")}>{post.title}</h3>
-<p style={css("font-size:15.5px;line-height:1.55;color:var(--body-2);margin:0")}>{post.blurb}</p>
+<h3 style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:var(--home-blog-title,22px);line-height:1.15;letter-spacing:-0.012em;margin:0")}>{post.title}</h3>
+<p style={css("font-size:var(--home-blog-copy,15.5px);line-height:1.55;color:var(--body-2);margin:0")}>{post.blurb}</p>
 </div>
 </a>
 
 </React.Fragment>)}
 </div>
 </section>
-<section style={css("max-width:1340px;margin:0 auto;padding:0 24px 90px")}>
-<div style={css("background:var(--panel);border-radius:30px;padding:clamp(34px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:44px;align-items:center")}>
+<section style={css("max-width:1340px;margin:0 auto;padding:0 var(--home-gutter,24px) var(--home-bottom-space,90px)")}>
+<div style={css("background:var(--panel);border-radius:var(--home-card-radius,30px);padding:var(--home-card-padding,clamp(34px,5vw,64px));display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:var(--home-card-gap,44px);align-items:center")}>
 <div>
-<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,4.4vw,54px);letter-spacing:-0.018em;line-height:0.95;color:var(--on-panel);margin:0 0 18px;text-transform:uppercase")}>{"The Discord"}<br />{"never sleeps"}</h2>
-<p style={css("font-size:18px;line-height:1.6;color:#9E9E94;margin:0 0 28px;max-width:46ch")}>{`${discordMemberCount}+ students and industry folks. Event pings, assignment panic, CTF writeups, and a steady stream of cat photos.`}</p>
-<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("display:inline-block;font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="design-hover-3">{"Open the invite ↗"}</a>
+<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:var(--home-discord-title,clamp(30px,4.4vw,54px));letter-spacing:-0.018em;line-height:0.95;color:var(--on-panel);margin:0 0 18px;text-transform:uppercase")}>{"The Discord"}<br />{"never sleeps"}</h2>
+<p style={css("font-size:var(--home-copy-size,18px);line-height:1.6;color:#9E9E94;margin:0 0 28px;max-width:46ch")}>{`${discordMemberCount}+ students and industry folks. Event pings, assignment panic, CTF writeups, and a steady stream of cat photos.`}</p>
+<div className="home-discord-actions">
+<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="home-card-button design-hover-3">{"Open the invite "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 </div>
-<div style={css("position:relative;height:240px;overflow:hidden;transform:rotate(-6deg) scale(1.04);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 84%,transparent 100%)")}>
+</div>
+<div style={css("position:relative;height:var(--home-channels-height,240px);overflow:hidden;transform:rotate(-6deg) scale(1.04);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 84%,transparent 100%)")}>
 <div data-anim={"channels"} style={css("display:flex;flex-direction:column;gap:10px;padding:0 4px")}>
 {channelLoop.map((c, index) => <React.Fragment key={index}>
 
 <div style={css("display:flex;align-items:center;gap:12px;background:#1A1A16;border:1px solid #2E2E28;border-radius:14px;padding:13px 16px")}>
-<span style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:var(--muted)")}>{"#"}</span>
+<span style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:var(--muted)")}><Hash className="ui-icon" aria-hidden="true" /></span>
 <span style={css("font-family:'Space Mono',monospace;font-size:13.5px;color:var(--on-panel);white-space:nowrap;flex:1")}>{c.name}</span>
 <span style={css(`font-family:'Space Mono',monospace;font-size:11px;color:${c.tint};white-space:nowrap`)}>{c.meta}</span>
 </div>
@@ -1392,7 +1422,7 @@ export default class DesignSite extends React.Component {
 
 </React.Fragment>)}
 <div style={css("aspect-ratio:3/4;border:2px dashed var(--hair-strong);border-radius:16px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;text-align:center;padding:18px")}>
-<span style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(22px,2.6vw,30px);letter-spacing:-0.018em;line-height:1")}>{"+ many"}<br />{"more"}</span>
+<span style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(22px,2.6vw,30px);letter-spacing:-0.018em;line-height:1")}><Plus className="ui-icon" aria-hidden="true" />{" many"}<br />{"more"}</span>
 <span style={css("font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;color:var(--muted)")}>{"every year"}</span>
 </div>
 </div>
@@ -1416,7 +1446,7 @@ export default class DesignSite extends React.Component {
 </div>
 </section>
 <section style={css("max-width:1340px;margin:0 auto;padding:0 24px 90px")}>
-<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(24px,3.2vw,40px);letter-spacing:-0.018em;margin:0;text-transform:uppercase")}>{"Who runs it? "}<a href="/team/" style={css("color:var(--accent);border-bottom:3px solid var(--accent)")} className="design-hover-9">{"Meet the team ↗"}</a></h2>
+<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(24px,3.2vw,40px);letter-spacing:-0.018em;margin:0;text-transform:uppercase")}>{"Who runs it? "}<a href="/team/" style={css("color:var(--accent);border-bottom:3px solid var(--accent)")} className="design-hover-9">{"Meet the team "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a></h2>
 </section>
 </div>
 
@@ -1489,7 +1519,7 @@ export default class DesignSite extends React.Component {
 </>}
 </span>
 </span>
-<span style={css(`font-family:'Space Mono',monospace;font-size:19px;color:var(--ink);transform:rotate(${e.iconRot});transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);display:inline-block`)}>{"+"}</span>
+<span style={css(`font-family:'Space Mono',monospace;font-size:19px;color:var(--ink);transform:rotate(${e.iconRot});transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);display:inline-block`)}><Plus className="ui-icon" aria-hidden="true" /></span>
 </button>
 {e.open && <>
 
@@ -1519,8 +1549,8 @@ export default class DesignSite extends React.Component {
 {e.image && <img className="event-expanded-image" src={e.image} alt={e.title} loading="lazy" />}
 {e.html && <div className="article-body event-rich-content" dangerouslySetInnerHTML={{ __html: e.html }} />}
 {(e.locationUrl || e.registrationUrl) && <div className="event-meta-links">
-{e.locationUrl && <a href={e.locationUrl} target="_blank" rel="noopener noreferrer">View location ↗</a>}
-{e.registrationUrl && <a href={e.registrationUrl} target="_blank" rel="noopener noreferrer">Register ↗</a>}
+{e.locationUrl && <a href={e.locationUrl} target="_blank" rel="noopener noreferrer">View location <ArrowUpRight className="ui-icon" aria-hidden="true" /></a>}
+{e.registrationUrl && <a href={e.registrationUrl} target="_blank" rel="noopener noreferrer">Register <ArrowUpRight className="ui-icon" aria-hidden="true" /></a>}
 </div>}
 </div>
 
@@ -1547,9 +1577,9 @@ export default class DesignSite extends React.Component {
 {pastHasPages && <>
 
 <div style={css("display:flex;align-items:center;justify-content:center;gap:14px;margin-top:24px")}>
-<button disabled={pastPrevColor === "var(--disabled)"} onClick={pastPrev} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${pastPrevColor}`)}>{"‹ newer"}</button>
+<button disabled={pastPrevColor === "var(--disabled)"} onClick={pastPrev} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${pastPrevColor}`)}><ChevronLeft className="ui-icon" aria-hidden="true" />{" newer"}</button>
 <span style={css("font-family:'Space Mono',monospace;font-size:12.5px;color:var(--muted)")}>{pastPageLabel}</span>
-<button disabled={pastNextColor === "var(--disabled)"} onClick={pastNext} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${pastNextColor}`)}>{"older ›"}</button>
+<button disabled={pastNextColor === "var(--disabled)"} onClick={pastNext} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${pastNextColor}`)}>{"older "}<ChevronRight className="ui-icon" aria-hidden="true" /></button>
 </div>
 
 </>}
@@ -1574,7 +1604,7 @@ export default class DesignSite extends React.Component {
 <span style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.14em;color:var(--accent)")}>{"LATEST · "}{featuredPost.date}</span>
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(24px,3.2vw,38px);letter-spacing:-0.018em;line-height:1.05;margin:0")}>{featuredPost.title}</h2>
 <p style={css("font-size:16.5px;line-height:1.6;color:var(--body);margin:0;max-width:52ch")}>{featuredPost.blurb}</p>
-<span style={css("font-family:'Space Mono',monospace;font-size:13px;color:var(--ink)")}>{"Read the post ↗"}</span>
+<span style={css("font-family:'Space Mono',monospace;font-size:13px;color:var(--ink)")}>{"Read the post "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></span>
 </div>
 </a>}
 </section>
@@ -1586,7 +1616,7 @@ export default class DesignSite extends React.Component {
 
 </React.Fragment>)}
 <div style={css("display:flex;align-items:center;gap:12px;border:2px solid var(--ink);border-radius:999px;padding:4px 6px 4px 20px;margin-left:auto;width:min(100%,340px)")}>
-<span style={css("font-family:'Space Mono',monospace;font-size:14px;color:var(--muted)")}>{"/"}</span>
+<span style={css("font-family:'Space Mono',monospace;font-size:14px;color:var(--muted)")}><Search className="ui-icon" aria-hidden="true" /></span>
 <input type={"search"} aria-label="Search posts" value={blogQuery} onChange={onBlogSearch} placeholder={"Search posts"} style={css("flex:1;min-width:0;border:0;outline:none;background:transparent;font-family:'Hanken Grotesk',sans-serif;font-size:15.5px;color:var(--ink);padding:10px 0")} />
 {hasBlogQuery && <>
 
@@ -1615,9 +1645,9 @@ export default class DesignSite extends React.Component {
 {blogHasPages && <>
 
 <div style={css("display:flex;align-items:center;justify-content:center;gap:14px;margin-top:28px")}>
-<button disabled={blogPrevColor === "var(--disabled)"} onClick={blogPrev} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${blogPrevColor}`)}>{"‹ newer"}</button>
+<button disabled={blogPrevColor === "var(--disabled)"} onClick={blogPrev} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${blogPrevColor}`)}><ChevronLeft className="ui-icon" aria-hidden="true" />{" newer"}</button>
 <span style={css("font-family:'Space Mono',monospace;font-size:12.5px;color:var(--muted)")}>{blogPageLabel}</span>
-<button disabled={blogNextColor === "var(--disabled)"} onClick={blogNext} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${blogNextColor}`)}>{"older ›"}</button>
+<button disabled={blogNextColor === "var(--disabled)"} onClick={blogNext} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${blogNextColor}`)}>{"older "}<ChevronRight className="ui-icon" aria-hidden="true" /></button>
 </div>
 
 </>}
@@ -1630,7 +1660,7 @@ export default class DesignSite extends React.Component {
 <span style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(22px,2.8vw,32px);letter-spacing:-0.018em;text-transform:uppercase")}>{"Archive"}</span>
 <span style={css("font-family:'Space Mono',monospace;font-size:12.5px;color:#8E8E84")}>{archiveCount}</span>
 </span>
-<span style={css(`position:relative;z-index:1;font-family:'Space Mono',monospace;font-size:22px;color:oklch(0.87 0.2 124);transform:rotate(${archiveRot});transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);display:inline-block`)}>{"+"}</span>
+<span style={css(`position:relative;z-index:1;font-family:'Space Mono',monospace;font-size:22px;color:oklch(0.87 0.2 124);transform:rotate(${archiveRot});transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);display:inline-block`)}><Plus className="ui-icon" aria-hidden="true" /></span>
 </button>
 {archiveOpen && <>
 
@@ -1655,40 +1685,40 @@ export default class DesignSite extends React.Component {
 {isPost && this.props.article && <BlogArticle article={this.props.article}>{this.props.children}</BlogArticle>}
 {isTeam && <>
 
-<div>
-<section data-anim={"hero"} style={css("max-width:1340px;margin:0 auto;padding:44px 24px 34px")}>
+<div className="team-page">
+<section data-anim={"hero"} style={css("max-width:1340px;margin:0 auto;padding:44px var(--team-gutter,24px) 34px")}>
 <div style={css("display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:22px")}>
 <h1 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(44px,8.4vw,120px);letter-spacing:-0.022em;line-height:0.88;margin:0;text-transform:uppercase")}>{"The team"}</h1>
 <div data-year-switch={""} style={css("display:flex;align-items:center;gap:4px;border:2px solid var(--ink);border-radius:999px;padding:5px;margin-bottom:12px;background:var(--bg);box-shadow:4px 4px 0 var(--ink)")}>
-<button disabled={yearPrevColor === "var(--disabled)"} onClick={yearPrev} aria-label={"Previous year"} style={css(`width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:transparent;font-family:'Space Mono',monospace;font-size:15px;color:${yearPrevColor}`)} className="design-hover-7">{"‹"}</button>
+<button disabled={yearPrevColor === "var(--disabled)"} onClick={yearPrev} aria-label={"Previous year"} style={css(`width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:transparent;font-family:'Space Mono',monospace;font-size:15px;color:${yearPrevColor}`)} className="design-hover-7"><ChevronLeft className="ui-icon" aria-hidden="true" /></button>
 <div data-year-window={""} style={css("position:relative;overflow:hidden;width:96px;height:38px")}>
 <span data-year-sparks={""} style={css("position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:2")}></span>
 <span data-year-value={""} style={css("position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Silkscreen',monospace;font-size:17px;color:var(--ink)")}>{teamYearLabel}</span>
 </div>
-<button disabled={yearNextColor === "var(--disabled)"} onClick={yearNext} aria-label={"Next year"} style={css(`width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:transparent;font-family:'Space Mono',monospace;font-size:15px;color:${yearNextColor}`)} className="design-hover-7">{"›"}</button>
+<button disabled={yearNextColor === "var(--disabled)"} onClick={yearNext} aria-label={"Next year"} style={css(`width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:transparent;font-family:'Space Mono',monospace;font-size:15px;color:${yearNextColor}`)} className="design-hover-7"><ChevronRight className="ui-icon" aria-hidden="true" /></button>
 </div>
 </div>
 <p style={css("font-size:19px;line-height:1.6;color:var(--body);max-width:54ch;margin:0")}>{teamYearNote}</p>
 </section>
-<section style={css("max-width:1340px;margin:0 auto;padding:0 24px 56px")}>
+<section style={css("max-width:1340px;margin:0 auto;padding:0 var(--team-gutter,24px) 56px")}>
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(22px,2.8vw,32px);letter-spacing:-0.018em;margin:0 0 20px;text-transform:uppercase")}>{"Executives"}</h2>
-<div data-anim-group={""} style={css("display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;align-items:start")}>
+<div className="team-exec-grid" data-anim-group={""}>
 {execs.map((m, index) => <React.Fragment key={index}>
 
-<a href={m.link === "#" ? "https://discord.com/invite/duca" : m.link} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="design-hover-12">
-<div style={css("aspect-ratio:1;background:var(--surface);border-bottom:2px solid var(--ink);overflow:hidden")}>
-<img src={m.img} alt={m.name} style={css("width:100%;height:100%;object-fit:cover;display:block")} />
+<a href={m.link === "#" ? "https://discord.com/invite/duca" : m.link} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="team-card team-exec-card design-hover-12">
+<div className="team-card-image">
+<img src={m.img} alt={m.name} />
 </div>
-<div style={css("padding:18px 20px 20px;display:flex;flex-direction:column;gap:7px")}>
-<div style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent)")}>{m.role}</div>
-<div style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.012em;display:flex;align-items:baseline;gap:7px")}>{m.name}<span style={css("font-family:'Space Mono',monospace;font-size:13px;color:var(--muted)")}>{"↗"}</span></div>
+<div className="team-card-body">
+<div className="team-card-role">{m.role}</div>
+<div className="team-card-name"><span className="team-card-name-text">{m.name}</span><span className="team-card-link-icon"><ArrowUpRight className="ui-icon" aria-hidden="true" /></span></div>
 </div>
 </a>
 
 </React.Fragment>)}
 </div>
 </section>
-<section style={css("max-width:1340px;margin:0 auto;padding:0 24px 90px")}>
+<section style={css("max-width:1340px;margin:0 auto;padding:0 var(--team-gutter,24px) 90px")}>
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(22px,2.8vw,32px);letter-spacing:-0.018em;margin:0 0 8px;text-transform:uppercase")}>{"Committee"}</h2>
 {divisionsTeam.map((d, index) => <React.Fragment key={index}>
 
@@ -1699,16 +1729,16 @@ export default class DesignSite extends React.Component {
 <p style={css("font-family:'Space Mono',monospace;font-size:13px;color:var(--muted);margin:0 0 6px")}>{"Positions open — ask in the Discord."}</p>
 
 </>}
-<div data-anim-group={""} style={css("display:grid;grid-template-columns:repeat(auto-fill,max(130px,calc((100% - 60px) / 6)));gap:12px;align-items:start;justify-content:start")}>
+<div className="team-committee-grid" data-anim-group={""}>
 {d.members.map((m, index) => <React.Fragment key={index}>
 
-<a href={m.link === "#" ? "https://discord.com/invite/duca" : m.link} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="design-hover-12">
-<div style={css("aspect-ratio:1;background:var(--surface);border-bottom:2px solid var(--ink);overflow:hidden")}>
-<img src={m.img} alt={m.name} style={css("width:100%;height:100%;object-fit:cover;display:block")} />
+<a href={m.link === "#" ? "https://discord.com/invite/duca" : m.link} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="team-card team-committee-card design-hover-12">
+<div className="team-card-image">
+<img src={m.img} alt={m.name} />
 </div>
-<div style={css("padding:13px 14px 15px;display:flex;flex-direction:column;gap:5px")}>
-<div style={css("font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent)")}>{m.role}</div>
-<div style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;letter-spacing:-0.01em;line-height:1.2;display:flex;align-items:baseline;gap:5px")}>{m.name}<span style={css("font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)")}>{"↗"}</span></div>
+<div className="team-card-body">
+<div className="team-card-role">{m.role}</div>
+<div className="team-card-name"><span className="team-card-name-text">{m.name}</span><span className="team-card-link-icon"><ArrowUpRight className="ui-icon" aria-hidden="true" /></span></div>
 </div>
 </a>
 
@@ -1735,11 +1765,11 @@ export default class DesignSite extends React.Component {
 <span style={css("font-family:'Silkscreen',monospace;font-size:12px;color:oklch(0.87 0.2 124);display:block;margin-bottom:20px")}>{"PRINCIPAL PARTNER"}</span>
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,4vw,52px);letter-spacing:-0.018em;line-height:0.95;margin:0 0 18px;text-transform:uppercase")}>{"They make the big events happen"}</h2>
 <p style={css("font-size:17.5px;line-height:1.6;color:#B4B4AA;margin:0 0 22px;max-width:52ch")}>{"Deakin Cyber has backed some of our largest events, put researchers in front of students, and connected members to work happening at the edge of the field."}</p>
-<a href={"https://cybercentre.org.au/"} target={"_blank"} rel={"noopener"} style={css("font-family:'Space Mono',monospace;font-size:13px;color:oklch(0.87 0.2 124);border-bottom:1px solid oklch(0.87 0.2 124);padding-bottom:2px")} className="design-hover-13">{"cybercentre.org.au ↗"}</a>
+<a href={"https://cybercentre.org.au/"} target={"_blank"} rel={"noopener"} style={css("font-family:'Space Mono',monospace;font-size:13px;color:oklch(0.87 0.2 124);border-bottom:1px solid oklch(0.87 0.2 124);padding-bottom:2px")} className="design-hover-13">{"cybercentre.org.au "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 </div>
 <div data-dc-plate={""} style={css("position:relative;z-index:1;display:flex;align-items:center;justify-content:center;min-height:220px;overflow:hidden;border-radius:22px")}>
 <canvas data-dc-plate-bg={""} style={css("position:absolute;inset:0;width:100%;height:100%;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 85% 80% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 85% 80% at 50% 50%,#000 30%,transparent 100%)")}></canvas>
-<img src={"/partners/deakin-cyber.png"} alt={"Deakin Cyber Research and Innovation Hub"} style={css("position:relative;z-index:1;max-height:200px;width:100%;max-width:100%;object-fit:contain;filter:invert(1);mix-blend-mode:screen")} />
+<img src={"/partners/deakin-cyber.png"} alt={"Deakin Cyber"} style={css("position:relative;z-index:1;max-height:200px;width:100%;max-width:100%;object-fit:contain;filter:invert(1);mix-blend-mode:screen")} />
 </div>
 </div>
 </section>
@@ -1751,7 +1781,7 @@ export default class DesignSite extends React.Component {
 <a href={p.url} target={"_blank"} rel={"noopener"} style={css("display:flex;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid var(--hair)")} className="design-hover-14">
 <img src={p.src} alt={""} style={css("height:30px;width:64px;object-fit:contain;object-position:left;flex:0 0 auto")} />
 <span style={css("font-family:'Archivo',sans-serif;font-weight:600;font-size:16.5px;flex:1")}>{p.name}</span>
-<span style={css("font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)")}>{"↗"}</span>
+<span style={css("font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)")}><ArrowUpRight className="ui-icon" aria-hidden="true" /></span>
 </a>
 
 </React.Fragment>)}
@@ -1763,7 +1793,7 @@ export default class DesignSite extends React.Component {
 <a href={p.url} target={"_blank"} rel={"noopener"} style={css("display:flex;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid var(--hair)")} className="design-hover-14">
 <img src={p.src} alt={""} style={css("height:30px;width:64px;object-fit:contain;object-position:left;flex:0 0 auto")} />
 <span style={css("font-family:'Archivo',sans-serif;font-weight:600;font-size:16.5px;flex:1")}>{p.name}</span>
-<span style={css("font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)")}>{"↗"}</span>
+<span style={css("font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)")}><ArrowUpRight className="ui-icon" aria-hidden="true" /></span>
 </a>
 
 </React.Fragment>)}
@@ -1791,7 +1821,7 @@ export default class DesignSite extends React.Component {
 <h1 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(40px,7.6vw,108px);letter-spacing:-0.022em;line-height:0.86;margin:0 0 24px;max-width:13ch;text-transform:uppercase")}>{"We run our own CTF platform"}</h1>
 <p style={css("font-size:19px;line-height:1.6;max-width:56ch;margin:0 0 32px")}>{"Challenges stay up year-round so you can practise whenever. Web, crypto, forensics, reversing and OSINT, written by DUCA members and graded from \"first week of uni\" to \"good luck\"."}</p>
 <div style={css("display:flex;gap:12px;flex-wrap:wrap")}>
-<a href={"https://ctf.duca.au/"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="design-hover-3">{"Launch the platform ↗"}</a>
+<a href={"https://ctf.duca.au/"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="design-hover-3">{"Launch the platform "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 <a href="/events/" style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;border:2px solid var(--on-panel);color:var(--on-panel);transition:transform 0.15s")} className="design-hover-15">{"Training nights"}</a>
 </div>
 </div>
@@ -1830,8 +1860,8 @@ export default class DesignSite extends React.Component {
 <p style={css("font-size:17px;line-height:1.6;color:#B4B4AA;margin:0;max-width:48ch")}>{"Official membership goes through DUSA. It costs less than a coffee, keeps the club recognised, and makes you eligible for everything we hand out."}</p>
 </div>
 <div style={css("position:relative;z-index:1;flex:2 1 260px;display:flex;flex-direction:column;gap:10px;align-items:stretch")}>
-<a href={"https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 28px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;text-align:center")}>{"Register with DUSA ↗"}</a>
-<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 28px;border-radius:999px;border:2px solid #3A3A34;color:var(--on-panel);text-align:center")} className="design-hover-17">{"Join the Discord ↗"}</a>
+<a href={"https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 28px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;text-align:center")}>{"Register with DUSA "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
+<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 28px;border-radius:999px;border:2px solid #3A3A34;color:var(--on-panel);text-align:center")} className="design-hover-17">{"Join the Discord "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 </div>
 </div>
 </section>
@@ -1843,8 +1873,8 @@ export default class DesignSite extends React.Component {
 
 <div style={css("display:grid;grid-template-columns:1fr 54px 54px;gap:12px;align-items:center;padding:15px 0;border-bottom:1px solid var(--hair)")}>
 <span style={css("font-size:16px;line-height:1.4")}>{c.text}</span>
-<span style={css(`font-family:'Space Mono',monospace;font-size:15px;text-align:center;color:${c.openColor}`)}>{c.open}</span>
-<span style={css(`font-family:'Space Mono',monospace;font-size:15px;text-align:center;color:${c.memberColor}`)}>{c.member}</span>
+<span role="img" aria-label={c.open ? 'Included' : 'Not included'} style={css(`font-family:'Space Mono',monospace;font-size:15px;text-align:center;color:${c.openColor}`)}>{c.open ? <Check className="ui-icon" aria-hidden="true" /> : <Minus className="ui-icon" aria-hidden="true" />}</span>
+<span role="img" aria-label={c.member ? 'Included' : 'Not included'} style={css(`font-family:'Space Mono',monospace;font-size:15px;text-align:center;color:${c.memberColor}`)}>{c.member ? <Check className="ui-icon" aria-hidden="true" /> : <Minus className="ui-icon" aria-hidden="true" />}</span>
 </div>
 
 </React.Fragment>)}
@@ -1866,7 +1896,7 @@ export default class DesignSite extends React.Component {
 <span style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17.5px")}>{s.title}</span>
 <span style={css("font-family:'Hanken Grotesk',sans-serif;font-size:15px;line-height:1.5;color:var(--body-2)")}>{s.body}</span>
 </span>
-<span style={css("font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)")}>{"↗"}</span>
+<span style={css("font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)")}><ArrowUpRight className="ui-icon" aria-hidden="true" /></span>
 </a>
 
 </React.Fragment>)}
@@ -1882,7 +1912,7 @@ export default class DesignSite extends React.Component {
 <div style={css("border-bottom:1px solid var(--hair)")}>
 <button aria-expanded={q.open} onClick={q.onToggle} style={css("width:100%;text-align:left;background:transparent;border:0;cursor:pointer;padding:20px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;font-family:inherit;color:inherit")}>
 <span style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(17px,2vw,20px);line-height:1.3")}>{q.q}</span>
-<span style={css(`font-family:'Space Mono',monospace;font-size:18px;color:var(--accent);transform:rotate(${q.rot});transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);display:inline-block;flex:0 0 auto`)}>{"+"}</span>
+<span style={css(`font-family:'Space Mono',monospace;font-size:18px;color:var(--accent);transform:rotate(${q.rot});transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);display:inline-block;flex:0 0 auto`)}><Plus className="ui-icon" aria-hidden="true" /></span>
 </button>
 {q.open && <>
 
@@ -1911,7 +1941,7 @@ export default class DesignSite extends React.Component {
 <div style={css("display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px clamp(20px,3vw,44px)")}>
 {navItems.map((item, index) => <React.Fragment key={index}>
 
-<a href={item.href} target={item.target} rel={"noopener"} onClick={item.onClick} style={css("font-size:15.5px;color:#9E9E94")} className="design-hover-11">{item.label}</a>
+<a href={item.href} target={item.target} rel={"noopener"} onClick={item.onClick} style={css("font-size:15.5px;color:#9E9E94")} className="design-hover-11">{item.label}{item.target === '_blank' && <> <ArrowUpRight className="ui-icon" aria-hidden="true" /></>}</a>
 
 </React.Fragment>)}
 </div>

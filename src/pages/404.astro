@@ -1,4 +1,5 @@
 ---
+import { ArrowRight } from 'lucide-react';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DesignSite from '../components/DesignSite.jsx';
 import { getEvents, toEventData } from '../lib/events';
@@ -15,7 +16,7 @@ const discordMemberCount = await getDiscordMemberCount();
     <section style="max-width:1340px;margin:0 auto;padding:80px 24px 120px">
       <p style="font-family:'Space Mono',monospace;color:var(--accent)">404</p>
       <h1 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(44px,8.4vw,120px);letter-spacing:-0.022em;line-height:0.88;text-transform:uppercase">Page not found</h1>
-      <a href="/" style="font-family:'Space Mono',monospace;border-bottom:2px solid var(--ink);padding-bottom:5px">Back to home →</a>
+      <a href="/" style="display:inline-flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;border-bottom:2px solid var(--ink);padding-bottom:5px">Back to home <ArrowRight className="ui-icon" aria-hidden="true" /></a>
     </section>
   </DesignSite>
 </BaseLayout>
