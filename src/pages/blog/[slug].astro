@@ -5,6 +5,7 @@ import DesignSite from '../../components/DesignSite.jsx';
 import { getEvents, toEventData } from '../../lib/events';
 import { getBlogPosts, toBlogCard, toArticleData } from '../../lib/blog';
 import { getDiscordMemberCount } from '../../lib/discord-members.js';
+import { siteConfig } from '../../data/site';
 
 export async function getStaticPaths() {
   const posts = await getBlogPosts();
@@ -23,7 +24,7 @@ const discordMemberCount = await getDiscordMemberCount();
 ---
 
 <BaseLayout
-  title={`${article.title} — DUCA`}
+  title={`${article.title} — ${siteConfig.name}`}
   description={article.description}
   image={article.image}
   article

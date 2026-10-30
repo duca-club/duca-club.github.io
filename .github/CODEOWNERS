@@ -2,11 +2,13 @@
 /Dockerfile @hirusha-adi
 /docker-compose.yml @hirusha-adi
 /Jenkinsfile @hirusha-adi
+/.dockerignore @hirusha-adi
 
-# Archived Astro deployment files
-/old-site/Dockerfile @hirusha-adi
-/old-site/docker-compose.yml @hirusha-adi
-/old-site/Jenkinsfile @hirusha-adi
+# Astro build and dependency configuration
+/astro.config.mjs @hirusha-adi
+/package.json @hirusha-adi
+/package-lock.json @hirusha-adi
+/tsconfig.json @hirusha-adi
 
-# Protect this file too, otherwise someone could remove you as owner
+# Ownership rules
 /.github/CODEOWNERS @hirusha-adi

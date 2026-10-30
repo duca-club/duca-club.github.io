@@ -1,7 +1,9 @@
 // Import only from Astro frontmatter: the count is fetched while generating pages.
-export const DEFAULT_DISCORD_MEMBER_COUNT = 850;
+import siteConfig from '../data/site.json' with { type: 'json' };
 
-const DISCORD_INVITE_API = 'https://discord.com/api/v9/invites/duca?with_counts=true';
+export const DEFAULT_DISCORD_MEMBER_COUNT = siteConfig.discord.fallbackMemberCount;
+
+const DISCORD_INVITE_API = `https://discord.com/api/v9/invites/${siteConfig.discord.inviteCode}?with_counts=true`;
 let memberCountPromise;
 
 export function getDiscordMemberCount() {

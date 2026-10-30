@@ -1,0 +1,21 @@
+{
+  "name": "DUCA",
+  "fullName": "Deakin University Cybersecurity Association",
+  "description": "DUCA — Deakin University Cybersecurity Association",
+  "url": "https://duca.au",
+  "email": "info@duca.au",
+  "logos": {
+    "mark": "/duca.png",
+    "wordmark": "/global/duca-logo.webp",
+    "socialPreview": "/social-preview-image.png"
+  },
+  "discord": {
+    "inviteCode": "duca",
+    "fallbackMemberCount": 850
+  },
+  "links": {
+    "membership": "https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca",
+    "ctf": "https://ctf.duca.au/",
+    "github": "https://github.com/duca-club"
+  }
+}

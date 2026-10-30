@@ -1,7 +1,10 @@
-export interface TeamMember {
+export interface PersonProfile {
   name: string;
-  role: string;
   image: string;
   linkedIn?: string;
   bio?: string;
+}
+
+export interface TeamMember extends PersonProfile {
+  role: string;
 }

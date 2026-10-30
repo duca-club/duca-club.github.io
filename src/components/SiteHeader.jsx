@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react';
+import { siteConfig, siteLinks } from '../data/site';
 import '../styles/navigation.css';
 
 function MenuMark({ open = false }) {
@@ -99,9 +100,9 @@ export default function SiteHeader({ items, themeIcon, onToggleTheme }) {
   return <>
     <header className="site-header">
       <div className="site-header-inner">
-        <a href="/" className="site-brand" aria-label="DUCA home">
-          <img src="/duca.png" alt="" width="36" height="36" />
-          <span>DUCA</span>
+        <a href="/" className="site-brand" aria-label={`${siteConfig.name} home`}>
+          <img src={siteConfig.logos.mark} alt="" width="36" height="36" />
+          <span>{siteConfig.name}</span>
         </a>
         <nav className="site-desktop-nav" aria-label="Main navigation">
           {items.map(item => <a
@@ -145,8 +146,8 @@ export default function SiteHeader({ items, themeIcon, onToggleTheme }) {
     >
       <div className="mobile-navigation-content">
         <div className="mobile-navigation-top">
-          <a href="/" className="site-brand" aria-label="DUCA home" onClick={() => finishClose(false)}>
-            <img src="/duca.png" alt="" width="36" height="36" /><span>DUCA</span>
+          <a href="/" className="site-brand" aria-label={`${siteConfig.name} home`} onClick={() => finishClose(false)}>
+            <img src={siteConfig.logos.mark} alt="" width="36" height="36" /><span>{siteConfig.name}</span>
           </a>
           <button ref={closeButtonRef} type="button" className="mobile-menu-close" aria-label="Close navigation menu" onClick={closeMenu}>
             <MenuMark open={isOpen} />
@@ -154,7 +155,7 @@ export default function SiteHeader({ items, themeIcon, onToggleTheme }) {
         </div>
 
         <div className="mobile-navigation-intro">
-          <h2 id={titleId}>Explore DUCA<span aria-hidden="true">.</span></h2>
+          <h2 id={titleId}>Explore {siteConfig.name}<span aria-hidden="true">.</span></h2>
         </div>
 
         <nav className="mobile-navigation-links" aria-label="Mobile navigation">
@@ -177,7 +178,7 @@ export default function SiteHeader({ items, themeIcon, onToggleTheme }) {
         </nav>
 
         <div className="mobile-navigation-footer">
-          <a href="https://discord.com/invite/duca" target="_blank" rel="noopener noreferrer" className="mobile-discord-link" onClick={() => finishClose(false)}>
+          <a href={siteLinks.discord} target="_blank" rel="noopener noreferrer" className="mobile-discord-link" onClick={() => finishClose(false)}>
             Join the Discord <ArrowUpRight className="ui-icon" aria-hidden="true" />
             <span className="navigation-sr-only"> (opens in a new tab)</span>
           </a>

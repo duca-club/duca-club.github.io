@@ -1,12 +1,15 @@
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
+import { hasAuthor } from './data/authors';
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
-    author: z.string(),
+    author: z.string().refine(hasAuthor, {
+      message: 'Author must match an ID in src/data/authors.json.',
+    }),
     description: z.string(),
     publishDate: z.coerce.date(),
     tags: z.array(z.string()).default([]),

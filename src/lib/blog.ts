@@ -1,8 +1,8 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import authors from '../data/authors.json';
-import { divisions, executives } from '../data/team';
+import { getAuthor, type BlogAuthor } from '../data/authors';
+export type { BlogAuthor } from '../data/authors';
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   '../content/blog/**/*.{png,jpg,jpeg,webp,gif,avif,svg}',
@@ -33,13 +33,6 @@ await Promise.all([...featuredImageKeys].map(async key => {
   });
   optimizedImages.set(key, optimized.src);
 }));
-
-export interface BlogAuthor {
-  name: string;
-  image: string;
-  bio: string;
-  link?: string;
-}
 
 export interface BlogCard {
   title: string;
@@ -98,14 +91,6 @@ export function toBlogCard(post: CollectionEntry<'blog'>): BlogCard {
 }
 
 export function toArticleData(post: CollectionEntry<'blog'>): BlogArticleData {
-  const authorRecord = (authors as Record<string, BlogAuthor>)[post.data.author];
-  const members = [...Object.values(executives).flat(), ...Object.values(divisions).flatMap(year => year.flatMap(division => division.members))];
-  const member = authorRecord && members.find(person => person.name === authorRecord.name);
-  const author = authorRecord ? {
-    ...authorRecord,
-    ...(member?.linkedIn && member.linkedIn !== '#' ? { link: member.linkedIn } : {}),
-  } : undefined;
-
   return {
     title: post.data.title,
     description: post.data.description,
@@ -114,6 +99,6 @@ export function toArticleData(post: CollectionEntry<'blog'>): BlogArticleData {
     slug: post.data.slug,
     tags: post.data.tags,
     image: getPostImage(post),
-    author,
+    author: getAuthor(post.data.author),
   };
 }

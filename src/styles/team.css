@@ -1,3 +1,57 @@
+.team-page .team-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.team-page .team-year-switch {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 4px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 5px;
+  margin-bottom: 12px;
+  background: var(--bg);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.team-page .team-year-arrow {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: transparent;
+  font-family: 'Space Mono', monospace;
+  font-size: 15px;
+}
+
+.team-page .team-year-arrow:disabled { cursor: default; }
+.team-page .team-year-arrow:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.team-page .team-year-window { position: relative; overflow: hidden; width: 96px; height: 38px; }
+.team-page .team-year-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Silkscreen', monospace;
+  font-size: 17px;
+  color: var(--ink);
+}
+
+.team-page .team-description { font-size: 19px; line-height: 1.6; color: var(--body); max-width: 54ch; margin: 0; }
+
 .team-page .team-exec-grid {
   display: grid;
   width: 100%;
@@ -85,6 +139,22 @@
 
 @media (max-width: 767px) {
   .team-page { --team-gutter: 16px; }
+
+  .team-page .team-heading { gap: 12px 20px; margin-bottom: 18px; }
+  .team-page .team-year-switch {
+    gap: 0;
+    padding: 1px;
+    margin-bottom: 0;
+    border-width: 1px;
+    border-color: var(--hair-strong);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: none;
+  }
+  .team-page .team-year-arrow { width: 40px; height: 40px; border-radius: 10px; font-size: 14px; }
+  .team-page .team-year-window { width: 52px; height: 40px; }
+  .team-page .team-year-value { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; }
+  .team-page .team-description { font-size: 16px; line-height: 1.55; }
 
   .team-page .team-exec-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

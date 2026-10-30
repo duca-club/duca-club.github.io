@@ -5,13 +5,14 @@ import DesignSite from '../components/DesignSite.jsx';
 import { getEvents, toEventData } from '../lib/events';
 import { getBlogPosts, toBlogCard } from '../lib/blog';
 import { getDiscordMemberCount } from '../lib/discord-members.js';
+import { siteConfig } from '../data/site';
 
 const posts = (await getBlogPosts()).map(toBlogCard);
 const events = (await getEvents()).map(toEventData);
 const discordMemberCount = await getDiscordMemberCount();
 ---
 
-<BaseLayout title="Page not found — DUCA">
+<BaseLayout title={`Page not found — ${siteConfig.name}`}>
   <DesignSite discordMemberCount={discordMemberCount} events={events} initialNow={Date.now()} initialPage="notFound" posts={posts} client:load>
     <section style="max-width:1340px;margin:0 auto;padding:80px 24px 120px">
       <p style="font-family:'Space Mono',monospace;color:var(--accent)">404</p>

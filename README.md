@@ -33,7 +33,7 @@ Discord membership numbers come from the original site's public invite API. The 
 - `src/components/BlogArticle.tsx` and `src/styles/article.css`: the exported article styling applied to real Markdown posts.
 - `src/content/blog/`: all 15 original posts and images, copied unchanged from the old website. Existing blog URLs are preserved.
 - `src/content/events/`: the 13 archived events and new event listings. Upcoming details expand on the events page; past events show their title, date, and category. Dates and times display in Melbourne time.
-- `src/data/team.ts`: the original 2025 and 2026 executive and division records. Biographies are available through portrait card tooltips and accessible labels.
+- `src/data/`: editable staff profiles, yearly rosters, authors, partners, links, and repeated page content. See the editing guide below.
 - `src/styles/team.css`: team cards and mobile grids, with two executive columns and three committee columns.
 - `public/`: local logos, portraits, partner images, About photographs, and licensed fonts.
 - `claude-design/`: the original supplied design export and extracted reference.
@@ -42,6 +42,62 @@ Discord membership numbers come from the original site's public invite API. The 
 The five matching blog preview titles/descriptions retain the design export's editorial copy; the articles retain their original text. The export's sample article and duplicate committee placeholders are replaced with the actual imported records. Event listings use the Markdown collection, and the homepage highlights the next scheduled event.
 
 Run `npm test` for the event scheduling, filtering, and Discord count caching checks. Edit an event's Markdown file to update its title, start time, location, or registration link. End times are shown only when supplied; events with no known end time move to history at the end of their Melbourne calendar date.
+
+## Managing content
+
+Edit the data files below; components read them directly. Rebuild and redeploy to publish changes. Blog posts and events retain their validated Markdown collections so their metadata and body stay together.
+
+| Content | Edit here |
+| --- | --- |
+| Staff names, portraits, LinkedIn URLs, biographies | `src/data/people.ts` |
+| Executive roles, committee assignments, division descriptions, years | `src/data/team.ts` |
+| Blog author records and byline overrides | `src/data/authors.json` |
+| Partners, sponsors, featured partner, logos and spotlight copy | `src/data/partners.ts` |
+| Website address, email, logos, Discord invite, membership and social links | `src/data/site.json` |
+| Hero heading and footer social-link labels | `src/data/site.ts` |
+| Navigation, statistics, ticker, galleries, club activities, values, CTF categories, membership benefits, join steps and FAQs | `src/data/site-content.ts` |
+| Optional blog card titles, summaries, categories and display dates | `src/data/blog-previews.ts` |
+| Blog text, publication date, tags, author ID and featured image | `src/content/blog/<post>/index.md` |
+| Event dates, descriptions, categories, locations and registration links | `src/content/events/*.md` |
+
+### Staff and committee years
+
+Add or update a profile once in `people.ts`, using a stable ID such as `new-person`. Keep that ID when a person's name changes. Image paths refer to files in `public/`, for example `/team/new-person.png`.
+
+Assign that person to a year in `team.ts` using their ID and role:
+
+```ts
+{ personId: 'new-person', role: 'Secretary' }
+```
+
+The same profile can appear in several years or divisions with different roles. Add a year to `teamRosters` to make it available in the selector; the newest configured year is selected automatically. Division names and descriptions are edited in `divisionDefinitions` in the same file.
+
+### Authors
+
+A staff author can inherit their name, portrait, biography, and LinkedIn URL from their profile:
+
+```json
+"new-person": { "personId": "new-person" }
+```
+
+The author record can override `name`, `image`, `bio`, or `link` for a separate byline, portrait, or author biography. Guest authors do not need a staff profile:
+
+```json
+"guest-writer": {
+  "name": "Guest Writer",
+  "image": "/authors/guest-writer.png",
+  "bio": "Guest author biography.",
+  "link": "https://example.com/"
+}
+```
+
+Set the post's frontmatter to `author: guest-writer`. Unknown author or person IDs fail with an explanatory error during the build. `npm test` also checks staff references, local portraits, author inheritance, and guest authors.
+
+### Repeated page content
+
+Partner `group` values control placement: one `featured` partner, plus `sponsor` and `partner` records. The homepage tickers use the same list, so a logo or name only needs updating once.
+
+The Discord member statistic and `{memberCount}` placeholders use the count fetched once per build. The events/workshop statistics and Discord channel preview statuses are editable editorial figures in `site-content.ts`; they are not live API data. Blog card overrides are optional and keyed by post slug. Omit a field to use the Markdown metadata, including `publishDate` when no display `date` is supplied.
 
 ## Deployment
 

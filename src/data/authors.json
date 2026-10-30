@@ -1,16 +1,16 @@
 {
   "paige-haines": {
-    "name": "Paige Haines",
+    "personId": "paige-haines",
     "image": "/authors/paige-haines.png",
     "bio": "Cyber Security Analyst | Writer & Cat Enthusiast | AWSN & WiCyS"
   },
   "ashley-mathew": {
-    "name": "Ashley Mathew",
+    "personId": "ashley-mathew",
     "image": "/authors/ashley-mathew.png",
     "bio": "Aspiring Cyber Security Specialist | Dedicated Student at Deakin University"
   },
   "hirusha-adikari": {
-    "name": "Hirusha Adikari",
+    "personId": "hirusha-adikari",
     "image": "/authors/hirusha-adikari.png",
     "bio": "Cyber Security Student | OSINT Enjoyer | Breaker of Things"
   }

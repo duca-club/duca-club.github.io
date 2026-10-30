@@ -4,7 +4,11 @@ import React from 'react';
 import { ArrowRight, ArrowUpRight, Check, ChevronLeft, ChevronRight, Hash, Infinity as InfinityIcon, Minus, Moon, Plus, Search, Star, Sun } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { executives, divisions } from '../data/team';
+import { executives, divisions, teamYears, latestTeamYear } from '../data/team';
+import { siteConfig, siteLinks, socialLinks, heroContent } from '../data/site';
+import { partners, featuredPartner, partnerSpotlight } from '../data/partners';
+import { navigationPages, discordChannels, tickerMessages, heroLabels, teamPageContent, siteStats, clubActivities, aboutStrip, aboutTalks, aboutEvents, clubValues, ctfCategories, membershipComparison, joinSteps, joinFaqs } from '../data/site-content';
+import { blogPreviewOverrides } from '../data/blog-previews';
 import BlogArticle from './BlogArticle';
 import SiteHeader from './SiteHeader.jsx';
 import '../styles/event.css';
@@ -30,61 +34,16 @@ const toDesignMember = member => ({ ...member, img: member.image, link: member.l
 
 export default class DesignSite extends React.Component {
 
-  state = { page: this.props.initialPage || 'home', theme: 'dark', counts: [0, 0, 0, 0], filter: 'All', teamYear: 2026, openEvent: 0, now: this.props.initialNow || 0, pastPage: 0, blogFilter: 'All', blogPage: 0, archiveOpen: false, blogQuery: '', openFaq: 0 };
+  state = { page: this.props.initialPage || 'home', theme: 'dark', counts: [], filter: 'All', teamYear: latestTeamYear, openEvent: 0, now: this.props.initialNow || 0, pastPage: 0, blogFilter: 'All', blogPage: 0, archiveOpen: false, blogQuery: '', openFaq: 0 };
 
-  TEAM_YEARS = Object.keys(executives).map(Number).sort();
+  TEAM_YEARS = teamYears;
 
+  STATS = siteStats.map(stat => ({
+    ...stat,
+    target: stat.source === 'discordMembers' ? this.props.discordMemberCount : stat.target,
+  }));
 
-  PAGES = [
-    ['home', 'Home'], ['events', 'Events'], ['about', 'About'],
-    ['blog', 'Blog'], ['team', 'Team'], ['partners', 'Partners'], ['ctf', 'CTF'], ['join', 'Join']
-  ];
-
-  CHANNELS = [
-    { name: 'general', meta: '12 new' },
-    { name: 'ctf-and-challenges', meta: '5 solving', live: true },
-    { name: 'workshop-notes', meta: '3 new' },
-    { name: 'jobs-and-internships', meta: '8 new' },
-    { name: 'duca-cat', meta: <InfinityIcon className="ui-icon" aria-hidden="true" />, live: true },
-    { name: 'study-help', meta: '2 new' },
-    { name: 'certifications', meta: '6 new' },
-    { name: 'events', meta: 'pinned' },
-    { name: 'tooling', meta: '1 new' },
-    { name: 'off-topic', meta: '21 new' }
-  ];
-
-  TICKER = ['FREE TO JOIN', 'ALL SKILL LEVELS', 'WORKSHOPS', 'CTF NIGHTS', 'INDUSTRY PANELS', 'PIZZA', 'DEAKIN BURWOOD'];
-
-  STATS = [
-    { target: this.props.discordMemberCount, suffix: '+', label: 'Members', note: 'Discord community' },
-    { target: 42, suffix: '', label: 'Events', note: 'Run this year' },
-    { target: 18, suffix: '', label: 'Workshops', note: 'Hands-on sessions' },
-    { target: 100, suffix: '%', label: 'Free', note: 'Always' }
-  ];
-
-
-  POSTS = [
-    { date: '18 JUL 2026', tag: 'EVENTS', title: 'Speedrunning Cyber: The Strategic Route to a Security Role', blurb: 'Navigating a cybersecurity degree does not require 100% completion. Two senior students shared what to study, what to skip, and how to land a job before graduating.', url: 'https://duca.au/blog/2026-07-18-speedrunning-cyber/' },
-    { date: '06 SEP 2025', tag: 'EVENTS', title: 'DUCA x DDSC Networking Night', blurb: 'A high-energy night with career insights from Commonwealth Bank, AI and research guidance, plus plenty of community building.', url: 'https://duca.au/blog/2025-09-06-duca-x-ddsc-networking-night/' },
-    { date: '12 MAY 2025', tag: 'FIELD NOTES', title: 'DUCA Cat Attends the Inaugural BSides Ballarat 2025', blurb: 'Talks on human-centric cybersecurity, digital footprint awareness, CTI automation, and navigating growth in cyber careers.', url: 'https://duca.au/blog/2025-05-12-duca-cat-attends-the-inaugural-bsides-ballarat-2025/' },
-    { date: '25 APR 2025', tag: 'EVENTS', title: 'Exploring ADF Careers and the Role of Cyber Warfare on ANZAC Day', blurb: 'Insights from Colonel Molnar, Captain Lever and Cyber Warfare Officer Elliot Parker on the growing role of cyber warfare.', url: 'https://duca.au/blog/2025-04-25-exploring-adf-careers-and-the-role-of-cyber-warfare-on-anzac-day/' },
-    { date: '17 APR 2025', tag: 'CTF', title: 'Cracking Clues and Catching Flags with DUCA', blurb: 'An OSINT-focused CTF where participants uncovered hidden clues using metadata, search techniques and visual analysis.', url: 'https://duca.au/blog/2025-04-17-cracking-clues-and-catching-flags-with-duca/' }
-  ];
-
-  TEAM = [];
-
-  PARTNERS = [
-    { name: 'Deakin Cyber', src: '/partners/deakin-cyber.png', url: 'https://cybercentre.org.au/' },
-    { name: 'Deakin University', src: '/partners/deakin.png', url: 'https://www.deakin.edu.au/' },
-    { name: 'DUSA', src: '/partners/dusa.png', url: 'https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca' },
-    { name: 'ACUCyS', src: '/partners/acucys.png', url: 'https://acucys.com.au/' },
-    { name: 'DownUnderCTF', src: '/global/ductf.png', url: 'https://downunderctf.com/' },
-    { name: 'CommBank', src: '/global/commbank.png', url: 'https://www.commbank.com.au/' },
-    { name: 'Mastercard', src: '/global/mastercard.png', url: 'https://www.mastercard.com.au/' },
-    { name: 'Accenture', src: '/global/Accenture.png', url: 'https://www.accenture.com/au-en' },
-    { name: 'Red Bull', src: '/global/redbull.png', url: 'https://www.redbull.com/' },
-    { name: 'Hack4G', src: '/global/hck4g.jpeg', url: 'https://acucys.com.au/' }
-  ];
+  POSTS = [];
 
   initThree() {
     if (this.state.page !== 'home') return;
@@ -120,7 +79,7 @@ export default class DesignSite extends React.Component {
     const mobileTextLayout = width => {
       const gutter = parseFloat(getComputedStyle(canvas).getPropertyValue('--home-gutter')) || 20;
       const textWidth = Math.max(1, width - gutter * 2);
-      const lines = ['LEARN SECURITY', 'BY ACTUALLY', 'DOING IT'];
+      const lines = [heroContent.firstLine, heroContent.secondLine, heroContent.highlight];
       ctx.font = '800 100px Archivo, sans-serif';
       const widest = Math.max(...lines.map(line => ctx.measureText(line).width));
       const hs = Math.min(46, 100 * (textWidth * 0.94 / widest));
@@ -154,20 +113,20 @@ export default class DesignSite extends React.Component {
         });
         ctx.font = `600 ${ls}px Archivo, sans-serif`;
         ctx.fillStyle = BODY2;
-        ctx.fillText('Deakin University Cybersecurity Club', cx, subtitleY);
+        ctx.fillText(heroContent.subtitle, cx, subtitleY);
         textBottom = bottom;
         texture.needsUpdate = true;
         return;
       }
-      const widest = Math.max(ctx.measureText('LEARN SECURITY').width, ctx.measureText('BY ACTUALLY DOING IT').width);
+      const widest = Math.max(ctx.measureText(heroContent.firstLine).width, ctx.measureText(heroContent.secondLine + ' ' + heroContent.highlight).width);
       const hs = Math.min(104, 100 * (W * 0.78 / widest));
       const lh = hs * 0.92;
       const y1 = hs * 0.95;
       ctx.font = `800 ${hs}px Archivo, sans-serif`;
       ctx.fillStyle = INK;
-      ctx.fillText('LEARN SECURITY', cx, y1);
-      const pre = 'BY ACTUALLY ';
-      const hit = 'DOING IT';
+      ctx.fillText(heroContent.firstLine, cx, y1);
+      const pre = heroContent.secondLine + ' ';
+      const hit = heroContent.highlight;
       const preW = ctx.measureText(pre).width;
       const hitW = ctx.measureText(hit).width;
       const total = preW + hitW;
@@ -184,7 +143,7 @@ export default class DesignSite extends React.Component {
       const ls = Math.min(W * 0.019, 20) + 5;
       ctx.font = `600 ${ls}px Archivo, sans-serif`;
       ctx.fillStyle = BODY2;
-      ctx.fillText('Deakin University Cybersecurity Club', cx, y2 + hs * 0.62);
+      ctx.fillText(heroContent.subtitle, cx, y2 + hs * 0.62);
       textBottom = y2 + hs * 0.62 + ls * 0.5;
       texture.needsUpdate = true;
     };
@@ -282,7 +241,7 @@ export default class DesignSite extends React.Component {
     window.addEventListener('pointermove', onMove);
     window.addEventListener('resize', resize);
 
-    const IDX = [0,1,2,3,4,5,6];
+    const IDX = heroLabels.map((_, index) => index);
     const labelLayer = document.querySelector('[data-hero-labels]');
     if (labelLayer) labelLayer.removeAttribute('data-positioned');
     const labelNodes = IDX.map(i => document.querySelector('[data-label-node="' + i + '"]'));
@@ -899,17 +858,12 @@ export default class DesignSite extends React.Component {
         if (this.state.page === 'home') requestAnimationFrame(() => this.initThree());
       },
       goPost: this.go('post'),
-      postAuthors: [
-        { name: 'Hirusha Adikari', role: 'Assistant Secretary', link: 'https://www.linkedin.com/in/hirusha-adi/', img: '/team/hirusha-adikari.png' },
-        { name: 'Ashley Mathew', role: 'Secretary', link: 'https://www.linkedin.com/in/ashleyymathew/', img: '/team/ashley-mathew.png' }
-      ],
-
-      navItems: this.PAGES.map(([id, label]) => {
-        const ext = id === 'ctf';
+      navItems: navigationPages.map(({ id, label, url }) => {
+        const ext = Boolean(url);
         const active = page === id || (page === 'post' && id === 'blog');
         return {
           label,
-          href: ext ? 'https://ctf.duca.au/' : (id === 'home' ? '/' : '/' + id + '/'),
+          href: url || (id === 'home' ? '/' : '/' + id + '/'),
           target: ext ? '_blank' : '_self',
           onClick: undefined,
           color: active ? 'var(--on-ink)' : 'var(--ink)',
@@ -925,18 +879,11 @@ export default class DesignSite extends React.Component {
         edge: i === 0 ? 'none' : '1px solid var(--hair)',
         pad: i === 0 ? '0' : '18px'
       })),
-      channelLoop: [...this.CHANNELS, ...this.CHANNELS].map((c, i) => ({
-        name: c.name, meta: c.meta, key: i,
+      channelLoop: [...discordChannels, ...discordChannels].map((c, i) => ({
+        name: c.name, meta: c.metaIcon === 'infinity' ? <InfinityIcon className="ui-icon" aria-hidden="true" /> : c.meta, key: i,
         tint: c.live ? 'oklch(0.87 0.2 124)' : 'var(--muted)'
       })),
-      tickerLoop: [...this.TICKER, ...this.TICKER, ...this.TICKER].map((t, i) => ({ text: t, key: i })),
-
-      joinPerks: [
-        { num: '01', title: 'Every workshop, free', meta: 'no cost' },
-        { num: '02', title: 'CTF platform access', meta: 'year-round' },
-        { num: '03', title: 'Industry nights', meta: 'resume reviews' },
-        { num: '04', title: 'The Discord', meta: `${discordMemberCount}+ members` }
-      ],
+      tickerLoop: [...tickerMessages, ...tickerMessages, ...tickerMessages].map((t, i) => ({ text: t, key: i })),
 
       homePosts: this.POSTS.slice(0, 3).map((p, i) => ({
         ...p, slot: 'blog-' + i, slotHint: 'Drop a photo from ' + p.tag.toLowerCase()
@@ -983,82 +930,24 @@ export default class DesignSite extends React.Component {
           }))
         };
       })(),
-      team: this.TEAM,
       teamYearLabel: String(this.state.teamYear),
       yearPrev: () => this.stepYear(-1),
       yearNext: () => this.stepYear(1),
       yearPrevColor: this.TEAM_YEARS.indexOf(this.state.teamYear) > 0 ? 'var(--ink)' : 'var(--disabled)',
       yearNextColor: this.TEAM_YEARS.indexOf(this.state.teamYear) < this.TEAM_YEARS.length - 1 ? 'var(--ink)' : 'var(--disabled)',
-      teamYearNote: this.state.teamYear === 2026
-        ? 'Elected each year by members. Tap anyone to open their LinkedIn.'
-        : 'The ' + this.state.teamYear + ' committee. Tap anyone to open their LinkedIn.',
+      teamYearNote: teamPageContent.description,
 
       execs: (executives[String(this.state.teamYear)] || []).map(toDesignMember),
       divisionsTeam: (divisions[String(this.state.teamYear)] || []).filter(d => d.members.length).map(d => ({ ...d, members: d.members.map(toDesignMember), empty: d.members.length === 0 })),
-      partners: this.PARTNERS,
-      deakinCyber: [
-        { stat: '4', label: 'Major events backed' },
-        { stat: '20+', label: 'Researchers in the network' },
-        { stat: '2022', label: 'Working with DUCA since' }
-      ],
-
-      sponsors: this.PARTNERS.filter(p => ['DUSA', 'Deakin University', 'Red Bull'].includes(p.name)),
-      otherPartners: this.PARTNERS.filter(p => !['Deakin Cyber', 'DUSA', 'Deakin University', 'Red Bull'].includes(p.name)),
-      partnerLoop: [...this.PARTNERS, ...this.PARTNERS].map((p, i) => ({ ...p, key: i })),
-      partnerNameLoop: [...this.PARTNERS, ...this.PARTNERS].map((p, i) => ({ name: p.name, key: i })),
-
-      divisions: [
-        { num: '01', title: 'Cybersecurity Workshops', body: 'Get hands-on with ethical hacking, network defence, digital forensics, and malware analysis. Our workshops run every trimester and are built for every skill level — whether you have never touched a terminal or you are prepping for OSCP.' },
-        { num: '02', title: 'CTF Competitions', body: 'Sharpen your problem-solving in Capture-the-Flag events. Our CTF team trains weekly, competes nationally and internationally, and welcomes new players who want to learn by doing. No experience required — just curiosity.' },
-        { num: '03', title: 'Industry Connections', body: 'Meet cybersecurity professionals through networking nights, guest lectures, and career panels. Get resume feedback, discover internship pipelines, and build relationships that last well beyond university.' },
-        { num: '04', title: 'Community Building', body: 'Join 900+ students in our Discord who share knowledge, collaborate on side-projects, and support each other through assignments, certifications, and job applications. DUCA is your cybersecurity home at Deakin.' },
-        { num: '05', title: 'Development Projects', body: 'Ship real software with our development team. From internal club tools to open-source platforms, you will gain practical coding experience, learn Git workflows, and build portfolio pieces that actually matter.' },
-        { num: '06', title: 'Learning Resources', body: 'Access curated study guides, certification prep materials, and hands-on labs. Whether you are chasing CompTIA Security+, diving into cloud security, or exploring red-teaming — we have resources for every stage of your journey.' }
-      ],
-
-      aboutStrip: [
-        { src: '/design/about-01.jpg', alt: 'The DUCA stall at O-Week, Trimester 1 2026' },
-        { src: '/design/about-02.jpg', alt: 'DUCA members at a club event' },
-        { src: '/design/about-03.webp', alt: 'DUCA members at a club event' },
-        { src: '/design/about-04.webp', alt: 'DUCA members at a club event' }
-      ],
-
-      aboutTalks: [
-        { src: '/design/about-05.jpg', alt: 'A DUCA member speaking at AISA CyberCon', tag: 'AISA CyberCon' },
-        { src: '/design/about-06.jpg', alt: 'A DUCA member speaking at BSides Adelaide', tag: 'BSides Adelaide' },
-        { src: '/design/about-07.jpg', alt: 'A DUCA member speaking at BSides Melbourne', tag: 'BSides Melbourne' },
-        { src: '/design/about-08.jpg', alt: 'A DUCA member speaking at BSides Adelaide', tag: 'BSides Adelaide' },
-        { src: '/design/about-09.webp', alt: 'A DUCA member speaking at a conference', tag: 'BSides Canberra' }
-      ],
-
-      aboutEvents: [
-        {
-          src: '/design/about-10.jpg',
-          alt: 'DUCA running the HomeLabs Village at BSides Melbourne',
-          tag: 'BSides Melbourne',
-          caption: 'Running the HomeLabs Village — our members built and staffed the whole thing.'
-        },
-        {
-          src: '/design/about-11.jpg',
-          alt: 'DUCA members at BSides Ballarat',
-          tag: 'BSides Ballarat',
-          caption: 'A DUCA contingent at BSides Ballarat, one of several conferences we send members to each year.'
-        },
-        {
-          src: '/design/about-12.jpg',
-          alt: 'DUCA members at AISA CyberCon 2025',
-          tag: 'AISA CyberCon',
-          caption: 'Members at CyberCon, the largest security conference in the country.'
-        }
-      ],
-
-      values: [
-        { num: '01', title: 'Inspiration', body: 'Empowering members to explore and grow together.' },
-        { num: '02', title: 'Innovation', body: "Driving creative solutions for cybersecurity's future." },
-        { num: '03', title: 'Inclusivity', body: 'Building a welcoming and diverse community.' },
-        { num: '04', title: 'Collaboration', body: 'Strengthening teamwork to achieve shared goals.' },
-        { num: '05', title: 'Leadership', body: "Inspiring tomorrow's cybersecurity leaders." }
-      ],
+      sponsors: partners.filter(partner => partner.group === 'sponsor'),
+      otherPartners: partners.filter(partner => partner.group === 'partner'),
+      partnerLoop: [...partners, ...partners].map((p, i) => ({ ...p, key: i })),
+      partnerNameLoop: [...partners, ...partners].map((p, i) => ({ name: p.name, key: i })),
+      divisions: clubActivities.map(activity => ({ ...activity, body: activity.body.replaceAll('{memberCount}', discordMemberCount) })),
+      aboutStrip,
+      aboutTalks,
+      aboutEvents,
+      values: clubValues,
 
       eventFilters: kinds.map(k => ({
         label: k.toLowerCase(),
@@ -1116,59 +1005,14 @@ export default class DesignSite extends React.Component {
         ];
       })(),
 
-      ctfCats: [
-        { pts: '50–400 PTS', name: 'Web', body: 'Injection, auth bypass, and the classic broken access control.' },
-        { pts: '100–500 PTS', name: 'Crypto', body: 'Weak keys, bad padding, and homemade ciphers that should not exist.' },
-        { pts: '50–350 PTS', name: 'Forensics', body: 'Disk images, packet captures, and recovering what someone deleted.' },
-        { pts: '150–500 PTS', name: 'Reversing', body: 'Binaries that do not want to be read. Bring a disassembler.' },
-        { pts: '50–250 PTS', name: 'OSINT', body: 'Metadata, reverse image search, and being far too good at geography.' }
-      ],
-
-      compare: [
-        ['Attend any event, free', 1, 1],
-        ['Take part in workshops and CTFs', 1, 1],
-        ['Full access to the Discord', 1, 1],
-        ['Eligible for event prizes', 0, 1],
-        ['Counted in club numbers at DUSA', 0, 1],
-        ['Eligible to run for committee', 0, 1]
-      ].map(([text, o, m]) => ({
-        text,
-        open: Boolean(o),
-        member: Boolean(m),
-        openColor: o ? 'var(--ink)' : 'var(--muted)',
-        memberColor: m ? 'var(--accent)' : 'var(--muted)'
+      ctfCats: ctfCategories,
+      compare: membershipComparison.map(benefit => ({
+        ...benefit,
+        openColor: benefit.open ? 'var(--ink)' : 'var(--muted)',
+        memberColor: benefit.member ? 'var(--accent)' : 'var(--muted)',
       })),
-
-      tierOpen: [
-        { Icon: Plus, text: 'Attend any event, free' },
-        { Icon: Plus, text: 'Take part in workshops and CTFs' },
-        { Icon: Plus, text: 'Full access to the Discord' },
-        { Icon: Minus, text: 'Not eligible for event prizes' }
-      ],
-
-      tierMember: [
-        { Icon: Plus, text: 'Everything above' },
-        { Icon: Plus, text: 'Eligible for all event prizes' },
-        { Icon: Plus, text: 'Counted in club numbers at DUSA' },
-        { Icon: Plus, text: 'Supports our events and running costs' },
-        { Icon: Plus, text: 'Eligible to run for committee' }
-      ],
-
-      steps: [
-        { num: '1', title: 'Register via DUSA', body: 'Official membership goes through the student association. This is the step that makes you a registered member and prize-eligible.', cta: 'Register', url: 'https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca' },
-        { num: '2', title: 'Join the Discord', body: 'Where events get announced and questions get answered. Open to anyone, member or not.', cta: 'Get the invite', url: 'https://discord.com/invite/duca' },
-        { num: '3', title: 'Turn up to anything', body: 'Check the events page for what is next and come as you are. No RSVP needed, nothing to pay.', cta: 'ctf.duca.au', url: 'https://ctf.duca.au/' }
-      ],
-
-      faqs: [
-        { q: 'Do I have to be a member to attend?', a: 'No. Every event is free and open \u2014 registration only affects prize eligibility.' },
-        { q: 'What does registering cost?', a: 'Less than a coffee. It is a quick DUSA signup that takes a few minutes.' },
-        { q: 'Where do I find upcoming events?', a: 'The events page here, or the Discord, where everything gets announced first.' },
-        { q: 'I have no experience at all.', a: 'Most people start there. Workshops assume nothing and there is always someone at your table who started last trimester.' },
-        { q: 'I am not studying cyber.', a: 'Fine. We have members from computer science, engineering, law and commerce.' },
-        { q: 'Why does registration matter?', a: 'It keeps the club recognised by DUSA and funds the events, prizes and catering.' },
-        { q: 'Who can win prizes?', a: 'Registered members only. Prizes are funded through membership and partner support, so they go to people on the roll — but anyone can still compete and appear on the scoreboard.' }
-      ].map((q, i) => ({
+      steps: joinSteps,
+      faqs: joinFaqs.map((q, i) => ({
         ...q,
         open: this.state.openFaq === i,
         rot: this.state.openFaq === i ? '135deg' : '0deg',
@@ -1181,12 +1025,7 @@ export default class DesignSite extends React.Component {
   constructor(props) {
     super(props);
     this.state.counts = this.STATS.map(stat => stat.target);
-    const exportedPosts = this.POSTS;
-    this.POSTS = (props.posts || []).map(post => {
-      const design = exportedPosts.find(sample => sample.url.endsWith('/' + post.slug + '/'));
-      return design ? { ...post, date: design.date, tag: design.tag, title: design.title, blurb: design.blurb } : post;
-    });
-    this.TEAM = (executives[String(this.state.teamYear)] || []).map(toDesignMember);
+    this.POSTS = (props.posts || []).map(post => ({ ...post, ...blogPreviewOverrides[post.slug] }));
   }
 
   render() {
@@ -1201,31 +1040,13 @@ export default class DesignSite extends React.Component {
 <section style={css("max-width:1340px;margin:0 auto;padding:var(--home-hero-padding,30px) var(--home-gutter,24px) 0")}>
 <div className="home-hero-scene" style={css("position:relative;width:var(--home-hero-width,100%);height:var(--home-hero-height,clamp(470px,52vw,700px));margin:var(--home-hero-margin,52px) var(--home-hero-inline-margin,0) 0")}>
 <canvas data-three={"hero"} style={css("position:absolute;inset:0;width:100%;height:100%;display:block")}></canvas>
-<h1 style={css("position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0")}>{"Learn security by actually doing it. Workshops, CTFs and industry nights, run by students at Deakin."}</h1>
+<h1 style={css("position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0")}>{heroContent.accessibleTitle}</h1>
 <div data-hero-labels={""} style={css("position:absolute;inset:0;z-index:2;pointer-events:none")}>
 <svg data-label-lines={""} style={css("position:absolute;inset:0;width:100%;height:100%;overflow:visible")}>
-<line data-label-line={"0"} x1={"0"} y1={"0"} x2={"0"} y2={"0"} stroke={"var(--ink)"} strokeWidth={"1"}></line>
-<line data-label-line={"1"} x1={"0"} y1={"0"} x2={"0"} y2={"0"} stroke={"var(--ink)"} strokeWidth={"1"}></line>
-<line data-label-line={"2"} x1={"0"} y1={"0"} x2={"0"} y2={"0"} stroke={"var(--ink)"} strokeWidth={"1"}></line>
-<line data-label-line={"3"} x1={"0"} y1={"0"} x2={"0"} y2={"0"} stroke={"var(--ink)"} strokeWidth={"1"}></line>
-<line data-label-line={"4"} x1={"0"} y1={"0"} x2={"0"} y2={"0"} stroke={"var(--ink)"} strokeWidth={"1"}></line>
-<line data-label-line={"5"} x1={"0"} y1={"0"} x2={"0"} y2={"0"} stroke={"var(--ink)"} strokeWidth={"1"}></line>
-<line data-label-line={"6"} x1={"0"} y1={"0"} x2={"0"} y2={"0"} stroke={"var(--ink)"} strokeWidth={"1"}></line>
+{heroLabels.map((_, index) => <line key={index} data-label-line={String(index)} x1={"0"} y1={"0"} x2={"0"} y2={"0"} stroke={"var(--ink)"} strokeWidth={"1"}></line>)}
 </svg>
-<span data-label-dot={"0"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
-<span data-label-dot={"1"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
-<span data-label-dot={"2"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
-<span data-label-dot={"3"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
-<span data-label-dot={"4"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
-<span data-label-dot={"5"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
-<span data-label-dot={"6"} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>
-<span data-label-node={"0"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"workshops"}</span>
-<span data-label-node={"1"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"CTFs"}</span>
-<span data-label-node={"2"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"industry nights"}</span>
-<span data-label-node={"3"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"socials"}</span>
-<span data-label-node={"4"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"study groups"}</span>
-<span data-label-node={"5"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"dev projects"}</span>
-<span data-label-node={"6"} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{"career nights"}</span>
+{heroLabels.map((_, index) => <span key={index} data-label-dot={String(index)} style={css("position:absolute;width:7px;height:7px;background:var(--panel);transform:translate(-50%,-50%)")}></span>)}
+{heroLabels.map((label, index) => <span key={index} data-label-node={String(index)} style={css("position:absolute;font-family:'Space Mono',monospace;font-size:var(--home-hero-label-size,13px);letter-spacing:0.04em;white-space:var(--home-hero-label-wrap,nowrap);transform:translate(-50%,-50%)")}>{label}</span>)}
 </div>
 </div>
 <div style={css("display:flex;flex-direction:column;align-items:center;gap:30px;padding:0 0 var(--home-stats-bottom,60px);margin-top:var(--home-stats-top,50px);position:relative;z-index:3")}>
@@ -1263,12 +1084,12 @@ export default class DesignSite extends React.Component {
 <p style={css("font-size:var(--home-copy-size,18px);line-height:1.6;color:#B4B4AA;margin:0 0 28px;max-width:46ch")}>{"Signing up through DUSA makes you an official member, and helps cover the cost of running the club."}</p>
 <div className="home-join-actions" style={css("display:flex;gap:var(--home-button-gap,12px);flex-wrap:wrap")}>
 <a href="/join/" style={css("font-family:'Archivo',sans-serif;font-weight:700;background:oklch(0.87 0.2 124);color:#0E0E0C;border-radius:999px;transition:transform 0.15s")} className="home-card-button design-hover-3">{"How to join"}</a>
-<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;border:2px solid #3A3A34;color:var(--on-panel);border-radius:999px;transition:transform 0.15s")} className="home-card-button design-hover-4">{"Discord "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
+<a href={siteLinks.discord} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;border:2px solid #3A3A34;color:var(--on-panel);border-radius:999px;transition:transform 0.15s")} className="home-card-button design-hover-4">{"Discord "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 </div>
 </div>
 <div data-join-mark={""} style={css("position:relative;display:flex;align-items:center;justify-content:center;min-height:var(--home-mark-height,clamp(260px,30vw,360px))")}>
 <canvas data-join-rain={""} style={css("position:absolute;inset:0;width:100%;height:100%")}></canvas>
-<img src={"/duca.png"} alt={"DUCA"} data-join-logo={""} style={css("position:relative;z-index:2;width:var(--home-mark-width,min(58%,260px));height:auto;display:block")} />
+<img src={siteConfig.logos.mark} alt={"DUCA"} data-join-logo={""} style={css("position:relative;z-index:2;width:var(--home-mark-width,min(58%,260px));height:auto;display:block")} />
 </div>
 </div>
 </div>
@@ -1337,7 +1158,7 @@ export default class DesignSite extends React.Component {
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:var(--home-discord-title,clamp(30px,4.4vw,54px));letter-spacing:-0.018em;line-height:0.95;color:var(--on-panel);margin:0 0 18px;text-transform:uppercase")}>{"The Discord"}<br />{"never sleeps"}</h2>
 <p style={css("font-size:var(--home-copy-size,18px);line-height:1.6;color:#9E9E94;margin:0 0 28px;max-width:46ch")}>{`${discordMemberCount}+ students and industry folks. Event pings, assignment panic, CTF writeups, and a steady stream of cat photos.`}</p>
 <div className="home-discord-actions">
-<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="home-card-button design-hover-3">{"Open the invite "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
+<a href={siteLinks.discord} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="home-card-button design-hover-3">{"Open the invite "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 </div>
 </div>
 <div style={css("position:relative;height:var(--home-channels-height,240px);overflow:hidden;transform:rotate(-6deg) scale(1.04);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 84%,transparent 100%)")}>
@@ -1687,25 +1508,25 @@ export default class DesignSite extends React.Component {
 
 <div className="team-page">
 <section data-anim={"hero"} style={css("max-width:1340px;margin:0 auto;padding:44px var(--team-gutter,24px) 34px")}>
-<div style={css("display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:22px")}>
+<div className="team-heading">
 <h1 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(44px,8.4vw,120px);letter-spacing:-0.022em;line-height:0.88;margin:0;text-transform:uppercase")}>{"The team"}</h1>
-<div data-year-switch={""} style={css("display:flex;align-items:center;gap:4px;border:2px solid var(--ink);border-radius:999px;padding:5px;margin-bottom:12px;background:var(--bg);box-shadow:4px 4px 0 var(--ink)")}>
-<button disabled={yearPrevColor === "var(--disabled)"} onClick={yearPrev} aria-label={"Previous year"} style={css(`width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:transparent;font-family:'Space Mono',monospace;font-size:15px;color:${yearPrevColor}`)} className="design-hover-7"><ChevronLeft className="ui-icon" aria-hidden="true" /></button>
-<div data-year-window={""} style={css("position:relative;overflow:hidden;width:96px;height:38px")}>
+<div className="team-year-switch" data-year-switch={""} role="group" aria-label="Committee year">
+<button type="button" disabled={yearPrevColor === "var(--disabled)"} onClick={yearPrev} aria-label={"Previous year"} style={{ color: yearPrevColor }} className="team-year-arrow design-hover-7"><ChevronLeft className="ui-icon" aria-hidden="true" /></button>
+<div className="team-year-window" data-year-window={""}>
 <span data-year-sparks={""} style={css("position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:2")}></span>
-<span data-year-value={""} style={css("position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Silkscreen',monospace;font-size:17px;color:var(--ink)")}>{teamYearLabel}</span>
+<span className="team-year-value" data-year-value={""} aria-live="polite" aria-atomic="true">{teamYearLabel}</span>
 </div>
-<button disabled={yearNextColor === "var(--disabled)"} onClick={yearNext} aria-label={"Next year"} style={css(`width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:transparent;font-family:'Space Mono',monospace;font-size:15px;color:${yearNextColor}`)} className="design-hover-7"><ChevronRight className="ui-icon" aria-hidden="true" /></button>
+<button type="button" disabled={yearNextColor === "var(--disabled)"} onClick={yearNext} aria-label={"Next year"} style={{ color: yearNextColor }} className="team-year-arrow design-hover-7"><ChevronRight className="ui-icon" aria-hidden="true" /></button>
 </div>
 </div>
-<p style={css("font-size:19px;line-height:1.6;color:var(--body);max-width:54ch;margin:0")}>{teamYearNote}</p>
+<p className="team-description">{teamYearNote}</p>
 </section>
 <section style={css("max-width:1340px;margin:0 auto;padding:0 var(--team-gutter,24px) 56px")}>
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(22px,2.8vw,32px);letter-spacing:-0.018em;margin:0 0 20px;text-transform:uppercase")}>{"Executives"}</h2>
 <div className="team-exec-grid" data-anim-group={""}>
 {execs.map((m, index) => <React.Fragment key={index}>
 
-<a href={m.link === "#" ? "https://discord.com/invite/duca" : m.link} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="team-card team-exec-card design-hover-12">
+<a href={m.link && m.link !== "#" ? m.link : siteLinks.discord} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="team-card team-exec-card design-hover-12">
 <div className="team-card-image">
 <img src={m.img} alt={m.name} />
 </div>
@@ -1732,7 +1553,7 @@ export default class DesignSite extends React.Component {
 <div className="team-committee-grid" data-anim-group={""}>
 {d.members.map((m, index) => <React.Fragment key={index}>
 
-<a href={m.link === "#" ? "https://discord.com/invite/duca" : m.link} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="team-card team-committee-card design-hover-12">
+<a href={m.link && m.link !== "#" ? m.link : siteLinks.discord} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="team-card team-committee-card design-hover-12">
 <div className="team-card-image">
 <img src={m.img} alt={m.name} />
 </div>
@@ -1762,14 +1583,14 @@ export default class DesignSite extends React.Component {
 <div data-anim={"up"} data-glow={""} style={css("position:relative;overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px;align-items:center;background:var(--panel);border-radius:30px;padding:clamp(28px,3.4vw,44px);color:var(--on-panel)")}>
 <canvas data-glow-bg={""} style={css("position:absolute;inset:0;width:100%;height:100%;pointer-events:none")}></canvas>
 <div style={css("position:relative;z-index:1")}>
-<span style={css("font-family:'Silkscreen',monospace;font-size:12px;color:oklch(0.87 0.2 124);display:block;margin-bottom:20px")}>{"PRINCIPAL PARTNER"}</span>
-<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,4vw,52px);letter-spacing:-0.018em;line-height:0.95;margin:0 0 18px;text-transform:uppercase")}>{"They make the big events happen"}</h2>
-<p style={css("font-size:17.5px;line-height:1.6;color:#B4B4AA;margin:0 0 22px;max-width:52ch")}>{"Deakin Cyber has backed some of our largest events, put researchers in front of students, and connected members to work happening at the edge of the field."}</p>
-<a href={"https://cybercentre.org.au/"} target={"_blank"} rel={"noopener"} style={css("font-family:'Space Mono',monospace;font-size:13px;color:oklch(0.87 0.2 124);border-bottom:1px solid oklch(0.87 0.2 124);padding-bottom:2px")} className="design-hover-13">{"cybercentre.org.au "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
+<span style={css("font-family:'Silkscreen',monospace;font-size:12px;color:oklch(0.87 0.2 124);display:block;margin-bottom:20px")}>{partnerSpotlight.label}</span>
+<h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,4vw,52px);letter-spacing:-0.018em;line-height:0.95;margin:0 0 18px;text-transform:uppercase")}>{partnerSpotlight.title}</h2>
+<p style={css("font-size:17.5px;line-height:1.6;color:#B4B4AA;margin:0 0 22px;max-width:52ch")}>{partnerSpotlight.body}</p>
+<a href={featuredPartner.url} target={"_blank"} rel={"noopener"} style={css("font-family:'Space Mono',monospace;font-size:13px;color:oklch(0.87 0.2 124);border-bottom:1px solid oklch(0.87 0.2 124);padding-bottom:2px")} className="design-hover-13">{partnerSpotlight.linkLabel + " "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 </div>
 <div data-dc-plate={""} style={css("position:relative;z-index:1;display:flex;align-items:center;justify-content:center;min-height:220px;overflow:hidden;border-radius:22px")}>
 <canvas data-dc-plate-bg={""} style={css("position:absolute;inset:0;width:100%;height:100%;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 85% 80% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 85% 80% at 50% 50%,#000 30%,transparent 100%)")}></canvas>
-<img src={"/partners/deakin-cyber.png"} alt={"Deakin Cyber"} style={css("position:relative;z-index:1;max-height:200px;width:100%;max-width:100%;object-fit:contain;filter:invert(1);mix-blend-mode:screen")} />
+<img src={featuredPartner.src} alt={featuredPartner.name} style={css("position:relative;z-index:1;max-height:200px;width:100%;max-width:100%;object-fit:contain;filter:invert(1);mix-blend-mode:screen")} />
 </div>
 </div>
 </section>
@@ -1806,7 +1627,7 @@ export default class DesignSite extends React.Component {
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(24px,3.4vw,40px);letter-spacing:-0.018em;color:var(--on-panel);margin:0 0 10px;text-transform:uppercase")}>{"Sponsor a trimester"}</h2>
 <p style={css("font-size:17px;line-height:1.6;color:#B4B4AA;margin:0;text-wrap:balance")}>{"Workshop series, CTF prize pools and networking nights all have partner slots."}</p>
 </div>
-<a href={"mailto:info@duca.au"} style={css("position:relative;z-index:1;font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="design-hover-3">{"info@duca.au"}</a>
+<a href={siteLinks.email} style={css("position:relative;z-index:1;font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="design-hover-3">{siteConfig.email}</a>
 </div>
 </section>
 </div>
@@ -1821,7 +1642,7 @@ export default class DesignSite extends React.Component {
 <h1 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(40px,7.6vw,108px);letter-spacing:-0.022em;line-height:0.86;margin:0 0 24px;max-width:13ch;text-transform:uppercase")}>{"We run our own CTF platform"}</h1>
 <p style={css("font-size:19px;line-height:1.6;max-width:56ch;margin:0 0 32px")}>{"Challenges stay up year-round so you can practise whenever. Web, crypto, forensics, reversing and OSINT, written by DUCA members and graded from \"first week of uni\" to \"good luck\"."}</p>
 <div style={css("display:flex;gap:12px;flex-wrap:wrap")}>
-<a href={"https://ctf.duca.au/"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="design-hover-3">{"Launch the platform "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
+<a href={siteLinks.ctf} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="design-hover-3">{"Launch the platform "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 <a href="/events/" style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;border:2px solid var(--on-panel);color:var(--on-panel);transition:transform 0.15s")} className="design-hover-15">{"Training nights"}</a>
 </div>
 </div>
@@ -1860,8 +1681,8 @@ export default class DesignSite extends React.Component {
 <p style={css("font-size:17px;line-height:1.6;color:#B4B4AA;margin:0;max-width:48ch")}>{"Official membership goes through DUSA. It costs less than a coffee, keeps the club recognised, and makes you eligible for everything we hand out."}</p>
 </div>
 <div style={css("position:relative;z-index:1;flex:2 1 260px;display:flex;flex-direction:column;gap:10px;align-items:stretch")}>
-<a href={"https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 28px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;text-align:center")}>{"Register with DUSA "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
-<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 28px;border-radius:999px;border:2px solid #3A3A34;color:var(--on-panel);text-align:center")} className="design-hover-17">{"Join the Discord "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
+<a href={siteLinks.membership} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 28px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;text-align:center")}>{"Register with DUSA "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
+<a href={siteLinks.discord} target={"_blank"} rel={"noopener"} style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 28px;border-radius:999px;border:2px solid #3A3A34;color:var(--on-panel);text-align:center")} className="design-hover-17">{"Join the Discord "}<ArrowUpRight className="ui-icon" aria-hidden="true" /></a>
 </div>
 </div>
 </section>
@@ -1932,9 +1753,9 @@ export default class DesignSite extends React.Component {
 <footer style={css("background:var(--panel);color:#9E9E94")}>
 <div style={css("max-width:1340px;margin:0 auto;padding:68px 24px 28px;display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,80px)")}>
 <div style={css("flex:1.4 1 260px;min-width:0")}>
-<img src={"/global/duca-logo.webp"} alt={"DUCA"} style={css("height:42px;width:auto;margin-bottom:20px;display:block")} />
+<img src={siteConfig.logos.wordmark} alt={"DUCA"} style={css("height:42px;width:auto;margin-bottom:20px;display:block")} />
 <p style={css("font-size:15.5px;line-height:1.6;margin:0 0 18px;max-width:38ch")}>{"A student-led community and a launchpad for the next generation of cybersecurity professionals."}</p>
-<a href={"mailto:info@duca.au"} style={css("font-size:15.5px;color:oklch(0.87 0.2 124)")}>{"info@duca.au"}</a>
+<a href={siteLinks.email} style={css("font-size:15.5px;color:oklch(0.87 0.2 124)")}>{siteConfig.email}</a>
 </div>
 <div style={css("flex:1.2 1 240px;min-width:0")}>
 <div style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--on-panel);margin-bottom:18px")}>{"Pages"}</div>
@@ -1949,16 +1770,13 @@ export default class DesignSite extends React.Component {
 <div style={css("flex:0.8 1 180px;min-width:0")}>
 <div style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--on-panel);margin-bottom:18px")}>{"Elsewhere"}</div>
 <div style={css("display:flex;flex-direction:column;gap:10px")}>
-<a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("font-size:15.5px;color:#9E9E94")} className="design-hover-11">{"Discord"}</a>
-<a href={"https://github.com/duca-club"} target={"_blank"} rel={"noopener"} style={css("font-size:15.5px;color:#9E9E94")} className="design-hover-11">{"GitHub"}</a>
-<a href={"https://ctf.duca.au/"} target={"_blank"} rel={"noopener"} style={css("font-size:15.5px;color:#9E9E94")} className="design-hover-11">{"CTF platform"}</a>
-<a href={"https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca"} target={"_blank"} rel={"noopener"} style={css("font-size:15.5px;color:#9E9E94")} className="design-hover-11">{"DUSA listing"}</a>
+{socialLinks.map(link => <a key={link.url} href={link.url} target={"_blank"} rel={"noopener"} style={css("font-size:15.5px;color:#9E9E94")} className="design-hover-11">{link.label}</a>)}
 </div>
 </div>
 </div>
 <div style={css("max-width:1340px;margin:0 auto;padding:0 24px 56px")}>
 <p style={css("font-size:13.5px;line-height:1.7;color:var(--muted);margin:0 0 24px;border-top:1px solid #2A2A26;padding-top:24px")}>{"DUCA acknowledges the Traditional Owners of the lands on which we operate, and we pay our respects to Elders past and present. We celebrate diversity and are committed to creating an inclusive environment for all members, including those who identify as LGBTQIA+."}</p>
-<span style={css("font-family:'Space Mono',monospace;font-size:12px;color:#5A5A52")}>{"Copyright DUCA © 2026"}</span>
+<span style={css("font-family:'Space Mono',monospace;font-size:12px;color:#5A5A52")}>{`Copyright ${siteConfig.name} © ${new Date(this.props.initialNow || Date.now()).getUTCFullYear()}`}</span>
 </div>
 </footer>
 </div>

@@ -1,5 +1,6 @@
 ---
 import '../styles/design.css';
+import { siteConfig } from '../data/site';
 
 interface Props {
   title?: string;
@@ -9,9 +10,9 @@ interface Props {
 }
 
 const {
-  title = 'DUCA — Deakin University Cybersecurity Association',
-  description = 'DUCA — Deakin University Cybersecurity Association',
-  image = '/social-preview-image.png',
+  title = `${siteConfig.name} — ${siteConfig.fullName}`,
+  description = siteConfig.description,
+  image = siteConfig.logos.socialPreview,
   article = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
@@ -25,13 +26,13 @@ const socialImage = new URL(image, Astro.site ?? Astro.url);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#050505" />
-    <link rel="icon" type="image/png" href="/duca.png" />
+    <link rel="icon" type="image/png" href={siteConfig.logos.mark} />
     <link rel="canonical" href={canonical} />
     <link rel="preload" href="/fonts/font-c6ab97fead7343.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/font-cfc8a4efd5290e.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/fonts/fonts.css" />
     <meta property="og:type" content={article ? 'article' : 'website'} />
-    <meta property="og:site_name" content="DUCA" />
+    <meta property="og:site_name" content={siteConfig.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
