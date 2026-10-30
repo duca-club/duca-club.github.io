@@ -45,9 +45,20 @@ Run `npm test` for the event scheduling, filtering, and Discord count caching ch
 
 ## Deployment
 
-`Dockerfile` builds the new site and serves `dist/` with Nginx. `.dockerignore` excludes the old website and design archive from the build context. `Jenkinsfile` and `docker-compose.yml` retain the existing deployment setup.
+The existing Jenkins job can continue using the root `Jenkinsfile`. It builds the Astro site in Docker, extracts `/app/dist/` into `.deploy-dist/`, checks that `index.html` exists, copies the files to `/srv/hirusha-duca-site`, and runs `docker compose up -d --remove-orphans`.
 
-```sh
-docker build -t duca-site .
-docker run --rm -p 8080:80 duca-site
-```
+The deployment names and server paths match the original site:
+
+| Setting | Value |
+| --- | --- |
+| Builder image | `hirusha-duca-site-builder:latest` |
+| Web image | `nginx:alpine` |
+| Compose project, service, and container | `hirusha-duca-site` |
+| Server directory | `/srv/hirusha-duca-site` |
+| Read-only container mount | `/usr/share/nginx/html` |
+| Existing Docker network | `intranet_1` |
+| Container port | `80` |
+
+`Dockerfile` uses Node.js 24 to build the static site. The existing Nginx container serves the generated HTML, JavaScript, CSS, and local images; no Node.js process runs on the server. The current reverse proxy and Jenkins server configuration can stay as they are.
+
+`.dockerignore` excludes local dependencies, generated files, previous `.deploy-dist/` output, the old website, and the design archive. `.deploy-dist/` is also ignored by Git. Jenkins removes its temporary extraction container even if copying the files fails.

@@ -1,5 +1,6 @@
 # build output
 dist
+.deploy-dist/
 
 # dependencies
 node_modules/

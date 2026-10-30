@@ -43,10 +43,11 @@ pipeline {
                     mkdir -p .deploy-dist
 
                     CONTAINER_ID="$(docker create "$BUILDER_IMAGE")"
+                    trap 'docker rm "$CONTAINER_ID" >/dev/null 2>&1 || true' EXIT
 
                     docker cp "$CONTAINER_ID:/app/dist/." .deploy-dist/
 
-                    docker rm "$CONTAINER_ID"
+                    test -s .deploy-dist/index.html
                 '''
             }
         }

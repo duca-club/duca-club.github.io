@@ -1,6 +1,7 @@
 .git
 node_modules
 dist
+.deploy-dist
 .astro
 old-site
 claude-design
