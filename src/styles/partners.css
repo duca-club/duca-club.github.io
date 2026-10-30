@@ -1,0 +1,30 @@
+.partner-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.partner-logo > img { display: block; object-fit: contain; }
+.partner-logo > .partner-logo-dark { display: none; }
+
+body[data-theme="dark"] .partner-logo[data-surface="theme"] > .partner-logo-light,
+.partner-logo[data-surface="dark"] > .partner-logo-light { display: none; }
+
+body[data-theme="dark"] .partner-logo[data-surface="theme"] > .partner-logo-dark,
+.partner-logo[data-surface="dark"] > .partner-logo-dark { display: block; }
+
+/* Keep the original artwork readable without recolouring its brand colours. */
+body[data-theme="dark"] .partner-logo[data-surface="theme"][data-dark-backing="light"],
+.partner-logo[data-surface="dark"][data-dark-backing="light"] {
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 0 0 6px #fff;
+}
+
+.home-partner-logo > img { height: 40px; width: auto; max-width: 160px; }
+.partner-list-logo { width: 64px; height: 30px; }
+.partner-list-logo > img { width: 64px; height: 30px; object-position: left; }
+.partner-spotlight-logo { position: relative; z-index: 1; width: 100%; }
+.partner-spotlight-logo > img { max-height: 200px; width: 100%; max-width: 100%; }

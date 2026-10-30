@@ -11,6 +11,7 @@ import { navigationPages, discordChannels, tickerMessages, heroLabels, teamPageC
 import { blogPreviewOverrides } from '../data/blog-previews';
 import BlogArticle from './BlogArticle';
 import SiteHeader from './SiteHeader.jsx';
+import PartnerLogo from './PartnerLogo';
 import '../styles/event.css';
 import '../styles/team.css';
 import { getEventSchedule } from '../lib/event-state';
@@ -1113,12 +1114,12 @@ export default class DesignSite extends React.Component {
 </div>
 </a>
 </section>
-<section style={css("width:100vw;margin-left:calc(50% - 50vw);background:var(--band);padding:30px 0 34px;overflow:hidden")}>
+<section className="home-partners" aria-label="Club partners" style={css("width:100vw;margin-left:calc(50% - 50vw);background:var(--band);padding:30px 0 34px;overflow:hidden")}>
 <p style={css("font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);text-align:center;margin:0 0 24px")}>{"We partner with"}</p>
 <div data-anim={"marquee"} style={css("display:flex;width:max-content;align-items:center")}>
 {partnerLoop.map((p, index) => <React.Fragment key={index}>
 
-<div style={css("flex:0 0 auto;padding:0 40px")}><img src={p.src} alt={p.name} style={css("height:40px;width:auto;max-width:160px;object-fit:contain;opacity:1")} /></div>
+<div style={css("flex:0 0 auto;padding:0 40px")}><PartnerLogo partner={p} className="home-partner-logo" /></div>
 
 </React.Fragment>)}
 </div>
@@ -1285,7 +1286,7 @@ export default class DesignSite extends React.Component {
 <div style={css("position:relative;z-index:1;flex:3 1 300px;min-width:0")}>
 <span style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.16em;color:oklch(0.87 0.2 124);display:block;margin-bottom:16px")}>{nextLabel}</span>
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,4vw,50px);letter-spacing:-0.018em;line-height:0.95;margin:0 0 12px;text-transform:uppercase")}>{nextEvent.title}</h2>
-<p style={css("font-family:'Space Mono',monospace;font-size:13px;color:#B4B4AA;margin:0")}>{nextEvent.when}{nextEvent.place && <>{" · "}{nextEvent.place}</>}</p>
+<p className="event-next-meta" style={css("font-family:'Space Mono',monospace;font-size:13px;color:#B4B4AA;margin:0")}><span className="event-next-when">{nextEvent.when}</span>{nextEvent.place && <><span className="event-next-location-separator">{" · "}</span><span className="event-next-location">{nextEvent.place}</span></>}</p>
 </div>
 <div style={css("position:relative;z-index:1;flex:2 1 300px;display:flex;justify-content:flex-end")}>
 {liveNow && <>
@@ -1590,7 +1591,7 @@ export default class DesignSite extends React.Component {
 </div>
 <div data-dc-plate={""} style={css("position:relative;z-index:1;display:flex;align-items:center;justify-content:center;min-height:220px;overflow:hidden;border-radius:22px")}>
 <canvas data-dc-plate-bg={""} style={css("position:absolute;inset:0;width:100%;height:100%;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 85% 80% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 85% 80% at 50% 50%,#000 30%,transparent 100%)")}></canvas>
-<img src={featuredPartner.src} alt={featuredPartner.name} style={css("position:relative;z-index:1;max-height:200px;width:100%;max-width:100%;object-fit:contain;filter:invert(1);mix-blend-mode:screen")} />
+<PartnerLogo partner={featuredPartner} surface="dark" className="partner-spotlight-logo" />
 </div>
 </div>
 </section>
@@ -1600,7 +1601,7 @@ export default class DesignSite extends React.Component {
 {sponsors.map((p, index) => <React.Fragment key={index}>
 
 <a href={p.url} target={"_blank"} rel={"noopener"} style={css("display:flex;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid var(--hair)")} className="design-hover-14">
-<img src={p.src} alt={""} style={css("height:30px;width:64px;object-fit:contain;object-position:left;flex:0 0 auto")} />
+<PartnerLogo partner={p} decorative className="partner-list-logo" />
 <span style={css("font-family:'Archivo',sans-serif;font-weight:600;font-size:16.5px;flex:1")}>{p.name}</span>
 <span style={css("font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)")}><ArrowUpRight className="ui-icon" aria-hidden="true" /></span>
 </a>
@@ -1612,7 +1613,7 @@ export default class DesignSite extends React.Component {
 {otherPartners.map((p, index) => <React.Fragment key={index}>
 
 <a href={p.url} target={"_blank"} rel={"noopener"} style={css("display:flex;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid var(--hair)")} className="design-hover-14">
-<img src={p.src} alt={""} style={css("height:30px;width:64px;object-fit:contain;object-position:left;flex:0 0 auto")} />
+<PartnerLogo partner={p} decorative className="partner-list-logo" />
 <span style={css("font-family:'Archivo',sans-serif;font-weight:600;font-size:16.5px;flex:1")}>{p.name}</span>
 <span style={css("font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)")}><ArrowUpRight className="ui-icon" aria-hidden="true" /></span>
 </a>

@@ -142,18 +142,15 @@
 
   .team-page .team-heading { gap: 12px 20px; margin-bottom: 18px; }
   .team-page .team-year-switch {
-    gap: 0;
-    padding: 1px;
+    gap: 3px;
+    padding: 4px;
     margin-bottom: 0;
-    border-width: 1px;
-    border-color: var(--hair-strong);
-    border-radius: 12px;
-    background: var(--surface);
-    box-shadow: none;
+    box-shadow: 3px 3px 0 var(--ink);
   }
-  .team-page .team-year-arrow { width: 40px; height: 40px; border-radius: 10px; font-size: 14px; }
-  .team-page .team-year-window { width: 52px; height: 40px; }
-  .team-page .team-year-value { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; }
+  .team-page .team-year-arrow { position: relative; width: 30px; height: 30px; font-size: 12px; }
+  .team-page .team-year-arrow::after { content: ''; position: absolute; inset: -7px; }
+  .team-page .team-year-window { width: 76px; height: 30px; }
+  .team-page .team-year-value { font-size: 13.5px; }
   .team-page .team-description { font-size: 16px; line-height: 1.55; }
 
   .team-page .team-exec-grid {

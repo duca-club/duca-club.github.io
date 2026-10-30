@@ -5,19 +5,21 @@ export interface Partner {
   group: 'featured' | 'sponsor' | 'partner';
   name: string;
   src: string;
+  darkSrc?: string;
+  darkBacking?: 'light';
   url: string;
 }
 
 // Groups control placement on the Partners page; every record joins the homepage ticker.
 export const partners: Partner[] = [
-  { id: 'deakin-cyber', group: 'featured', name: 'Deakin Cyber', src: '/partners/deakin-cyber.png', url: 'https://cybercentre.org.au/' },
-  { id: 'deakin-university', group: 'sponsor', name: 'Deakin University', src: '/partners/deakin.png', url: 'https://www.deakin.edu.au/' },
-  { id: 'dusa', group: 'sponsor', name: 'DUSA', src: '/partners/dusa.png', url: siteLinks.membership },
-  { id: 'acucys', group: 'partner', name: 'ACUCyS', src: '/partners/acucys.png', url: 'https://acucys.com.au/' },
+  { id: 'deakin-cyber', group: 'featured', name: 'Deakin Cyber', src: '/partners/deakin-cyber.png', darkSrc: '/partners/deakin-cyber-dark.svg', url: 'https://cybercentre.org.au/' },
+  { id: 'deakin-university', group: 'sponsor', name: 'Deakin University', src: '/partners/deakin.png', darkBacking: 'light', url: 'https://www.deakin.edu.au/' },
+  { id: 'dusa', group: 'sponsor', name: 'DUSA', src: '/partners/dusa.png', darkSrc: '/partners/dusa-dark.png', url: siteLinks.membership },
+  { id: 'acucys', group: 'partner', name: 'ACUCyS', src: '/partners/acucys.png', darkBacking: 'light', url: 'https://acucys.com.au/' },
   { id: 'downunderctf', group: 'partner', name: 'DownUnderCTF', src: '/global/ductf.png', url: 'https://downunderctf.com/' },
-  { id: 'commbank', group: 'partner', name: 'CommBank', src: '/global/commbank.png', url: 'https://www.commbank.com.au/' },
-  { id: 'mastercard', group: 'partner', name: 'Mastercard', src: '/global/mastercard.png', url: 'https://www.mastercard.com.au/' },
-  { id: 'accenture', group: 'partner', name: 'Accenture', src: '/global/Accenture.png', url: 'https://www.accenture.com/au-en' },
+  { id: 'commbank', group: 'partner', name: 'CommBank', src: '/global/commbank.png', darkBacking: 'light', url: 'https://www.commbank.com.au/' },
+  { id: 'mastercard', group: 'partner', name: 'Mastercard', src: '/global/mastercard.png', darkBacking: 'light', url: 'https://www.mastercard.com.au/' },
+  { id: 'accenture', group: 'partner', name: 'Accenture', src: '/global/Accenture.png', darkSrc: '/partners/accenture-dark.svg', url: 'https://www.accenture.com/au-en' },
   { id: 'red-bull', group: 'sponsor', name: 'Red Bull', src: '/global/redbull.png', url: 'https://www.redbull.com/' },
   { id: 'hack4g', group: 'partner', name: 'Hack4G', src: '/global/hck4g.jpeg', url: 'https://acucys.com.au/' }
 ];

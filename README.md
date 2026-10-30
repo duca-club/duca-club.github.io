@@ -97,6 +97,18 @@ Set the post's frontmatter to `author: guest-writer`. Unknown author or person I
 
 Partner `group` values control placement: one `featured` partner, plus `sponsor` and `partner` records. The homepage tickers use the same list, so a logo or name only needs updating once.
 
+Partner logos support an optional local `darkSrc` in `partners.ts`. Without a suitable alternate, `darkBacking: 'light'` keeps the original artwork readable on a light surface in dark mode. Logos retain their original colours. The shared logo component also handles the Partners page and its permanently dark spotlight panel.
+
+The downloaded dark-background alternatives are stored locally, unchanged from these sources:
+
+| Local asset | Source |
+| --- | --- |
+| `public/partners/deakin-cyber-dark.svg` | [Deakin Cyber inverse logo](https://cybercentre.org.au/wp-content/uploads/sites/6/2026/04/cyber-logo-inverse.svg) |
+| `public/partners/dusa-dark.png` | [DUSA white-circle logo](https://dusa-website-app-bucket.s3-ap-southeast-2.amazonaws.com/prod/DUSA_CircleLogo-White_w-Text.png), from [club resources](https://www.dusa.org.au/club-resources) |
+| `public/partners/accenture-dark.svg` | [Accenture static footer logo](https://www.accenture.com/content/dam/accenture/final/accenture-com/imagery-fy27/q1/Footer-Static-Desktop.svg) |
+
+Deakin Cyber and Accenture use their current published lockups for dark mode; the original light-mode files are retained.
+
 The Discord member statistic and `{memberCount}` placeholders use the count fetched once per build. The events/workshop statistics and Discord channel preview statuses are editable editorial figures in `site-content.ts`; they are not live API data. Blog card overrides are optional and keyed by post slug. Omit a field to use the Markdown metadata, including `publishDate` when no display `date` is supplied.
 
 ## Deployment
