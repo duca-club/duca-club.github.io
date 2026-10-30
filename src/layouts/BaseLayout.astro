@@ -1,5 +1,7 @@
 ---
 import '../styles/design.css';
+import { getImage } from 'astro:assets';
+import ducaLogo from '../../public/duca.png';
 import { siteConfig } from '../data/site';
 import { getPageMetadata, siteMetadata, type SocialImage } from '../data/metadata';
 import StructuredData from '../components/StructuredData.astro';
@@ -41,6 +43,10 @@ const {
 const site = Astro.site ?? new URL(siteConfig.url);
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, site);
 const socialImage = new URL(image.src, site);
+const [favicon, touchIcon] = await Promise.all([
+  getImage({ src: ducaLogo, width: 64, height: 64, format: 'png' }),
+  getImage({ src: ducaLogo, width: 180, height: 180, format: 'png' }),
+]);
 const twitterCard = image.width && image.height && image.width <= image.height ? 'summary' : 'summary_large_image';
 let authorProfile: URL | undefined;
 try {
@@ -60,7 +66,8 @@ try {
     <meta name="author" content={author} />
     <meta name="robots" content={noIndex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
     <meta name="theme-color" content="#050505" />
-    <link rel="icon" type="image/png" href={siteConfig.logos.mark} />
+    <link rel="icon" type="image/png" sizes="64x64" href={favicon.src} />
+    <link rel="apple-touch-icon" sizes="180x180" href={touchIcon.src} />
     <link rel="canonical" href={canonical} />
     {previousPage && <link rel="prev" href={new URL(previousPage, site)} />}
     {nextPage && <link rel="next" href={new URL(nextPage, site)} />}

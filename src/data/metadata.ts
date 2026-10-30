@@ -1,4 +1,5 @@
 import { siteConfig } from './site.ts';
+import ducaLogo from '../../public/duca.png';
 
 export interface SocialImage {
   src: string;
@@ -12,10 +13,10 @@ export const siteMetadata = {
   author: 'DUCA Team',
   locale: 'en_AU',
   image: {
-    src: siteConfig.logos.socialPreview,
+    src: ducaLogo.src,
     alt: 'Deakin University Cybersecurity Association (DUCA) logo',
-    width: 944,
-    height: 944,
+    width: ducaLogo.width,
+    height: ducaLogo.height,
     type: 'image/png',
   } satisfies SocialImage,
 };

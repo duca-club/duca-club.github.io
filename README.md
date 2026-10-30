@@ -116,7 +116,7 @@ The Discord member statistic and `{memberCount}` placeholders use the count fetc
 
 Page metadata uses the old site's full DUCA description and `DUCA Team` author default. Each main page has its own title and description in `metadata.ts`. Blog previews use the post's real cover, author, publication date, and tags. Canonical and social URLs use the production site address without query parameters. The 404 page is marked `noindex`.
 
-`public/social-preview-image.png` now contains the DUCA logo, replacing the old Astro starter artwork while retaining the preview URL. Default social cards use the square logo; blog cards use their cover image. Update the default image dimensions and alt text in `metadata.ts` when replacing that file. Open Graph fields follow the [protocol reference](https://ogp.me/); indexing directives follow [Google's robots meta reference](https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag).
+Default social cards use `public/duca.png`, the same DUCA logo as the favicon. Astro imports it in `metadata.ts` to generate a content-hashed image URL and read its actual dimensions, so replacing the logo also changes the preview URL. Blog cards use their cover image. Update the alt text in `metadata.ts` if replacing the logo. The previous `public/social-preview-image.png` URL still serves the DUCA logo for compatibility. Open Graph fields follow the [protocol reference](https://ogp.me/); indexing directives follow [Google's robots meta reference](https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag).
 
 ## Search discovery and image performance
 

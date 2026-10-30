@@ -6,8 +6,7 @@
   "email": "info@duca.au",
   "logos": {
     "mark": "/duca.png",
-    "wordmark": "/global/duca-logo.webp",
-    "socialPreview": "/social-preview-image.png"
+    "wordmark": "/global/duca-logo.webp"
   },
   "discord": {
     "inviteCode": "duca",
