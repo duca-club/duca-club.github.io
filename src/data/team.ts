@@ -146,7 +146,7 @@ export const divisions: Record<string, TeamDivision[]> = {
       description:
         "We introduce everyone to the basics of cybersecurity in a super friendly, beginner-friendly way - perfect for easing into the tech world without feeling overwhelmed!",
       members: [
-        { name: "Aarnav Singh", role: "Team Lead", image: "https://ui-avatars.com/api/?name=Aarnav+Singh", linkedIn: "#" },
+        { name: "Aarnav Singh", role: "Team Lead", image: "/team/aarnav-singh.svg", linkedIn: "#" },
         { name: "Anika G.", role: "Team Member", image: "/team/anika-g.png", linkedIn: "https://www.linkedin.com/in/anastasiyaagguenov/" },
       ],
     },
@@ -197,7 +197,7 @@ export const divisions: Record<string, TeamDivision[]> = {
         { name: "Lia McCracken", role: "Team Member", image: "/team/lia-mccracken.png", linkedIn: "https://www.linkedin.com/in/lia-mccracken-8b19053b2/" },
         // 26t2: removed or moved to a different team after the restructuring
         // { name: "Azelma Aghakishiyeva", role: "Team Member", image: "/team/azelma-aghakishiyeva.png", linkedIn: "https://www.linkedin.com/in/azelma-aghakishiyeva-081053278/" },
-        // { name: "Marco", role: "Team Member", image: "https://ui-avatars.com/api/?name=Marco", linkedIn: "#" },
+        // { name: "Marco", role: "Team Member", image: "/team/marco.svg", linkedIn: "#" },
         // { name: "Jasmin Smallu", role: "Team Member", image: "/team/jasmin-smallu.png", linkedIn: "https://www.linkedin.com/in/jasmin-smallu-5b0852268/" },
       ],
     },
@@ -209,7 +209,7 @@ export const divisions: Record<string, TeamDivision[]> = {
         { name: "Kat Ho", role: "Team Lead", image: "/team/kat-ho.png", linkedIn: "https://www.linkedin.com/in/kat-ho/" },
         { name: "Pratigya Pal", role: "Team Member", image: "/team/pratigya-pal.png", linkedIn: "https://www.linkedin.com/in/pratigya-pal/" },
         { name: "Navya Midha", role: "Team Member", image: "/team/navya-midha.png", linkedIn: "https://www.linkedin.com/in/navya-midha-8711a11b5/" },
-        { name: "Corina Pascoe", role: "Team Member", image: "https://ui-avatars.com/api/?name=Cornia+Pascoe", linkedIn: "https://www.linkedin.com/in/corina-p-940b11338/" },
+        { name: "Corina Pascoe", role: "Team Member", image: "/team/corina-pascoe.svg", linkedIn: "https://www.linkedin.com/in/corina-p-940b11338/" },
         { name: "Sagar Nayar", role: "Team Member", image: "/team/sagar-nayar.png", linkedIn: "https://www.linkedin.com/in/sagar-nayar-399b62249/" },
         // 26t2: removed or moved to a different team after the restructuring
         // { name: "Paige Haines", role: "Team Lead", image: "/team/paige-haines.png", linkedIn: "https://www.linkedin.com/in/paigehai/" },
@@ -261,10 +261,10 @@ export const divisions: Record<string, TeamDivision[]> = {
     //   description:
     //     "We introduce everyone to the basics of cybersecurity in a super friendly, beginner-friendly way - perfect for easing into the tech world without feeling overwhelmed!",
     //   members: [
-    //     { name: "Aarnav Singh", role: "Team Lead", image: "https://ui-avatars.com/api/?name=Aarnav+Singh", linkedIn: "#" },
+    //     { name: "Aarnav Singh", role: "Team Lead", image: "/team/aarnav-singh.svg", linkedIn: "#" },
     //     { name: "Anika G.", role: "Team Member", image: "/team/anika-g.png", linkedIn: "https://www.linkedin.com/in/anastasiyaagguenov/" },
-    //     { name: "Corina Pascoe", role: "Team Member", image: "https://ui-avatars.com/api/?name=Cornia+Pascoe", linkedIn: "https://www.linkedin.com/in/corina-p-940b11338/" },
-    //     { name: "Meetkumar Patel", role: "Team Member", image: "https://ui-avatars.com/api/?name=Meetkumar+Patel", linkedIn: "#" },
+    //     { name: "Corina Pascoe", role: "Team Member", image: "/team/corina-pascoe.svg", linkedIn: "https://www.linkedin.com/in/corina-p-940b11338/" },
+    //     { name: "Meetkumar Patel", role: "Team Member", image: "/team/meetkumar-patel.png", linkedIn: "#" },
     //     { name: "Shweta", role: "Team Member", image: "/team/shweta.png", linkedIn: "https://www.linkedin.com/in/shweta-a1ba1036a/" },
     //   ],
     // },
