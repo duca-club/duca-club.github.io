@@ -1413,7 +1413,7 @@ export default class DesignSite extends React.Component {
 
 <div>
 <section data-anim={"hero"} style={css("max-width:1340px;margin:0 auto;padding:44px 24px 30px")}>
-<h1 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(42px,8vw,114px);letter-spacing:-0.022em;line-height:0.88;margin:0 0 22px;text-transform:uppercase")}>{"Writeups & recaps"}</h1>
+<h1 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(42px,8vw,114px);letter-spacing:-0.022em;line-height:0.88;margin:0 0 22px;text-transform:uppercase")}>{"Blogs & updates"}</h1>
 <p style={css("font-size:19px;line-height:1.6;color:var(--body);max-width:54ch;margin:0")}>{"What happened at the last event, what we learned, and the occasional field report from a conference."}</p>
 </section>
 <section style={css("max-width:1340px;margin:0 auto;padding:0 24px 46px")}>
