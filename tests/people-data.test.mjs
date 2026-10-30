@@ -7,7 +7,8 @@ import { createServer } from 'vite';
 // from every Node version supported by the project.
 const server = await createServer({
   configFile: false,
-  server: { middlewareMode: true, hmr: false, watch: null },
+  optimizeDeps: { noDiscovery: true, include: [] },
+  server: { middlewareMode: true, hmr: false, ws: false, watch: null },
 });
 after(() => server.close());
 const { people, getPerson } = await server.ssrLoadModule('/src/data/people.ts');

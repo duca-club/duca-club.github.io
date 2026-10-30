@@ -1,0 +1,9 @@
+---
+import { buildStructuredData, serializeStructuredData, type StructuredDataInput } from '../lib/structured-data';
+
+interface Props extends StructuredDataInput {}
+
+const data = buildStructuredData(Astro.props);
+---
+
+{data && <script is:inline type="application/ld+json" set:html={serializeStructuredData(data)} />}

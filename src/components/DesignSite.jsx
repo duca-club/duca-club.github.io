@@ -15,6 +15,7 @@ import PartnerLogo from './PartnerLogo';
 import '../styles/event.css';
 import '../styles/team.css';
 import { getEventSchedule } from '../lib/event-state';
+import { BLOG_POSTS_PER_PAGE, getBlogPageUrl } from '../lib/blog-pagination';
 
 const styleCache = new Map();
 const numberFormatter = new Intl.NumberFormat('en-US');
@@ -31,11 +32,11 @@ function css(declarations) {
   styleCache.set(declarations, result);
   return result;
 }
-const toDesignMember = member => ({ ...member, img: member.image, link: member.linkedIn, fact: member.bio || '' });
+const toDesignMember = (member, images) => ({ ...member, img: images?.[member.image]?.src || member.image, imageData: images?.[member.image], link: member.linkedIn, fact: member.bio || '' });
 
 export default class DesignSite extends React.Component {
 
-  state = { page: this.props.initialPage || 'home', theme: 'dark', counts: [], filter: 'All', teamYear: latestTeamYear, openEvent: 0, now: this.props.initialNow || 0, pastPage: 0, blogFilter: 'All', blogPage: 0, archiveOpen: false, blogQuery: '', openFaq: 0 };
+  state = { page: this.props.initialPage || 'home', theme: 'dark', counts: [], filter: 'All', teamYear: latestTeamYear, openEvent: 0, now: this.props.initialNow || 0, pastPage: 0, blogFilter: 'All', blogPage: this.props.initialBlogPage || 0, archiveOpen: false, blogQuery: '', openFaq: 0 };
 
   TEAM_YEARS = teamYears;
 
@@ -904,7 +905,7 @@ export default class DesignSite extends React.Component {
         const rest = bf === 'All' && !q ? this.POSTS.slice(1) : this.POSTS;
         let shown = bf === 'All' ? rest : rest.filter(p => [p.tag, ...(p.tags || [])].some(tag => tag.toLowerCase() === bf.toLowerCase()));
         if (q) shown = shown.filter(p => (p.title + ' ' + p.blurb + ' ' + p.tag).toLowerCase().includes(q));
-        const per = 12;
+        const per = BLOG_POSTS_PER_PAGE;
         const pages = Math.max(1, Math.ceil(shown.length / per));
         const page = Math.min(this.state.blogPage, pages - 1);
         const paged = shown.slice(page * per, page * per + per);
@@ -912,16 +913,18 @@ export default class DesignSite extends React.Component {
           blogHasPages: true,
           blogQuery: this.state.blogQuery,
           hasBlogQuery: !!q,
-          onBlogSearch: (ev) => this.setState({ blogQuery: ev.target.value, blogPage: 0 }),
-          clearBlogSearch: () => this.setState({ blogQuery: '', blogPage: 0 }),
+          onBlogSearch: (ev) => this.setState({ blogQuery: ev.target.value, blogPage: ev.target.value.trim() || bf !== 'All' ? 0 : (this.props.initialBlogPage || 0) }),
+          clearBlogSearch: () => this.setState({ blogQuery: '', blogPage: bf === 'All' ? (this.props.initialBlogPage || 0) : 0 }),
           blogPageLabel: 'Page ' + (page + 1) + ' of ' + pages,
           blogPrevColor: page > 0 ? 'var(--ink)' : 'var(--disabled)',
           blogNextColor: page < pages - 1 ? 'var(--ink)' : 'var(--disabled)',
           blogPrev: () => this.paginateBlog(-1, pages),
           blogNext: () => this.paginateBlog(1, pages),
+          blogPrevHref: bf === 'All' && !q && page > 0 ? getBlogPageUrl(page - 1) + '#blog-posts' : undefined,
+          blogNextHref: bf === 'All' && !q && page < pages - 1 ? getBlogPageUrl(page + 1) + '#blog-posts' : undefined,
           blogFilters: tags.map(t => ({
             label: t.toLowerCase(),
-            onClick: () => this.setState({ blogFilter: t, blogPage: 0 }),
+            onClick: () => this.setState({ blogFilter: t, blogPage: t === 'All' && !q ? (this.props.initialBlogPage || 0) : 0 }),
             bg: bf === t ? 'var(--ink)' : 'transparent',
             fg: bf === t ? 'var(--on-ink)' : 'var(--ink)'
           })),
@@ -938,8 +941,8 @@ export default class DesignSite extends React.Component {
       yearNextColor: this.TEAM_YEARS.indexOf(this.state.teamYear) < this.TEAM_YEARS.length - 1 ? 'var(--ink)' : 'var(--disabled)',
       teamYearNote: teamPageContent.description,
 
-      execs: (executives[String(this.state.teamYear)] || []).map(toDesignMember),
-      divisionsTeam: (divisions[String(this.state.teamYear)] || []).filter(d => d.members.length).map(d => ({ ...d, members: d.members.map(toDesignMember), empty: d.members.length === 0 })),
+      execs: (executives[String(this.state.teamYear)] || []).map(member => toDesignMember(member, this.props.teamImages)),
+      divisionsTeam: (divisions[String(this.state.teamYear)] || []).filter(d => d.members.length).map(d => ({ ...d, members: d.members.map(member => toDesignMember(member, this.props.teamImages)), empty: d.members.length === 0 })),
       sponsors: partners.filter(partner => partner.group === 'sponsor'),
       otherPartners: partners.filter(partner => partner.group === 'partner'),
       partnerLoop: [...partners, ...partners].map((p, i) => ({ ...p, key: i })),
@@ -1030,7 +1033,7 @@ export default class DesignSite extends React.Component {
   }
 
   render() {
-    const { aboutEvents, aboutStrip, aboutTalks, archiveCount, archiveOpen, archivePosts, archiveRot, blogFilters, blogHasPages, blogNext, blogNextColor, blogPageLabel, blogPosts, blogPrev, blogPrevColor, blogQuery, channelLoop, clearBlogSearch, compare, countdown, ctfCats, discordMemberCount, divisions, divisionsTeam, eventCount, eventFilters, execs, faqs, featuredPost, hasBlogQuery, homePosts, isAbout, isBlog, isCtf, isEvents, isHome, isJoin, isPartners, isPost, isTeam, liveNow, navItems, nextEvent, nextLabel, onBlogSearch, otherPartners, partnerLoop, partnerNameLoop, pastHasPages, pastNext, pastNextColor, pastPage, pastPageLabel, pastPrev, pastPrevColor, showCountdown, sponsors, stats, steps, teamYearLabel, teamYearNote, themeIcon, tickerLoop, toggleArchive, toggleTheme, values, visibleEvents, yearNext, yearNextColor, yearPrev, yearPrevColor } = this.renderVals();
+    const { aboutEvents, aboutStrip, aboutTalks, archiveCount, archiveOpen, archivePosts, archiveRot, blogFilters, blogHasPages, blogNext, blogNextHref, blogNextColor, blogPageLabel, blogPosts, blogPrev, blogPrevHref, blogPrevColor, blogQuery, channelLoop, clearBlogSearch, compare, countdown, ctfCats, discordMemberCount, divisions, divisionsTeam, eventCount, eventFilters, execs, faqs, featuredPost, hasBlogQuery, homePosts, isAbout, isBlog, isCtf, isEvents, isHome, isJoin, isPartners, isPost, isTeam, liveNow, navItems, nextEvent, nextLabel, onBlogSearch, otherPartners, partnerLoop, partnerNameLoop, pastHasPages, pastNext, pastNextColor, pastPage, pastPageLabel, pastPrev, pastPrevColor, showCountdown, sponsors, stats, steps, teamYearLabel, teamYearNote, themeIcon, tickerLoop, toggleArchive, toggleTheme, values, visibleEvents, yearNext, yearNextColor, yearPrev, yearPrevColor } = this.renderVals();
     return (
 <div style={css("background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:100vh;overflow-x:clip;position:relative")}>
 <SiteHeader items={navItems} themeIcon={themeIcon} onToggleTheme={toggleTheme} />
@@ -1141,7 +1144,7 @@ export default class DesignSite extends React.Component {
 
 <a data-blog-card="" href={post.url} style={css("display:flex;flex-direction:column;border:2px solid var(--ink);border-radius:24px;overflow:hidden")} className="design-hover-7">
 <div className="blog-card-media">
-<img src={post.image} alt="" loading="lazy" />
+<img src={post.image} srcSet={post.imageSrcSet} sizes="(min-width: 1024px) 33vw, (min-width: 680px) 50vw, calc(100vw - 48px)" width={post.imageWidth} height={post.imageHeight} alt="" loading="lazy" decoding="async" />
 </div>
 <div style={css("display:flex;flex-direction:column;gap:12px;padding:var(--home-blog-padding,26px 28px 28px)")}>
 <span style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:var(--muted)")}>{post.date}</span>
@@ -1343,9 +1346,7 @@ export default class DesignSite extends React.Component {
 </span>
 <span style={css(`font-family:'Space Mono',monospace;font-size:19px;color:var(--ink);transform:rotate(${e.iconRot});transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);display:inline-block`)}><Plus className="ui-icon" aria-hidden="true" /></span>
 </button>
-{e.open && <>
-
-<div id={`event-details-${e.slug}`} data-event-body="" style={css("padding:0 58px 28px 142px;max-width:none")}>
+<div hidden={!e.open} id={`event-details-${e.slug}`} data-event-body="" style={css("padding:0 58px 28px 142px;max-width:none")}>
 <p style={css("font-size:16.5px;line-height:1.6;color:var(--body);margin:0")}>{e.body}</p>
 {e.hasGuests && <>
 
@@ -1375,8 +1376,6 @@ export default class DesignSite extends React.Component {
 {e.registrationUrl && <a href={e.registrationUrl} target="_blank" rel="noopener noreferrer">Register <ArrowUpRight className="ui-icon" aria-hidden="true" /></a>}
 </div>}
 </div>
-
-</>}
 </div>
 
 </React.Fragment>)}
@@ -1388,7 +1387,7 @@ export default class DesignSite extends React.Component {
 <div data-anim-group={""}>
 {pastPage.map((p, index) => <React.Fragment key={index}>
 
-<div data-event-history="" style={css("display:grid;grid-template-columns:150px 1fr auto;gap:22px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--hair)")}>
+<div id={`event-${p.slug}`} data-event-history="" style={css("display:grid;grid-template-columns:150px 1fr auto;gap:22px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--hair)")}>
 <span style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:var(--muted)")}>{p.date}</span>
 <span style={css("font-family:'Archivo',sans-serif;font-weight:600;font-size:16.5px;color:var(--body)")}>{p.title}</span>
 <span style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:var(--faint)")}>{p.kind}</span>
@@ -1420,7 +1419,7 @@ export default class DesignSite extends React.Component {
 <section style={css("max-width:1340px;margin:0 auto;padding:0 24px 46px")}>
 {!this.state.blogQuery.trim() && this.state.blogFilter === "All" && <a data-featured-post="" href={featuredPost.url} data-anim={"up"} style={css("display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:0;border:2px solid var(--ink);border-radius:30px;overflow:hidden")}>
 <div style={css("position:relative;min-height:260px;background:var(--surface);border-right:2px solid var(--ink)")}>
-<img src={featuredPost.image} alt="" loading="lazy" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}} />
+<img src={featuredPost.image} srcSet={featuredPost.imageSrcSet} sizes="(min-width: 1340px) 646px, (min-width: 700px) 50vw, calc(100vw - 48px)" width={featuredPost.imageWidth} height={featuredPost.imageHeight} alt="" loading="eager" fetchPriority="high" decoding="async" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}} />
 </div>
 <div style={css("padding:clamp(28px,3.6vw,44px);display:flex;flex-direction:column;justify-content:center;gap:14px")}>
 <span style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.14em;color:var(--accent)")}>{"LATEST · "}{featuredPost.date}</span>
@@ -1447,16 +1446,16 @@ export default class DesignSite extends React.Component {
 </>}
 </div>
 </div>
-<div data-blog-grid="" data-anim-group="" className="blog-grid">
+<div id="blog-posts" data-blog-grid="" data-anim-group="" className="blog-grid">
 {blogPosts.map((post, index) => <React.Fragment key={index}>
 
 <a data-blog-card="" href={post.url} style={css("display:flex;flex-direction:column;border:2px solid var(--ink);border-radius:24px;overflow:hidden")} className="design-hover-7">
 <div className="blog-card-media">
-<img src={post.image} alt="" loading="lazy" />
+<img src={post.image} srcSet={post.imageSrcSet} sizes="(min-width: 1024px) 33vw, (min-width: 680px) 50vw, calc(100vw - 48px)" width={post.imageWidth} height={post.imageHeight} alt="" loading="lazy" decoding="async" />
 </div>
 <div style={css("display:flex;flex-direction:column;gap:11px;padding:24px 26px 26px;flex:1")}>
 <span style={css("font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;color:var(--accent)")}>{post.tag}{" · "}{post.date}</span>
-<h3 style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:21px;line-height:1.15;letter-spacing:-0.012em;margin:0")}>{post.title}</h3>
+<h2 style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:21px;line-height:1.15;letter-spacing:-0.012em;margin:0")}>{post.title}</h2>
 <p style={css("font-size:15.5px;line-height:1.55;color:var(--body-2);margin:0")}>{post.blurb}</p>
 </div>
 </a>
@@ -1466,11 +1465,15 @@ export default class DesignSite extends React.Component {
 {blogPosts.length === 0 && <p role="status" style={css("font-family:'Space Mono',monospace;font-size:14px;color:var(--muted);padding:24px 0")}>No posts found.</p>}
 {blogHasPages && <>
 
-<div style={css("display:flex;align-items:center;justify-content:center;gap:14px;margin-top:28px")}>
-<button disabled={blogPrevColor === "var(--disabled)"} onClick={blogPrev} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${blogPrevColor}`)}><ChevronLeft className="ui-icon" aria-hidden="true" />{" newer"}</button>
+<nav aria-label="Blog pagination" style={css("display:flex;align-items:center;justify-content:center;gap:14px;margin-top:28px")}>
+{blogPrevHref
+  ? <a href={blogPrevHref} rel="prev" style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;border:2px solid var(--ink);border-radius:999px;color:${blogPrevColor}`)}><ChevronLeft className="ui-icon" aria-hidden="true" />{" newer"}</a>
+  : <button disabled={blogPrevColor === "var(--disabled)"} onClick={blogPrev} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${blogPrevColor}`)}><ChevronLeft className="ui-icon" aria-hidden="true" />{" newer"}</button>}
 <span style={css("font-family:'Space Mono',monospace;font-size:12.5px;color:var(--muted)")}>{blogPageLabel}</span>
-<button disabled={blogNextColor === "var(--disabled)"} onClick={blogNext} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${blogNextColor}`)}>{"older "}<ChevronRight className="ui-icon" aria-hidden="true" /></button>
-</div>
+{blogNextHref
+  ? <a href={blogNextHref} rel="next" style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;border:2px solid var(--ink);border-radius:999px;color:${blogNextColor}`)}>{"older "}<ChevronRight className="ui-icon" aria-hidden="true" /></a>
+  : <button disabled={blogNextColor === "var(--disabled)"} onClick={blogNext} style={css(`font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;cursor:pointer;border:2px solid var(--ink);border-radius:999px;background:transparent;color:${blogNextColor}`)}>{"older "}<ChevronRight className="ui-icon" aria-hidden="true" /></button>}
+</nav>
 
 </>}
 </section>
@@ -1529,7 +1532,7 @@ export default class DesignSite extends React.Component {
 
 <a href={m.link && m.link !== "#" ? m.link : siteLinks.discord} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="team-card team-exec-card design-hover-12">
 <div className="team-card-image">
-<img src={m.img} alt={m.name} />
+<img src={m.img} srcSet={m.imageData?.srcSet} sizes={m.imageData?.sizes} width={m.imageData?.width} height={m.imageData?.height} alt={m.name} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" />
 </div>
 <div className="team-card-body">
 <div className="team-card-role">{m.role}</div>
@@ -1556,7 +1559,7 @@ export default class DesignSite extends React.Component {
 
 <a href={m.link && m.link !== "#" ? m.link : siteLinks.discord} title={m.fact || undefined} aria-label={`${m.name}, ${m.role}${m.fact ? ". " + m.fact : ""}`} target={"_blank"} rel={"noopener"} style={css("border:2px solid var(--ink);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.18s,background 0.18s")} className="team-card team-committee-card design-hover-12">
 <div className="team-card-image">
-<img src={m.img} alt={m.name} />
+<img src={m.img} srcSet={m.imageData?.srcSet} sizes="(max-width: 767px) 33vw, 220px" width={m.imageData?.width} height={m.imageData?.height} alt={m.name} loading="lazy" decoding="async" />
 </div>
 <div className="team-card-body">
 <div className="team-card-role">{m.role}</div>
@@ -1732,15 +1735,11 @@ export default class DesignSite extends React.Component {
 {faqs.map((q, index) => <React.Fragment key={index}>
 
 <div style={css("border-bottom:1px solid var(--hair)")}>
-<button aria-expanded={q.open} onClick={q.onToggle} style={css("width:100%;text-align:left;background:transparent;border:0;cursor:pointer;padding:20px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;font-family:inherit;color:inherit")}>
+<button aria-expanded={q.open} aria-controls={`join-faq-${index}`} onClick={q.onToggle} style={css("width:100%;text-align:left;background:transparent;border:0;cursor:pointer;padding:20px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;font-family:inherit;color:inherit")}>
 <span style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(17px,2vw,20px);line-height:1.3")}>{q.q}</span>
 <span style={css(`font-family:'Space Mono',monospace;font-size:18px;color:var(--accent);transform:rotate(${q.rot});transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);display:inline-block;flex:0 0 auto`)}><Plus className="ui-icon" aria-hidden="true" /></span>
 </button>
-{q.open && <>
-
-<p style={css("font-size:16.5px;line-height:1.6;color:var(--body);margin:0;padding:0 44px 24px 0;max-width:72ch")}>{q.a}</p>
-
-</>}
+<p id={`join-faq-${index}`} hidden={!q.open} style={css("font-size:16.5px;line-height:1.6;color:var(--body);margin:0;padding:0 44px 24px 0;max-width:72ch")}>{q.a}</p>
 </div>
 
 </React.Fragment>)}
@@ -1751,7 +1750,7 @@ export default class DesignSite extends React.Component {
 
 </>}
 {this.state.page === "notFound" && this.props.children}</main>
-<footer style={css("background:var(--panel);color:#9E9E94")}>
+<footer id="contact" style={css("background:var(--panel);color:#9E9E94")}>
 <div style={css("max-width:1340px;margin:0 auto;padding:68px 24px 28px;display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,80px)")}>
 <div style={css("flex:1.4 1 260px;min-width:0")}>
 <img src={siteConfig.logos.wordmark} alt={"DUCA"} style={css("height:42px;width:auto;margin-bottom:20px;display:block")} />

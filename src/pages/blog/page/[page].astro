@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import DesignSite from '../../../components/DesignSite.jsx';
+import { getEvents, toEventData } from '../../../lib/events';
+import { getBlogPosts, toBlogCard } from '../../../lib/blog';
+import { getBlogPageCount, getBlogPageUrl } from '../../../lib/blog-pagination';
+import { getDiscordMemberCount } from '../../../lib/discord-members.js';
+import { getPageMetadata } from '../../../data/metadata';
+import { siteConfig } from '../../../data/site';
+
+export async function getStaticPaths() {
+  const count = getBlogPageCount((await getBlogPosts()).length);
+  return Array.from({ length: count - 1 }, (_, index) => ({
+    params: { page: String(index + 2) },
+    props: { pageIndex: index + 1, pageCount: count },
+  }));
+}
+
+const { pageIndex, pageCount } = Astro.props;
+const pageNumber = pageIndex + 1;
+const metadata = getPageMetadata('blog');
+const posts = (await getBlogPosts()).map(toBlogCard);
+const events = (await getEvents()).map(toEventData);
+const discordMemberCount = await getDiscordMemberCount();
+---
+
+<BaseLayout
+  title={`Blog — Page ${pageNumber} — ${siteConfig.name}`}
+  description={`${metadata.description} Browse page ${pageNumber} of ${pageCount}.`}
+  previousPage={getBlogPageUrl(pageIndex - 1)}
+  nextPage={pageIndex + 1 < pageCount ? getBlogPageUrl(pageIndex + 1) : undefined}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Blog', url: '/blog/' }, { name: `Page ${pageNumber}`, url: getBlogPageUrl(pageIndex) }]}
+>
+  <DesignSite discordMemberCount={discordMemberCount} events={events} initialNow={Date.now()} initialPage="blog" initialBlogPage={pageIndex} posts={posts} client:load />
+</BaseLayout>

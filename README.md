@@ -41,6 +41,8 @@ Discord membership numbers come from the original site's public invite API. The 
 
 The five matching blog preview titles/descriptions retain the design export's editorial copy; the articles retain their original text. The export's sample article and duplicate committee placeholders are replaced with the actual imported records. Event listings use the Markdown collection, and the homepage highlights the next scheduled event.
 
+Blog covers are rendered above the article body. If the first Markdown image uses the same file as `featuredImage`, `src/lib/remark-blog-cover.mjs` omits that repeated body image during the build. Other photos, later uses of the cover, and the Markdown source remain intact.
+
 Run `npm test` for the event scheduling, filtering, and Discord count caching checks. Edit an event's Markdown file to update its title, start time, location, or registration link. End times are shown only when supplied; events with no known end time move to history at the end of their Melbourne calendar date.
 
 ## Managing content
@@ -54,6 +56,7 @@ Edit the data files below; components read them directly. Rebuild and redeploy t
 | Blog author records and byline overrides | `src/data/authors.json` |
 | Partners, sponsors, featured partner, logos and spotlight copy | `src/data/partners.ts` |
 | Website address, email, logos, Discord invite, membership and social links | `src/data/site.json` |
+| Page titles and descriptions, default author, locale and social image details | `src/data/metadata.ts` |
 | Hero heading and footer social-link labels | `src/data/site.ts` |
 | Navigation, statistics, ticker, galleries, club activities, values, CTF categories, membership benefits, join steps and FAQs | `src/data/site-content.ts` |
 | Optional blog card titles, summaries, categories and display dates | `src/data/blog-previews.ts` |
@@ -110,6 +113,22 @@ The downloaded dark-background alternatives are stored locally, unchanged from t
 Deakin Cyber and Accenture use their current published lockups for dark mode; the original light-mode files are retained.
 
 The Discord member statistic and `{memberCount}` placeholders use the count fetched once per build. The events/workshop statistics and Discord channel preview statuses are editable editorial figures in `site-content.ts`; they are not live API data. Blog card overrides are optional and keyed by post slug. Omit a field to use the Markdown metadata, including `publishDate` when no display `date` is supplied.
+
+Page metadata uses the old site's full DUCA description and `DUCA Team` author default. Each main page has its own title and description in `metadata.ts`. Blog previews use the post's real cover, author, publication date, and tags. Canonical and social URLs use the production site address without query parameters. The 404 page is marked `noindex`.
+
+`public/social-preview-image.png` now contains the DUCA logo, replacing the old Astro starter artwork while retaining the preview URL. Default social cards use the square logo; blog cards use their cover image. Update the default image dimensions and alt text in `metadata.ts` when replacing that file. Open Graph fields follow the [protocol reference](https://ogp.me/); indexing directives follow [Google's robots meta reference](https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag).
+
+## Search discovery and image performance
+
+- `/sitemap.xml` includes the main pages, all published blog posts, and canonical blog archive pages. `/robots.txt` allows crawling and advertises the sitemap. Redirect aliases and the 404 page are excluded; modification dates are omitted when no reliable source exists.
+- Blog pagination uses real links and static `/blog/page/2/` pages onward. The first page stays at `/blog/`; links return to the post list. Search and category filters keep their interactive pagination. Change the list size in `src/lib/blog-pagination.ts`.
+- Legacy event URLs redirect to the corresponding row on `/events/`; `/contact/` redirects to `/join/#contact`. Old six-post blog archive URLs redirect to the matching current archive. Individual event detail pages remain removed.
+- `src/lib/structured-data.ts` describes the club, website, pages, blog authors, publication dates, cover images, and breadcrumbs as JSON-LD. It uses existing site/content data and omits structured data on noindex pages.
+- Team portraits are generated as responsive 320px/600px WebP files by `src/lib/team-images.ts`. Original editable paths and source files remain intact; the browser receives only optimized URLs and dimensions. Below-the-fold portraits load lazily.
+- Blog cards, covers, and body photos use responsive WebP files. `src/lib/rehype-content-seo.mjs` limits body photos to 1600px, adds intrinsic dimensions and lazy loading, replaces placeholder alt text with the existing editorial context, and normalizes heading hierarchy. Existing headings retain their visual styles and fragment IDs. The article cover loads eagerly; original Markdown and images remain intact.
+- Upcoming event details and join-page answers are included in the initial HTML, with the existing controls revealing them. The Three.js hero, its content, and its animation code are unchanged.
+
+These changes follow Google's guidance on [crawlable links](https://developers.google.com/search/docs/crawling-indexing/links-crawlable), [pagination](https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading), and [images](https://developers.google.com/search/docs/appearance/google-images). Deployment continues to use the same Jenkins pipeline, Docker names, directory, and network.
 
 ## Deployment
 

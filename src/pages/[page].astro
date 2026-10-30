@@ -5,7 +5,9 @@ import { getEvents, toEventData } from '../lib/events';
 import { getBlogPosts, toBlogCard } from '../lib/blog';
 import { getDiscordMemberCount } from '../lib/discord-members.js';
 import { navigationPages } from '../data/site-content';
-import { siteConfig } from '../data/site';
+import { getPageMetadata } from '../data/metadata';
+import { getBlogPageCount, getBlogPageUrl } from '../lib/blog-pagination';
+import { getTeamImages } from '../lib/team-images';
 
 export function getStaticPaths() {
   return navigationPages.filter(page => page.id !== 'home')
@@ -13,11 +15,18 @@ export function getStaticPaths() {
 }
 
 const { page, label } = Astro.props;
+const metadata = getPageMetadata(page);
 const posts = (await getBlogPosts()).map(toBlogCard);
 const events = (await getEvents()).map(toEventData);
 const discordMemberCount = await getDiscordMemberCount();
+const teamImages = page === 'team' ? await getTeamImages() : undefined;
 ---
 
-<BaseLayout title={`${label} — ${siteConfig.name}`}>
-  <DesignSite discordMemberCount={discordMemberCount} events={events} initialNow={Date.now()} initialPage={page} posts={posts} client:load />
+<BaseLayout
+  title={metadata.title}
+  description={metadata.description}
+  nextPage={page === 'blog' && getBlogPageCount(posts.length) > 1 ? getBlogPageUrl(1) : undefined}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: label, url: `/${page}/` }]}
+>
+  <DesignSite discordMemberCount={discordMemberCount} events={events} initialNow={Date.now()} initialPage={page} posts={posts} teamImages={teamImages} client:load />
 </BaseLayout>

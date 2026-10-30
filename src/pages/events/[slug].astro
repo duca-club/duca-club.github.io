@@ -1,0 +1,14 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+
+export const getStaticPaths = (async () => {
+  const events = await getCollection('events');
+  return events.map(event => ({
+    params: { slug: event.data.slug },
+    props: { destination: `/events/#event-${event.data.slug}` },
+  }));
+}) satisfies GetStaticPaths;
+
+return Astro.redirect(Astro.props.destination, 301);
+---

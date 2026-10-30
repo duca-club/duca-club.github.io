@@ -3,19 +3,28 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import DesignSite from '../../components/DesignSite.jsx';
 import { getEvents, toEventData } from '../../lib/events';
-import { getBlogPosts, toBlogCard, toArticleData } from '../../lib/blog';
+import { getBlogPosts, getPostSocialImage, toBlogCard, toArticleData } from '../../lib/blog';
 import { getDiscordMemberCount } from '../../lib/discord-members.js';
 import { siteConfig } from '../../data/site';
+import { getLegacyBlogPages } from '../../lib/blog-pagination';
 
 export async function getStaticPaths() {
   const posts = await getBlogPosts();
-  return posts.map(post => ({
+  const articles = posts.map(post => ({
     params: { slug: post.data.slug },
-    props: { post },
+    props: { post, legacyRedirect: undefined },
   }));
+  const slugs = new Set(posts.map(post => post.data.slug));
+  const legacyPages = getLegacyBlogPages(posts.length).filter(page => !slugs.has(page.slug)).map(page => ({
+    params: { slug: page.slug },
+    props: { post: undefined, legacyRedirect: page.redirect },
+  }));
+  return [...articles, ...legacyPages];
 }
 
-const { post } = Astro.props;
+const { post, legacyRedirect } = Astro.props;
+if (legacyRedirect) return Astro.redirect(legacyRedirect, 301);
+if (!post) throw new Error('Blog article data is missing.');
 const { Content } = await render(post);
 const article = toArticleData(post);
 const posts = (await getBlogPosts()).map(toBlogCard);
@@ -26,7 +35,12 @@ const discordMemberCount = await getDiscordMemberCount();
 <BaseLayout
   title={`${article.title} — ${siteConfig.name}`}
   description={article.description}
-  image={article.image}
+  image={getPostSocialImage(post)}
+  author={article.author?.name}
+  authorUrl={article.author?.link}
+  publishedTime={article.isoDate}
+  tags={article.tags}
+  headline={article.title}
   article
 >
   <DesignSite discordMemberCount={discordMemberCount} events={events} initialNow={Date.now()} initialPage="post" posts={posts} article={article} client:load>

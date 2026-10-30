@@ -117,8 +117,10 @@
   color: var(--ink);
 }
 
-.article-body h1,
-.article-body h2 {
+.article-body h1:not([data-content-heading-level]),
+.article-body h2:not([data-content-heading-level]),
+.article-body [data-content-heading-level='1'],
+.article-body [data-content-heading-level='2'] {
   font-family: 'Archivo', sans-serif;
   font-weight: 800;
   font-size: clamp(24px, 3.2vw, 34px);
@@ -129,10 +131,14 @@
   text-transform: uppercase;
 }
 
-.article-body h3,
-.article-body h4,
-.article-body h5,
-.article-body h6 {
+.article-body h3:not([data-content-heading-level]),
+.article-body h4:not([data-content-heading-level]),
+.article-body h5:not([data-content-heading-level]),
+.article-body h6:not([data-content-heading-level]),
+.article-body [data-content-heading-level='3'],
+.article-body [data-content-heading-level='4'],
+.article-body [data-content-heading-level='5'],
+.article-body [data-content-heading-level='6'] {
   font-family: 'Archivo', sans-serif;
   font-weight: 700;
   font-size: 21px;

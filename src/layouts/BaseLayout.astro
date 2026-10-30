@@ -1,22 +1,52 @@
 ---
 import '../styles/design.css';
 import { siteConfig } from '../data/site';
+import { getPageMetadata, siteMetadata, type SocialImage } from '../data/metadata';
+import StructuredData from '../components/StructuredData.astro';
+import type { BreadcrumbItem } from '../lib/structured-data';
 
 interface Props {
   title?: string;
   description?: string;
-  image?: string;
+  image?: SocialImage;
   article?: boolean;
+  author?: string;
+  authorUrl?: string;
+  publishedTime?: string;
+  tags?: string[];
+  noIndex?: boolean;
+  headline?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  previousPage?: string;
+  nextPage?: string;
+  canonicalPath?: string;
 }
 
 const {
-  title = `${siteConfig.name} — ${siteConfig.fullName}`,
-  description = siteConfig.description,
-  image = siteConfig.logos.socialPreview,
+  title = getPageMetadata('home').title,
+  description = getPageMetadata('home').description,
+  image = siteMetadata.image,
   article = false,
+  author = siteMetadata.author,
+  authorUrl,
+  publishedTime,
+  tags = [],
+  noIndex = false,
+  headline,
+  breadcrumbs,
+  previousPage,
+  nextPage,
+  canonicalPath,
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
-const socialImage = new URL(image, Astro.site ?? Astro.url);
+const site = Astro.site ?? new URL(siteConfig.url);
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, site);
+const socialImage = new URL(image.src, site);
+const twitterCard = image.width && image.height && image.width <= image.height ? 'summary' : 'summary_large_image';
+let authorProfile: URL | undefined;
+try {
+  const profile = authorUrl ? new URL(authorUrl) : undefined;
+  if (profile?.protocol === 'https:' || profile?.protocol === 'http:') authorProfile = profile;
+} catch {}
 ---
 
 <!doctype html>
@@ -24,24 +54,42 @@ const socialImage = new URL(image, Astro.site ?? Astro.url);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="title" content={title} />
     <meta name="description" content={description} />
+    <meta name="author" content={author} />
+    <meta name="robots" content={noIndex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
     <meta name="theme-color" content="#050505" />
     <link rel="icon" type="image/png" href={siteConfig.logos.mark} />
     <link rel="canonical" href={canonical} />
+    {previousPage && <link rel="prev" href={new URL(previousPage, site)} />}
+    {nextPage && <link rel="next" href={new URL(nextPage, site)} />}
     <link rel="preload" href="/fonts/font-c6ab97fead7343.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/font-cfc8a4efd5290e.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/fonts/fonts.css" />
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:locale" content={siteMetadata.locale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
-    <meta name="twitter:card" content="summary_large_image" />
+    {socialImage.protocol === 'https:' && <meta property="og:image:secure_url" content={socialImage} />}
+    <meta property="og:image:alt" content={image.alt} />
+    {image.type && <meta property="og:image:type" content={image.type} />}
+    {image.width ? <meta property="og:image:width" content={String(image.width)} /> : null}
+    {image.height ? <meta property="og:image:height" content={String(image.height)} /> : null}
+    {article && <>
+      {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+      {authorProfile && <meta property="article:author" content={authorProfile} />}
+      {Array.from(new Set(tags)).map(tag => <meta property="article:tag" content={tag} />)}
+    </>}
+    <meta name="twitter:card" content={twitterCard} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
-    <title>{title}</title>
+    <meta name="twitter:image:alt" content={image.alt} />
+    <StructuredData canonical={canonical} title={title} description={description} image={image} article={article} headline={headline} author={author} authorUrl={authorProfile} publishedTime={publishedTime} tags={tags} breadcrumbs={breadcrumbs} noIndex={noIndex} />
   </head>
   <body data-theme="dark">
     <script is:inline>

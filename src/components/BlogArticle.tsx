@@ -10,6 +10,9 @@ export interface BlogArticleData {
   slug: string;
   tags: string[];
   image?: string;
+  imageSrcSet?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   author?: {
     name: string;
     image: string;
@@ -55,7 +58,7 @@ export default function BlogArticle({ article, children }: BlogArticleProps) {
 
       {article.image && (
         <div className="article-lead-image">
-          <img src={article.image} alt={article.title} fetchPriority="high" />
+          <img src={article.image} srcSet={article.imageSrcSet} sizes="(min-width: 820px) 772px, calc(100vw - 48px)" width={article.imageWidth} height={article.imageHeight} alt={article.title} fetchPriority="high" decoding="async" />
         </div>
       )}
 
@@ -68,7 +71,7 @@ export default function BlogArticle({ article, children }: BlogArticleProps) {
             className="article-author-row"
             {...(authorLink ? { href: authorLink, target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
-            <img className="article-author-image" src={author.image} alt="" loading="lazy" />
+            <img className="article-author-image" src={author.image} alt="" width="36" height="36" loading="lazy" decoding="async" />
             <span className="article-author-name">
               {author.name}
               {author.bio && <span className="article-author-bio"> · {author.bio}</span>}

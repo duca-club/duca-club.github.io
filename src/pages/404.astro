@@ -12,7 +12,12 @@ const events = (await getEvents()).map(toEventData);
 const discordMemberCount = await getDiscordMemberCount();
 ---
 
-<BaseLayout title={`Page not found — ${siteConfig.name}`}>
+<BaseLayout
+  title={`Page not found — ${siteConfig.name}`}
+  description="This DUCA page could not be found. Head back to the club website for events, blog posts, and ways to get involved."
+  noIndex
+  canonicalPath="/404.html"
+>
   <DesignSite discordMemberCount={discordMemberCount} events={events} initialNow={Date.now()} initialPage="notFound" posts={posts} client:load>
     <section style="max-width:1340px;margin:0 auto;padding:80px 24px 120px">
       <p style="font-family:'Space Mono',monospace;color:var(--accent)">404</p>
