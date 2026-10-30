@@ -5,8 +5,11 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { executives, divisions } from '../data/team';
 import BlogArticle from './BlogArticle';
+import '../styles/event.css';
+import { getEventSchedule } from '../lib/event-state';
 
 const styleCache = new Map();
+const numberFormatter = new Intl.NumberFormat('en-US');
 function css(declarations) {
   if (styleCache.has(declarations)) return styleCache.get(declarations);
   const result = {};
@@ -28,13 +31,6 @@ export default class DesignSite extends React.Component {
 
   TEAM_YEARS = Object.keys(executives).map(Number).sort();
 
-  PAST = [
-    { date: '09 OCT 2026', title: 'Logoff: Trimester 2 Social', kind: 'SOCIAL' },
-    { date: '25 SEP 2026', title: 'OSINT Challenge Night', kind: 'CTF' },
-    { date: '11 SEP 2026', title: 'Industry Night: Red Team', kind: 'INDUSTRY' },
-    { date: '28 AUG 2026', title: 'Cloud Security Workshop', kind: 'WORKSHOP' },
-    { date: '14 AUG 2026', title: 'O-Week Meet and Greet', kind: 'COMMUNITY' }
-  ];
 
   PAGES = [
     ['home', 'Home'], ['events', 'Events'], ['about', 'About'],
@@ -57,20 +53,12 @@ export default class DesignSite extends React.Component {
   TICKER = ['FREE TO JOIN', 'ALL SKILL LEVELS', 'WORKSHOPS', 'CTF NIGHTS', 'INDUSTRY PANELS', 'PIZZA', 'DEAKIN BURWOOD'];
 
   STATS = [
-    { target: 750, suffix: '+', label: 'Members', note: 'Discord community' },
+    { target: this.props.discordMemberCount, suffix: '+', label: 'Members', note: 'Discord community' },
     { target: 42, suffix: '', label: 'Events', note: 'Run this year' },
     { target: 18, suffix: '', label: 'Workshops', note: 'Hands-on sessions' },
     { target: 100, suffix: '%', label: 'Free', note: 'Always' }
   ];
 
-  EVENTS = [
-    { iso: '2026-11-06T17:30:00+11:00', date: '06 NOV', kind: 'WORKSHOP', title: 'Intro to Ethical Hacking', body: 'Set up your lab, scan a target, and get your first shell. Nothing assumed.', time: '5:30 pm', place: 'Burwood, LC2.108', guests: [{ name: 'Sample Guest', role: 'Penetration Tester' }] },
-    { iso: '2026-11-13T18:00:00+11:00', date: '13 NOV', kind: 'CTF', title: 'CTF Training Night', body: 'Pair up on retired challenges from the DUCA platform. Beginners get a walkthrough table.', time: '6:00 pm', place: 'Burwood, LC1.003' },
-    { iso: '2026-11-20T18:30:00+11:00', date: '20 NOV', kind: 'INDUSTRY', title: 'Industry Night: Blue Team', body: 'SOC analysts from partner organisations on what the job is actually like, plus resume reviews.', time: '6:30 pm', place: 'Burwood, Theatre 3', guests: [{ name: 'Sample Guest', role: 'SOC Analyst, CommBank' }, { name: 'Sample Guest', role: 'Threat Intel Lead, Accenture' }] },
-    { iso: '2026-11-27T17:30:00+11:00', date: '27 NOV', kind: 'WORKSHOP', title: 'Digital Forensics Lab', body: 'Pull artefacts off a disk image and reconstruct a timeline. Bring a laptop.', time: '5:30 pm', place: 'Burwood, LC2.108' },
-    { iso: '2026-12-04T18:00:00+11:00', date: '04 DEC', kind: 'SOCIAL', title: 'Logoff', body: "DUCA's end-of-trimester social. Pizza, a quiz, and no laptops required.", time: '6:00 pm', place: 'Burwood, LC1.003' },
-    { iso: '2027-03-05T17:00:00+11:00', date: '05 MAR', kind: 'CTF', title: 'DownUnderCTF Watch Party', body: 'We field DUCA teams and solve together on the night. Snacks provided.', time: '5:00 pm', place: 'Burwood, LC1.003' }
-  ];
 
   POSTS = [
     { date: '18 JUL 2026', tag: 'EVENTS', title: 'Speedrunning Cyber: The Strategic Route to a Security Role', blurb: 'Navigating a cybersecurity degree does not require 100% completion. Two senior students shared what to study, what to skip, and how to land a job before graduating.', url: 'https://duca.au/blog/2026-07-18-speedrunning-cyber/' },
@@ -361,7 +349,7 @@ export default class DesignSite extends React.Component {
       window.THREE = three;
       this.initThree();
     });
-    if (this.state.page === 'events') this.clockTick = setInterval(() => this.setState({ now: Date.now() }), 1000);
+    if (['events', 'home'].includes(this.state.page)) this.clockTick = setInterval(() => this.setState({ now: Date.now() }), 1000);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -817,15 +805,29 @@ export default class DesignSite extends React.Component {
     };
   }
 
+  paginateBlog(direction, pages) {
+    this.setState(state => ({
+      blogPage: Math.max(0, Math.min(pages - 1, state.blogPage + direction)),
+    }), () => {
+      const list = document.querySelector('[data-blog-grid]');
+      if (!list) return;
+      const header = document.querySelector('header')?.getBoundingClientRect();
+      const headerOffset = Math.max(0, header?.bottom ?? 0);
+      const top = list.getBoundingClientRect().top + window.scrollY - headerOffset - 16;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion ? 'auto' : 'smooth' });
+    });
+  }
+
   renderVals() {
     const { page, filter } = this.state;
-    const kinds = ['All', 'Workshop', 'CTF', 'Industry', 'Social'];
-    const visibleEvents = filter === 'All' ? this.EVENTS : this.EVENTS.filter(e => e.kind.toLowerCase().includes(filter.toLowerCase()));
-    const LIVE_MS = 2 * 60 * 60 * 1000;
-    const next = this.EVENTS.find(e => new Date(e.iso).getTime() + LIVE_MS > this.state.now);
-    const liveNow = !!next && new Date(next.iso).getTime() <= this.state.now;
+    const discordMemberCount = numberFormatter.format(this.props.discordMemberCount);
+    const schedule = getEventSchedule(this.props.events || [], this.state.now, filter);
+    const { visibleEvents, next, liveNow } = schedule;
+    const kinds = schedule.filters;
 
     return {
+      discordMemberCount,
       isHome: page === 'home', isAbout: page === 'about', isEvents: page === 'events',
       isBlog: page === 'blog', isTeam: page === 'team', isPartners: page === 'partners',
       isCtf: page === 'ctf', isJoin: page === 'join', isPost: page === 'post',
@@ -867,7 +869,7 @@ export default class DesignSite extends React.Component {
 
       stats: this.STATS.map((s, i) => ({
         ...s,
-        shown: this.state.counts[i] + s.suffix,
+        shown: numberFormatter.format(this.state.counts[i]) + s.suffix,
         edge: i === 0 ? 'none' : '1px solid var(--hair)',
         pad: i === 0 ? '0' : '18px'
       })),
@@ -881,7 +883,7 @@ export default class DesignSite extends React.Component {
         { num: '01', title: 'Every workshop, free', meta: 'no cost' },
         { num: '02', title: 'CTF platform access', meta: 'year-round' },
         { num: '03', title: 'Industry nights', meta: 'resume reviews' },
-        { num: '04', title: 'The Discord', meta: '750+ members' }
+        { num: '04', title: 'The Discord', meta: `${discordMemberCount}+ members` }
       ],
 
       homePosts: this.POSTS.slice(0, 3).map((p, i) => ({
@@ -915,8 +917,8 @@ export default class DesignSite extends React.Component {
           blogPageLabel: 'Page ' + (page + 1) + ' of ' + pages,
           blogPrevColor: page > 0 ? 'var(--ink)' : 'var(--disabled)',
           blogNextColor: page < pages - 1 ? 'var(--ink)' : 'var(--disabled)',
-          blogPrev: () => this.setState(st => ({ blogPage: Math.max(0, st.blogPage - 1) })),
-          blogNext: () => this.setState(st => ({ blogPage: Math.min(pages - 1, st.blogPage + 1) })),
+          blogPrev: () => this.paginateBlog(-1, pages),
+          blogNext: () => this.paginateBlog(1, pages),
           blogFilters: tags.map(t => ({
             label: t.toLowerCase(),
             onClick: () => this.setState({ blogFilter: t, blogPage: 0 }),
@@ -1011,11 +1013,11 @@ export default class DesignSite extends React.Component {
 
       eventFilters: kinds.map(k => ({
         label: k.toLowerCase(),
-        onClick: () => this.setState({ filter: k, openEvent: 0 }),
+        onClick: () => this.setState({ filter: k, openEvent: 0, pastPage: 0 }),
         bg: filter === k ? 'var(--ink)' : 'transparent',
         fg: filter === k ? 'var(--on-ink)' : 'var(--ink)'
       })),
-      eventCount: visibleEvents.length + ' of ' + this.EVENTS.length + ' shown',
+      eventCount: visibleEvents.length + ' upcoming · ' + schedule.visiblePast.length + ' past',
       visibleEvents: visibleEvents.map((e, i) => ({
         ...e,
         open: this.state.openEvent === i,
@@ -1031,15 +1033,16 @@ export default class DesignSite extends React.Component {
         metaMargin: e.guests && e.guests.length ? '22px' : '12px'
       })),
       nextEvent: next
-        ? { title: next.title, when: next.date + ' · ' + next.time, place: next.place }
-        : { title: 'Nothing scheduled', when: 'Check the Discord', place: 'duca.au' },
+        ? { ...next, when: next.fullDate + ' · ' + next.time }
+        : { title: 'Nothing scheduled', when: 'Check the Discord', place: '', homeDate: '', kind: '', tags: [], url: '/events/', body: 'Check the Discord for upcoming events.', time: '' },
       ...(() => {
         const per = 25;
-        const all = this.PAST;
+        const all = schedule.visiblePast;
         const pages = Math.max(1, Math.ceil(all.length / per));
         const page = Math.min(this.state.pastPage, pages - 1);
         return {
-          pastPage: all.slice(page * per, page * per + per),
+          pastPage: all.slice(page * per, page * per + per).map(event => ({ ...event, date: event.fullDate })),
+          pastCount: all.length,
           pastHasPages: true,
           pastPageLabel: 'Page ' + (page + 1) + ' of ' + pages,
           pastPrevColor: page > 0 ? 'var(--ink)' : 'var(--disabled)',
@@ -1049,17 +1052,9 @@ export default class DesignSite extends React.Component {
         };
       })(),
 
-      unusedPastEvents: [
-        { date: '09 OCT 2026', title: 'Logoff: Trimester 2 Social', kind: 'SOCIAL' },
-        { date: '25 SEP 2026', title: 'OSINT Challenge Night', kind: 'CTF' },
-        { date: '11 SEP 2026', title: 'Industry Night: Red Team', kind: 'INDUSTRY' },
-        { date: '28 AUG 2026', title: 'Cloud Security Workshop', kind: 'WORKSHOP' },
-        { date: '14 AUG 2026', title: 'O-Week Meet and Greet', kind: 'COMMUNITY' }
-      ],
-
       liveNow,
-      showCountdown: !!next && !liveNow,
-      nextLabel: liveNow ? 'HAPPENING NOW' : 'NEXT UP',
+      showCountdown: !!next && !next.dateOnly && !schedule.started,
+      nextLabel: liveNow ? 'HAPPENING NOW' : schedule.started ? 'TODAY' : 'NEXT UP',
       countdown: (() => {
         const ms = next ? new Date(next.iso).getTime() - this.state.now : 0;
         const t = Math.max(0, ms);
@@ -1146,7 +1141,7 @@ export default class DesignSite extends React.Component {
   }
 
   render() {
-    const { aboutEvents, aboutStrip, aboutTalks, archiveCount, archiveOpen, archivePosts, archiveRot, blogFilters, blogHasPages, blogNext, blogNextColor, blogPageLabel, blogPosts, blogPrev, blogPrevColor, blogQuery, channelLoop, clearBlogSearch, compare, countdown, ctfCats, divisions, divisionsTeam, eventCount, eventFilters, execs, faqs, featuredPost, hasBlogQuery, homePosts, isAbout, isBlog, isCtf, isEvents, isHome, isJoin, isPartners, isPost, isTeam, liveNow, navItems, nextEvent, nextLabel, onBlogSearch, otherPartners, partnerLoop, partnerNameLoop, pastHasPages, pastNext, pastNextColor, pastPage, pastPageLabel, pastPrev, pastPrevColor, showCountdown, sponsors, stats, steps, teamYearLabel, teamYearNote, themeIcon, tickerLoop, toggleArchive, toggleTheme, values, visibleEvents, yearNext, yearNextColor, yearPrev, yearPrevColor } = this.renderVals();
+    const { aboutEvents, aboutStrip, aboutTalks, archiveCount, archiveOpen, archivePosts, archiveRot, blogFilters, blogHasPages, blogNext, blogNextColor, blogPageLabel, blogPosts, blogPrev, blogPrevColor, blogQuery, channelLoop, clearBlogSearch, compare, countdown, ctfCats, discordMemberCount, divisions, divisionsTeam, eventCount, eventFilters, execs, faqs, featuredPost, hasBlogQuery, homePosts, isAbout, isBlog, isCtf, isEvents, isHome, isJoin, isPartners, isPost, isTeam, liveNow, navItems, nextEvent, nextLabel, onBlogSearch, otherPartners, partnerLoop, partnerNameLoop, pastHasPages, pastNext, pastNextColor, pastPage, pastPageLabel, pastPrev, pastPrevColor, showCountdown, sponsors, stats, steps, teamYearLabel, teamYearNote, themeIcon, tickerLoop, toggleArchive, toggleTheme, values, visibleEvents, yearNext, yearNextColor, yearPrev, yearPrevColor } = this.renderVals();
     return (
 <div style={css("background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:100vh;overflow-x:hidden;position:relative")}>
 <header style={css("position:sticky;top:0;z-index:60;background:var(--bg-t);backdrop-filter:blur(12px)")}>
@@ -1255,17 +1250,17 @@ export default class DesignSite extends React.Component {
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,4.4vw,56px);letter-spacing:-0.018em;margin:0;text-transform:uppercase;line-height:0.95")}>{"Next up"}</h2>
 <a href="/events/" style={css("font-family:'Space Mono',monospace;font-size:13px;border:2px solid var(--ink);border-radius:999px;padding:8px 16px")} className="design-hover-5">{"all events →"}</a>
 </div>
-<a href="/events/" data-anim={"up"} style={css("display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));border-radius:26px;overflow:hidden;background:var(--panel);color:var(--on-panel);transition:transform 0.2s")} className="design-hover-6">
+<a href={nextEvent.url} data-anim={"up"} style={css("display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));border-radius:26px;overflow:hidden;background:var(--panel);color:var(--on-panel);transition:transform 0.2s")} className="design-hover-6">
 <div style={css("padding:42px 34px;display:flex;flex-direction:column;justify-content:space-between;gap:30px")}>
-<span style={css("font-family:'Silkscreen',monospace;font-size:13px;color:oklch(0.87 0.2 124)")}>{"FRI 11 SEPT"}</span>
+<span style={css("font-family:'Silkscreen',monospace;font-size:13px;color:oklch(0.87 0.2 124)")}>{nextEvent.homeDate}</span>
 <div>
-<div style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(34px,4.4vw,52px);letter-spacing:-0.018em;line-height:0.95;text-transform:uppercase")}>{"Logoff"}</div>
-<div style={css("font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.12em;color:#8E8E84;margin-top:10px")}>{"SOCIAL / COMMUNITY"}</div>
+<div style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(34px,4.4vw,52px);letter-spacing:-0.018em;line-height:0.95;text-transform:uppercase")}>{nextEvent.title}</div>
+<div style={css("font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.12em;color:#8E8E84;margin-top:10px")}>{nextEvent.tags.join(" / ").toUpperCase()}</div>
 </div>
 </div>
 <div style={css("padding:42px 34px;display:flex;flex-direction:column;justify-content:space-between;gap:22px;background:var(--accent-deep);color:#FFFFFF")}>
-<p style={css("font-size:18px;line-height:1.5;margin:0")}>{"DUCA's end-of-trimester social. Pizza, a quiz, and no laptops required."}</p>
-<div style={css("font-family:'Space Mono',monospace;font-size:13px;line-height:1.9")}>{"6:00 pm"}<br />{"Deakin Burwood, Room LC1.003"}</div>
+<p style={css("font-size:18px;line-height:1.5;margin:0")}>{nextEvent.body}</p>
+<div style={css("font-family:'Space Mono',monospace;font-size:13px;line-height:1.9")}>{nextEvent.time}<br />{nextEvent.place}</div>
 </div>
 </a>
 </section>
@@ -1291,12 +1286,12 @@ export default class DesignSite extends React.Component {
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,4.4vw,56px);letter-spacing:-0.018em;margin:0;text-transform:uppercase;line-height:0.95")}>{"From the blog"}</h2>
 <a href="/blog/" style={css("font-family:'Space Mono',monospace;font-size:13px;border:2px solid var(--ink);border-radius:999px;padding:8px 16px")} className="design-hover-5">{"all posts →"}</a>
 </div>
-<div data-anim-group={""} style={css("display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:16px")}>
+<div data-anim-group={""} className="blog-grid" style={css("grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:16px")}>
 {homePosts.map((post, index) => <React.Fragment key={index}>
 
 <a data-blog-card="" href={post.url} style={css("display:flex;flex-direction:column;border:2px solid var(--ink);border-radius:24px;overflow:hidden")} className="design-hover-7">
-<div style={css("position:relative;width:100%;aspect-ratio:16/10;border-bottom:2px solid var(--ink);background:var(--surface)")}>
-<img src={post.image} alt="" loading="lazy" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}} />
+<div className="blog-card-media">
+<img src={post.image} alt="" loading="lazy" />
 </div>
 <div style={css("display:flex;flex-direction:column;gap:12px;padding:26px 28px 28px")}>
 <span style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:var(--muted)")}>{post.date}</span>
@@ -1312,7 +1307,7 @@ export default class DesignSite extends React.Component {
 <div style={css("background:var(--panel);border-radius:30px;padding:clamp(34px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:44px;align-items:center")}>
 <div>
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,4.4vw,54px);letter-spacing:-0.018em;line-height:0.95;color:var(--on-panel);margin:0 0 18px;text-transform:uppercase")}>{"The Discord"}<br />{"never sleeps"}</h2>
-<p style={css("font-size:18px;line-height:1.6;color:#9E9E94;margin:0 0 28px;max-width:46ch")}>{"750+ students and industry folks. Event pings, assignment panic, CTF writeups, and a steady stream of cat photos."}</p>
+<p style={css("font-size:18px;line-height:1.6;color:#9E9E94;margin:0 0 28px;max-width:46ch")}>{`${discordMemberCount}+ students and industry folks. Event pings, assignment panic, CTF writeups, and a steady stream of cat photos.`}</p>
 <a href={"https://discord.com/invite/duca"} target={"_blank"} rel={"noopener"} style={css("display:inline-block;font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;background:oklch(0.87 0.2 124);color:#0E0E0C;transition:transform 0.15s")} className="design-hover-3">{"Open the invite ↗"}</a>
 </div>
 <div style={css("position:relative;height:240px;overflow:hidden;transform:rotate(-6deg) scale(1.04);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 84%,transparent 100%)")}>
@@ -1439,7 +1434,7 @@ export default class DesignSite extends React.Component {
 <div style={css("position:relative;z-index:1;flex:3 1 300px;min-width:0")}>
 <span style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.16em;color:oklch(0.87 0.2 124);display:block;margin-bottom:16px")}>{nextLabel}</span>
 <h2 style={css("font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,4vw,50px);letter-spacing:-0.018em;line-height:0.95;margin:0 0 12px;text-transform:uppercase")}>{nextEvent.title}</h2>
-<p style={css("font-family:'Space Mono',monospace;font-size:13px;color:#B4B4AA;margin:0")}>{nextEvent.when}{" · "}{nextEvent.place}</p>
+<p style={css("font-family:'Space Mono',monospace;font-size:13px;color:#B4B4AA;margin:0")}>{nextEvent.when}{nextEvent.place && <>{" · "}{nextEvent.place}</>}</p>
 </div>
 <div style={css("position:relative;z-index:1;flex:2 1 300px;display:flex;justify-content:flex-end")}>
 {liveNow && <>
@@ -1477,10 +1472,11 @@ export default class DesignSite extends React.Component {
 <span style={css("font-family:'Space Mono',monospace;font-size:12.5px;color:var(--muted);margin-left:auto")}>{eventCount}</span>
 </div>
 <div data-anim-group={""} style={css("border-top:2px solid var(--ink)")}>
+{visibleEvents.length === 0 && <p role="status" className="event-empty">No upcoming events.</p>}
 {visibleEvents.map((e, index) => <React.Fragment key={index}>
 
-<div style={css(`border-bottom:1px solid var(--hair);background:${e.rowBg};transition:background 0.18s`)}>
-<button aria-expanded={e.open} onClick={e.onToggle} style={css("width:100%;text-align:left;background:transparent;border:0;cursor:pointer;padding:22px 16px 22px 0;display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;font-family:inherit;color:inherit;transition:background 0.18s")}>
+<div id={`event-${e.slug}`} style={css(`border-bottom:1px solid var(--hair);background:${e.rowBg};transition:background 0.18s`)}>
+<button data-event-row="" aria-controls={`event-details-${e.slug}`} aria-expanded={e.open} onClick={e.onToggle} style={css("width:100%;text-align:left;background:transparent;border:0;cursor:pointer;padding:22px 16px 22px 0;display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;font-family:inherit;color:inherit;transition:background 0.18s")}>
 <span style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;letter-spacing:0.01em;color:var(--accent);min-width:104px;padding-left:16px")}>{e.date}</span>
 <span style={css("display:flex;flex-direction:column;gap:5px")}>
 <span style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,27px);letter-spacing:-0.015em;line-height:1.1")}>{e.title}</span>
@@ -1497,7 +1493,7 @@ export default class DesignSite extends React.Component {
 </button>
 {e.open && <>
 
-<div style={css("padding:0 58px 28px 142px;max-width:none")}>
+<div id={`event-details-${e.slug}`} data-event-body="" style={css("padding:0 58px 28px 142px;max-width:none")}>
 <p style={css("font-size:16.5px;line-height:1.6;color:var(--body);margin:0")}>{e.body}</p>
 {e.hasGuests && <>
 
@@ -1520,6 +1516,12 @@ export default class DesignSite extends React.Component {
 
 </>}
 <p style={css(`font-family:'Space Mono',monospace;font-size:12.5px;color:var(--muted);margin:${e.metaMargin} 0 0`)}>{e.time}{" · "}{e.place}</p>
+{e.image && <img className="event-expanded-image" src={e.image} alt={e.title} loading="lazy" />}
+{e.html && <div className="article-body event-rich-content" dangerouslySetInnerHTML={{ __html: e.html }} />}
+{(e.locationUrl || e.registrationUrl) && <div className="event-meta-links">
+{e.locationUrl && <a href={e.locationUrl} target="_blank" rel="noopener noreferrer">View location ↗</a>}
+{e.registrationUrl && <a href={e.registrationUrl} target="_blank" rel="noopener noreferrer">Register ↗</a>}
+</div>}
 </div>
 
 </>}
@@ -1534,7 +1536,7 @@ export default class DesignSite extends React.Component {
 <div data-anim-group={""}>
 {pastPage.map((p, index) => <React.Fragment key={index}>
 
-<div style={css("display:grid;grid-template-columns:150px 1fr auto;gap:22px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--hair)")}>
+<div data-event-history="" style={css("display:grid;grid-template-columns:150px 1fr auto;gap:22px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--hair)")}>
 <span style={css("font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:var(--muted)")}>{p.date}</span>
 <span style={css("font-family:'Archivo',sans-serif;font-weight:600;font-size:16.5px;color:var(--body)")}>{p.title}</span>
 <span style={css("font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:var(--faint)")}>{p.kind}</span>
@@ -1593,12 +1595,12 @@ export default class DesignSite extends React.Component {
 </>}
 </div>
 </div>
-<div data-anim-group={""} style={css("display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;align-items:stretch")}>
+<div data-blog-grid="" data-anim-group="" className="blog-grid">
 {blogPosts.map((post, index) => <React.Fragment key={index}>
 
 <a data-blog-card="" href={post.url} style={css("display:flex;flex-direction:column;border:2px solid var(--ink);border-radius:24px;overflow:hidden")} className="design-hover-7">
-<div style={css("position:relative;width:100%;aspect-ratio:16/10;border-bottom:2px solid var(--ink);background:var(--surface)")}>
-<img src={post.image} alt="" loading="lazy" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}} />
+<div className="blog-card-media">
+<img src={post.image} alt="" loading="lazy" />
 </div>
 <div style={css("display:flex;flex-direction:column;gap:11px;padding:24px 26px 26px;flex:1")}>
 <span style={css("font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;color:var(--accent)")}>{post.tag}{" · "}{post.date}</span>

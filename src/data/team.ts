@@ -233,12 +233,12 @@ export const divisions: Record<string, TeamDivision[]> = {
         "We're the team that makes everything look fun and exciting! We spread the word about our events, projects, and wins so everyone feels welcome and included.",
       members: [
         { name: "Anika G.", role: "Team Member", image: "/team/anika-g.png", linkedIn: "https://www.linkedin.com/in/anastasiyaagguenov/" },
-        { name: "Casey Wilfling", role: "Treasurer", image: "/team/casey-wilfing.png", linkedIn: "https://www.linkedin.com/in/casey-wilfling-86b62921a/",},
+        { name: "Casey Wilfling", role: "Team Member", image: "/team/casey-wilfing.png", linkedIn: "https://www.linkedin.com/in/casey-wilfling-86b62921a/",},
         { name: "Alex Wu", role: "Team Member", image: "/team/alex-wu.png", linkedIn: "https://www.linkedin.com/in/alex-wu-21b06a20a/" },
         {
-          name: "Alfie Gray", role: "Vice President", image: "/team/alfie-gray.png", linkedIn: "https://www.linkedin.com/in/alfie-gray/" },
+          name: "Alfie Gray", role: "Team Member", image: "/team/alfie-gray.png", linkedIn: "https://www.linkedin.com/in/alfie-gray/" },
         { name: "Mauro Sunda", role: "Team Member", image: "/team/mauro-sunda.png", linkedIn: "https://www.linkedin.com/in/mauro-sunda-29aa02263/" },
-        { name: "Pasindu Peramuna", role: "Team Lead", image: "/team/pasindu-peramuna.png", linkedIn: "https://www.linkedin.com/in/pasinduperamuna/" },
+        { name: "Pasindu Peramuna", role: "Team Member", image: "/team/pasindu-peramuna.png", linkedIn: "https://www.linkedin.com/in/pasinduperamuna/" },
         { name: "Raaid Rushdy", role: "Team Member", image: "/team/raaid-rushdy.png", linkedIn: "https://www.linkedin.com/in/raaidrushdy/" },
         { name: "Shounak Bhalerao", role: "Team Member", image: "/team/shounak-bhalerao.png", linkedIn: "https://www.linkedin.com/in/shounak-bhalerao/" },
         { name: "Azelma Aghakishiyeva", role: "Team Member", image: "/team/azelma-aghakishiyeva.png", linkedIn: "https://www.linkedin.com/in/azelma-aghakishiyeva-081053278/" },

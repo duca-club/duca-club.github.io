@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DesignSite from '../components/DesignSite.jsx';
+import { getEvents, toEventData } from '../lib/events';
 import { getBlogPosts, toBlogCard } from '../lib/blog';
+import { getDiscordMemberCount } from '../lib/discord-members.js';
 
 export function getStaticPaths() {
   return [
@@ -17,8 +19,10 @@ export function getStaticPaths() {
 
 const { page, label } = Astro.props;
 const posts = (await getBlogPosts()).map(toBlogCard);
+const events = (await getEvents()).map(toEventData);
+const discordMemberCount = await getDiscordMemberCount();
 ---
 
 <BaseLayout title={`${label} — DUCA`}>
-  <DesignSite initialNow={Date.now()} initialPage={page} posts={posts} client:load />
+  <DesignSite discordMemberCount={discordMemberCount} events={events} initialNow={Date.now()} initialPage={page} posts={posts} client:load />
 </BaseLayout>

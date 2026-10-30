@@ -2,7 +2,9 @@
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import DesignSite from '../../components/DesignSite.jsx';
+import { getEvents, toEventData } from '../../lib/events';
 import { getBlogPosts, toBlogCard, toArticleData } from '../../lib/blog';
+import { getDiscordMemberCount } from '../../lib/discord-members.js';
 
 export async function getStaticPaths() {
   const posts = await getBlogPosts();
@@ -16,6 +18,8 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const article = toArticleData(post);
 const posts = (await getBlogPosts()).map(toBlogCard);
+const events = (await getEvents()).map(toEventData);
+const discordMemberCount = await getDiscordMemberCount();
 ---
 
 <BaseLayout
@@ -24,7 +28,7 @@ const posts = (await getBlogPosts()).map(toBlogCard);
   image={article.image}
   article
 >
-  <DesignSite initialNow={Date.now()} initialPage="post" posts={posts} article={article} client:load>
+  <DesignSite discordMemberCount={discordMemberCount} events={events} initialNow={Date.now()} initialPage="post" posts={posts} article={article} client:load>
     <Content />
   </DesignSite>
 </BaseLayout>
