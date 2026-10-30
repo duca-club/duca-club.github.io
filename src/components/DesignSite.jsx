@@ -173,7 +173,7 @@ export default class DesignSite extends React.Component {
           uTex: { value: texture },
           uTime: { value: 0 },
           uOrb: { value: new T.Vector2(1.4, 0.5) },
-          uEnter: { value: 0 },
+          uEnter: { value: -0.3 },
           uAspect: { value: 1 }
         },
         vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
@@ -245,6 +245,8 @@ export default class DesignSite extends React.Component {
     window.addEventListener('resize', resize);
 
     const IDX = [0,1,2,3,4,5,6];
+    const labelLayer = document.querySelector('[data-hero-labels]');
+    if (labelLayer) labelLayer.removeAttribute('data-positioned');
     const labelNodes = IDX.map(i => document.querySelector('[data-label-node="' + i + '"]'));
     const labelDots = IDX.map(i => document.querySelector('[data-label-dot="' + i + '"]'));
     const labelLines = IDX.map(i => document.querySelector('[data-label-line="' + i + '"]'));
@@ -309,11 +311,12 @@ export default class DesignSite extends React.Component {
         });
       }
       renderer.render(scene, camera);
+      if (labelLayer && !labelLayer.hasAttribute('data-positioned')) {
+        labelLayer.setAttribute('data-positioned', '');
+      }
     };
     g.ticker.add(tick);
 
-    g.fromTo(plane.material.uniforms.uEnter, { value: 1.1 }, { value: -0.3, duration: 1.4, ease: 'expo.out', delay: 0.1 });
-    g.from(group.scale, { x: 0.2, y: 0.2, z: 0.2, duration: 1.6, ease: 'expo.out', delay: 0.2 });
     if (window.ScrollTrigger) {
       g.to(group.rotation, {
         z: Math.PI * 0.8, ease: 'none',
@@ -350,11 +353,10 @@ export default class DesignSite extends React.Component {
     const theme = saved === 'light' ? 'light' : 'dark';
     document.body.setAttribute('data-theme', theme);
     if (theme !== this.state.theme) this.setState({ theme });
-    document.fonts.ready.then(() => { if (this.redrawHero) this.redrawHero(); });
     this._lastPage = this.state.page;
     this._lastFilter = this.state.filter;
     this.setupAnim();
-    if (this.state.page === 'home') import('three').then(three => {
+    if (this.state.page === 'home') Promise.all([import('three'), document.fonts.ready]).then(([three]) => {
       if (this.unmounted) return;
       window.THREE = three;
       this.initThree();
@@ -391,7 +393,6 @@ export default class DesignSite extends React.Component {
     if (this.valuesFit) window.removeEventListener('resize', this.valuesFit);
     if (this.joinRainTick && window.gsap) window.gsap.ticker.remove(this.joinRainTick);
     if (this.joinRainFit) window.removeEventListener('resize', this.joinRainFit);
-    if (this.countTween) this.countTween.kill();
     if (this.ctx) this.ctx.revert();
   }
 
@@ -412,21 +413,11 @@ export default class DesignSite extends React.Component {
     if (this.joinRainFit) { window.removeEventListener('resize', this.joinRainFit); this.joinRainFit = null; }
     if (this.ctx) this.ctx.revert();
     this.ctx = g.context(() => {
-      g.utils.toArray('[data-anim="line"]').forEach((el, i) => {
-        g.from(el.children, { yPercent: 108, duration: 0.95, ease: 'expo.out', delay: 0.05 + i * 0.09 });
-      });
-      g.utils.toArray('[data-anim="hero"]').forEach(el => {
-        g.from(el.children, { y: 26, opacity: 0, duration: 0.8, stagger: 0.08, ease: 'power3.out', clearProps: 'transform,opacity' });
-      });
-      g.utils.toArray('[data-anim="up"]').forEach(el => {
-        g.from(el, { y: 28, opacity: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' } });
-      });
-      g.utils.toArray('[data-anim-group]').forEach(grp => {
-        g.from(grp.children, { y: 32, opacity: 0, duration: 0.65, stagger: 0.07, ease: 'power3.out', scrollTrigger: { trigger: grp, start: 'top 88%' } });
-      });
+      // Astro already renders the page at its final position. Replaying entrance
+      // tweens here hides painted content and produces a flash during hydration.
+      // Animate decorative elements only; text and cards stay visible throughout.
       const mark = document.querySelector('[data-anim="mark"]');
       if (mark) {
-        g.from(mark, { scale: 0.8, rotation: -14, opacity: 0, duration: 1, ease: 'back.out(1.5)', delay: 0.25 });
         g.to(mark, { y: -16, rotation: 4, duration: 3.6, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 1.2 });
       }
       this.setupJoin();
@@ -443,7 +434,6 @@ export default class DesignSite extends React.Component {
       if (mq) g.to(mq, { xPercent: -50, duration: 46, repeat: -1, ease: 'none' });
       const mq2 = document.querySelector('[data-anim="marquee2"]');
       if (mq2) g.fromTo(mq2, { xPercent: -50 }, { xPercent: 0, duration: 54, repeat: -1, ease: 'none' });
-      if (this.state.page === 'home') this.startCounts();
       window.ScrollTrigger.refresh();
     });
   }
@@ -692,22 +682,11 @@ export default class DesignSite extends React.Component {
     const panel = document.querySelector('[data-join]');
     if (!panel) return;
     const canvas = panel.querySelector('[data-join-grid]');
-    const line = panel.querySelector('[data-join-line]');
     const logo = panel.querySelector('[data-join-logo]');
     const rain = panel.querySelector('[data-join-rain]');
     const markBox = panel.querySelector('[data-join-mark]');
 
-    if (line) {
-      g.from(line.children, {
-        yPercent: 110, duration: 1, ease: 'expo.out',
-        scrollTrigger: { trigger: panel, start: 'top 78%' }
-      });
-    }
     if (logo) {
-      g.from(logo, {
-        scale: 0.76, opacity: 0, duration: 1.1, ease: 'back.out(1.5)',
-        scrollTrigger: { trigger: panel, start: 'top 78%' }
-      });
       g.to(logo, { y: -10, duration: 3.4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
       const glitch = () => {
         const tl = g.timeline({ onComplete: () => g.delayedCall(1.4 + Math.random() * 3.4, glitch) });
@@ -828,16 +807,6 @@ export default class DesignSite extends React.Component {
       g.ticker.add(this.joinTick);
       window.addEventListener('resize', fit);
     }
-  }
-
-  startCounts() {
-    const g = window.gsap;
-    const proxy = { a: 0, b: 0, c: 0, d: 0 };
-    const keys = ['a', 'b', 'c', 'd'];
-    const to = { duration: 1.6, ease: 'power2.out', onUpdate: () => this.setState({ counts: keys.map(k => Math.round(proxy[k])) }) };
-    keys.forEach((k, i) => { to[k] = this.STATS[i].target; });
-    if (this.countTween) this.countTween.kill();
-    this.countTween = g.to(proxy, to);
   }
 
   go(page) {
@@ -1167,6 +1136,7 @@ export default class DesignSite extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state.counts = this.STATS.map(stat => stat.target);
     const exportedPosts = this.POSTS;
     this.POSTS = (props.posts || []).map(post => {
       const design = exportedPosts.find(sample => sample.url.endsWith('/' + post.slug + '/'));

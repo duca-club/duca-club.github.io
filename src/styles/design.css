@@ -41,6 +41,8 @@
 
 /* Standard keyboard interaction without changing the exported layout. */
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+[data-hero-labels] { visibility: hidden; }
+[data-hero-labels][data-positioned] { visibility: visible; }
 html { color-scheme: dark; }
 button, input { font: inherit; }
 @media (prefers-reduced-motion: reduce) {
