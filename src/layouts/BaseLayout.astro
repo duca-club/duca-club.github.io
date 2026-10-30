@@ -1,0 +1,56 @@
+---
+import '../styles/design.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+}
+
+const {
+  title = 'DUCA — Deakin University Cybersecurity Association',
+  description = 'DUCA — Deakin University Cybersecurity Association',
+  image = '/social-preview-image.png',
+  article = false,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+const socialImage = new URL(image, Astro.site ?? Astro.url);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#050505" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:site_name" content="DUCA" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <title>{title}</title>
+  </head>
+  <body data-theme="dark">
+    <script is:inline>
+      try {
+        const saved = localStorage.getItem('duca-theme');
+        const theme = saved === 'light' ? 'light' : 'dark';
+        document.body.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      } catch {
+        document.documentElement.style.colorScheme = 'dark';
+      }
+    </script>
+    <slot />
+  </body>
+</html>

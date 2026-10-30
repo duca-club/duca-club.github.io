@@ -1,117 +1,45 @@
-# DUCA Website (duca-club.github.io)
+# DUCA website
 
-[![Built with Astro](https://astro.badg.es/v2/built-with-astro/small.svg)](https://astro.build)
+An Astro site based on the **DUCA with Dark MODE** Claude Design export. The exported layout, page copy, typography, colors, and Three.js/GSAP animations are preserved. Dark mode is the default; the theme switch saves each visitor's preference.
 
-The official website for **DUCA** (Deakin University Cybersecurity Association). Built with modern web standards, focusing on high-quality design aesthetics, accessibility, and smooth user interactions.
+## Development
 
----
+Use Node.js 24 (or a compatible Node.js version listed in `package.json`).
 
-## Tech Stack
-
-- **Framework**: [Astro 5.16+](https://astro.build/) (Static Site Generator)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) & Vanilla CSS variables
-- **Logic / Components**: [React](https://react.dev/) & [TypeScript](https://www.typescriptlang.org/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [GSAP](https://gsap.com/) (respecting user `prefers-reduced-motion` settings)
-- **Quality Control**: [Prettier](https://prettier.io/) & [ESLint](https://eslint.org/) (configured with strict accessibility rule verification)
-
----
-
-## Key Features
-
-- **Interactive Events Hub**: Contains a dynamic, filterable monthly events calendar and full search/tag system for previous events.
-- **Dynamic Team Grid**: Allows users to interactively switch between leadership teams and divisions for different years (e.g., 2025, 2026).
-- **Accessibility (A11y) First**: Complies with WCAG guidelines by utilizing semantic HTML, skip navigation links, high-contrast outlines, screen-reader-only labels, and the Atkinson Hyperlegible font for improved readability.
-- **Partner Tiers**: Displays categorized Gold, Silver, and Bronze sponsor listings alongside past collaborators.
-- **Micro-interactions**: Incorporates aurora gradients, wobble card effects, spotlit grids, and terminal-styled text generation.
-
----
-
-## Directory Structure
-
-```text
-src/
-├── assets/          # Static assets, logos, and images
-├── components/      # Reusable Astro & React components
-│   ├── sections/    # Page-level sections (e.g., MeetTheTeamSection, FeaturedEventsSection)
-│   └── ui/          # Low-level UI blocks (e.g., CardSpotlight, WobbleCard)
-├── content/         # Markdown content collections
-│   ├── blog/        # MDX files for blog posts
-│   └── events/      # MDX files for events
-├── data/            # Static data structures
-│   ├── partners.ts  # List of partners, sponsors, and collaborators
-│   └── team.ts      # Executives and divisions definition by year
-├── layouts/         # Layout wraps (e.g., DefaultLayout.astro)
-├── pages/           # Application page routes (index, join, meet-the-team, partners, contact)
-├── styles/          # Global styles, variables, and typography definitions
-└── utils/           # Helper functions and utilities (e.g., discord count fetching)
+```sh
+npm ci
+npm run dev
 ```
 
----
+The development site runs at `http://localhost:4321`.
 
-## Development Instructions
-
-### Local Setup
-
-Ensure you have [Node.js](https://nodejs.org/) installed, then clone the repository and run:
-
-```bash
-# Install dependencies
-npm install
-
-# Run the local development server (starts at localhost:4321)
-npm run dev
-
-# Perform static analysis (TypeScript & Astro types verification)
+```sh
 npm run check
-
-# Build production distribution files (compiled to the ./dist/ folder)
 npm run build
-
-# Preview the built production site locally
 npm run preview
 ```
 
----
+The production build is a static site in `dist/`.
 
-## Content Management Guide
+## Source and content
 
-### Adding or Modifying Events
+- `src/pages/`: Astro routes and static blog article pages.
+- `src/components/DesignSite.jsx`: the exported interface, converted to a server-rendered React component hydrated by Astro.
+- `src/styles/design.css`: the exported design tokens and hover styles.
+- `src/components/BlogArticle.tsx` and `src/styles/article.css`: the exported article styling applied to real Markdown posts.
+- `src/content/blog/`: all 15 original posts and images, copied unchanged from the old website. Existing blog URLs are preserved.
+- `src/data/team.ts`: the original 2025 and 2026 executive and division records. Biographies are available through portrait card tooltips and accessible labels.
+- `public/`: local logos, portraits, partner images, About photographs, and licensed fonts.
+- `claude-design/`: the original supplied design export and extracted reference.
+- `old-site/`: the archived Astro website, retained for reference.
 
-Events are stored as markdown files under `src/content/events/`. To add an event, create a file named `YYYY-MM-DD-your-event-slug.md` with the following structure:
+The five matching blog preview titles/descriptions retain the design export's editorial copy; the articles retain their original text. The export's sample article and duplicate committee placeholders are replaced with the actual imported records. Event dates and page copy remain as supplied in the export.
 
-```yaml
----
-title: "Your Event Name"
-description: "A short description of the event"
-eventDate: 2026-07-17T17:00:00+10:00 # ISO format date
-endDate: 2026-07-17T19:00:00+10:00   # ISO format end date
-location: "Deakin Burwood Campus, Room LC2.105"
-locationUrl: "https://maps.google.com/?q=Deakin+University+Burwood"
-registrationUrl: "https://www.humanitix.com/au/your-event-link"
-featuredImage: "/events/your-event-banner.png"
-tags: ["Workshop", "Beginner"]
-featured: true
-slug: "your-event-slug-2026"
----
+## Deployment
 
-## Event Details
+`Dockerfile` builds the new site and serves `dist/` with Nginx. `.dockerignore` excludes the old website and design archive from the build context. `Jenkinsfile` and `docker-compose.yml` retain the existing deployment setup.
 
-Markdown content explaining what the event is about goes here.
+```sh
+docker build -t duca-site .
+docker run --rm -p 8080:80 duca-site
 ```
-
-### Updating Team Members and Divisions
-
-Modify [src/data/team.ts](file:///mnt/1A8E55ED8E55C1C5/ComputerFiles/Documents/Github/duca-club/duca-club.github.io/src/data/team.ts) to manage:
-- The **executives** dictionary containing the core leadership team for each year.
-- The **divisions** dictionary containing division details (Development, Capture The Flag, Presentation, Advertising, General Committee) and their respective team leads/members.
-
-### Modifying Partners and Sponsors
-
-Modify [src/data/partners.ts](file:///mnt/1A8E55ED8E55C1C5/ComputerFiles/Documents/Github/duca-club/duca-club.github.io/src/data/partners.ts) to manage the list of sponsors (Gold, Silver, Bronze), collaborators, and partner logos.
-
----
-
-## Fun Easter Eggs
-
-1. **Access Granted Flash**: Type `sudo` on any page to trigger an `ACCESS GRANTED` green hacking terminal flashing overlay.
-2. **Retro Team Sunglasses**: Click anywhere in the hero section on the `/about` page 5 times to apply a retro neon filter to the executive profiles.

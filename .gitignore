@@ -28,3 +28,6 @@ yarn-error.log*
 
 # cursor
 .cursor
+
+# Local reference archive; the original site is on backup-astro-site-1
+/old-site/

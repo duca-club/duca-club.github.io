@@ -1,0 +1,48 @@
+
+  :root {
+    --bg: #FFFFFF; --bg-t: rgba(255,255,255,0.9); --surface: #F2F2F0; --band: #EDEAE1;
+    --panel: #0E0E0C; --ink: #0E0E0C; --on-panel: #FFFFFF;
+    --body: #2C2C28; --body-2: #4A4A44; --muted: #6A6A62; --faint: #9A9A90; --disabled: #C4C4BC;
+    --hair: rgba(14,14,12,0.18); --hair-soft: rgba(14,14,12,0.14); --hair-strong: rgba(14,14,12,0.3);
+    --accent: oklch(0.52 0.21 263); --hover-fill: oklch(0.87 0.2 124); --on-hover: #0E0E0C; --on-ink: #FFFFFF; --accent-deep: oklch(0.48 0.2 263);
+  }
+  body[data-theme="dark"] {
+    --bg: #050505; --bg-t: rgba(5,5,5,0.92); --surface: #121211; --band: #121211;
+    --panel: #151514; --ink: #F4F4EE; --on-panel: #FFFFFF;
+    --body: #D8D8D0; --body-2: #BDBDB4; --muted: #9C9C92; --faint: #80807A; --disabled: #454540;
+    --hair: rgba(244,244,238,0.2); --hair-soft: rgba(244,244,238,0.13); --hair-strong: rgba(244,244,238,0.32);
+    --accent: oklch(0.78 0.16 255); --hover-fill: oklch(0.87 0.2 124); --on-hover: #0E0E0C; --on-ink: #050505; --accent-deep: oklch(0.48 0.2 263);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; transition: background 0.25s ease; }
+  a { color: var(--ink); text-decoration: none; }
+  a:hover { color: var(--accent); }
+  ::selection { background: oklch(0.87 0.2 124); color: var(--ink); }
+
+.design-hover-0:hover, .design-hover-0:focus-visible { background:oklch(0.87 0.2 124) !important; color:#0E0E0C !important; }
+.design-hover-1:hover, .design-hover-1:focus-visible { background:oklch(0.87 0.2 124) !important; border-color:oklch(0.87 0.2 124) !important; }
+.design-hover-2:hover, .design-hover-2:focus-visible { color:#0E0E0C !important; }
+.design-hover-3:hover, .design-hover-3:focus-visible { transform:translateY(-3px) !important; }
+.design-hover-4:hover, .design-hover-4:focus-visible { border-color:var(--on-panel) !important; transform:translateY(-3px) !important; }
+.design-hover-5:hover, .design-hover-5:focus-visible { background:var(--panel) !important; color:var(--on-panel) !important; }
+.design-hover-6:hover, .design-hover-6:focus-visible { transform:translateY(-6px) !important; }
+.design-hover-7:hover, .design-hover-7:focus-visible { background:var(--surface) !important; }
+.design-hover-8:hover, .design-hover-8:focus-visible { background:oklch(0.87 0.2 124) !important; border-color:oklch(0.87 0.2 124) !important; color:#0E0E0C !important; transform:translateY(-6px) !important; }
+.design-hover-9:hover, .design-hover-9:focus-visible { color:var(--ink) !important; border-color:var(--ink) !important; }
+.design-hover-10:hover, .design-hover-10:focus-visible { transform:translateY(-2px) !important; }
+.design-hover-11:hover, .design-hover-11:focus-visible { color:oklch(0.87 0.2 124) !important; }
+.design-hover-12:hover, .design-hover-12:focus-visible { border-color:oklch(0.87 0.2 124) !important; background:var(--surface) !important; }
+.design-hover-13:hover, .design-hover-13:focus-visible { color:var(--on-panel) !important; border-color:var(--on-panel) !important; }
+.design-hover-14:hover, .design-hover-14:focus-visible { color:var(--ink) !important; }
+.design-hover-15:hover, .design-hover-15:focus-visible { background:var(--bg) !important; color:var(--accent) !important; transform:translateY(-3px) !important; }
+.design-hover-16:hover, .design-hover-16:focus-visible { transform:translateY(-6px) !important; border-color:oklch(0.87 0.2 124) !important; background:var(--surface) !important; }
+.design-hover-17:hover, .design-hover-17:focus-visible { border-color:var(--on-panel) !important; }
+.design-hover-18:hover, .design-hover-18:focus-visible { color:var(--accent) !important; }
+
+/* Standard keyboard interaction without changing the exported layout. */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+html { color-scheme: dark; }
+button, input { font: inherit; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+}

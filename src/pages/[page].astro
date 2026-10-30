@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DesignSite from '../components/DesignSite.jsx';
+import { getBlogPosts, toBlogCard } from '../lib/blog';
+
+export function getStaticPaths() {
+  return [
+    ['about', 'About'],
+    ['events', 'Events'],
+    ['blog', 'Blog'],
+    ['team', 'Team'],
+    ['partners', 'Partners'],
+    ['ctf', 'CTF'],
+    ['join', 'Join'],
+  ].map(([page, label]) => ({ params: { page }, props: { page, label } }));
+}
+
+const { page, label } = Astro.props;
+const posts = (await getBlogPosts()).map(toBlogCard);
+---
+
+<BaseLayout title={`${label} — DUCA`}>
+  <DesignSite initialNow={Date.now()} initialPage={page} posts={posts} client:load />
+</BaseLayout>

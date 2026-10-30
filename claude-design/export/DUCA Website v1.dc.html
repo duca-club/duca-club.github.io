@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="description" content="DUCA — Deakin University Cybersecurity Association" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: #FFFFFF; -webkit-font-smoothing: antialiased; }
+  a { color: #121311; text-decoration: none; }
+  a:hover { color: oklch(0.55 0.16 150); }
+  @keyframes duca-blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
+  @keyframes duca-marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+  @keyframes duca-rise { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: translateY(0) } }
+  @keyframes duca-scan { from { transform: translateY(-100%) } to { transform: translateY(100%) } }
+  @keyframes duca-float { 0%,100% { transform: translateY(0) rotate(-2deg) } 50% { transform: translateY(-8px) rotate(2deg) } }
+</style>
+</helmet>
+<!-- nice. flag{v13w_s0urc3_1s_4_sk1ll} — now try the Konami code. -->
+<div style="background:#FFFFFF;color:#121311;font-family:'IBM Plex Sans',system-ui,sans-serif;min-height:100vh;overflow-x:hidden;position:relative">
+
+  <sc-if value="{{ crt }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:90;pointer-events:none;mix-blend-mode:multiply;background:repeating-linear-gradient(180deg,rgba(0,0,0,0.16) 0px,rgba(0,0,0,0.16) 1px,transparent 1px,transparent 3px)"></div>
+  </sc-if>
+  <sc-if value="{{ crt }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;transform:translateX(-50%);bottom:24px;z-index:95;background:#0D0F0D;color:oklch(0.86 0.2 142);font-family:'JetBrains Mono',monospace;font-size:13px;padding:10px 16px;border:1px solid oklch(0.86 0.2 142);display:flex;gap:14px;align-items:center">
+      <span>CRT MODE ENGAGED — flag{k0n4m1_c4t}</span>
+      <button onClick="{{ toggleCrt }}" style="background:oklch(0.86 0.2 142);color:#0D0F0D;border:0;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:5px 10px;cursor:pointer">EXIT</button>
+    </div>
+  </sc-if>
+
+  <header style="position:sticky;top:0;z-index:60;background:rgba(244,242,236,0.92);backdrop-filter:blur(10px);border-bottom:1px solid #121311">
+    <div style="max-width:1280px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <a href="#" onClick="{{ goHome }}" style="display:flex;align-items:center;gap:10px;flex:0 0 auto">
+        <img src="https://duca.au/duca.png" alt="DUCA" style="height:34px;width:auto;display:block" />
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em">DUCA</span>
+      </a>
+      <nav style="display:flex;gap:4px;flex-wrap:wrap;flex:1 1 auto;justify-content:center">
+        <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="8">
+          <a href="#" onClick="{{ item.onClick }}" style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.02em;padding:7px 10px;border:1px solid transparent;color:{{ item.color }};background:{{ item.bg }};border-radius:2px" style-hover="border-color:#121311">{{ item.label }}</a>
+        </sc-for>
+      </nav>
+      <div style="display:flex;gap:8px;flex:0 0 auto">
+        <a href="https://ctf.duca.au/" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:8px 12px;border:1px solid #121311;color:#121311" style-hover="background:#121311;color:oklch(0.86 0.2 142)">ctf.duca.au ↗</a>
+        <a href="#" onClick="{{ goJoin }}" style="font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;padding:8px 14px;background:#121311;color:oklch(0.86 0.2 142);border:1px solid #121311" style-hover="background:oklch(0.86 0.2 142);color:#121311">JOIN US</a>
+      </div>
+    </div>
+  </header>
+
+  <main style="min-height:60vh">
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div>
+    <section style="max-width:1280px;margin:0 auto;padding:64px 24px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:48px;align-items:center">
+      <div data-anim="hero">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B63;margin:0 0 20px">Deakin University Cybersecurity Association</p>
+        <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(38px,6vw,72px);line-height:0.98;letter-spacing:-0.035em;margin:0 0 22px;text-wrap:balance">Learn security by<br />actually <span style="background:oklch(0.86 0.2 142);padding:0 0.1em">doing it</span>.</h1>
+        <p style="font-size:clamp(16px,1.6vw,19px);line-height:1.6;color:#3A3A34;max-width:52ch;margin:0 0 30px;text-wrap:pretty">We're a student-led club at Deakin running workshops, CTFs and industry nights. Come with zero experience or an OSCP — both are normal here, and all of it is free.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="#" onClick="{{ goJoin }}" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;padding:14px 24px;background:#121311;color:#FFFFFF;border:1px solid #121311" style-hover="background:oklch(0.86 0.2 142);color:#121311">Join the club</a>
+          <a href="#" onClick="{{ goEvents }}" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;padding:14px 24px;border:1px solid #121311;color:#121311" style-hover="background:#121311;color:#FFFFFF">See what's on</a>
+        </div>
+      </div>
+      <div style="position:relative">
+        <div style="position:absolute;top:-16px;right:-8px;z-index:3;font-family:'Silkscreen',monospace;font-size:11px;background:oklch(0.68 0.19 350);color:#fff;padding:8px 12px;transform:rotate(6deg)" data-anim="sticker">750+ IN DISCORD</div>
+        <div style="position:absolute;bottom:34px;left:-14px;z-index:3;font-family:'Silkscreen',monospace;font-size:11px;background:oklch(0.86 0.2 142);color:#0D0F0D;padding:8px 12px;transform:rotate(-5deg)" data-anim="sticker2">FREE TO JOIN</div>
+        <div style="background:#0D0F0D;border:1px solid #121311;box-shadow:10px 10px 0 #121311;overflow:hidden;position:relative;min-height:380px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:26px;padding:48px 28px">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(244,242,236,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(244,242,236,0.07) 1px,transparent 1px);background-size:38px 38px"></div>
+          <img src="https://duca.au/duca.png" alt="DUCA" data-anim="mark" style="width:min(62%,220px);height:auto;display:block;position:relative;z-index:2" />
+          <div style="position:relative;z-index:2;font-family:'Silkscreen',monospace;font-size:clamp(11px,1.4vw,14px);letter-spacing:0.08em;color:#FFFFFF;text-align:center;line-height:2">DEAKIN BURWOOD<br /><span style="color:oklch(0.86 0.2 142)">ALL SKILL LEVELS WELCOME</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="border-top:1px solid #121311;border-bottom:1px solid #121311;background:#F2F2F0">
+      <div data-anim-group="" style="max-width:1280px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+          <div style="padding:34px 20px;border-right:1px solid rgba(18,19,17,0.14)">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,4.4vw,52px);line-height:1;letter-spacing:-0.03em">{{ s.shown }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;margin-top:10px;color:#121311">{{ s.label }}</div>
+            <div style="font-size:13.5px;color:#6B6B63;margin-top:4px">{{ s.note }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="max-width:1280px;margin:0 auto;padding:72px 24px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:34px">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,42px);letter-spacing:-0.03em;margin:0">Next up</h2>
+        <a href="#" onClick="{{ goEvents }}" style="font-family:'JetBrains Mono',monospace;font-size:13px;border-bottom:1px solid #121311;padding-bottom:2px">all events →</a>
+      </div>
+      <a href="#" onClick="{{ goEvents }}" data-anim="up" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:0;border:1px solid #121311;background:#0D0F0D;color:#FFFFFF" style-hover="box-shadow:10px 10px 0 oklch(0.86 0.2 142)">
+        <div style="padding:38px 32px;border-right:1px solid #2A2E2A;display:flex;flex-direction:column;justify-content:space-between;gap:28px">
+          <div style="font-family:'Silkscreen',monospace;font-size:13px;color:oklch(0.86 0.2 142)">FRI 11 SEPT</div>
+          <div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:40px;letter-spacing:-0.03em;line-height:1">Logoff</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#7E867E;margin-top:8px">SOCIAL · COMMUNITY</div>
+          </div>
+        </div>
+        <div style="padding:38px 32px;display:flex;flex-direction:column;justify-content:space-between;gap:20px">
+          <p style="font-size:17px;line-height:1.6;margin:0;color:#C9D1C9">DUCA's end-of-trimester social. Pizza, a quiz, and no laptops required.</p>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#FFFFFF;line-height:1.9">6:00 pm<br />Deakin Burwood, Room LC1.003</div>
+        </div>
+      </a>
+    </section>
+
+    <section style="max-width:1280px;margin:0 auto;padding:0 24px 72px">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,42px);letter-spacing:-0.03em;margin:0 0 10px">Three ways in</h2>
+      <p style="font-size:17px;color:#6B6B63;margin:0 0 34px;max-width:56ch">Pick whichever suits you this trimester. Most people end up doing all three.</p>
+      <div data-anim-group="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px">
+        <sc-for list="{{ ways }}" as="w" hint-placeholder-count="3">
+          <a href="#" onClick="{{ w.onClick }}" style="display:block;border:1px solid #121311;padding:28px;background:#FFFFFF;position:relative" style-hover="background:#121311;color:#FFFFFF">
+            <div style="font-family:'Silkscreen',monospace;font-size:12px;color:oklch(0.55 0.16 150);margin-bottom:22px">{{ w.num }}</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:23px;letter-spacing:-0.02em;margin:0 0 10px">{{ w.title }}</h3>
+            <p style="font-size:15.5px;line-height:1.6;margin:0 0 18px;opacity:0.82">{{ w.body }}</p>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px">{{ w.cta }} →</div>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="border-top:1px solid #121311;background:#F2F2F0;padding:40px 0;overflow:hidden">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:#6B6B63;text-align:center;margin:0 0 28px">Proudly supported by</p>
+      <div data-anim="marquee" style="display:flex;width:max-content">
+        <sc-for list="{{ partnerLoop }}" as="p" hint-placeholder-count="10">
+          <div style="padding:0 34px;display:flex;align-items:center"><img src="{{ p.src }}" alt="{{ p.name }}" style="height:38px;width:auto;object-fit:contain" /></div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="max-width:1280px;margin:0 auto;padding:72px 24px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:34px">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,42px);letter-spacing:-0.03em;margin:0">From the blog</h2>
+        <a href="#" onClick="{{ goBlog }}" style="font-family:'JetBrains Mono',monospace;font-size:13px;border-bottom:1px solid #121311;padding-bottom:2px">all posts →</a>
+      </div>
+      <div data-anim-group="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px">
+        <sc-for list="{{ homePosts }}" as="post" hint-placeholder-count="3">
+          <a href="{{ post.url }}" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:14px;border-top:3px solid #121311;padding-top:18px" style-hover="border-color:oklch(0.68 0.19 350)">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:#6B6B63">{{ post.date }}</span>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:21px;line-height:1.25;letter-spacing:-0.02em;margin:0">{{ post.title }}</h3>
+            <p style="font-size:15px;line-height:1.6;color:#4A4A44;margin:0">{{ post.blurb }}</p>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="background:#0D0F0D;border-top:1px solid #121311">
+      <div style="max-width:1280px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:48px;align-items:center">
+        <div>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,46px);letter-spacing:-0.03em;color:#FFFFFF;margin:0 0 16px;line-height:1.05">The Discord never sleeps</h2>
+          <p style="font-size:17px;line-height:1.65;color:#A8B0A8;margin:0 0 28px;max-width:50ch">750+ students and industry folks. Event pings, assignment panic, CTF writeups, and a steady stream of cat photos.</p>
+          <a href="https://discord.com/invite/duca" target="_blank" rel="noopener" style="display:inline-block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;padding:14px 26px;background:oklch(0.86 0.2 142);color:#0D0F0D;border:1px solid oklch(0.86 0.2 142)" style-hover="background:#0D0F0D;color:oklch(0.86 0.2 142)">Open the invite ↗</a>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;color:#7E867E;border-left:2px solid #2A2E2A;padding-left:24px">
+          <div>#general</div><div>#ctf-and-challenges</div><div>#workshop-notes</div><div>#jobs-and-internships</div><div>#duca-cat</div>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <section data-anim="hero" style="max-width:1280px;margin:0 auto;padding:64px 24px 40px">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B63;margin:0 0 18px">About</p>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,5.5vw,64px);letter-spacing:-0.035em;line-height:1;margin:0 0 20px;max-width:16ch">A student-led club, not a lecture series.</h1>
+      <p style="font-size:18px;line-height:1.65;color:#3A3A34;max-width:62ch;margin:0">DUCA runs on members. Everything you see — the workshops, the CTF team, the dev projects — was set up by students who wanted it to exist, and it keeps going because new people take it on. That's the whole model.</p>
+    </section>
+
+    <section style="max-width:1280px;margin:0 auto;padding:40px 24px 72px">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.4vw,38px);letter-spacing:-0.03em;margin:0 0 28px">What we actually run</h2>
+      <div data-anim-group="" style="border-top:1px solid #121311">
+        <sc-for list="{{ divisions }}" as="d" hint-placeholder-count="6">
+          <div style="border-bottom:1px solid rgba(18,19,17,0.2);padding:28px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:24px;align-items:start">
+            <div>
+              <div style="font-family:'Silkscreen',monospace;font-size:12px;color:oklch(0.68 0.19 350);margin-bottom:10px">{{ d.num }}</div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;letter-spacing:-0.02em;margin:0">{{ d.title }}</h3>
+            </div>
+            <p style="font-size:16px;line-height:1.65;color:#3A3A34;margin:0;grid-column:span 2;text-wrap:pretty">{{ d.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="background:#0D0F0D;border-top:1px solid #121311;border-bottom:1px solid #121311">
+      <div style="max-width:1280px;margin:0 auto;padding:64px 24px">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.4vw,38px);letter-spacing:-0.03em;color:#FFFFFF;margin:0 0 10px">Six words we keep coming back to</h2>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7E867E;margin:0 0 34px">the club charter, abbreviated</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1px;background:#2A2E2A;border:1px solid #2A2E2A" data-anim-group="">
+          <sc-for list="{{ values }}" as="v" hint-placeholder-count="6">
+            <div style="background:#0D0F0D;padding:26px 22px" style-hover="background:oklch(0.86 0.2 142)">
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;color:#FFFFFF;margin-bottom:8px">{{ v.title }}</div>
+              <div style="font-size:14.5px;line-height:1.55;color:#A8B0A8">{{ v.body }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section style="max-width:1280px;margin:0 auto;padding:72px 24px;display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(24px,3vw,34px);letter-spacing:-0.03em;margin:0;flex:1 1 300px">Who runs it? Have a look.</h2>
+      <a href="#" onClick="{{ goTeam }}" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;padding:14px 24px;background:#121311;color:#FFFFFF" style-hover="background:oklch(0.86 0.2 142);color:#121311">Meet the team</a>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isEvents }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <section data-anim="hero" style="max-width:1280px;margin:0 auto;padding:64px 24px 28px">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B63;margin:0 0 18px">Events</p>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,5.5vw,64px);letter-spacing:-0.035em;line-height:1;margin:0 0 20px">What's on</h1>
+      <p style="font-size:18px;line-height:1.65;color:#3A3A34;max-width:58ch;margin:0">Free, open to all Deakin students, and usually catered. Turn up to one and you'll know three people by the end of it.</p>
+    </section>
+    <section style="max-width:1280px;margin:0 auto;padding:0 24px 72px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;border-bottom:1px solid #121311;padding-bottom:20px">
+        <sc-for list="{{ eventFilters }}" as="f" hint-placeholder-count="5">
+          <button onClick="{{ f.onClick }}" style="font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:8px 14px;cursor:pointer;border:1px solid #121311;background:{{ f.bg }};color:{{ f.fg }}">{{ f.label }}</button>
+        </sc-for>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#6B6B63;margin-left:auto;align-self:center">{{ eventCount }}</span>
+      </div>
+      <div data-anim-group="" style="display:grid;gap:14px">
+        <sc-for list="{{ visibleEvents }}" as="e" hint-placeholder-count="5">
+          <div style="border:1px solid #121311;background:#FFFFFF;padding:24px 26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:22px;align-items:center" style-hover="box-shadow:8px 8px 0 #121311">
+            <div>
+              <div style="font-family:'Silkscreen',monospace;font-size:13px;color:oklch(0.55 0.16 150)">{{ e.date }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:#6B6B63;margin-top:8px">{{ e.kind }}</div>
+            </div>
+            <div style="grid-column:span 2">
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;margin:0 0 6px">{{ e.title }}</h3>
+              <p style="font-size:15.5px;line-height:1.55;color:#4A4A44;margin:0">{{ e.body }}</p>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#121311;line-height:1.8">{{ e.time }}<br /><span style="color:#6B6B63">{{ e.place }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isBlog }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <section data-anim="hero" style="max-width:1280px;margin:0 auto;padding:64px 24px 40px">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B63;margin:0 0 18px">Blog</p>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,5.5vw,64px);letter-spacing:-0.035em;line-height:1;margin:0 0 20px">Writeups &amp; recaps</h1>
+      <p style="font-size:18px;line-height:1.65;color:#3A3A34;max-width:58ch;margin:0">What happened at the last event, what we learned, and the occasional field report from a conference.</p>
+    </section>
+    <section style="max-width:1280px;margin:0 auto;padding:0 24px 72px;border-top:1px solid #121311" data-anim-group="">
+      <sc-for list="{{ posts }}" as="post" hint-placeholder-count="5">
+        <a href="{{ post.url }}" target="_blank" rel="noopener" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:24px;padding:30px 0;border-bottom:1px solid rgba(18,19,17,0.2);align-items:start" style-hover="background:#F2F2F0">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6B63">{{ post.date }}<br /><span style="color:oklch(0.68 0.19 350)">{{ post.tag }}</span></div>
+          <div style="grid-column:span 2">
+            <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(20px,2.4vw,27px);line-height:1.2;letter-spacing:-0.02em;margin:0 0 10px">{{ post.title }}</h2>
+            <p style="font-size:16px;line-height:1.6;color:#4A4A44;margin:0;max-width:66ch">{{ post.blurb }}</p>
+          </div>
+        </a>
+      </sc-for>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isTeam }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <section data-anim="hero" style="max-width:1280px;margin:0 auto;padding:64px 24px 40px">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B63;margin:0 0 18px">Committee</p>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,5.5vw,64px);letter-spacing:-0.035em;line-height:1;margin:0 0 20px">Meet the team</h1>
+      <p style="font-size:18px;line-height:1.65;color:#3A3A34;max-width:58ch;margin:0">Elected each year by members. Hover a card for the part that isn't on the LinkedIn.</p>
+    </section>
+    <section style="max-width:1280px;margin:0 auto;padding:0 24px 72px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:18px" data-anim-group="">
+      <sc-for list="{{ team }}" as="m" hint-placeholder-count="8">
+        <div style="border:1px solid #121311;background:#FFFFFF;overflow:hidden;display:flex;flex-direction:column" style-hover="box-shadow:8px 8px 0 oklch(0.86 0.2 142)">
+          <div style="aspect-ratio:1;background:#F2F2F0;border-bottom:1px solid #121311;overflow:hidden">
+            <img src="{{ m.img }}" alt="{{ m.name }}" style="width:100%;height:100%;object-fit:cover;display:block" />
+          </div>
+          <div style="padding:18px;display:flex;flex-direction:column;gap:8px;flex:1">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:oklch(0.55 0.16 150)">{{ m.role }}</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.02em;margin:0">{{ m.name }}</h3>
+            <p style="font-size:14px;line-height:1.5;color:#4A4A44;margin:0;flex:1">{{ m.fact }}</p>
+            <a href="{{ m.link }}" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:12px;border-bottom:1px solid #121311;align-self:flex-start;padding-bottom:1px">LinkedIn ↗</a>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isPartners }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <section data-anim="hero" style="max-width:1280px;margin:0 auto;padding:64px 24px 40px">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B63;margin:0 0 18px">Partners</p>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,5.5vw,64px);letter-spacing:-0.035em;line-height:1;margin:0 0 20px;max-width:16ch">The people who make it free.</h1>
+      <p style="font-size:18px;line-height:1.65;color:#3A3A34;max-width:60ch;margin:0">Venues, prizes, speakers and pizza. Our partners send engineers to run sessions and open doors to internships — if your organisation wants in, email us.</p>
+    </section>
+    <section style="max-width:1280px;margin:0 auto;padding:0 24px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:1px;background:#121311;border:1px solid #121311" data-anim-group="">
+      <sc-for list="{{ partners }}" as="p" hint-placeholder-count="10">
+        <a href="{{ p.url }}" target="_blank" rel="noopener" style="background:#FFFFFF;padding:30px 24px;display:flex;flex-direction:column;gap:20px;justify-content:space-between;min-height:160px" style-hover="background:#F2F2F0">
+          <img src="{{ p.src }}" alt="{{ p.name }}" style="height:34px;width:auto;max-width:100%;object-fit:contain;object-position:left" />
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#4A4A44">{{ p.name }}</span>
+        </a>
+      </sc-for>
+    </section>
+    <section style="max-width:1280px;margin:0 auto;padding:0 24px 72px">
+      <div style="border:1px solid #121311;background:#0D0F0D;padding:40px 32px;display:flex;gap:24px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+        <div>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(22px,3vw,32px);letter-spacing:-0.03em;color:#FFFFFF;margin:0 0 8px">Sponsor a trimester</h2>
+          <p style="font-size:16px;color:#A8B0A8;margin:0;max-width:48ch">Workshop series, CTF prize pools and networking nights all have partner slots.</p>
+        </div>
+        <a href="mailto:info@duca.au" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;padding:14px 24px;background:oklch(0.86 0.2 142);color:#0D0F0D" style-hover="background:#FFFFFF">info@duca.au</a>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isCtf }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <section style="background:#0D0F0D;border-bottom:1px solid #121311">
+      <div style="max-width:1280px;margin:0 auto;padding:72px 24px">
+        <p style="font-family:'Silkscreen',monospace;font-size:12px;letter-spacing:0.1em;color:oklch(0.86 0.2 142);margin:0 0 20px">CTF.DUCA.AU</p>
+        <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,6vw,70px);letter-spacing:-0.035em;line-height:0.98;color:#FFFFFF;margin:0 0 20px;max-width:14ch">We run our own CTF platform.</h1>
+        <p style="font-size:18px;line-height:1.65;color:#A8B0A8;max-width:58ch;margin:0 0 30px">Challenges stay up year-round so you can practise whenever. Web, crypto, forensics, reversing and OSINT, written by DUCA members and graded from "first week of uni" to "good luck".</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="https://ctf.duca.au/" target="_blank" rel="noopener" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;padding:14px 26px;background:oklch(0.86 0.2 142);color:#0D0F0D" style-hover="background:#FFFFFF">Launch the platform ↗</a>
+          <a href="#" onClick="{{ goEvents }}" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;padding:14px 26px;border:1px solid #4A4F4A;color:#FFFFFF" style-hover="border-color:#FFFFFF">Training nights</a>
+        </div>
+      </div>
+    </section>
+    <section style="max-width:1280px;margin:0 auto;padding:64px 24px 72px">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.4vw,38px);letter-spacing:-0.03em;margin:0 0 28px">Categories on the board</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:14px" data-anim-group="">
+        <sc-for list="{{ ctfCats }}" as="c" hint-placeholder-count="5">
+          <div style="border:1px solid #121311;padding:24px;background:#FFFFFF" style-hover="background:oklch(0.86 0.2 142)">
+            <div style="font-family:'Silkscreen',monospace;font-size:11px;color:oklch(0.55 0.16 150);margin-bottom:16px">{{ c.pts }}</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em;margin:0 0 8px">{{ c.name }}</h3>
+            <p style="font-size:14.5px;line-height:1.55;color:#4A4A44;margin:0">{{ c.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#6B6B63;margin:30px 0 0">Sample point values shown — wire these to the live scoreboard API.</p>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isJoin }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <section data-anim="hero" style="max-width:1280px;margin:0 auto;padding:64px 24px 40px">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B63;margin:0 0 18px">Join us</p>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,5.5vw,64px);letter-spacing:-0.035em;line-height:1;margin:0 0 20px">Three steps, zero cost</h1>
+      <p style="font-size:18px;line-height:1.65;color:#3A3A34;max-width:56ch;margin:0">Membership is free for Deakin students and takes about four minutes. You do not need to know anything about security yet.</p>
+    </section>
+    <section style="max-width:1280px;margin:0 auto;padding:0 24px 56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:18px" data-anim-group="">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+        <div style="border:1px solid #121311;padding:28px;background:#FFFFFF;display:flex;flex-direction:column;gap:14px">
+          <div style="font-family:'Silkscreen',monospace;font-size:26px;color:oklch(0.68 0.19 350)">{{ s.num }}</div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:21px;letter-spacing:-0.02em;margin:0">{{ s.title }}</h3>
+          <p style="font-size:15.5px;line-height:1.6;color:#4A4A44;margin:0;flex:1">{{ s.body }}</p>
+          <a href="{{ s.url }}" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:10px 14px;border:1px solid #121311;align-self:flex-start" style-hover="background:#121311;color:#FFFFFF">{{ s.cta }} ↗</a>
+        </div>
+      </sc-for>
+    </section>
+    <section style="max-width:1280px;margin:0 auto;padding:0 24px 72px">
+      <div style="border:1px solid #121311;background:#F2F2F0;padding:36px 32px">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;letter-spacing:-0.02em;margin:0 0 20px">Common worries, answered</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:24px">
+          <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="4">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:13.5px;color:#121311;margin-bottom:8px">{{ q.q }}</div>
+              <p style="font-size:15.5px;line-height:1.6;color:#4A4A44;margin:0">{{ q.a }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  </main>
+
+  <footer style="background:#0D0F0D;border-top:1px solid #121311;color:#A8B0A8">
+    <div style="max-width:1280px;margin:0 auto;padding:64px 24px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:40px">
+      <div>
+        <img src="https://duca.au/global/duca-logo.webp" alt="DUCA" style="height:40px;width:auto;margin-bottom:18px;display:block" />
+        <p style="font-size:15px;line-height:1.65;margin:0;max-width:40ch">A student-led community and a launchpad for the next generation of cybersecurity professionals.</p>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF;margin-bottom:16px">Pages</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="8">
+            <a href="#" onClick="{{ item.onClick }}" style="font-size:15px;color:#A8B0A8" style-hover="color:oklch(0.86 0.2 142)">{{ item.label }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF;margin-bottom:16px">Find us</div>
+        <p style="font-size:15px;line-height:1.75;margin:0 0 14px">Deakin University<br />221 Burwood Highway<br />Burwood, VIC 3125</p>
+        <a href="mailto:info@duca.au" style="font-size:15px;color:oklch(0.86 0.2 142)">info@duca.au</a>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF;margin-bottom:16px">Elsewhere</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <a href="https://discord.com/invite/duca" target="_blank" rel="noopener" style="font-size:15px;color:#A8B0A8" style-hover="color:oklch(0.86 0.2 142)">Discord</a>
+          <a href="https://github.com/duca-club" target="_blank" rel="noopener" style="font-size:15px;color:#A8B0A8" style-hover="color:oklch(0.86 0.2 142)">GitHub</a>
+          <a href="https://ctf.duca.au/" target="_blank" rel="noopener" style="font-size:15px;color:#A8B0A8" style-hover="color:oklch(0.86 0.2 142)">CTF platform</a>
+          <a href="https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca" target="_blank" rel="noopener" style="font-size:15px;color:#A8B0A8" style-hover="color:oklch(0.86 0.2 142)">DUSA listing</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px 56px">
+      <p style="font-size:13.5px;line-height:1.7;color:#7E867E;margin:0 0 24px;max-width:88ch;border-top:1px solid #2A2E2A;padding-top:24px">DUCA acknowledges the Traditional Owners of the lands on which we operate, and we pay our respects to Elders past and present. We celebrate diversity and are committed to creating an inclusive environment for all members, including those who identify as LGBTQIA+.</p>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:space-between;align-items:center">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#4A4F4A">Copyright DUCA © 2026</span>
+        <button onClick="{{ revealFlag }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;background:transparent;border:1px dashed #2A2E2A;color:#4A4F4A;padding:7px 12px;cursor:pointer" style-hover="color:oklch(0.86 0.2 142);border-color:oklch(0.86 0.2 142)">{{ flagText }}</button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = {
+    page: 'home',
+    counts: [0, 0, 0, 0],
+    filter: 'All',
+    crt: false,
+    flagOpen: false
+  };
+
+  PAGES = [
+    ['home', 'Home'], ['about', 'About'], ['events', 'Events'],
+    ['blog', 'Blog'], ['team', 'Team'], ['partners', 'Partners'], ['ctf', 'CTF'], ['join', 'Join']
+
+  ];
+
+  STATS = [
+    { target: 750, suffix: '+', label: 'Members', note: 'Discord community' },
+    { target: 42, suffix: '', label: 'Events', note: 'Run this year' },
+    { target: 18, suffix: '', label: 'Workshops', note: 'Hands-on sessions' },
+    { target: 100, suffix: '%', label: 'Free', note: 'Always welcome' }
+  ];
+
+  EVENTS = [
+    { date: '11 SEPT', kind: 'SOCIAL · COMMUNITY', title: 'Logoff', body: "DUCA's end-of-trimester social. Pizza, a quiz, and no laptops required.", time: '6:00 pm', place: 'Burwood, LC1.003' },
+    { date: '18 SEPT', kind: 'WORKSHOP', title: 'Intro to Ethical Hacking', body: 'Set up your lab, scan a target, and get your first shell. Nothing assumed.', time: '5:30 pm', place: 'Burwood, LC2.108' },
+    { date: '25 SEPT', kind: 'CTF', title: 'CTF Training Night', body: 'Pair up on retired challenges from the DUCA platform. Beginners get a walkthrough table.', time: '6:00 pm', place: 'Burwood, LC1.003' },
+    { date: '02 OCT', kind: 'INDUSTRY', title: 'Industry Night: Blue Team', body: 'SOC analysts from partner organisations on what the job is actually like, plus resume reviews.', time: '6:30 pm', place: 'Burwood, Lecture Theatre 3' },
+    { date: '16 OCT', kind: 'WORKSHOP', title: 'Digital Forensics Lab', body: 'Pull artefacts off a disk image and reconstruct a timeline. Bring a laptop.', time: '5:30 pm', place: 'Burwood, LC2.108' },
+    { date: '30 OCT', kind: 'CTF', title: 'DownUnderCTF Watch Party', body: "We field DUCA teams and solve together on the night. Snacks provided.", time: '5:00 pm', place: 'Burwood, LC1.003' }
+  ];
+
+  POSTS = [
+    { date: '18 JUL 2026', tag: 'EVENTS', title: 'Speedrunning Cyber: The Strategic Route to a Security Role', blurb: 'Navigating a cybersecurity degree does not require 100% completion. Two senior students shared what to study, what to skip, and how to land a job before graduating.', url: 'https://duca.au/blog/2026-07-18-speedrunning-cyber/' },
+    { date: '06 SEP 2025', tag: 'EVENTS', title: 'DUCA x DDSC Networking Night', blurb: 'A high-energy night with career insights from Commonwealth Bank, AI and research guidance, plus plenty of community building.', url: 'https://duca.au/blog/2025-09-06-duca-x-ddsc-networking-night/' },
+    { date: '12 MAY 2025', tag: 'FIELD NOTES', title: 'DUCA Cat Attends the Inaugural BSides Ballarat 2025', blurb: 'Talks on human-centric cybersecurity, digital footprint awareness, CTI automation, and navigating growth in cyber careers.', url: 'https://duca.au/blog/2025-05-12-duca-cat-attends-the-inaugural-bsides-ballarat-2025/' },
+    { date: '25 APR 2025', tag: 'EVENTS', title: 'Exploring ADF Careers and the Role of Cyber Warfare on ANZAC Day', blurb: 'Insights from Colonel Molnar, Captain Lever and Cyber Warfare Officer Elliot Parker on the growing role of cyber warfare.', url: 'https://duca.au/blog/2025-04-25-exploring-adf-careers-and-the-role-of-cyber-warfare-on-anzac-day/' },
+    { date: '17 APR 2025', tag: 'CTF', title: 'Cracking Clues and Catching Flags with DUCA', blurb: 'An OSINT-focused CTF where participants uncovered hidden clues using metadata, search techniques and visual analysis.', url: 'https://duca.au/blog/2025-04-17-cracking-clues-and-catching-flags-with-duca/' }
+  ];
+
+  TEAM = [
+    { name: 'Sham Polavarapu', role: 'President', fact: "Built a 'dog' with Arduino at 15 because her parents said no to a pet.", img: 'https://duca.au/team/sham-polavarapu.png', link: 'https://www.linkedin.com/in/p-shambhavi/' },
+    { name: 'Aditya Kapoor', role: 'Vice President', fact: 'Runs the workshop program end to end.', img: 'https://duca.au/team/aditya-kapoor.png', link: 'https://www.linkedin.com/in/adityakapoor23/' },
+    { name: 'Ashley Mathew', role: 'Secretary', fact: 'Chess enthusiast who loves cats and all things tech.', img: 'https://duca.au/team/ashley-mathew.png', link: 'https://www.linkedin.com/in/ashleyymathew/' },
+    { name: 'Kat Ho', role: 'Treasurer', fact: 'Her biggest leap of faith was skydiving out of a plane.', img: 'https://duca.au/team/kat-ho.png', link: 'https://www.linkedin.com/in/kat-ho/' },
+    { name: 'Hirusha Adikari', role: 'Asst. Secretary', fact: 'A sleep deprived nerd. Jack of all trades, master of none.', img: 'https://duca.au/team/hirusha-adikari.png', link: 'https://www.linkedin.com/in/hirusha-adi/' },
+    { name: 'George Ferres', role: 'Developer', fact: 'Keeps the club tooling and this site running.', img: 'https://duca.au/team/george-ferres.png', link: 'https://www.linkedin.com/in/georgeferres/' },
+    { name: 'Paige Haines', role: 'Relations', fact: 'Hacked in-game currency into Moshi Monsters using Cheat Engine in 2009.', img: 'https://duca.au/team/paige-haines.png', link: 'https://www.linkedin.com/in/paigehai/' },
+    { name: "Maple 'Ryan' Fox", role: 'Advisor', fact: 'Full-time caffeinated nerd that likes lifting heavy things.', img: 'https://duca.au/team/maple-fox.png', link: 'https://www.linkedin.com/in/maplefox/' }
+  ];
+
+  PARTNERS = [
+    { name: 'Deakin Cyber Research', src: 'https://duca.au/partners/deakin-cyber.png', url: 'https://www.deakin.edu.au/information-technology/cyber-security-research' },
+    { name: 'Deakin University', src: 'https://duca.au/partners/deakin.png', url: 'https://www.deakin.edu.au/' },
+    { name: 'DUSA', src: 'https://duca.au/partners/dusa.png', url: 'https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca' },
+    { name: 'ACUCyS', src: 'https://duca.au/partners/acucys.png', url: 'https://acucys.com.au/' },
+    { name: 'DownUnderCTF', src: 'https://duca.au/global/ductf.png', url: 'https://downunderctf.com/' },
+    { name: 'CommBank', src: 'https://duca.au/global/commbank.png', url: 'https://www.commbank.com.au/' },
+    { name: 'Mastercard', src: 'https://duca.au/global/mastercard.png', url: 'https://www.mastercard.com.au/' },
+    { name: 'Accenture', src: 'https://duca.au/global/Accenture.png', url: 'https://www.accenture.com/au-en' },
+    { name: 'Red Bull', src: 'https://duca.au/global/redbull.png', url: 'https://www.redbull.com/' },
+    { name: 'Hack4G', src: 'https://duca.au/global/hck4g.jpeg', url: 'https://acucys.com.au/' }
+  ];
+
+  componentDidMount() {
+    this.setupAnim();
+    this.keys = [];
+    this.onKey = (e) => {
+      const seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+      this.keys = [...this.keys, e.key].slice(-10);
+      if (this.keys.join(',') === seq.join(',')) this.setState({ crt: true });
+    };
+    window.addEventListener('keydown', this.onKey);
+    console.log('%cDUCA', 'font:700 42px Space Grotesk,sans-serif;color:#9BE63C');
+    console.log('%cPoking around in here is exactly the right instinct.\nflag{c0ns0l3_k1dd13} — bring it to a training night.', 'font:13px monospace;color:#6B6B63');
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.animWait);
+    if (this.countTween) this.countTween.kill();
+    if (this.ctx) this.ctx.revert();
+    window.removeEventListener('keydown', this.onKey);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.page !== this.state.page || prevState.filter !== this.state.filter) this.setupAnim();
+  }
+
+  setupAnim() {
+    const g = window.gsap;
+    if (!g || !window.ScrollTrigger) { clearTimeout(this.animWait); this.animWait = setTimeout(() => this.setupAnim(), 120); return; }
+    g.registerPlugin(window.ScrollTrigger);
+    if (this.ctx) this.ctx.revert();
+    this.ctx = g.context(() => {
+      g.utils.toArray('[data-anim="hero"]').forEach(el => {
+        g.from(el.children, { y: 26, opacity: 0, duration: 0.8, stagger: 0.08, ease: 'power3.out' });
+      });
+      g.utils.toArray('[data-anim="up"]').forEach(el => {
+        g.from(el, { y: 26, opacity: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' } });
+      });
+      g.utils.toArray('[data-anim-group]').forEach(grp => {
+        g.from(grp.children, { y: 30, opacity: 0, duration: 0.6, stagger: 0.07, ease: 'power3.out', scrollTrigger: { trigger: grp, start: 'top 88%' } });
+      });
+      const sticker = document.querySelector('[data-anim="sticker"]');
+      if (sticker) g.to(sticker, { y: -10, rotation: 10, duration: 2.4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      const sticker2 = document.querySelector('[data-anim="sticker2"]');
+      if (sticker2) g.to(sticker2, { y: 9, rotation: -9, duration: 3.1, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      const mark = document.querySelector('[data-anim="mark"]');
+      if (mark) {
+        g.from(mark, { scale: 0.86, opacity: 0, duration: 0.9, ease: 'back.out(1.6)' });
+        g.to(mark, { y: -12, duration: 3.4, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.9 });
+      }
+      const mq = document.querySelector('[data-anim="marquee"]');
+      if (mq) g.to(mq, { xPercent: -50, duration: 46, repeat: -1, ease: 'none' });
+      if (this.state.page === 'home') this.startCounts();
+      window.ScrollTrigger.refresh();
+    });
+  }
+
+  startCounts() {
+    const g = window.gsap;
+    const proxy = { a: 0, b: 0, c: 0, d: 0 };
+    const keys = ['a', 'b', 'c', 'd'];
+    const to = { duration: 1.6, ease: 'power2.out', onUpdate: () => this.setState({ counts: keys.map(k => Math.round(proxy[k])) }) };
+    keys.forEach((k, i) => { to[k] = this.STATS[i].target; });
+    if (this.countTween) this.countTween.kill();
+    this.countTween = g.to(proxy, to);
+  }
+
+  go(page) {
+    return (ev) => {
+      if (ev) ev.preventDefault();
+      this.setState({ page });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  }
+
+  renderVals() {
+    const { page, filter } = this.state;
+    const kinds = ['All', 'Workshop', 'CTF', 'Industry', 'Social'];
+    const visibleEvents = filter === 'All' ? this.EVENTS : this.EVENTS.filter(e => e.kind.toLowerCase().includes(filter.toLowerCase()));
+
+    return {
+      isHome: page === 'home', isAbout: page === 'about', isEvents: page === 'events',
+      isBlog: page === 'blog', isTeam: page === 'team',
+      isPartners: page === 'partners', isCtf: page === 'ctf', isJoin: page === 'join',
+
+      navItems: this.PAGES.map(([id, label]) => ({
+        label, onClick: this.go(id),
+        color: page === id ? '#FFFFFF' : '#121311',
+        bg: page === id ? '#121311' : 'transparent'
+      })),
+      goHome: this.go('home'), goJoin: this.go('join'), goEvents: this.go('events'),
+      goBlog: this.go('blog'), goTeam: this.go('team'),
+
+      stats: this.STATS.map((s, i) => ({ ...s, shown: this.state.counts[i] + s.suffix })),
+
+      ways: [
+        { num: '01', title: 'Come to a workshop', body: 'Two hours, a laptop, and something working by the end. Ethical hacking, forensics, cloud, defence.', cta: 'See the schedule', onClick: this.go('events') },
+        { num: '02', title: 'Play a CTF', body: 'Our own platform runs year-round and the training nights are team-based. Beginners get a walkthrough table.', cta: 'Open the platform', onClick: this.go('ctf') },
+        { num: '03', title: 'Meet the industry', body: 'Networking nights, guest lectures and resume reviews with engineers from our partner organisations.', cta: 'See our partners', onClick: this.go('partners') }
+      ],
+
+      homePosts: this.POSTS.slice(0, 3),
+      posts: this.POSTS,
+      team: this.TEAM,
+      partners: this.PARTNERS,
+      partnerLoop: [...this.PARTNERS, ...this.PARTNERS].map((p, i) => ({ ...p, key: i })),
+
+      divisions: [
+        { num: '01', title: 'Workshops', body: 'Ethical hacking, network defence, digital forensics and malware analysis, every trimester. Built for every level — whether you have never touched a terminal or you are prepping for OSCP.' },
+        { num: '02', title: 'CTF Team', body: 'Trains weekly, competes nationally and internationally, and writes the challenges on our own platform. New players are paired with someone experienced for their first few events.' },
+        { num: '03', title: 'Industry Relations', body: 'Networking nights, guest lectures and career panels. Resume feedback from people who read them for a living, and visibility on internship pipelines before they are advertised.' },
+        { num: '04', title: 'Community', body: 'The Discord is the club between events — assignment help, certification advice, job referrals and a lot of cat photos. Members support each other long after they graduate.' },
+        { num: '05', title: 'Resources', body: 'Curated study guides, certification prep and hands-on labs. CompTIA Security+, cloud security, red-teaming — collected by people who went through it last trimester.' }
+      ],
+
+      values: [
+        { title: 'Inspiration', body: 'Empowering members to explore and grow together.' },
+        { title: 'Innovation', body: "Driving creative solutions for cybersecurity's future." },
+        { title: 'Inclusivity', body: 'Building a welcoming and diverse community.' },
+        { title: 'Collaboration', body: 'Strengthening teamwork to achieve shared goals.' },
+        { title: 'Development', body: 'Preparing students for professional industry success.' },
+        { title: 'Leadership', body: "Inspiring tomorrow's cybersecurity leaders." }
+      ],
+
+      eventFilters: kinds.map(k => ({
+        label: k.toLowerCase(),
+        onClick: () => this.setState({ filter: k }),
+        bg: filter === k ? '#121311' : 'transparent',
+        fg: filter === k ? 'oklch(0.86 0.2 142)' : '#121311'
+      })),
+      eventCount: visibleEvents.length + ' of ' + this.EVENTS.length + ' shown',
+      visibleEvents,
+
+      ctfCats: [
+        { pts: '50–400 PTS', name: 'Web', body: 'Injection, auth bypass, and the classic broken access control.' },
+        { pts: '100–500 PTS', name: 'Crypto', body: 'Weak keys, bad padding, and homemade ciphers that should not exist.' },
+        { pts: '50–350 PTS', name: 'Forensics', body: 'Disk images, packet captures, and recovering what someone deleted.' },
+        { pts: '150–500 PTS', name: 'Reversing', body: 'Binaries that do not want to be read. Bring a disassembler.' },
+        { pts: '50–250 PTS', name: 'OSINT', body: 'Metadata, reverse image search, and being far too good at geography.' }
+      ],
+
+      steps: [
+        { num: '1', title: 'Register via DUSA', body: 'Official membership goes through the student association. Free, and it gets you on the roll.', cta: 'Register', url: 'https://www.dusa.org.au/clubs/deakin-university-cybersecurity-association-burwood-duca' },
+        { num: '2', title: 'Join the Discord', body: 'Where events get announced and questions get answered. This is the one that actually matters day to day.', cta: 'Get the invite', url: 'https://discord.com/invite/duca' },
+        { num: '3', title: 'Turn up to anything', body: 'Workshop, training night or social — pick whatever is next and come as you are. No RSVP needed.', cta: 'ctf.duca.au', url: 'https://ctf.duca.au/' }
+      ],
+
+      faqs: [
+        { q: 'I have no experience at all.', a: 'Most people start there. Workshops assume nothing and there is always someone at your table who started last trimester.' },
+        { q: 'I am not studying cyber.', a: 'Fine. We have members from computer science, engineering, law and commerce.' },
+        { q: 'Does it cost anything?', a: 'No. Membership, workshops, CTFs and the pizza are all free.' },
+        { q: 'How much time does it take?', a: 'As little as one event a trimester. The CTF team and dev projects ask for more if you want to go deeper.' }
+      ],
+
+      crt: this.state.crt,
+      toggleCrt: () => this.setState({ crt: false }),
+      flagText: this.state.flagOpen ? 'flag{f00t3r_d1gg3r} — three down, keep going' : 'ZmxhZ3tmMDB0M3JfZDFnZzNyfQ==',
+      revealFlag: () => this.setState(s => ({ flagOpen: !s.flagOpen })),
+      year: 2026
+    };
+  }
+}
+</script>
+</body>
+</html>

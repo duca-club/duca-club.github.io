@@ -1,4 +1,4 @@
-import type { TeamMember } from "@components/ui/team-card";
+import type { TeamMember } from "./team-types";
 
 export interface TeamDivision {
   name: string;
@@ -6,7 +6,7 @@ export interface TeamDivision {
   members: TeamMember[];
 }
 
-export const executives = {
+export const executives: Record<string, TeamMember[]> = {
   "2025": [
     {
       name: "Maple 'Ryan' Fox",

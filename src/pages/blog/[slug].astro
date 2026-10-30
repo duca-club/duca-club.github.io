@@ -1,0 +1,30 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DesignSite from '../../components/DesignSite.jsx';
+import { getBlogPosts, toBlogCard, toArticleData } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getBlogPosts();
+  return posts.map(post => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const article = toArticleData(post);
+const posts = (await getBlogPosts()).map(toBlogCard);
+---
+
+<BaseLayout
+  title={`${article.title} — DUCA`}
+  description={article.description}
+  image={article.image}
+  article
+>
+  <DesignSite initialNow={Date.now()} initialPage="post" posts={posts} article={article} client:load>
+    <Content />
+  </DesignSite>
+</BaseLayout>

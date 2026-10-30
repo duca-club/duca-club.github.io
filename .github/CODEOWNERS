@@ -3,5 +3,10 @@
 /docker-compose.yml @hirusha-adi
 /Jenkinsfile @hirusha-adi
 
+# Archived Astro deployment files
+/old-site/Dockerfile @hirusha-adi
+/old-site/docker-compose.yml @hirusha-adi
+/old-site/Jenkinsfile @hirusha-adi
+
 # Protect this file too, otherwise someone could remove you as owner
 /.github/CODEOWNERS @hirusha-adi
